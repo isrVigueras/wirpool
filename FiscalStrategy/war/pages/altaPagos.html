@@ -1,0 +1,38 @@
+<section class="jumbotron">
+	<div class="container">
+	 <h2>Registro de Pagos</h2>
+		<submenu/>
+	</div>
+</section>
+<div class="container">
+	<form id="forma" name="myForm">
+		<div class="col-md-6">
+			Cuenta: <input class="form-control"
+				ng-model="pago.cuenta" type="text" ng-required="true"><br>
+		</div>
+		<div class="col-md-6">
+			Banco: <input class="form-control"
+				ng-model="pago.banco" type="text" ng-required="true"><br>
+		</div>
+		<div class="col-md-6">
+			Monto: <input class="form-control" ng-model="pago.monto"
+				type="text" ng-required="true"><br>
+		</div>
+		<!--    	   ^([A-ZÑ\x26]{3,4}([0-9]{2})(0[1-9]|1[0-2])(0[1-9]|1[0-9]|2[0-9]|3[0-1]))([A-Z\d]{3})?$ -->
+		<div class="col-md-6">
+			Moneda: <select class="form-control" ng-model="pago.moneda">
+				<option>MXN</option>
+				<option>USD</option>
+				<option>EUR</option>
+				<option>CAD</option>
+			</select><br>
+		</div>
+
+		<div class="col-md-12">
+			<button value="Guardar" class="btn"
+				ng-click="myForm.$valid && guardaPago()">Guardar</button>
+			<button ng-click="clean()" class="btn">Limpiar</button>
+		</div>
+	</form>
+</div>
+
