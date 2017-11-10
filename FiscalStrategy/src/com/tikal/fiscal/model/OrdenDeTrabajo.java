@@ -31,6 +31,7 @@ public class OrdenDeTrabajo {
 	private Long idPago;
 	@Index
 	private String estatus;
+	
 	public Long getId() {
 		return id;
 	}

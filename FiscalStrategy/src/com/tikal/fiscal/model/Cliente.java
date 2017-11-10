@@ -10,6 +10,14 @@ public class Cliente {
 	
 	@Index private String nickname;
 	private String tipo;
+	@Index private Long responsable;
+	
+	public Long getResponsable() {
+		return responsable;
+	}
+	public void setResponsable(Long responsable) {
+		this.responsable = responsable;
+	}
 	public Long getId() {
 		return id;
 	}

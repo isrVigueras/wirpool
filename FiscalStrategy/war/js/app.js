@@ -4,13 +4,17 @@ app.config([ '$routeProvider', function($routeProvider) {
 		templateUrl : "pages/altaPagos.html",
 		controller : "pagosAddController"
 	});
+	$routeProvider.when('/listaOTs', {
+		templateUrl : "pages/listOTs.html",
+		controller : "OTsListController"
+	});
 	$routeProvider.when('/login', {
 		templateUrl : "pages/login.html",
 		controller : "navigation"
 	});
 	
 	$routeProvider.otherwise({
-		redirectTo : '/login'
+		redirectTo : '/listOTs'
 	});
 }]);
 
@@ -33,8 +37,7 @@ app.service('sessionService', [
 				if (data.usuario) {
 					$rootScope.authenticated = true;
 					$rootScope.variable = true;
-					$rootScope.cargarEmpresasHeader();
-					$location.path("/empresas/list");
+					$location.path("/listaOTs");
 				} else {
 					$rootScope.authenticated = false;
 				}
