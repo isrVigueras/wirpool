@@ -20,14 +20,20 @@ public class ClienteDAOImp implements ClienteDAO{
 
 	@Override
 	public List<Cliente> buscar(String nombre) {
-		List<Cliente> lista= ofy().load().type(Cliente.class).filter("nombre",nombre).list();
+		List<Cliente> lista= ofy().load().type(Cliente.class).filter("enabled",true).filter("nombre",nombre).list();
 		return lista;
 	}
 
 	@Override
 	public List<Cliente> getClientes(int page) {
-		List<Cliente> lista= ofy().load().type(Cliente.class).offset(25*page).limit(25).list();
+		List<Cliente> lista= ofy().load().type(Cliente.class).filter("enabled",true).offset(25*page).limit(25).list();
 		return lista;
+	}
+
+	@Override
+	public void eliminar(Cliente c) {
+		c.setEnabled(false);
+		this.save(c);
 	}
 
 }

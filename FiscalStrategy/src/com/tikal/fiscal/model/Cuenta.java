@@ -14,6 +14,9 @@ public class Cuenta {
 	private String clabe;
 	@Index
 	private String nombre;
+	@Index
+	private boolean enabled;
+	
 	public Long getId() {
 		return id;
 	}
@@ -44,5 +47,11 @@ public class Cuenta {
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
 	}
-	
+	public boolean isEnabled() {
+		return enabled;
+	}
+	public void setEnabled(boolean enabled) {
+		this.enabled = enabled;
+	}
+
 }

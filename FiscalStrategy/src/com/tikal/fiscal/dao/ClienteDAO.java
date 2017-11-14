@@ -13,4 +13,6 @@ public interface ClienteDAO {
 	public List<Cliente> buscar(String nombre);
 	
 	public List<Cliente> getClientes(int page);
+	
+	public void eliminar(Cliente c);
 }

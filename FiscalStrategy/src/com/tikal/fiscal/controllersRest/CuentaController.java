@@ -13,33 +13,33 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import com.tikal.fiscal.dao.ClienteDAO;
-import com.tikal.fiscal.model.Cliente;
+import com.tikal.fiscal.dao.CuentaDAO;
+import com.tikal.fiscal.model.Cuenta;
+import com.tikal.fiscal.model.Cuenta;
 import com.tikal.fiscal.util.JsonConvertidor;
 
 @Controller
-@RequestMapping(value={"/clientes"})
-public class ClienteController {
+@RequestMapping(value={"/cuentas"})
+public class CuentaController {
 	
 	@Autowired
-	ClienteDAO clientedao;
+	CuentaDAO cuentadao;
 	
 	@RequestMapping(value={"/guardar"},method= RequestMethod.POST, consumes="application/json")
 	public void guardar(HttpServletResponse res, HttpServletRequest req, @RequestBody String json){
-		Cliente cliente= (Cliente) JsonConvertidor.fromJson(json, Cliente.class);
-		clientedao.save(cliente);
-		
+		Cuenta cuenta= (Cuenta) JsonConvertidor.fromJson(json, Cuenta.class);
+		cuentadao.save(cuenta);
 	}
 	
 	@RequestMapping(value={"/getPagina/{page}"},method= RequestMethod.GET, produces="application/json")
 	public void getPage(HttpServletResponse res, HttpServletRequest req, @PathVariable int page) throws IOException{
-		List<Cliente> lista= clientedao.getClientes(page);
+		List<Cuenta> lista= cuentadao.getPage(page);
 		res.getWriter().print(JsonConvertidor.toJson(lista));
 	}
 	
 	@RequestMapping(value={"/borrar"}, method= RequestMethod.POST, consumes="application/json")
 	public void delete(HttpServletResponse res, HttpServletRequest req, @RequestBody String json){
-		Cliente cliente= (Cliente) JsonConvertidor.fromJson(json, Cliente.class);
-		clientedao.eliminar(cliente);
+		Cuenta cuenta= (Cuenta) JsonConvertidor.fromJson(json, Cuenta.class);
+		cuentadao.eliminar(cuenta);
 	}
 }

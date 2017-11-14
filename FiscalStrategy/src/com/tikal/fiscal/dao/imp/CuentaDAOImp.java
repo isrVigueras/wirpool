@@ -33,4 +33,10 @@ public class CuentaDAOImp implements CuentaDAO {
 		return ofy().load().type(Cuenta.class).filter("idResponsable",idEjecutivo).offset(25*(page - 1)).limit(25).list();
 	}
 
+	@Override
+	public void eliminar(Cuenta c) {
+		c.setEnabled(false);
+		this.save(c);
+	}
+
 }

@@ -9,6 +9,8 @@ public interface CuentaDAO {
 	
 	public Cuenta get(Long id);
 	
+	public void eliminar(Cuenta c);
+	
 	public List<Cuenta> getPage(int page);
 	
 	public List<Cuenta> getByCliente(Long idCliente, int page);
