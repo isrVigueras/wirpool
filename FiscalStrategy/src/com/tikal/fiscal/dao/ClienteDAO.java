@@ -12,7 +12,7 @@ public interface ClienteDAO {
 	
 	public List<Cliente> buscar(String nombre);
 	
-	public List<Cliente> getClientes(int page);
+	public List<Cliente> getClientes(int page, String tipo);
 	
 	public void eliminar(Cliente c);
 }

@@ -9,6 +9,7 @@ public class Cliente {
 	@Id private Long id;
 	
 	@Index private String nickname;
+	@Index
 	private String tipo;
 	@Index private Long responsable;
 	@Index private Long idBrocker; 

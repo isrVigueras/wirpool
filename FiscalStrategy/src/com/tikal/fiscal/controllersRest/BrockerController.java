@@ -18,8 +18,8 @@ import com.tikal.fiscal.model.Cliente;
 import com.tikal.fiscal.util.JsonConvertidor;
 
 @Controller
-@RequestMapping(value={"/clientes"})
-public class ClienteController {
+@RequestMapping(value={"/brockers"})
+public class BrockerController {
 	
 	@Autowired
 	ClienteDAO clientedao;
@@ -33,7 +33,7 @@ public class ClienteController {
 	
 	@RequestMapping(value={"/getPagina/{page}"},method= RequestMethod.GET, produces="application/json")
 	public void getPage(HttpServletResponse res, HttpServletRequest req, @PathVariable int page) throws IOException{
-		List<Cliente> lista= clientedao.getClientes(page, "cliente");
+		List<Cliente> lista= clientedao.getClientes(page, "brocker");
 		res.getWriter().print(JsonConvertidor.toJson(lista));
 	}
 	
@@ -42,4 +42,5 @@ public class ClienteController {
 		Cliente cliente= (Cliente) JsonConvertidor.fromJson(json, Cliente.class);
 		clientedao.eliminar(cliente);
 	}
+
 }
