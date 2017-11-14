@@ -12,5 +12,5 @@ public interface CuentaClienteDAO {
 	
 	public List<CuentaCliente> getByCliente(Long idCliente);
 	
-
+	public CuentaCliente getByClabe(String clabe);
 }

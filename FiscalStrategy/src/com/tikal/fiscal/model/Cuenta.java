@@ -10,6 +10,7 @@ public class Cuenta {
 	private Long id;
 	private String banco;
 	private String cuenta;
+	@Index
 	private String clabe;
 	@Index
 	private String nombre;

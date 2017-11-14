@@ -28,6 +28,26 @@ app.service("pagosService",['$http',"$q",function($http,$q){
 			});
 		return d.promise;
 	}
+	
+	this.procesarPagos=function(datos,tipo){
+		var d = $q.defer();
+		var send={
+			datos:datos,
+			tipo:tipo
+		};
+		$http.post("/pagos/procesarMultiple/",send).then(
+			function(response) {
+				console.log(response);
+				d.resolve(response.data);
+			}, function(response) {
+				if(response.status==403){
+					alert("No está autorizado para realizar esta acción");
+					$location.path("/");
+				}
+			});
+		return d.promise;
+	}
+	
 }]);
 
 app.controller("pagosAddController",['$scope','$cookieStore', '$window', '$location', 'pagosService', function($scope, $cookieStore, $window, $location, pagosService){
@@ -40,6 +60,15 @@ app.controller("pagosAddController",['$scope','$cookieStore', '$window', '$locat
 		pagosService.guardarPagos({pagos:pagos}).then(function(data){
 			alert("Pago Guardado con éxito");
 			$location("listPagos");
+			$window.location.reload();
+		});
+		
+	}
+	
+	$scope.procesar=function(){
+		pagosService.procesarPagos($scope.datos, $scope.tipo).then(function(data){
+			alert("Pagos Guardados");
+			location("/listaOTs");
 			$window.location.reload();
 		});
 		

@@ -1,12 +1,11 @@
 <section class="jumbotron">
 	<div class="container">
-		<h2>Ordenes de trabajo</h2>
-		<submenu />
+	 <h2>Registro de Pagos</h2>
+		<submenu/>
 	</div>
 </section>
 <div class="container">
-
-	<table class="table table-stripped">
+		<table class="table table-stripped">
 		<thead>
 			<tr>
 				<th>Cliente</th>
@@ -16,10 +15,10 @@
 			</tr>
 		</thead>
 		<tbody>
-			<tr ng-repeat="ot in ots">
+			<tr ng-repeat="cliente in clientes">
 				<td>{{ot.cliente}}</td>
 				<td>{{ot.resguardo}}</td>
-				<td>{{ot.estatus}}</td>
+				<td>{{ot.satus}}</td>
 				<td><button class="btn btn-small"
 						ng-click="ver(alerta.empresa)">
 						<i class="glyphicon glyphicon-eye-open"></i>
@@ -28,6 +27,6 @@
 		</tbody>
 
 	</table>
-
+	
 </div>
 

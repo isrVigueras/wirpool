@@ -4,7 +4,35 @@
 		<submenu/>
 	</div>
 </section>
+
 <div class="container">
+	<input type="checkbox" ng-model="multiple">M&uacute;ltiple
+	
+</div>
+<hr>
+<div class="container" ng-show="multiple">
+		<div class="row">
+		<div class="col-md-12">
+			<select ng-model="tipo">
+				<option>Banorte</option>
+				<option>MultivaNet</option>
+			</select>
+		</div>
+		<div class="col-md-12" style="width: 100%;">
+			<h4>Desde un archivo de Excel copie y pegue en el espacio en blanco la informaci&oacute;n</h4>
+			</br>
+			<textarea id="texto" ng-model="datos" required rows="21" cols="150" wrap='off'/>
+			<br>
+
+			<button type="button" class="btn"
+			ng-click="procesar()">Procesar</button>
+			<hr>
+		</div>
+	</div>
+</div>
+
+
+<div class="container" ng-hide="multiple">
 	<form id="forma" name="myForm">
 		<div class="col-md-6">
 			Cuenta: <input class="form-control"

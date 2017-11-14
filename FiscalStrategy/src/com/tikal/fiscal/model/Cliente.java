@@ -11,6 +11,7 @@ public class Cliente {
 	@Index private String nickname;
 	private String tipo;
 	@Index private Long responsable;
+	@Index private Long idBrocker; 
 	
 	public Long getResponsable() {
 		return responsable;
@@ -35,6 +36,12 @@ public class Cliente {
 	}
 	public void setTipo(String tipo) {
 		this.tipo = tipo;
+	}
+	public Long getIdBrocker() {
+		return idBrocker;
+	}
+	public void setIdBrocker(Long idBrocker) {
+		this.idBrocker = idBrocker;
 	}
 	
 	

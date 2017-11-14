@@ -18,6 +18,11 @@
 	
 	<!-- DAOS Objectify -->
 	<bean class="com.tikal.fiscal.dao.imp.PagoRecibidoDAOImp"></bean>
+	<bean class="com.tikal.fiscal.dao.imp.OrdenDeTrabajoDAOImp"></bean>
+	<bean class="com.tikal.fiscal.dao.imp.ClienteDAOImp"></bean>
+	<bean class="com.tikal.fiscal.dao.imp.CuentaClienteDAOImp"></bean>
+	<bean class="com.tikal.fiscal.dao.imp.CuentaDAOImp"></bean>
+	
 
 
 	<!-- <bean class="com.tikal.cacao.security.CustomUsuarioServicio"></bean> -->

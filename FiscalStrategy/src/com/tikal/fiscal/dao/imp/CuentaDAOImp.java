@@ -25,12 +25,12 @@ public class CuentaDAOImp implements CuentaDAO {
 
 	@Override
 	public List<Cuenta> getByCliente(Long idCliente, int page) {
-		return null;
+		return ofy().load().type(Cuenta.class).filter("idCliente",idCliente).offset(25*(page - 1)).limit(25).list();
 	}
 
 	@Override
 	public List<Cuenta> getByEjecutivo(Long idEjecutivo, int page) {
-		return null;
+		return ofy().load().type(Cuenta.class).filter("idResponsable",idEjecutivo).offset(25*(page - 1)).limit(25).list();
 	}
 
 }

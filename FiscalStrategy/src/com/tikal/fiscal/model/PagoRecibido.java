@@ -14,6 +14,7 @@ public class PagoRecibido {
 	@Index
 	private String cuenta;
 	private String banco;
+	private String clabe;
 	@Index
 	private Date fecha;
 	@Index
@@ -70,6 +71,12 @@ public class PagoRecibido {
 	}
 	public void setMoneda(String moneda) {
 		this.moneda = moneda;
+	}
+	public String getClabe() {
+		return clabe;
+	}
+	public void setClabe(String clabe) {
+		this.clabe = clabe;
 	}
 	
 }
