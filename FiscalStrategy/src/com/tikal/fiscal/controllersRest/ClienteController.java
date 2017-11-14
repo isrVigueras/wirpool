@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.tikal.fiscal.dao.ClienteDAO;
+import com.tikal.fiscal.dao.OrdenDeTrabajoDAO;
 import com.tikal.fiscal.model.Cliente;
 import com.tikal.fiscal.util.JsonConvertidor;
 
@@ -23,6 +24,9 @@ public class ClienteController {
 	
 	@Autowired
 	ClienteDAO clientedao;
+	
+	@Autowired
+	OrdenDeTrabajoDAO otdao;	
 	
 	@RequestMapping(value={"/guardar"},method= RequestMethod.POST, consumes="application/json")
 	public void guardar(HttpServletResponse res, HttpServletRequest req, @RequestBody String json){

@@ -9,10 +9,12 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.tikal.fiscal.dao.OrdenDeTrabajoDAO;
+import com.tikal.fiscal.model.Movimiento;
 import com.tikal.fiscal.model.OrdenDeTrabajo;
 import com.tikal.fiscal.util.JsonConvertidor;
 
@@ -43,5 +45,13 @@ public class OrdenDeTrabajoController {
 		OrdenDeTrabajo ot=otdao.get(id);
 		res.getWriter().print(JsonConvertidor.toJson(ot));
 		
+	}
+	
+	@RequestMapping(value="/addMovimiento/{id}", method=RequestMethod.POST, consumes="application/json")
+	private void addMovimiento(HttpServletRequest req, HttpServletResponse res, @RequestBody String json, @PathVariable Long id){
+		OrdenDeTrabajo ot=otdao.get(id);
+		Movimiento m= (Movimiento) JsonConvertidor.fromJson(json, Movimiento.class);
+		ot.getMovimientos().add(m);
+		otdao.save(ot);
 	}
 }
