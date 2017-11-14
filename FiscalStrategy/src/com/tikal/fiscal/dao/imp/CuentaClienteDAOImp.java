@@ -31,4 +31,9 @@ public class CuentaClienteDAOImp implements CuentaClienteDAO{
 		return null;
 	}
 
+	@Override
+	public void eliminar(CuentaCliente c) {
+		ofy().delete().entities(c).now();
+	}
+
 }

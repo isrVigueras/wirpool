@@ -10,6 +10,8 @@ public interface CuentaClienteDAO {
 	
 	public CuentaCliente get(Long id);
 	
+	public void eliminar(CuentaCliente c);
+	
 	public List<CuentaCliente> getByCliente(Long idCliente);
 	
 	public CuentaCliente getByClabe(String clabe);
