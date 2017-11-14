@@ -12,6 +12,7 @@ public class Cliente {
 	private String tipo;
 	@Index private Long responsable;
 	@Index private Long idBrocker; 
+	@Index private boolean enabled;
 	
 	public Long getResponsable() {
 		return responsable;
@@ -43,6 +44,11 @@ public class Cliente {
 	public void setIdBrocker(Long idBrocker) {
 		this.idBrocker = idBrocker;
 	}
-	
+	public boolean isEnabled() {
+		return enabled;
+	}
+	public void setEnabled(boolean enabled) {
+		this.enabled = enabled;
+	}
 	
 }
