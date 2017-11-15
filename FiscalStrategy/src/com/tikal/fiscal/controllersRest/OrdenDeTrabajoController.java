@@ -1,6 +1,7 @@
 package com.tikal.fiscal.controllersRest;
 
 import java.io.IOException;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -51,7 +52,9 @@ public class OrdenDeTrabajoController {
 	private void addMovimiento(HttpServletRequest req, HttpServletResponse res, @RequestBody String json, @PathVariable Long id){
 		OrdenDeTrabajo ot=otdao.get(id);
 		Movimiento m= (Movimiento) JsonConvertidor.fromJson(json, Movimiento.class);
+		m.setFecha(new Date());
 		ot.getMovimientos().add(m);
+		
 		otdao.save(ot);
 	}
 }
