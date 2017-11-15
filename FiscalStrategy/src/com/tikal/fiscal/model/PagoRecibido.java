@@ -23,6 +23,7 @@ public class PagoRecibido {
 	private Long id_cliente;
 	private float monto;
 	private String moneda;
+	private String referencia;
 	
 	public Long getId() {
 		return id;
@@ -77,6 +78,12 @@ public class PagoRecibido {
 	}
 	public void setClabe(String clabe) {
 		this.clabe = clabe;
+	}
+	public String getReferencia() {
+		return referencia;
+	}
+	public void setReferencia(String referencia) {
+		this.referencia = referencia;
 	}
 	
 }

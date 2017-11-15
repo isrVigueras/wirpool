@@ -54,7 +54,6 @@ public class OrdenDeTrabajoController {
 		Movimiento m= (Movimiento) JsonConvertidor.fromJson(json, Movimiento.class);
 		m.setFecha(new Date());
 		ot.getMovimientos().add(m);
-		
 		otdao.save(ot);
 	}
 }

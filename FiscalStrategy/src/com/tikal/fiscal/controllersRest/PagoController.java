@@ -60,7 +60,7 @@ public class PagoController {
 	public void multiple(HttpServletResponse res, HttpServletRequest req, @RequestBody String json) throws IOException {
 		PagosMultiplesVO pagos = (PagosMultiplesVO) JsonConvertidor.fromJson(json, PagosMultiplesVO.class);
 
-		List<PagoRecibido> lista = ParseadorDePagos.parsear(pagos.getDatos(), pagos.getTipo());
+		List<PagoRecibido> lista = ParseadorDePagos.parsear(pagos.getDatos(), pagos.getTipo(), pagos.getCuenta());
 		pagosdao.save(lista);
 		this.crearOTs(lista);
 	}
@@ -77,8 +77,6 @@ public class PagoController {
 			ot.setIdResponsable(12L);
 			ot.setResguardo(p.getMonto());
 			ot.setTipo("Externa");
-			
-			
 			CuentaCliente cuenta= cuentaclientedao.getByClabe(p.getClabe());
 			if(cuenta!=null){
 				Cliente c= clientedao.get(cuenta.getId_cliente());

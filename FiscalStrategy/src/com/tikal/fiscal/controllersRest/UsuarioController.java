@@ -90,8 +90,6 @@ public class UsuarioController {
 
 			usuario.setPass(UsuarioController.otroMetodo(nuevoPass));
 			usuarioImp.actualizarUsuario(usuario);
-			// System.out.println("Si mando el correo :*");
-
 		}
 	}
 

@@ -29,11 +29,12 @@ app.service("pagosService",['$http',"$q",function($http,$q){
 		return d.promise;
 	}
 	
-	this.procesarPagos=function(datos,tipo){
+	this.procesarPagos=function(datos,tipo,cuenta){
 		var d = $q.defer();
 		var send={
 			datos:datos,
-			tipo:tipo
+			tipo:tipo,
+			cuenta:cuenta
 		};
 		$http.post("/pagos/procesarMultiple/",send).then(
 			function(response) {
@@ -66,7 +67,7 @@ app.controller("pagosAddController",['$scope','$cookieStore', '$window', '$locat
 	}
 	
 	$scope.procesar=function(){
-		pagosService.procesarPagos($scope.datos, $scope.tipo).then(function(data){
+		pagosService.procesarPagos($scope.datos, $scope.tipo, $scope.cuenta).then(function(data){
 			alert("Pagos Guardados");
 			location("/listaOTs");
 			$window.location.reload();
