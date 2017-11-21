@@ -19,6 +19,15 @@ app.service("otservice",['$http', '$q', function($http, $q){
 		return d.promise;
 	}
 	
+	this.getOt = function(id) {
+		var d = $q.defer();
+		$http.get("/ots/find/"+id).then(
+			function(response) {
+				d.resolve(response.data);
+			});
+		return d.promise;
+	}
+	
 }]);
 
 app.controller("OTsListController",['$scope','$window', '$location', '$cookieStore','otservice', function($scope, $window, $location, $cookieStore, otservice){
@@ -58,5 +67,14 @@ app.controller("OTsListController",['$scope','$window', '$location', '$cookieSto
 	}
 	
 	$scope.cargarPagina(1);
+	
+}]);
+
+app.controller("otDetailsController",['$scope','$window', '$location', '$cookieStore','otservice','$routeParams', function($scope, $window, $location, $cookieStore, otservice,$routeParams){
+	otservice.find($routeParams.id).then(function(data){
+		$scope.ot=data;
+	});
+	
+	
 	
 }]);
