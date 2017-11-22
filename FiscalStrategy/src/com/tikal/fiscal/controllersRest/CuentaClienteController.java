@@ -20,7 +20,7 @@ import com.tikal.fiscal.util.JsonConvertidor;
 
 @Controller
 @RequestMapping(value={"/cuentasCliente"})
-public class CunetaClienteController {
+public class CuentaClienteController {
 
 	@Autowired
 	CuentaClienteDAO cuentadao;
