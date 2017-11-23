@@ -4,6 +4,10 @@ app.config([ '$routeProvider', function($routeProvider) {
 		templateUrl : "pages/altaPagos.html",
 		controller : "pagosAddController"
 	});
+	$routeProvider.when('/listaPagos', {
+		templateUrl : "pages/listaPagos.html",
+		controller : "pagosAddController"
+	});
 	$routeProvider.when('/listaOTs', {
 		templateUrl : "pages/listOTs.html",
 		controller : "OTsListController"
@@ -12,9 +16,51 @@ app.config([ '$routeProvider', function($routeProvider) {
 		templateUrl : "pages/login.html",
 		controller : "navigation"
 	});
+	$routeProvider.when('/clientes', {
+		templateUrl : "pages/listClientes.html",
+		controller : "clientController"
+	});
+	$routeProvider.when('/cuentas', {
+		templateUrl : "pages/listCuentas.html",
+		controller : "cuentaController"
+	});
+	$routeProvider.when('/altaCuenta', {
+		templateUrl : "pages/altaCuentas.html",
+		controller : "cuentaController"
+	});
+	$routeProvider.when('/altaCliente', {
+		templateUrl : "pages/altaCliente.html",
+		controller : "clientController"
+	});
+	$routeProvider.when('/altausuarios', {
+		templateUrl : "pages/altausuario.html",
+		controller : "userController"
+	});
+	$routeProvider.when('/modificarusuarios', {
+		templateUrl : "pages/modificausuarios.html",
+		controller : "userController"
+	});
+	$routeProvider.when('/altaperfil', {
+		templateUrl : "pages/altaPerfil.html",
+		controller : "perfilController"
+	});
+	$routeProvider.when('/modificarperfil', {
+		templateUrl : "pages/modificarPerfil.html",
+		controller : "controladorListaPerfiles"
+	});
+	$routeProvider.when('/altaBrocker', {
+		templateUrl : "pages/altaBrockers.html",
+		controller : "clientController"
+	});
+	$routeProvider.when('/listaBrocker', {
+		templateUrl : "pages/listaBrockers.html",
+		controller : "clientController"
+	});
 	
 	$routeProvider.otherwise({
-		redirectTo : '/listOTs'
+		redirectTo : '/listOTs',
+		templateUrl : "pages/listOTs.html",
+		controller : "OTsListController"
 	});
 }]);
 

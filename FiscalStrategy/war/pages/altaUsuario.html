@@ -1,0 +1,44 @@
+<section class="jumbotron">
+	<div class="container">
+		<h2>Registra Usuarios</h2>
+		
+	</div>
+</section>
+
+<section class="main container">
+	<div class="row">
+		<section class="posts col-md-9">
+			
+			<form name="form" id="forma">
+				<article class="post clearfix">
+				<div class="col-md-6">
+					<br> Nombre del Usuario: <input type="text"
+						class="form-control" ng-model="usuario.usuario" required>
+						</div>
+				<div class="col-md-6">		
+					<br> Contrase&ntilde;a: <input type="password" class="form-control" name="pass" id="pass"
+						ng-model="usuario.pass"  required pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}"
+						title="La contrase&ntilde;a debe contener al menos 8 caracteres, incluidos MAYUSCULAS / minusculas y almenos un numero">
+						</div>
+			
+				<div class="col-md-6">	
+					
+					<br> Email: <input
+						type="email" ng-model="usuario.email" name="email" id="email"
+						class="form-control" ng-pattern="/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/" required> 
+						</div>
+				
+				<div class="col-md-6">		
+					<br><br>
+					<button type="submit" value="Guardar" class="btn" ng-click="enviarFormulario()">
+						Guardar</button>
+						</div>
+				</article>
+			</form>
+			<nav>
+				<div class="center-blog"></div>
+			</nav>
+		</section>
+	</div>
+</section>
+

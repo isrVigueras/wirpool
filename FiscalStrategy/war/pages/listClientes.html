@@ -1,28 +1,45 @@
 <section class="jumbotron">
 	<div class="container">
-	 <h2>Registro de Pagos</h2>
+	 <h2>Clientes</h2>
 		<submenu/>
 	</div>
 </section>
 <div class="container">
+ <style>
+    #mdialTamanio{
+      width: 60% !important;
+    }
+  </style>
 		<table class="table table-stripped">
 		<thead>
 			<tr>
-				<th>Cliente</th>
-				<th>Saldo</th>
-				<th>Status</th>
-				<th>Acciones</th>
+				<th style="width: 40%;">Cliente</th>
+				<th style="width: 40%;">Saldo</th>
+				
+				<th style="width: 40%;">Acciones</th>
 			</tr>
 		</thead>
 		<tbody>
-			<tr ng-repeat="cliente in clientes">
-				<td>{{ot.cliente}}</td>
-				<td>{{ot.resguardo}}</td>
-				<td>{{ot.satus}}</td>
-				<td><button class="btn btn-small"
-						ng-click="ver(alerta.empresa)">
+			
+			<tr ng-repeat="cliente in clienteLista">
+				<td>{{cliente.nickname}}</td>
+				<td>{{cliente.saldo}}</td>
+				
+				<td>
+				<button title="Ver Cliente"class="btn btn-small" data-toggle="modal" data-target="#myModalVista"
+						>
 						<i class="glyphicon glyphicon-eye-open"></i>
-					</button></td>
+					</button>
+							<button title="Editar Cliente"class="btn btn-small"
+								ng-click="editarCliente(ot.cliente.numCliente)">
+								<i class="glyphicon glyphicon-edit"></i>
+							</button>
+							
+							<button title="Eliminar Cliente" class="btn btn-small"
+								ng-click="eliminar(cliente)">
+								<i class="glyphicon glyphicon-remove"></i>
+							</button>
+							</td>
 			</tr>
 		</tbody>
 
@@ -30,3 +47,96 @@
 	
 </div>
 
+  <!-- Modal Ver Clientes	-->
+  <div class="modal fade" id="myModalVista" tabindex="-1" role="dialog" aria-labelledby="myModalVista" aria-hidden="true">
+                           
+      <div class="modal-dialog" id="mdialTamanio">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h2 class="modal-title" id="myModalLabel">Detalles del Cliente</h2>
+            
+          </div>
+          <div class="modal-body">
+           <h4>Datos Generales</h4>
+           <div>
+           Nombre:<br><label>Felipe de Jesus</label><br>
+           Tipo: <br><label>Cliente</label><br>
+           
+           
+           </div>
+           <br>
+           <h4>Cuentas Asosiadas</h4>
+           <table class="table table-stripped">
+				<thead>
+					<tr>
+						<th style="width: 25%;">Banco</th>
+						<th style="width: 25%;">Clabe</th>
+						<th style="width: 25%;">Saldo</th>
+						<th style="width: 25%;">Acciones</th>
+					</tr>
+				</thead>
+				<tbody>
+			
+					<tr ng-repeat="cuenta in ccuenta">
+						<td>{{cuenta.banco}}</td>
+						<td>{{cuenta.clabe}}</td>
+						<td>{{cuenta.saldo}}</td>
+						<td>
+						
+									<button title="Editar Cliente"class="btn btn-small"
+										ng-click="x">
+										<i class="glyphicon glyphicon-edit"></i>
+									</button>
+									
+									<button title="Eliminar Cliente" class="btn btn-small"
+										ng-click="x">
+										<i class="glyphicon glyphicon-remove"></i>
+									</button>
+									</td>
+					</tr>
+			</tbody>
+
+	</table>
+	<br>
+	<div id="cuentaCliente">
+<!-- 	Formulario oculto cuando se precione el boton de Nueva cuenta abrirlo -->
+	<form id="forma" name="myForm">
+	<h4>Registro de Cuenta</h4><br>
+		<div class="col-md-6">
+			Banco: <input class="form-control"
+				ng-model="cuenta.banco" type="text" ng-required="true"><br>
+		</div>
+		<div class="col-md-6">
+			Cuenta: <input class="form-control"
+				ng-model="cuenta.cuenta" type="text" ng-required="true"><br>
+		</div>
+		
+		<div class="col-md-6">
+			Clabe: <input class="form-control"
+				ng-model="cuenta.clabe" type="text" ng-required="true"><br>
+		</div>
+		<div class="col-md-6">
+			Nombre: <input class="form-control"
+				ng-model="cuenta.nombre" type="text" ng-required="true"><br>
+		</div>
+		
+		<!--    	   ^([A-ZÑ\x26]{3,4}([0-9]{2})(0[1-9]|1[0-2])(0[1-9]|1[0-9]|2[0-9]|3[0-1]))([A-Z\d]{3})?$ -->
+		
+
+		<div class="col-md-12">
+			<button value="Guardar" class="btn" ng-controller="clientcuentacontroller"
+				ng-click="myForm.$valid && guardaClienteCuenta($index)">Guardar</button>
+			<button ng-click="clean()" class="btn">Limpiar</button>
+		</div>
+	</form>
+	
+	</div>
+          </div>
+          <div class="modal-footer">
+          <button type="button" class="btn btn-default">Nueva Cuenta</button>
+            <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+          </div>
+        </div>
+      </div>
+    </div>

@@ -1,9 +1,4 @@
-app.service('usuarioService', [
-		'$http',
-		'$q',
-		'$window',
-		'$location',
-		function($http, $q, $window, $location) {
+app.service("usuarioService", ['$http','$q','$window','$location',function($http, $q, $window, $location) {
 			
 			this.crearUsuario = function(usuario) {
 				var d = $q.defer();
@@ -80,7 +75,7 @@ app.service('usuarioService', [
 
 app
 		.controller(
-				'usuarioController',
+				"usuarioController",
 				[
 						'$scope',
 						'$location',

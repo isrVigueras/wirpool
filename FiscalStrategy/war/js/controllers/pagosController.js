@@ -48,6 +48,18 @@ app.service("pagosService",['$http',"$q",function($http,$q){
 			});
 		return d.promise;
 	}
+	this.consultarPagos = function() {
+		var d = $q.defer();
+		$http.get("/clientes/getPagina/1").then(function(response) {
+			d.resolve(response.data);
+		}, function(response) {
+			if(response.status==403){
+				//alert("No tiene permiso de realizar esta acción");
+				$location.path("/login");
+			}
+		});
+		return d.promise;
+	}
 	
 }]);
 
@@ -60,7 +72,7 @@ app.controller("pagosAddController",['$scope','$cookieStore', '$window', '$locat
 		pagos.push($scope.pago);
 		pagosService.guardarPagos({pagos:pagos}).then(function(data){
 			alert("Pago Guardado con éxito");
-			$location("listPagos");
+			$location("/listPagos");
 			$window.location.reload();
 		});
 		
@@ -74,4 +86,6 @@ app.controller("pagosAddController",['$scope','$cookieStore', '$window', '$locat
 		});
 		
 	}
+	
+	
 }]);

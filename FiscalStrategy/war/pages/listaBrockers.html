@@ -1,0 +1,32 @@
+<section class="jumbotron">
+	<div class="container">
+		<h2>Lista Brokers</h2>
+		<submenu />
+	</div>
+</section>
+<div class="container">
+
+	<table class="table table-stripped">
+		<thead>
+			<tr>
+				<th>Broker</th>
+				<th>Saldo</th>
+				<th>Status</th>
+				<th>Acciones</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr ng-repeat="ot in ots">
+				<td>{{ot.cliente}}</td>
+				<td>{{ot.resguardo}}</td>
+				<td>{{ot.estatus}}</td>
+				<td><button class="btn btn-small"
+						ng-click="ver(alerta.empresa)">
+						<i class="glyphicon glyphicon-eye-open"></i>
+					</button></td>
+			</tr>
+		</tbody>
+
+	</table>
+
+</div>

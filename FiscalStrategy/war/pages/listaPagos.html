@@ -1,0 +1,51 @@
+<section class="jumbotron">
+	<div class="container">
+	 <h2>Clientes</h2>
+		<submenu/>
+	</div>
+</section>
+<div class="container">
+		<table class="table table-stripped">
+		<thead>
+			<tr>
+				<th>Banco</th>
+				<th>Clabe</th>
+				<th>Cliente</th>
+				<th>Monto</th>
+				<th>Referencia</th>
+				<th>Acciones</th>
+			</tr>
+		</thead>
+		<tbody>
+			
+			<tr ng-repeat="pagos in listaPagos">
+				<td>{{pagos.banco}}</td>
+				<td>{{pagos.clabe}}</td>
+				<td>{{pagos.cliente}}</td>
+				<td>{{pagos.monto}}</td>
+				<td>{{pagos.referencia}}</td>
+				<td>
+				<button title="Ver Cliente"class="btn btn-small"
+						ng-click="ver(alerta.empresa)">
+						<i class="glyphicon glyphicon-eye-open"></i>
+					</button>
+							<button title="Editar Cliente"class="btn btn-small"
+								ng-click="editarCliente(ot.cliente.numCliente)">
+								<i class="glyphicon glyphicon-edit"></i>
+							</button>
+							<button title="Ver Cuenta" class="btn btn-small"
+								>
+								<i class="glyphicon glyphicon-credit-card"></i>
+							</button>
+							<button title="Eliminar Cliente" class="btn btn-small"
+								ng-click="eliminar(cliente)">
+								<i class="glyphicon glyphicon-remove"></i>
+							</button>
+							</td>
+			</tr>
+		</tbody>
+
+	</table>
+	
+</div>
+

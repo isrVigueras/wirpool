@@ -1,0 +1,62 @@
+
+<section class="jumbotron">
+	<div class="container">
+		<h2>Registro de Perfiles</h2>
+		
+	</div>
+</section>
+
+<section class="main container">
+	<div class="row">
+		<section class="posts col-md-9">
+			<div class="miga-de-pan">
+				<ol class="breadcrumb">
+					<li><a href="#/listOTs">Ir a Inicio</a></li>
+				</ol>
+			</div>
+			<article class="post clearfix">
+				<br> Nombre del Perfil: <input type="text" class="form-control"
+					ng-model="perfil.tipo"> <br>
+				<table class="table table-bordered table-striped">
+					<tbody>
+						<tr>
+							<td>Crear Usuario</td>
+							<td><input type="checkbox" ng-model="perfil.permisos[0]"></td>
+						</tr>
+						<tr>
+							<td>Editar Usuario</td>
+							<td><input type="checkbox" ng-model="perfil.permisos[1]"></td>
+						</tr>
+						
+						<tr>
+							<td>Alta de Usuarios</td>
+							<td><input type="checkbox" ng-model="perfil.permisos[2]"></td>
+						</tr>
+						<tr>
+							<td>Editar Usuarios</td>
+							<td><input type="checkbox" ng-model="perfil.permisos[3]"></td>
+						</tr>
+						<tr>
+							<td>Crear Perfiles</td>
+							<td><input type="checkbox" ng-model="perfil.permisos[4]"></td>
+						</tr>
+						<tr>
+							<td>Editar Perfiles</td>
+							<td><input type="checkbox" ng-model="perfil.permisos[5]"></td>
+						</tr>
+						
+					</tbody>
+				
+				</table>
+				<br>
+				<button type="submit" value="Guardar" class="btn"
+					ng-click="EnviarFormulario()">Guardar</button>
+				<button type="submit" value="Limpiar" class="btn">Limpiar</button>
+			</article>
+			<nav>
+				<div class="center-blog"></div>
+			</nav>
+
+		</section>
+	</div>
+</section>

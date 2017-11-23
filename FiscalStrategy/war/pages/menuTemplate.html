@@ -1,9 +1,51 @@
 <div class="btn-group" role="group" aria-label="">
 	<a href="#/listaOTs" type="button" class="btn btn-default">Ordenes
-		de Trabajo</a> <a href="#/altaPagos" type="button" class="btn btn-default">Pagos</a>
-	<a href="#/clientes" type="button" class="btn btn-default">Clientes</a>
-	<a href="#/brockers" type="button" class="btn btn-default">Brockers</a>
-	<a href="#/clientes" type="button" class="btn btn-default">Cuentas</a>
+		de Trabajo</a>
+	<div class="btn-group" role="group">
+		<button type="button" class="btn btn-default dropdown-toggle"
+			data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+			Pagos<span class="caret"></span>
+		</button>
+		<ul class="dropdown-menu" style="z-index: 2000">
+			<li><a href="#/listaPagos">Consultar</a></li>
+			<li><a href="#/altaPagos">Registrar</a></li>
+			
+		</ul>
+	</div>
+	<div class="btn-group" role="group">
+		<button type="button" class="btn btn-default dropdown-toggle"
+			data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+			Clientes<span class="caret"></span>
+		</button>
+		<ul class="dropdown-menu" style="z-index: 2000">
+			<li><a href="#/clientes">Consultar</a></li>
+			<li><a href="#/altaCliente">Registrar</a></li>
+			
+		</ul>
+	</div>
+	<div class="btn-group" role="group">
+		<button type="button" class="btn btn-default dropdown-toggle"
+			data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+			Brockers<span class="caret"></span>
+		</button>
+		<ul class="dropdown-menu" style="z-index: 2000">
+			<li><a href="#/listaBrocker">Consultar</a></li>
+			<li><a href="#/altaBrocker">Registrar</a></li>
+			
+		</ul>
+	</div>
+	
+	<div class="btn-group" role="group">
+		<button type="button" class="btn btn-default dropdown-toggle"
+			data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+			Cuentas<span class="caret"></span>
+		</button>
+		<ul class="dropdown-menu" style="z-index: 2000">
+			<li><a href="#/cuentas">Consultar</a></li>
+			<li><a href="#/altaCuenta">Registrar</a></li>
+			
+		</ul>
+	</div>
 	
 
 	<!-- 	<div class="btn-group" role="group"> -->

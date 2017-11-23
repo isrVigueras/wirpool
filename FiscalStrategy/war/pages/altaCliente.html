@@ -1,0 +1,38 @@
+<section class="jumbotron">
+	<div class="container">
+	 <h2>Alta Clientes</h2>
+		<submenu/>
+	</div>
+</section>
+<div class="container">
+	<div class="container" ng-hide="multiple">
+	<form id="forma" name="myForm">
+		<div class="col-md-6">
+			Nombre del Cliente: <input class="form-control"
+				ng-model="client.nickname" type="text" ng-required="true"><br>
+		</div>
+		<div class="col-md-6">
+			Tipo de Cliente: 
+			<select ng-model="client.tipo" class="form-control" ng-required="true">
+			  <option value="cliente">Cliente</option>
+			</select><br>
+		</div>
+		<div class="col-md-6">
+			Responsable: <input class="form-control"
+				ng-model="client.responsable" type="text" ng-required="true"><br>
+		</div>
+<!-- 		<div class="col-md-1"> -->
+<!-- 			Activo: <select class="form-control" ng-model="client.enabled"> -->
+<!-- 				<option value="true">Si</option> -->
+<!-- 				<option value="false">No</option> -->
+<!-- 				</select><br> -->
+<!-- 		</div> -->
+		<div class="col-md-12">
+			<button value="Guardar" class="btn"
+				ng-click="myForm.$valid && guardaCliente()">Guardar</button>
+			
+		</div>
+	</form>
+</div>
+	
+</div>
