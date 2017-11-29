@@ -26,14 +26,11 @@
 				<td>{{cliente.saldo}}</td>
 				
 				<td>
-				<button title="Ver Cliente"class="btn btn-small" data-toggle="modal" data-target="#myModalVista"
+<!-- 				Boton para ver el detalle de los clientes -->
+				<button title="Ver Cliente"class="btn btn-small" data-toggle="modal" ng-click="ver(cliente)" data-target="#myModalVista"
 						>
 						<i class="glyphicon glyphicon-eye-open"></i>
 					</button>
-							<button title="Editar Cliente"class="btn btn-small"
-								ng-click="editarCliente(ot.cliente.numCliente)">
-								<i class="glyphicon glyphicon-edit"></i>
-							</button>
 							
 							<button title="Eliminar Cliente" class="btn btn-small"
 								ng-click="eliminar(cliente)">
@@ -60,37 +57,38 @@
           <div class="modal-body">
            <h4>Datos Generales</h4>
            <div>
-           Nombre:<br><label></label><br>
-           Tipo: <br><label></label><br>
+           ID:<br><label>{{cliente.id}}</label><br>
+           Nombre:<br><label>{{cliente.nickname}}</label><br>
+           Tipo: <br><label>{{cliente.tipo}}</label><br>
+           Responsable:<br><label>{{cliente.responsable}}</label><br>
+           Disponible:<br><label>{{cliente.enabled}}</label><br>
            
            
            </div>
            <br>
+           <div ng-show="ca">
            <h4>Cuentas Asosiadas</h4>
            <table class="table table-stripped">
 				<thead>
 					<tr>
-						<th style="width: 25%;">Banco</th>
-						<th style="width: 25%;">Clabe</th>
-						<th style="width: 25%;">Saldo</th>
-						<th style="width: 25%;">Acciones</th>
+						<th style="width: 20%;">Banco</th>
+						<th style="width: 20%;">Cuenta</th>
+						<th style="width: 20%;">Clabe</th>
+						<th style="width: 20%;">Saldo</th>
+						<th style="width: 20%;">Acciones</th>
 					</tr>
 				</thead>
 				<tbody>
 			
 					<tr ng-repeat="cuenta in ccuenta">
 						<td>{{cuenta.banco}}</td>
+						<td>{{cuenta.cuenta}}</td>
 						<td>{{cuenta.clabe}}</td>
 						<td>{{cuenta.saldo}}</td>
 						<td>
 						
-									<button title="Editar Cliente"class="btn btn-small"
-										ng-click="x">
-										<i class="glyphicon glyphicon-edit"></i>
-									</button>
-									
-									<button title="Eliminar Cliente" class="btn btn-small"
-										ng-click="x">
+									<button title="Eliminar Cuenta" class="btn btn-small"
+										ng-click="eliminarcc(cuenta)">
 										<i class="glyphicon glyphicon-remove"></i>
 									</button>
 									</td>
@@ -98,8 +96,9 @@
 			</tbody>
 
 	</table>
+	</div>
 	<br>
-	<div id="cuentaCliente">
+	<div ng-show="rc">
 <!-- 	Formulario oculto cuando se precione el boton de Nueva cuenta abrirlo -->
 	<form id="forma" name="myForm">
 	<h4>Registro de Cuenta</h4><br>
@@ -126,16 +125,16 @@
 
 		<div class="col-md-12">
 			<button value="Guardar" class="btn" ng-controller="clientcuentacontroller"
-				ng-click="myForm.$valid && guardaClienteCuenta($index)">Guardar</button>
-			<button ng-click="clean()" class="btn">Limpiar</button>
+				ng-click="myForm.$valid && guardaClienteCuenta(cliente.id)">Guardar</button>
+			<button ng-click="btnCancelar()" class="btn">Cancelar</button>
 		</div>
 	</form>
 	
 	</div>
           </div>
           <div class="modal-footer">
-          <button type="button" class="btn btn-default">Nueva Cuenta</button>
-            <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+          <button type="button" class="btn btn-default" ng-controller="clientcuentacontroller" ng-show="btn" ng-click="hide()">Nueva Cuenta</button>
+            <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="reload()">Cerrar</button>
           </div>
         </div>
       </div>

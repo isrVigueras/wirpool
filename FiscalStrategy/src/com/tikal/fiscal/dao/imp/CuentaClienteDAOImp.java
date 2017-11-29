@@ -19,7 +19,7 @@ public class CuentaClienteDAOImp implements CuentaClienteDAO{
 
 	@Override
 	public List<CuentaCliente> getByCliente(Long idCliente) {
-		return ofy().load().type(CuentaCliente.class).filter("idCliente", idCliente).list();
+		return ofy().load().type(CuentaCliente.class).filter("id_cliente", idCliente).list();
 	}
 
 	@Override

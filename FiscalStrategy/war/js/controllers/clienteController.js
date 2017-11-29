@@ -40,9 +40,9 @@ app.service("clientservice",['$http', '$q', function($http, $q){
 }]);
 
 app.service("clientcuentaservice",['$http', '$q', function($http, $q){
-	this.guardarCuentaCliente=function(send){
+	this.guardarCuentaCliente=function(id,send){
 		var d = $q.defer();
-		$http.post("/cuentasCliente/guardar/",send).then(
+		$http.post("/cuentasCliente/guardar/"+id,send).then(
 			function(response) {
 				console.log(response);
 				d.resolve(response.data);
@@ -53,33 +53,56 @@ app.service("clientcuentaservice",['$http', '$q', function($http, $q){
 				}
 			});
 		return d.promise;
+	};
+	
+	this.getcc = function(id) {
+		var d = $q.defer();
+		$http.get("/cuentasCliente/todas/"+id).then(
+			function(response) {
+				d.resolve(response.data);
+			});
+		return d.promise;
 	}
+	this.eliminacuentacliente= function(send) {
+		var d = $q.defer();
+		$http.post("/cuentasCliente/borrar/",send).then(function(response) {
+			console.log(response);
+			d.resolve(response.data);
+		}, function(response) {
+			d.reject(response);
+		});
+		return d.promise;
+	};
 	
 }]);
-app.controller("clientcuentacontroller",['$scope','$window', '$location', '$cookieStore','clientcuentaservice', function($scope, $window, $location, $cookieStore, clientcuentaservice){
+app.controller("clientcuentacontroller",['$scope','$window', '$location', '$cookieStore','clientcuentaservice','$routeParams',function($scope, $window, $location, $cookieStore, clientcuentaservice,$routeParams){
 	$scope.guardaClienteCuenta= function(id){
-		var send={
-				id: id,
-				
-		}
-		console.log(send);
-		clientcuentaservice.guardarCuentaCliente($scope.ccuenta).then(function(data){
+		console.log($scope.cuenta);
+		$scope.cuenta.enabled=true;
+		clientcuentaservice.guardarCuentaCliente(id,$scope.cuenta).then(function(data){
 			alert("Cuenta Guardada Con Exito");
 			$location.path("/clientes");
-//			$window.location.reload();
 			setTimeout(window.location.reload.bind(window.location), 1000);
 
 		});
 		
-	}
+	};
 	
+//	$scope.VerCC=function(id){
+//	clientcuentaservice.getcc(id).then(function(data) {
+//		$scope.ccuenta = data;
+//
+//});
+//	}
 }]);
 
-app.controller("clientController",['$scope','$window', '$location', '$cookieStore','clientservice', function($scope, $window, $location, $cookieStore, clientservice){
+app.controller("clientController",['$scope','$window', '$location', '$cookieStore','clientservice','clientcuentaservice', function($scope, $window, $location, $cookieStore, clientservice,clientcuentaservice){
 	clientservice.consultarClientesTodos().then(function(data) {
 			$scope.clienteLista = data;
 	
-	})
+	});
+	
+	
 	
 //	$scope.paginaActual=1;
 //	$scope.llenarPags=function(){
@@ -126,7 +149,7 @@ app.controller("clientController",['$scope','$window', '$location', '$cookieStor
 
 		});
 		
-	}
+	};
 	$scope.eliminar = function(cliente){
 		
 		console.log(cliente);
@@ -134,8 +157,67 @@ app.controller("clientController",['$scope','$window', '$location', '$cookieStor
 			alert("Cliente Eliminado");
 			$location.path("/clientes");
 			$window.location.reload();
-		})
+		}) 
+	};
+$scope.reload = function(){
+		
+		
+			
+			$location.path("/clientes");
+			$window.location.reload();
+		
+	};
+	
+	$scope.detallesCliente=function(){
+		
+		
+		
+		
 	}
+	
+	
+	$scope.rc=false;
+	$scope.ca=true;
+	$scope.btn=true;
+	 $scope.hide=function () {
+		 $scope.btn=false;   
+     	$scope.rc=true;
+     	$scope.ca=false;
+	
+ };
+ $scope.btnCancelar=function () {
+	 $scope.btn=true;   
+ 	$scope.rc=false;
+ 	$scope.ca=true;
+ 	$scope.cuenta.banco="";
+ 	$scope.cuenta.cuenta="";
+ 	$scope.cuenta.clabe="";
+ 	$scope.cuenta.nombre="";
+
+};
+ 
+$scope.ver = function(data) {
+	$scope.cliente=data;
+    var length = $scope.cliente.length;
+    clientcuentaservice.getcc($scope.cliente.id).then(function(data) {
+  		$scope.ccuenta = data;
+  });
+    for ( i=0; i < length; i++) {  
+      alert($scope.datosComp[i].nom_coe);
+      
+    };
+}
+
+$scope.eliminarcc = function(cuenta){
+	console.log(cuenta);
+	clientcuentaservice.eliminacuentacliente(cuenta).then(function(send) {	
+		alert("Cuenta del Cliente Eliminado");
+		$location.path("/clientes");
+		$window.location.reload();
+		
+	}) 
+};
+
 //	$scope.cargarPagina(1);
 	
 }]);
