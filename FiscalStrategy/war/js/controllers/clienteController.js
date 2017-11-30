@@ -151,13 +151,20 @@ app.controller("clientController",['$scope','$window', '$location', '$cookieStor
 		
 	};
 	$scope.eliminar = function(cliente){
+		var agree=confirm("¿Realmente desea eliminarlo? ");
+		  if (agree){
+			  console.log(cliente);
+			clientservice.eliminaCliente(cliente).then(function(send) {	
+				alert("Cliente Eliminado");
+				$location.path("/clientes");
+				$window.location.reload();
+			}) 
+			
+		  }else{
+			  alert("Eliminacion Cancelada");
+		  }
+		  
 		
-		console.log(cliente);
-		clientservice.eliminaCliente(cliente).then(function(send) {	
-			alert("Cliente Eliminado");
-			$location.path("/clientes");
-			$window.location.reload();
-		}) 
 	};
 $scope.reload = function(){
 		
@@ -209,6 +216,8 @@ $scope.ver = function(data) {
 }
 
 $scope.eliminarcc = function(cuenta){
+	var agree=confirm("¿Realmente desea eliminarlo? ");
+	  if (agree){
 	console.log(cuenta);
 	clientcuentaservice.eliminacuentacliente(cuenta).then(function(send) {	
 		alert("Cuenta del Cliente Eliminado");
@@ -216,6 +225,9 @@ $scope.eliminarcc = function(cuenta){
 		$window.location.reload();
 		
 	}) 
+	  }else{
+		  alert("Se ha cancelado la Operacion");	
+	  }
 };
 
 //	$scope.cargarPagina(1);
