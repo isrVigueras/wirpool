@@ -31,6 +31,7 @@ public class UsuarioController {
 	@RequestMapping(value = { "/registro" }, method = RequestMethod.POST, consumes = "Application/Json")
 	public void crearUsuario(HttpServletRequest request, HttpServletResponse response, @RequestBody String json)
 			throws IOException {
+		AsignadorDeCharset.asignar(request, response);
 		if (true) {
 			AsignadorDeCharset.asignar(request, response);
 			Usuario usuario = (Usuario) JsonConvertidor.fromJson(json, Usuario.class);
@@ -48,6 +49,7 @@ public class UsuarioController {
 
 	@RequestMapping(value = { "/consultarTodos" }, method = RequestMethod.GET, produces = "application/json")
 	public void consultarUsuarios(HttpServletRequest request, HttpServletResponse response) throws IOException {
+		AsignadorDeCharset.asignar(request, response);
 		if (true) {
 			AsignadorDeCharset.asignar(request, response);
 			List<Usuario> lista = usuarioImp.consultarUsuarios();
@@ -127,6 +129,7 @@ public class UsuarioController {
 
 	@RequestMapping(value = { "/check" }, method = RequestMethod.GET)
 	public void consultarSesion(HttpServletRequest request, HttpServletResponse response) throws IOException {
+		AsignadorDeCharset.asignar(request, response);
 		HttpSession s = request.getSession();
 		String user = (String) s.getAttribute("userName");
 		if (user == null) {

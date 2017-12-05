@@ -1,6 +1,7 @@
 package com.tikal.fiscal.controllersRest;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.tikal.fiscal.dao.ClienteDAO;
 import com.tikal.fiscal.model.Cliente;
+import com.tikal.fiscal.util.AsignadorDeCharset;
 import com.tikal.fiscal.util.JsonConvertidor;
 
 @Controller
@@ -25,7 +27,8 @@ public class BrockerController {
 	ClienteDAO clientedao;
 	
 	@RequestMapping(value={"/guardar"},method= RequestMethod.POST, consumes="application/json")
-	public void guardar(HttpServletResponse res, HttpServletRequest req, @RequestBody String json){
+	public void guardar(HttpServletResponse res, HttpServletRequest req, @RequestBody String json) throws UnsupportedEncodingException{
+		AsignadorDeCharset.asignar(req, res);
 		Cliente cliente= (Cliente) JsonConvertidor.fromJson(json, Cliente.class);
 		clientedao.save(cliente);
 		
@@ -33,12 +36,14 @@ public class BrockerController {
 	
 	@RequestMapping(value={"/getPagina/{page}"},method= RequestMethod.GET, produces="application/json")
 	public void getPage(HttpServletResponse res, HttpServletRequest req, @PathVariable int page) throws IOException{
+		AsignadorDeCharset.asignar(req, res);
 		List<Cliente> lista= clientedao.getClientes(page, "brocker");
 		res.getWriter().print(JsonConvertidor.toJson(lista));
 	}
 	
 	@RequestMapping(value={"/borrar"}, method= RequestMethod.POST, consumes="application/json")
-	public void delete(HttpServletResponse res, HttpServletRequest req, @RequestBody String json){
+	public void delete(HttpServletResponse res, HttpServletRequest req, @RequestBody String json) throws UnsupportedEncodingException{
+		AsignadorDeCharset.asignar(req, res);
 		Cliente cliente= (Cliente) JsonConvertidor.fromJson(json, Cliente.class);
 		clientedao.eliminar(cliente);
 	}
