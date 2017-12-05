@@ -24,6 +24,7 @@ import com.tikal.fiscal.model.CuentaCliente;
 import com.tikal.fiscal.model.OrdenDeTrabajo;
 import com.tikal.fiscal.model.PagoRecibido;
 import com.tikal.fiscal.service.ParseadorDePagos;
+import com.tikal.fiscal.util.AsignadorDeCharset;
 import com.tikal.fiscal.util.JsonConvertidor;
 
 @Controller
@@ -50,6 +51,7 @@ public class PagoController {
 	@RequestMapping(value = { "/save" }, method = RequestMethod.POST, consumes = "application/json")
 	public void guardaPagos(HttpServletResponse res, HttpServletRequest req, @RequestBody String json)
 			throws IOException {
+		AsignadorDeCharset.asignar(req, res);
 		PagosVO pvo = (PagosVO) JsonConvertidor.fromJson(json, PagosVO.class);
 
 		this.crearOTs(pvo.getPagos());
@@ -58,6 +60,7 @@ public class PagoController {
 
 	@RequestMapping(value = { "/procesarMultiple" }, method = RequestMethod.POST, consumes = "application/json")
 	public void multiple(HttpServletResponse res, HttpServletRequest req, @RequestBody String json) throws IOException {
+		AsignadorDeCharset.asignar(req, res);
 		PagosMultiplesVO pagos = (PagosMultiplesVO) JsonConvertidor.fromJson(json, PagosMultiplesVO.class);
 
 		List<PagoRecibido> lista = ParseadorDePagos.parsear(pagos.getDatos(), pagos.getTipo(), pagos.getCuenta());

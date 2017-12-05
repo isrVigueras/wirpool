@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.tikal.fiscal.model.Usuario;
 import com.tikal.fiscal.security.UsuarioDAO;
+import com.tikal.fiscal.util.AsignadorDeCharset;
 import com.tikal.fiscal.util.JsonConvertidor;
 
 @Controller
@@ -24,6 +25,7 @@ public class ServicioSesion {
 
 	@RequestMapping(value = { "/user" }, method = RequestMethod.GET, produces = "application/json")
 	public void user(HttpServletResponse res, HttpServletRequest req) throws IOException {
+		AsignadorDeCharset.asignar(req, res);
 		String auti = req.getHeader("authorization");
 		auti = auti.substring(5);
 		byte[] dec = Base64Utils.decodeFromString(auti);
@@ -50,6 +52,7 @@ public class ServicioSesion {
 
 	@RequestMapping(value = { "/currentSession" }, method = RequestMethod.GET, produces = "application/json")
 	public void currentUser(HttpServletResponse res, HttpServletRequest req) throws IOException {
+		AsignadorDeCharset.asignar(req, res);
 		HttpSession s = req.getSession();
 		String n = (String) s.getAttribute("userName");
 		if (n == null) {

@@ -14,4 +14,15 @@ app.controller('headerController',['$scope','$rootScope','$location','$http','$c
 		});
 	};
 	
+	$http.get("/usuario/check").then(function(response){
+		$rootScope.variable = true;
+		$scope.cargarEmpresasHeader();
+	},function(response){
+		if(response.status==403){
+			$rootScope.variable = false;
+			$scope.empresas={};
+		}
+		$location.path("/login");
+		console.log(response);
+	});
 }]);
