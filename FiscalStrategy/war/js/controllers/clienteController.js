@@ -226,6 +226,7 @@ $scope.eliminarcc = function(cuenta){
 		
 	}) 
 	  }else{
+		  
 		  alert("Se ha cancelado la Operacion");	
 	  }
 };

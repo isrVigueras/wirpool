@@ -50,11 +50,11 @@ app.config([ '$routeProvider', function($routeProvider) {
 	});
 	$routeProvider.when('/altaBrocker', {
 		templateUrl : "pages/altaBrockers.html",
-		controller : "clientController"
+		controller : "brockersController"
 	});
 	$routeProvider.when('/listaBrocker', {
 		templateUrl : "pages/listaBrockers.html",
-		controller : "clientController"
+		controller : "brockersController"
 	});
 	
 	$routeProvider.otherwise({

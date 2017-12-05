@@ -5,28 +5,173 @@
 	</div>
 </section>
 <div class="container">
+ <style>
+    #mdialTamanio{
+      width: 60% !important;
+    }
+    .modal-header {
+	background-color: #0C009B;
+	color: white;
+	width: 98% !important;
+	margin: 1% auto;
+	text-align: center;
+	font-size: 18px;
+	box-shadow: 0px 6px 13px -4px rgba(167,190,235,1);
+	border-radius:10px 10px 10px 10px;
+}
 
+.modal-content {
+    background-color: #fefefe;
+    margin: 1% auto; /* 15% from the top and centered */
+    padding: 5px;
+    border: 1px solid #888;
+/*     width: 80%; /* Could be more or less, depending on screen size */ */
+    border-radius:10px 10px 10px 10px;
+}
+
+/* The Close Button */
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+  </style>
 	<table class="table table-stripped">
 		<thead>
 			<tr>
 				<th>Broker</th>
-				<th>Saldo</th>
-				<th>Status</th>
 				<th>Acciones</th>
 			</tr>
 		</thead>
 		<tbody>
-			<tr ng-repeat="ot in ots">
-				<td>{{ot.cliente}}</td>
-				<td>{{ot.resguardo}}</td>
-				<td>{{ot.estatus}}</td>
-				<td><button class="btn btn-small"
-						ng-click="ver(alerta.empresa)">
+			<tr ng-repeat="bk in brockerLista">
+				<td>{{bk.nickname}}</td>
+				<td><button title="Ver Cliente"class="btn btn-small" data-toggle="modal" ng-click="ver(bk)" data-target="#myModalVista"
+						>
 						<i class="glyphicon glyphicon-eye-open"></i>
-					</button></td>
+					</button>
 			</tr>
 		</tbody>
 
 	</table>
+ <!-- Modal Ver BROCKER	-->
+  <div class="modal fade" id="myModalVista" tabindex="-1" data-backdrop="static" role="dialog" aria-labelledby="myModalVista" aria-hidden="true">
+                           
+      <div class="modal-dialog" id="mdialTamanio">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+             <p class="modal-title" id="myModalLabel">Detalles del Brocker </p>
+            
+          </div>
+          <div class="modal-body">
+           <h4>Datos Generales</h4>
+           <div>
+           ID:<br><label>{{bk.id}}</label><br>
+           Nombre:<br><label>{{bk.nickname}}</label><br>
+           Tipo: <br><label>{{bk.tipo}}</label><br>
+           Responsable:<br><label>{{bk.responsable}}</label><br>
+           Disponible:<br><label>{{bk.enabled}}</label><br>
+                    
+           </div>
+           <br>
+           <div ng-show="ca">
+           <h4>Clientes Asosiados</h4>
+           <table class="table table-stripped">
+				<thead>
+					<tr>
+						<th style="width: 20%;">Nombre</th>
+						<th style="width: 20%;">Cuenta</th>
+						<th style="width: 20%;">Clabe</th>
+						
+						<th style="width: 20%;">Acciones</th>
+					</tr>
+				</thead>
+				<tbody>
+			
+					<tr ng-repeat="cuenta in ccuenta">
+						<td>{{cliente.nickname}}</td>
+						<td>{{cliente.cuenta}}</td>
+						
+						<td>{{cuenta.nombre}}</td>
+						<td>
+						
+									<button title="Eliminar Cuenta" class="btn btn-small"
+										ng-click="eliminarcc(cuenta)">
+										<i class="glyphicon glyphicon-remove"></i>
+									</button>
+									</td>
+					</tr>
+			</tbody>
 
+	</table>
+	</div>
+	<br>
+	<div ng-show="rc">
+<!-- 	Formulario oculto cuando se precione el boton de Nueva cuenta abrirlo -->
+	<form id="forma" name="myForm">
+	<h4>Registro de Cliente</h4><br>
+		<div class="col-md-6">
+			Nombre: <input class="form-control"
+				ng-model="cliente.nickname" type="text" ng-required="true"><br>
+		</div>
+		<div class="col-md-6">
+			Responsabe: <input class="form-control"
+				ng-model="cliente.responsable" type="text" ng-required="true"><br>
+		</div>
+		
+		
+		
+		<!--    	   ^([A-ZÑ\x26]{3,4}([0-9]{2})(0[1-9]|1[0-2])(0[1-9]|1[0-9]|2[0-9]|3[0-1]))([A-Z\d]{3})?$ -->
+		
+
+		
+			<button value="Guardar" class="btn" ng-controller="clientcuentacontroller"
+				ng-click="myForm.$valid && guardaClienteCuenta(cliente.id)">Guardar</button>
+			<button ng-click="btnCancelar()" class="btn">Cancelar</button>
+	
+	</form>
+	
+	</div>
+          </div>
+          <div class="modal-footer">
+          <button type="button" class="btn btn-default" ng-controller="clientcuentacontroller" ng-show="btn" ng-click="hide()">Nueva Cliente</button>
+            <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="reload()">Cerrar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+<!--     MODAL PARA CONFIRMAICON DE ELIMINACION DEL BROCKER -->
+    <div id="mdsino" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" 
+
+                class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 id="lblTitleConfirmYesNo" class="modal-title">Confirmation</h4>
+            </div>
+            <div class="modal-body">
+                <p id="lblMsgConfirmYesNo"></p>
+            </div>
+            <div class="modal-footer">
+                <button id="btnsi" 
+
+                type="button" class="btn btn-primary">Yes</button>
+                <button id="btnno" 
+
+                type="button" class="btn btn-default">No</button>
+            </div>
+        </div>
+    </div>
 </div>

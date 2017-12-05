@@ -22,6 +22,16 @@ app.service("cuentaservice",['$http', '$q', function($http, $q){
 			});
 		return d.promise;
 	}
+	this.eliminarCuenta = function(send) {
+		var d = $q.defer();
+		$http.post("/cuentas/borrar/",send).then(function(response) {
+			console.log(response);
+			d.resolve(response.data);
+		}, function(response) {
+			d.reject(response);
+		});
+		return d.promise;
+	};
 	
 //	this.getPaginas = function(page) {
 //		var d = $q.defer();
@@ -85,7 +95,18 @@ app.controller("cuentaController",['$scope','$window', '$location', '$cookieStor
 		
 	}
 	
-	
+	$scope.eliminar = function(cuenta){
+		
+		cuentaservice.eliminarCuenta(cuenta).then(function(send) {	
+				alert("Cuenta Eliminada");
+				$location.path("/cuentas");
+				$window.location.reload();
+			}) 
+			
+		 
+		  
+		
+	};
 //	$scope.cargarPagina(1);
 	
 }]);
