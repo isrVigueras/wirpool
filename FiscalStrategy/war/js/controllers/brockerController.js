@@ -34,6 +34,17 @@ app.service("brockerservice",['$http', '$q', function($http, $q){
 		return d.promise;
 	};
 	
+	this.eliminaBrocker = function(send) {
+		var d = $q.defer();
+		$http.post("/brockers/borrar/",send).then(function(response) {
+			console.log(response);
+			d.resolve(response.data);
+		}, function(response) {
+			d.reject(response);
+		});
+		return d.promise;
+	};
+	
 }]);
 
 
@@ -47,9 +58,9 @@ app.controller("brockersController",['$scope','$window', '$location', '$cookieSt
 		$scope.brocker.enabled=true;
 		brockerservice.guardarBrocker($scope.brocker).then(function(data){
 			alert("Brocker Guardado Con Exito");
-			$location.path("/");
+			$location.path("/listaBrocker");
 //			$window.location.reload(1);
-			setTimeout(window.location.reload.bind(window.location), 1000);
+			setTimeout(window.location.reload.bind(window.location), 2000);
 
 		});
 		
@@ -65,6 +76,22 @@ app.controller("brockersController",['$scope','$window', '$location', '$cookieSt
 	      
 	    };
 	}
+	$scope.eliminar = function(bk){
+		var agree=confirm("¿Realmente desea eliminarlo? ");
+		  if (agree){
+			  console.log(bk);
+			  brockerservice.eliminaBrocker(bk).then(function(send) {	
+				alert("Brocker Eliminado");
+				$location.path("/listaBrocker");
+				$window.location.reload();
+			}) 
+			
+		  }else{
+			  alert("Eliminacion Cancelada");
+		  }
+		  
+		
+	};
 	$scope.rc=false;
 	$scope.ca=true;
 	$scope.btn=true;

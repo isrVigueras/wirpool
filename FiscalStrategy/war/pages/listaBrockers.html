@@ -54,9 +54,13 @@
 		<tbody>
 			<tr ng-repeat="bk in brockerLista">
 				<td>{{bk.nickname}}</td>
-				<td><button title="Ver Cliente"class="btn btn-small" data-toggle="modal" ng-click="ver(bk)" data-target="#myModalVista"
+				<td><button title="Ver Brocker"class="btn btn-small" data-toggle="modal" ng-click="ver(bk)" data-target="#myModalVista"
 						>
 						<i class="glyphicon glyphicon-eye-open"></i>
+					</button>
+					<button title="Eliminar"class="btn btn-small"  ng-click="eliminar(bk)"
+						>
+						<i class="glyphicon glyphicon-remove"></i>
 					</button>
 			</tr>
 		</tbody>
