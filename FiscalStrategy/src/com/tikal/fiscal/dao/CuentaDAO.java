@@ -17,4 +17,6 @@ public interface CuentaDAO {
 	
 	public List<Cuenta> getByEjecutivo(Long idEjecutivo, int page);
 	
+	public List<Cuenta> getByBanco(String banco);
+	
 }

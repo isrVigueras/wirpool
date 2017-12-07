@@ -20,7 +20,7 @@
 							<tr ng-repeat="usuario in usuariosLista" ng-if="usuario.usuario!='root'">
 								<td>{{usuario.usuario}}</td>
 								<td><select ng-model="usuario.perfil">
-										<option ng-repeat="x in perfiles" value="{{x.tipo}}" ng-if="x.tipo!='AdministradorRoot'">plox</option>
+										<option>Ejecutivo</option>
 									</select></td>
 								<td><button type="button" class="btn btn-success"
 										ng-click="actualizarUsuario(usuario)">Actualizar</button>

@@ -18,8 +18,10 @@
 			</select><br>
 		</div>
 		<div class="col-md-6">
-			Responsable: <input class="form-control"
-				ng-model="client.responsable" type="text" ng-required="true"><br>
+			Responsable: <select class="form-control"
+				ng-model="client.responsable" type="text" ng-required="true">
+					<option ng-repeat="usuario in usuariosLista" ng-if="usuario.usuario!='root'" value="{{usuario.id}}">{{usuario.usuario}}</option>
+				</select><br>
 		</div>
 <!-- 		<div class="col-md-1"> -->
 <!-- 			Activo: <select class="form-control" ng-model="client.enabled"> -->

@@ -162,17 +162,17 @@ app.controller('controladorListaUsuarios', [ '$scope', 'usuarioService',
 				}
 			})
 
-			$scope.actualizarUsuario = function($scope) {
-				console.log($scope);
-				usuarioService.actualizarUsuario($scope).then(function(data) {
+			$scope.actualizarUsuario = function(usuario) {
+				console.log(usuario);
+				usuarioService.actualizarUsuario(usuario).then(function(data) {
 					alert("Usuario modificado correctamente");
 					$window.location.reload();
 				});
 			}
 
-			$scope.eliminarUsuario = function($scope) {
-				console.log($scope);
-				usuarioService.eliminaUsuario($scope).then(function(data) {
+			$scope.eliminarUsuario = function(usuario) {
+				console.log(usuario);
+				usuarioService.eliminaUsuario(usuario).then(function(data) {
 					alert("Usuario eliminado correctamente");
 					$window.location.reload();
 				})

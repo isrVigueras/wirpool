@@ -39,4 +39,9 @@ public class CuentaDAOImp implements CuentaDAO {
 		this.save(c);
 	}
 
+	@Override
+	public List<Cuenta> getByBanco(String banco) {
+		return ofy().load().type(Cuenta.class).filter("banco",banco).list();
+	}
+
 }

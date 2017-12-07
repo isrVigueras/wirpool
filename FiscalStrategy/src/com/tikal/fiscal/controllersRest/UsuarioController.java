@@ -53,6 +53,9 @@ public class UsuarioController {
 		if (true) {
 			AsignadorDeCharset.asignar(request, response);
 			List<Usuario> lista = usuarioImp.consultarUsuarios();
+			for(Usuario u:lista){
+				u.setPass("");
+			}
 			response.getWriter().println(JsonConvertidor.toJson(lista));
 		}
 	}
@@ -62,7 +65,7 @@ public class UsuarioController {
 			throws IOException {
 		AsignadorDeCharset.asignar(request, response);
 		Usuario usuario = (Usuario) JsonConvertidor.fromJson(json, Usuario.class);
-		usuarioImp.actualizarUsuario(usuario);
+		usuarioImp.actualizarUsuario(usuario, false);
 	}
 
 	@RequestMapping(value = { "/elimina" }, method = RequestMethod.POST, consumes = "Application/Json")
@@ -91,7 +94,7 @@ public class UsuarioController {
 			sender.enviaEmail(mail, user, nuevoPass);
 
 			usuario.setPass(UsuarioController.otroMetodo(nuevoPass));
-			usuarioImp.actualizarUsuario(usuario);
+			usuarioImp.actualizarUsuario(usuario,true);
 		}
 	}
 

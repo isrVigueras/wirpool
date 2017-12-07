@@ -8,6 +8,8 @@ import com.googlecode.objectify.annotation.Index;
 public class Cuenta {
 	@Id
 	private Long id;
+	
+	@Index
 	private String banco;
 	private String cuenta;
 	@Index

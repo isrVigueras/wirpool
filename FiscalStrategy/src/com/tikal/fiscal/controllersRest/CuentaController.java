@@ -41,10 +41,19 @@ public class CuentaController {
 		res.getWriter().print(JsonConvertidor.toJson(lista));
 	}
 	
+	@RequestMapping(value={"/getTipo/{tipo}"},method= RequestMethod.GET, produces="application/json")
+	public void getTipo(HttpServletResponse res, HttpServletRequest req, @PathVariable String tipo) throws IOException{
+		AsignadorDeCharset.asignar(req, res);
+		List<Cuenta> lista= cuentadao.getByBanco(tipo);
+		res.getWriter().print(JsonConvertidor.toJson(lista));
+	}
+	
 	@RequestMapping(value={"/borrar"}, method= RequestMethod.POST, consumes="application/json")
 	public void delete(HttpServletResponse res, HttpServletRequest req, @RequestBody String json) throws UnsupportedEncodingException{
 		AsignadorDeCharset.asignar(req, res);
 		Cuenta cuenta= (Cuenta) JsonConvertidor.fromJson(json, Cuenta.class);
 		cuentadao.eliminar(cuenta);
 	}
+	
+	
 }

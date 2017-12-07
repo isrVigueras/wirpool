@@ -49,7 +49,11 @@ public class UsuarioDAOImp implements UsuarioDAO {
 	}
 
 	@Override
-	public boolean actualizarUsuario(Usuario usuario) {
+	public boolean actualizarUsuario(Usuario usuario, boolean pr) {
+		if(!pr){
+			Usuario aux= this.consultarPorEmail(usuario.getEmail());
+			usuario.setPass(aux.getPassword());
+		}
 		ofy().save().entity(usuario).now();
 		return true;
 	}
