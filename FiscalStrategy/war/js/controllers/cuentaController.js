@@ -32,7 +32,14 @@ app.service("cuentaservice",['$http', '$q', function($http, $q){
 		});
 		return d.promise;
 	};
-	
+	this.getByBanco = function(banco) {
+		var d = $q.defer();
+		$http.get("/cuentas/getTipo/"+banco).then(
+			function(response) {
+				d.resolve(response.data);
+			});
+		return d.promise;
+	}
 //	this.getPaginas = function(page) {
 //		var d = $q.defer();
 //	

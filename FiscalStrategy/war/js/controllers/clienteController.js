@@ -96,10 +96,14 @@ app.controller("clientcuentacontroller",['$scope','$window', '$location', '$cook
 //	}
 }]);
 
-app.controller("clientController",['$scope','$window', '$location', '$cookieStore','clientservice','clientcuentaservice', function($scope, $window, $location, $cookieStore, clientservice,clientcuentaservice){
+app.controller("clientController",['usuarioservice','$scope','$window', '$location', '$cookieStore','clientservice','clientcuentaservice', function(usuarioservice, $scope, $window, $location, $cookieStore, clientservice,clientcuentaservice){
 	clientservice.consultarClientesTodos().then(function(data) {
 			$scope.clienteLista = data;
 	
+	});
+	
+	usuarioservice.consultarUsuariosTodos().then(function(data){
+		$scope.usuariosLista=data;
 	});
 	
 	
@@ -226,8 +230,7 @@ $scope.eliminarcc = function(cuenta){
 		
 	}) 
 	  }else{
-		  
-		  alert("Se ha cancelado la Operacion");	
+		  alert("Se ha cancelado la Operacion");
 	  }
 };
 

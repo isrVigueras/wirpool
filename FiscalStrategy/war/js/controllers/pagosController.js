@@ -62,7 +62,7 @@ app.service("pagosService",['$http',"$q",function($http,$q){
 	}
 	this.consultarPagos = function() {
 		var d = $q.defer();
-		$http.get("URL/CHIDA").then(function(response) {
+		$http.get("/clientes/getPagina/1").then(function(response) {
 			d.resolve(response.data);
 		}, function(response) {
 			if(response.status==403){
@@ -84,8 +84,7 @@ app.service("pagosService",['$http',"$q",function($http,$q){
 	
 }]);
 
-
-app.controller("pagosAddController",['$scope','$cookieStore', '$window', '$location', 'pagosService', function($scope, $cookieStore, $window, $location, pagosService){
+app.controller("pagosAddController",['$scope','$cookieStore', '$window', '$location', 'pagosService','cuentaservice', function($scope, $cookieStore, $window, $location, pagosService,cuentaservice){
 	$scope.pago={
 			moneda:"MXN"
 	}
@@ -130,5 +129,13 @@ app.controller("pagosAddController",['$scope','$cookieStore', '$window', '$locat
 	
 	
 	$scope.pago.fecha = new Date();
+	
+	$scope.$watch('tipo',function(){
+		if($scope.tipo){
+			cuentaservice.getByBanco($scope.tipo).then(function(data){
+				$scope.cuentas=data;
+			})
+		}
+	},true);
 	
 }]);
