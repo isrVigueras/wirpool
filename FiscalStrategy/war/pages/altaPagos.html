@@ -21,10 +21,12 @@
 						<option>MultivaNet</option>
 					</select>
 				</div>
-				<div class="col-md-6" ng-show="tipo=='MultivaNet'">
-					Cuenta: <input class="form-control"
+				<div class="col-md-6" ng-show="tipo">
+					Cuenta: <select class="form-control"
 						ng-model="cuenta" type="text"
-						ng-required="tipo=='MultivaNet'"><br>
+						requiered>
+						<option ng-repeat="c in cuentas" value="{{c.id}}">{{c.nombre}}</option>
+						</select>
 				</div>
 			</div>
 			<div class="col-md-12" style="width: 100%;">
