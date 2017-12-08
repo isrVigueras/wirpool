@@ -15,4 +15,8 @@ public interface ClienteDAO {
 	public List<Cliente> getClientes(int page, String tipo);
 	
 	public void eliminar(Cliente c);
+	
+	public List<Cliente> getByBrocker(Long idbrocker);
+	
+	public List<Cliente> getTipo(String tipo);
 }

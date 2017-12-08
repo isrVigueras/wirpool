@@ -36,4 +36,16 @@ public class ClienteDAOImp implements ClienteDAO{
 		this.save(c);
 	}
 
+	@Override
+	public List<Cliente> getByBrocker(Long idbrocker) {
+		List<Cliente> lista= ofy().load().type(Cliente.class).filter("enabled",true).filter("tipo","cliente").filter("idBrocker",idbrocker).list();
+		return lista;
+	}
+
+	@Override
+	public List<Cliente> getTipo(String tipo) {
+		List<Cliente> lista= ofy().load().type(Cliente.class).filter("enabled",true).filter("tipo","tipo").list();
+		return lista;
+	}
+
 }
