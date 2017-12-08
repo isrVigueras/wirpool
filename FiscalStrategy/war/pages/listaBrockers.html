@@ -118,6 +118,37 @@
 
 	</table>
 	</div>
+	<div ng-show="ca">
+           <h4>Cuentas Asosiadas</h4>
+           <table class="table table-stripped">
+				<thead>
+					<tr>
+						<th style="width: 20%;">Titular</th>
+						<th style="width: 20%;">Banco</th>
+						<th style="width: 20%;">Cuenta</th>
+						<th style="width: 20%;">Clabe</th>
+						<th style="width: 20%;">Acciones</th>
+					</tr>
+				</thead>
+				<tbody>
+			
+					<tr ng-repeat="cuenta in ccuenta">
+						<td>{{cuenta.nickname}}</td>
+						<td>{{cuenta.banco}}</td>
+						<td>{{cuenta.cuenta}}</td>
+						<td>{{cuenta.clabe}}</td>
+						<td>
+						
+									<button title="Eliminar Cuenta" class="btn btn-small"
+										ng-click="eliminarcc(cuenta)">
+										<i class="glyphicon glyphicon-remove"></i>
+									</button>
+									</td>
+					</tr>
+			</tbody>
+
+	</table>
+	</div>
 	<br>
 	<div ng-show="rc">
 <!-- 	Formulario oculto cuando se precione el boton de Nueva cuenta abrirlo -->
