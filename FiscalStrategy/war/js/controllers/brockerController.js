@@ -47,7 +47,26 @@ app.service("brockerservice",['$http', '$q', function($http, $q){
 	
 }]);
 
+app.controller("brockercuentacontroller",['clientservice','$scope','$window', '$location', '$cookieStore','clientcuentaservice','$routeParams',function(clientservice,$scope, $window, $location, $cookieStore, clientcuentaservice,$routeParams){
+	$scope.guardabrockerCuenta= function(id){
+		console.log($scope.cuenta);
+		$scope.cuenta.enabled=true;
+		clientcuentaservice.guardarCuentaCliente(id,$scope.cuenta).then(function(data){
+			alert("Cuenta Guardada Con Exito");
+			$location.path("/clientes");
+			setTimeout(window.location.reload.bind(window.location), 1000);
 
+		});
+		
+	};
+	
+//	$scope.VerCC=function(id){
+//	clientcuentaservice.getcc(id).then(function(data) {
+//		$scope.ccuenta = data;
+//
+//});
+//	}
+}]);
 app.controller("brockersController",['usuarioservice','$scope','$window', '$location', '$cookieStore','brockerservice', function(usuarioservice,$scope, $window, $location, $cookieStore, brockerservice){
 	brockerservice.consultarBrockersTodos().then(function(data) {
 		$scope.brockerLista = data;
