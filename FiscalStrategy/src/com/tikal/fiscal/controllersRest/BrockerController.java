@@ -48,5 +48,11 @@ public class BrockerController {
 		clientedao.eliminar(cliente);
 	}
 
+	@RequestMapping(value={"/todos"},method= RequestMethod.GET, produces="application/json")
+	public void getTodos(HttpServletResponse res, HttpServletRequest req) throws IOException{
+		AsignadorDeCharset.asignar(req, res);
+		List<Cliente> lista= clientedao.getTipo("brocker");
+		res.getWriter().print(JsonConvertidor.toJson(lista));
+	}
 	
 }

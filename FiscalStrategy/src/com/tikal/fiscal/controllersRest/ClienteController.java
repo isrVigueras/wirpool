@@ -51,4 +51,11 @@ public class ClienteController {
 		Cliente cliente= (Cliente) JsonConvertidor.fromJson(json, Cliente.class);
 		clientedao.eliminar(cliente);
 	}
+	
+	@RequestMapping(value={"/getByBrocker/{id}"},method= RequestMethod.GET, produces="application/json")
+	public void getByBrocker(HttpServletResponse res, HttpServletRequest req, @PathVariable Long id) throws IOException{
+		AsignadorDeCharset.asignar(req, res);
+		List<Cliente> lista= clientedao.getByBrocker(id);
+		res.getWriter().print(JsonConvertidor.toJson(lista));
+	}
 }
