@@ -15,6 +15,6 @@ public interface OrdenDeTrabajoDAO {
 	
 	public List<OrdenDeTrabajo> getByResponsable(Long id, int page);
 	
-	public List<OrdenDeTrabajo> getPage(int page);
+	public int getPages(Long id);
 	
 }

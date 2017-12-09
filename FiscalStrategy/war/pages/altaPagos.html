@@ -15,18 +15,73 @@
 		<form id="forma2" name="myForm2">
 			<div class="col-md-12">
 				<div class="col-md-6">
-				Banco:
-					<select ng-model="tipo" class="form-control">
-						<option>Banorte</option>
-						<option>MultivaNet</option>
+					Banco: <select ng-model="tipo" class="form-control">
+						<option value="Banco Nacional de M&eacutexico (Banamex)">Banco
+							Nacional de M&eacutexico (Banamex)</option>
+						<option value="Banco Santander (M&eacutexico)">Banco
+							Santander (M&eacutexico)</option>
+						<option value="HSBC Mexico">HSBC M&eacutexico</option>
+						<option value="Scotiabank Inverlat">Scotiabank Inverlat</option>
+						<option value="BBVA Bancomer">BBVA Bancomer</option>
+						<option value="Banco Mercantil del Norte (Banorte)">Banco
+							Mercantil del Norte (Banorte)</option>
+						<option value="Banco Interacciones">Banco Interacciones</option>
+						<option value="Banco Inbursa">Banco Inbursa</option>
+						<option value="banca Mifel">banca Mifel</option>
+						<option value="Banco Regional de Monterrey">Banco
+							Regional de Monterrey</option>
+						<option value="Banco Invex">Banco Invex</option>
+						<option value="Banco del Bajio">Banco del Bajio</option>
+						<option value="Bansi">Bansi</option>
+						<option value="Banca Afirme">Banca Afirme</option>
+						<option value="Bank of America Mexico">Bank of America
+							M&eacutexico</option>
+						<option value="Banco JP Morgan">Banco JP Morgan</option>
+						<option value="Banco Ve Por Mas">Banco Ve Por Mas</option>
+						<option value="American Express Bank (Mexico)">American
+							Express Bank (M&eacutexico)</option>
+						<option value="Investa Bank">Investa Bank</option>
+						<option value="CiBanco">CiBanco</option>
+						<option value="Bank of Tokyo-Mitsubishi UFJ (Mexico)">Bank
+							of Tokyo-Mitsubishi UFJ (M&eacutexico)</option>
+						<option value="Banco Monex">Banco Monex</option>
+						<option value="Deutsche Bank Mexico">Deutsche Bank
+							M&eacutexico</option>
+						<option value="Banco Azteca">Banco Azteca</option>
+						<option value="Banco Credit Suisse (Mexico)">Banco
+							Credit Suisse (M&eacutexico)</option>
+						<option value="Banco Autofin Mexico">Banco Autofin
+							M&eacutexico</option>
+						<option value="Barclays Bank Mexico">Barclays Bank
+							M&eacutexico</option>
+						<option value="Banco Ahorro Famsa">Banco Ahorro Famsa</option>
+						<option value="Intercam Banco">Intercam Banco</option>
+						<option value="ABC Capital ">ABC Capital</option>
+						<option value="Banco Actinver">Banco Actinver</option>
+						<option value="Banco Compartamos">Banco Compartamos</option>
+						<option value="Banco Multiva">Banco Multiva</option>
+						<option value="UBS Bank Mexico">UBS Bank M&eacutexico</option>
+						<option value="Bancoppel">Bancoppel</option>
+						<option value="ConsuBanco">ConsuBanco</option>
+						<option value="Banco Wal-Mart de Mexico">Banco Wal-Mart
+							de M&eacutexico</option>
+						<option value="Volkswagen Bank">Volkswagen Bank</option>
+						<option value="Banco Base">Banco Base</option>
+						<option value="Banco Pagatodo">Banco Pagatodo</option>
+						<option value="Banco Forjadores">Banco Forjadores</option>
+						<option value="Bankaool">Bankaool</option>
+						<option value="Banco Inmobiliario Mexicano">Banco
+							Inmobiliario Mexicano</option>
+						<option value="Fundacion Donde Banco">Fundaci&oacuten
+							Dond&eacute Banco</option>
+						<option value="Banco Bancrea">Banco Bancrea</option>
 					</select>
 				</div>
 				<div class="col-md-6" ng-show="tipo">
-					Cuenta: <select class="form-control"
-						ng-model="cuenta" type="text"
+					Cuenta: <select class="form-control" ng-model="cuenta" type="text"
 						requiered>
 						<option ng-repeat="c in cuentas" value="{{c.id}}">{{c.nombre}}</option>
-						</select>
+					</select>
 				</div>
 			</div>
 			<div class="col-md-12" style="width: 100%;">
@@ -49,34 +104,35 @@
 <div class="container" ng-hide="multiple">
 	<form id="forma" name="myForm">
 		<div class="col-md-6">
-		Cliente:
-		<select class="form-control" ng-required=!multiple" ng-change="ver(cliente)" ng-model="pago.id_cliente">
-		<option></option>	
-		<option ng-repeat="c in cliente" value="{{c.id}}" >{{c.nickname}}</option>
-		</select>
+			Cliente: <select class="form-control" ng-required=!multiple
+				" ng-change="ver(cliente)" ng-model="pago.id_cliente">
+				<option></option>
+				<option ng-repeat="c in cliente" value="{{c.id}}">{{c.nickname}}</option>
+			</select>
 		</div>
-		<div class="col-md-2" >
-			Fecha:
-			<input input-date class="form-control ng-empty ng-dirty ng-touched ng-invalid ng-invalid-date" ng-model="pago.fecha" type="date"ng-required="!multiple"/>
-		<br>
-		</div>
-		<div class="col-md-6">
-			Cuenta: 
-<!-- 		<input class="form-control" ng-model="pago.cuenta" -->
-<!-- 				type="text" ng-required="!multiple"> -->
-				<select class="form-control" ng-required=!multiple" ng-model="pago.cuenta">
-		<option ng-repeat="cc in ccuenta">{{cc.cuenta}}</option>
-		</select>
-				
+		<div class="col-md-2">
+			Fecha: <input input-date
+				class="form-control ng-empty ng-dirty ng-touched ng-invalid ng-invalid-date"
+				ng-model="pago.fecha" type="date" ng-required="!multiple" /> <br>
 		</div>
 		<div class="col-md-6">
-			Banco: 
-<!-- 			<input class="form-control" ng-model="pago.banco" type="text" value="{{cc.banco}}" -->
-<!-- 				ng-required="!multiple"> -->
-				<select class="form-control" ng-required=!multiple" ng-model="pago.banco">
-		<option ng-repeat="cc in ccuenta">{{cc.banco}}</option>
-		</select>
-		<br>
+			Cuenta:
+			<!-- 		<input class="form-control" ng-model="pago.cuenta" -->
+			<!-- 				type="text" ng-required="!multiple"> -->
+			<select class="form-control" ng-required=!multiple
+				" ng-model="pago.cuenta">
+				<option ng-repeat="cc in ccuenta">{{cc.cuenta}}</option>
+			</select>
+
+		</div>
+		<div class="col-md-6">
+			Banco:
+			<!-- 			<input class="form-control" ng-model="pago.banco" type="text" value="{{cc.banco}}" -->
+			<!-- 				ng-required="!multiple"> -->
+			<select class="form-control" ng-required=!multiple
+				" ng-model="pago.banco">
+				<option ng-repeat="cc in ccuenta">{{cc.banco}}</option>
+			</select> <br>
 		</div>
 		<div class="col-md-6">
 			Monto: <input class="form-control" ng-model="pago.monto" type="text"
@@ -84,7 +140,8 @@
 		</div>
 		<!--    	   ^([A-ZÑ\x26]{3,4}([0-9]{2})(0[1-9]|1[0-2])(0[1-9]|1[0-9]|2[0-9]|3[0-1]))([A-Z\d]{3})?$ -->
 		<div class="col-md-6">
-			Moneda: <select class="form-control" ng-model="pago.moneda" ng-required="!multiple">
+			Moneda: <select class="form-control" ng-model="pago.moneda"
+				ng-required="!multiple">
 				<option>MXN</option>
 				<option>USD</option>
 				<option>EUR</option>
@@ -92,10 +149,10 @@
 			</select><br>
 		</div>
 
-		
+
 
 		<div class="col-md-12">
-		<br>
+			<br>
 			<button value="Guardar" class="btn"
 				ng-click="myForm.$valid && guardaPago()">Guardar</button>
 			<button ng-click="clean()" class="btn">Limpiar</button>

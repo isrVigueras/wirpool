@@ -44,6 +44,7 @@ public class ServicioSesion {
 		} else {
 			usuario.resetPassword();
 			req.getSession().setAttribute("userName", usuario.getUsername());
+			req.getSession().setAttribute("user", usuario);
 			res.getWriter().println(JsonConvertidor.toJson(usuario));
 		}
 	}

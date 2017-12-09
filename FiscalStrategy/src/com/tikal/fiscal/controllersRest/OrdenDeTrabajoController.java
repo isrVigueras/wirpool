@@ -7,6 +7,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import com.tikal.fiscal.dao.OrdenDeTrabajoDAO;
 import com.tikal.fiscal.model.Movimiento;
 import com.tikal.fiscal.model.OrdenDeTrabajo;
+import com.tikal.fiscal.model.Usuario;
 import com.tikal.fiscal.util.AsignadorDeCharset;
 import com.tikal.fiscal.util.JsonConvertidor;
 
@@ -31,17 +33,20 @@ public class OrdenDeTrabajoController {
 	@RequestMapping(value={"/load/{page}"},method= RequestMethod.GET, produces="application/json")
 	private void load(HttpServletRequest req, HttpServletResponse res, @PathVariable int page) throws IOException{
 		AsignadorDeCharset.asignar(req, res);
-		List<OrdenDeTrabajo>lista=otdao.getPage(page);
-		res.getWriter().print(JsonConvertidor.toJson(lista));
+		HttpSession sesion= req.getSession();
+		Usuario user=(Usuario) sesion.getAttribute("user");
+		if(user.getPerfil().compareTo("Ejecutivo")==0){
+			List<OrdenDeTrabajo>lista=otdao.getByResponsable(user.getId(), page);
+			res.getWriter().print(JsonConvertidor.toJson(lista));
+		}
 		
 	}
 	@RequestMapping(value={"/paginas"},method= RequestMethod.GET, produces="application/json")
 	private void pages(HttpServletRequest req, HttpServletResponse res, @PathVariable int page) throws IOException{
 		AsignadorDeCharset.asignar(req, res);
-		List<OrdenDeTrabajo>lista=otdao.getPage(page);
-		int pages= lista.size()/25;
-		pages++;
-		res.getWriter().print(pages);
+		
+		Long id=this.isEjecutivo(req);
+		res.getWriter().print(otdao.getPages(id));
 	}
 	
 	
@@ -61,5 +66,14 @@ public class OrdenDeTrabajoController {
 		m.setFecha(new Date());
 		ot.getMovimientos().add(m);
 		otdao.save(ot);
+	}
+	
+	private Long isEjecutivo(HttpServletRequest req){
+		HttpSession sesion= req.getSession();
+		Usuario user=(Usuario) sesion.getAttribute("user");
+		if(user.getPerfil().compareTo("Ejecutivo")==0){
+			return user.getId();
+		}
+		return null;
 	}
 }

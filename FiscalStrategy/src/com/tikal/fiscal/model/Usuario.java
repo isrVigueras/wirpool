@@ -19,7 +19,7 @@ import com.tikal.fiscal.security.Rol;
 @Entity
 public class Usuario implements UserDetails{
 	
-	@Id Long id;
+	@Id private Long id;
 	@Index String usuario;
 	private String pass;
 	private List<Rol> authorities;
@@ -106,4 +106,14 @@ public class Usuario implements UserDetails{
 	public void setPass(String pass) {
 		this.pass = pass;
 	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+	
+	 
 }

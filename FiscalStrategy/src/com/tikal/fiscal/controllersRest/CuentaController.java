@@ -55,5 +55,4 @@ public class CuentaController {
 		cuentadao.eliminar(cuenta);
 	}
 	
-	
 }
