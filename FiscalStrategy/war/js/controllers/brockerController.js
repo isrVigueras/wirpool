@@ -25,6 +25,18 @@ app.service("brockerservice",['$http', '$q', function($http, $q){
 		});
 		return d.promise;
 	};
+	this.consultarCB = function(id) {
+		var d = $q.defer();
+		$http.get("/clientes/getByBrocker/"+id).then(function(response) {
+			d.resolve(response.data);
+		}, function(response) {
+			if(response.status==403){
+				//alert("No tiene permiso de realizar esta acción");
+				$location.path("/login");
+			}
+		});
+		return d.promise;
+	};
 	this.getcc = function(id) {
 		var d = $q.defer();
 		$http.get("/cuentasCliente/todas/"+id).then(
@@ -44,7 +56,16 @@ app.service("brockerservice",['$http', '$q', function($http, $q){
 		});
 		return d.promise;
 	};
-	
+	this.eliminacuentabrocker= function(send) {
+		var d = $q.defer();
+		$http.post("/cuentasCliente/borrar/",send).then(function(response) {
+			console.log(response);
+			d.resolve(response.data);
+		}, function(response) {
+			d.reject(response);
+		});
+		return d.promise;
+	};
 }]);
 
 app.controller("brockercuentacontroller",['clientservice','$scope','$window', '$location', '$cookieStore','clientcuentaservice','$routeParams',function(clientservice,$scope, $window, $location, $cookieStore, clientcuentaservice,$routeParams){
@@ -53,7 +74,7 @@ app.controller("brockercuentacontroller",['clientservice','$scope','$window', '$
 		$scope.cuenta.enabled=true;
 		clientcuentaservice.guardarCuentaCliente(id,$scope.cuenta).then(function(data){
 			alert("Cuenta Guardada Con Exito");
-			$location.path("/clientes");
+			$location.path("/listaBrocker");
 			setTimeout(window.location.reload.bind(window.location), 1000);
 
 		});
@@ -72,6 +93,8 @@ app.controller("brockersController",['usuarioservice','$scope','$window', '$loca
 		$scope.brockerLista = data;
 
 });
+	
+	
 	usuarioservice.consultarUsuariosTodos().then(function(data){
 		$scope.usuariosLista=data;
 	});
@@ -85,19 +108,41 @@ app.controller("brockersController",['usuarioservice','$scope','$window', '$loca
 			setTimeout(window.location.reload.bind(window.location), 2000);
 
 		});
-		
 	};
+		$scope.eliminarcc = function(bcuenta){
+			var agree=confirm("¿Realmente desea eliminarlo? ");
+			  if (agree){
+			console.log(bcuenta);
+			brockerservice.eliminacuentabrocker(bcuenta).then(function(send) {	
+				alert("Cuenta del Cliente Eliminado");
+				$location.path("/listaBrocker");
+				$window.location.reload();
+				
+			}) 
+			  }else{
+				  alert("Se ha cancelado la Operacion");
+			  }
+		};
+		
+		
 	$scope.ver = function(data) {
 		$scope.bk=data;
 	    var length = $scope.bk.length;
 	    brockerservice.getcc($scope.bk.id).then(function(data) {
 	  		$scope.ccuenta = data;
 	  });
-	    for ( i=0; i < length; i++) {  
-	      alert($scope.datosComp[i].nom_coe);
-	      
-	    };
-	}
+	    brockerservice.consultarCB($scope.bk.id).then(function(data) {
+	  		$scope.listaCliente = data;
+	  		brockerservice.getcc($scope.cliente.id).then(function(data) {
+		  		$scope.cclient = data;
+	  		 });
+	  });
+//	    for ( i=0; i < length; i++) {  
+//	      alert($scope.datosComp[i].nom_coe);
+//	      
+//	    }
+	};
+	
 	$scope.eliminar = function(bk){
 		var agree=confirm("¿Realmente desea eliminarlo? ");
 		  if (agree){

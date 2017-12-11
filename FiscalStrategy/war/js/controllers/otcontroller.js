@@ -8,6 +8,27 @@ app.service("otservice",['$http', '$q', function($http, $q){
 			});
 		return d.promise;
 	}
+	this.consultarClientesTodos = function() {
+		var d = $q.defer();
+		$http.get("/clientes/getPagina/1").then(function(response) {
+			d.resolve(response.data);
+		}, function(response) {
+			if(response.status==403){
+				//alert("No tiene permiso de realizar esta acción");
+				$location.path("/login");
+			}
+		});
+		return d.promise;
+	}
+	this.consultarCuentas = function(page) {
+		var d = $q.defer();
+	
+		$http.get("/cuentas/getPagina/1").then(
+			function(response) {
+				d.resolve(response.data);
+			});
+		return d.promise;
+	}
 	
 	this.getPaginas = function(page) {
 		var d = $q.defer();
@@ -68,7 +89,23 @@ app.controller("OTsListController",['$scope','$window', '$location', '$cookieSto
 	
 	$scope.cargarPagina(1);
 	
+	$scope.ver = function(data) {
+		$scope.orden=data;
+	    var length = $scope.orden.length;
+	    otservice.load($scope.ot.id).then(function(data) {
+	    	$scope.orden = data;
+
+	    });
+	    for ( i=0; i < length; i++) {  
+	      alert($scope.datosComp[i].nom_coe);
+	      
+	    };
+	}
+	
 }]);
+
+
+
 
 app.controller("otDetailsController",['$scope','$window', '$location', '$cookieStore','otservice','$routeParams', function($scope, $window, $location, $cookieStore, otservice,$routeParams){
 	otservice.find($routeParams.id).then(function(data){

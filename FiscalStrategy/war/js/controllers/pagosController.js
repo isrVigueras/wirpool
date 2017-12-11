@@ -93,8 +93,7 @@ app.controller("pagosAddController",['$scope','$cookieStore', '$window', '$locat
 		$scope.cliente = data;
 
 });
-	
-		
+
 		
 	$scope.guardaPago= function(id){
 		var pagos=[];
@@ -118,15 +117,18 @@ app.controller("pagosAddController",['$scope','$cookieStore', '$window', '$locat
 	};
 	
 	$scope.ver = function(data) {
-		
-	   
-	    pagosService.getcc($scope.pago.id_cliente).then(function(data) {
+		 pagosService.getcc($scope.pago.id_cliente).then(function(data) {
 	    	console.log(data);
 	    	$scope.ccuenta = data;
 	  });
 	    
 	};
 	
+	$scope.modifica=function(){
+		var x = document.getElementById("slc").selectedIndex;
+		$scope.pago.banco=$scope.ccuenta[x].banco;
+		console.log($scope.pago.banco);
+		}
 	
 	$scope.pago.fecha = new Date();
 	
@@ -137,5 +139,8 @@ app.controller("pagosAddController",['$scope','$cookieStore', '$window', '$locat
 			})
 		}
 	},true);
+	$scope.clear=function(){
+		$scope.pago.banco="";
+	}
 	
 }]);

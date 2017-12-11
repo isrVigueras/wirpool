@@ -5,45 +5,7 @@
 	</div>
 </section>
 <div class="container">
- <style>
-    #mdialTamanio{
-      width: 60% !important;
-    }
-    .modal-header {
-	background-color: #0C009B;
-	color: white;
-	width: 98% !important;
-	margin: 1% auto;
-	text-align: center;
-	font-size: 18px;
-	box-shadow: 0px 6px 13px -4px rgba(167,190,235,1);
-	border-radius:10px 10px 10px 10px;
-}
 
-.modal-content {
-    background-color: #fefefe;
-    margin: 1% auto; /* 15% from the top and centered */
-    padding: 5px;
-    border: 1px solid #888;
-/*     width: 80%; /* Could be more or less, depending on screen size */ */
-    border-radius:10px 10px 10px 10px;
-}
-
-/* The Close Button */
-.close {
-    color: #aaa;
-    float: right;
-    font-size: 28px;
-    font-weight: bold;
-}
-
-.close:hover,
-.close:focus {
-    color: black;
-    text-decoration: none;
-    cursor: pointer;
-}
-  </style>
 		<table class="table table-stripped">
 		<thead>
 			<tr>
@@ -200,7 +162,7 @@
 				ng-model="cuenta.clabe" type="text" ng-required="true"><br>
 		</div>
 		<div class="col-md-6">
-			Nombre: <input class="form-control"
+			Titular: <input class="form-control"
 				ng-model="cuenta.nombre" type="text" ng-required="true"><br>
 		</div>
 		
@@ -208,7 +170,7 @@
 		
 
 		
-			<button value="Guardar" class="btn" ng-controller="clientcuentacontroller"
+			<button value="Guardar" class="btn" ng-controller="clientcuentacontroller" onClick="this.disabled=true"
 				ng-click="myForm.$valid && guardaClienteCuenta(cliente.id)">Guardar</button>
 			<button ng-click="btnCancelar()" class="btn">Cancelar</button>
 	

@@ -117,17 +117,17 @@ app.controller("controladorListaUsuarios", [ '$scope', 'usuarioservice',
 
 		
 
-		$scope.actualizarUsuario = function($scope) {
-			console.log($scope);
-			usuarioservice.actualizarUsuario($scope).then(function(data) {
+		$scope.actualizarUsuario = function(usuario) {
+			console.log(usuario);
+			usuarioservice.actualizarUsuario(usuario).then(function(data) {
 				alert("Usuario modificado correctamente");
 				$window.location.reload();
 			});
 		}
 
-		$scope.eliminarUsuario = function($scope) {
-			console.log($scope);
-			usuarioservice.eliminaUsuario($scope).then(function(data) {
+		$scope.eliminarUsuario = function(usuario) {
+			console.log(usuario);
+			usuarioservice.eliminaUsuario(usuario).then(function(data) {
 				alert("Usuario eliminado correctamente");
 				$window.location.reload();
 			})

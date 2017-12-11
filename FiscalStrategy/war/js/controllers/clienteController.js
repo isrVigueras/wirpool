@@ -96,7 +96,7 @@ app.controller("clientcuentacontroller",['$scope','$window', '$location', '$cook
 //	}
 }]);
 
-app.controller("clientController",['usuarioservice','$scope','$window', '$location', '$cookieStore','clientservice','clientcuentaservice', function(usuarioservice, $scope, $window, $location, $cookieStore, clientservice,clientcuentaservice){
+app.controller("clientController",['usuarioservice','brockerservice','$scope','$window', '$location', '$cookieStore','clientservice','clientcuentaservice', function(usuarioservice,brockerservice, $scope, $window, $location, $cookieStore, clientservice,clientcuentaservice){
 	clientservice.consultarClientesTodos().then(function(data) {
 			$scope.clienteLista = data;
 	
@@ -106,7 +106,10 @@ app.controller("clientController",['usuarioservice','$scope','$window', '$locati
 		$scope.usuariosLista=data;
 	});
 	
-	
+	brockerservice.consultarBrockersTodos().then(function(data) {
+		$scope.brockerLista = data;
+
+});
 	
 //	$scope.paginaActual=1;
 //	$scope.llenarPags=function(){

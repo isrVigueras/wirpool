@@ -5,45 +5,7 @@
 	</div>
 </section>
 <div class="container">
- <style>
-    #mdialTamanio{
-      width: 60% !important;
-    }
-    .modal-header {
-	background-color: #0C009B;
-	color: white;
-	width: 98% !important;
-	margin: 1% auto;
-	text-align: center;
-	font-size: 18px;
-	box-shadow: 0px 6px 13px -4px rgba(167,190,235,1);
-	border-radius:10px 10px 10px 10px;
-}
-
-.modal-content {
-    background-color: #fefefe;
-    margin: 1% auto; /* 15% from the top and centered */
-    padding: 5px;
-    border: 1px solid #888;
-/*     width: 80%; /* Could be more or less, depending on screen size */ */
-    border-radius:10px 10px 10px 10px;
-}
-
-/* The Close Button */
-.close {
-    color: #aaa;
-    float: right;
-    font-size: 28px;
-    font-weight: bold;
-}
-
-.close:hover,
-.close:focus {
-    color: black;
-    text-decoration: none;
-    cursor: pointer;
-}
-  </style>
+ 
 	<table class="table table-stripped">
 		<thead>
 			<tr>
@@ -79,9 +41,9 @@
           <div class="modal-body">
            <h4>Datos Generales</h4>
            <div>
-           ID:<br><label>{{bk.id}}</label><br>
+<!--            ID:<br><label>{{bk.id}}</label><br> -->
            Nombre:<br><label>{{bk.nickname}}</label><br>
-           Tipo: <br><label>{{bk.tipo}}</label><br>
+<!--            Tipo: <br><label>{{bk.tipo}}</label><br> -->
            Responsable:<br><label>{{bk.responsable}}</label><br>
            Disponible:<br><label>{{bk.enabled}}</label><br>
                     
@@ -89,34 +51,26 @@
            <br>
            <div ng-show="ca">
            <h4>Clientes Asosiados</h4>
-           <table class="table table-stripped">
-				<thead>
-					<tr>
-						<th style="width: 20%;">Nombre</th>
-						<th style="width: 20%;">Cuenta</th>
-						<th style="width: 20%;">Saldo</th>
+           
+           <div class="list-type3">
+           <ul ng-repeat="cliente in listaCliente"><li><b>{{cliente.nickname}}</b></li></ul>
+           </div>
+<!--            <table class="table table-stripped" style="width: 20%;"> -->
+<!-- 				<thead> -->
+<!-- 					<tr> -->
+<!-- 						<th style="width: 20%;">Nombre</th> -->
 						
-						<th style="width: 20%;">Acciones</th>
-					</tr>
-				</thead>
-				<tbody>
+<!-- 					</tr> -->
+<!-- 				</thead> -->
+<!-- 				<tbody> -->
 			
-					<tr ng-repeat="cliente in listaCliente">
-						<td>{{cliente.nickname}}</td>
-						<td>{{cliente.cuenta}}</td>
+<!-- 					<tr ng-repeat="cliente in listaCliente"> -->
+<!-- 						<td>{{cliente.nickname}}</td> -->
 						
-						<td>{{cliente.saldo}}</td>
-						<td>
-						
-									<button title="Eliminar Cuenta" class="btn btn-small"
-										ng-click="eliminarcc(cuenta)">
-										<i class="glyphicon glyphicon-remove"></i>
-									</button>
-									</td>
-					</tr>
-			</tbody>
+<!-- 					</tr> -->
+<!-- 			</tbody> -->
 
-	</table>
+<!-- 	</table> -->
 	<br>
 	</div>
 	<div ng-show="ca">
@@ -125,23 +79,22 @@
 				<thead>
 					<tr>
 						<th style="width: 20%;">Titular</th>
-						<th style="width: 20%;">Banco</th>
-						<th style="width: 20%;">Cuenta</th>
+						<th style="width: 25%;">Banco</th>
+						<th style="width: 15%;">Cuenta</th>
 						<th style="width: 20%;">Clabe</th>
 						<th style="width: 20%;">Acciones</th>
 					</tr>
 				</thead>
 				<tbody>
 			
-					<tr ng-repeat="cuenta in ccuenta">
-						<td>{{cuenta.nombre}}</td>
-						<td>{{cuenta.banco}}</td>
-						<td>{{cuenta.cuenta}}</td>
-						<td>{{cuenta.clabe}}</td>
+					<tr ng-repeat="bcuenta in ccuenta">
+						<td>{{bcuenta.nombre}}</td>
+						<td>{{bcuenta.banco}}</td>
+						<td>{{bcuenta.cuenta}}</td>
+						<td>{{bcuenta.clabe}}</td>
 						<td>
 						
-									<button title="Eliminar Cuenta" class="btn btn-small"
-										ng-click="eliminarcc(cuenta)">
+									<button title="Eliminar Cuenta" class="btn btn-small" ng-click="eliminarcc(bcuenta)">
 										<i class="glyphicon glyphicon-remove"></i>
 									</button>
 									</td>
@@ -237,7 +190,8 @@
 	</div>
           </div>
           <div class="modal-footer">
-          <button type="button" class="btn btn-default" ng-controller="brockercuentacontroller" ng-show="btn" ng-click="hide()">Nueva Brocker</button>
+          <button type="button" class="btn btn-default" ng-controller="brockercuentacontroller" ng-show="btn" ng-click="hide()">Nueva Cuenta</button>
+<!--           <button type="button" class="btn btn-default" ng-show="btn">Asosiar Cliente</button> -->
             <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="reload()">Cerrar</button>
           </div>
         </div>
