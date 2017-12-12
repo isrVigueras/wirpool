@@ -104,19 +104,13 @@
 <div class="container" ng-hide="multiple">
 	<form id="forma" name="myForm">
 		<div class="col-md-6">
-<<<<<<< HEAD
+
 		Cliente:
 		<select class="form-control" ng-required=!multiple" ng-change="ver(cliente) || clear()" ng-model="pago.id_cliente">
 		<option></option>	
 		<option ng-repeat="c in cliente" value="{{c.id}}" >{{c.nickname}}</option>
 		</select>
-=======
-			Cliente: <select class="form-control" ng-required=!multiple
-				" ng-change="ver(cliente)" ng-model="pago.id_cliente">
-				<option></option>
-				<option ng-repeat="c in cliente" value="{{c.id}}">{{c.nickname}}</option>
-			</select>
->>>>>>> branch 'master' of https://github.com/isrVigueras/wirpool
+
 		</div>
 		<div class="col-md-2">
 			Fecha: <input input-date
@@ -124,27 +118,18 @@
 				ng-model="pago.fecha" type="date" ng-required="!multiple" /> <br>
 		</div>
 		<div class="col-md-6">
-<<<<<<< HEAD
+
 			Cuenta: 
 <!-- 		<input class="form-control" ng-model="pago.cuenta" -->
 <!-- 				type="text" ng-required="!multiple"> -->
 				<select class="form-control" ng-required=!multiple" ng-model="pago.cuenta" id="slc" ng-change="modifica($index)" value="{{cc.id}}">
 		<option ng-repeat="cc in ccuenta" >{{cc.cuenta}}</option>
 		</select>
-				
-=======
-			Cuenta:
-			<!-- 		<input class="form-control" ng-model="pago.cuenta" -->
-			<!-- 				type="text" ng-required="!multiple"> -->
-			<select class="form-control" ng-required=!multiple
-				" ng-model="pago.cuenta">
-				<option ng-repeat="cc in ccuenta">{{cc.cuenta}}</option>
-			</select>
+		
 
->>>>>>> branch 'master' of https://github.com/isrVigueras/wirpool
 		</div>
 		<div class="col-md-6">
-<<<<<<< HEAD
+
 		
 			Banco: 
 			<input class="form-control" ng-model="pago.banco" type="text" id="banco" value="{{cc.banco}}"
@@ -153,15 +138,9 @@
 <!-- 		<option ng-repeat="cc in ccuenta">{{cc.banco}}</option> -->
 <!-- 		</select> -->
 		<br>
-=======
-			Banco:
-			<!-- 			<input class="form-control" ng-model="pago.banco" type="text" value="{{cc.banco}}" -->
-			<!-- 				ng-required="!multiple"> -->
-			<select class="form-control" ng-required=!multiple
-				" ng-model="pago.banco">
-				<option ng-repeat="cc in ccuenta">{{cc.banco}}</option>
-			</select> <br>
->>>>>>> branch 'master' of https://github.com/isrVigueras/wirpool
+
+		
+
 		</div>
 		<div class="col-md-6">
 			Monto: <input class="form-control" ng-model="pago.monto" type="text"
