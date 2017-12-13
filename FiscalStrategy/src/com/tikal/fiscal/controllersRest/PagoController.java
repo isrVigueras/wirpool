@@ -64,6 +64,16 @@ public class PagoController {
 		PagosMultiplesVO pagos = (PagosMultiplesVO) JsonConvertidor.fromJson(json, PagosMultiplesVO.class);
 
 		List<PagoRecibido> lista = ParseadorDePagos.parsear(pagos.getDatos(), pagos.getTipo(), pagos.getCuenta());
+		for(PagoRecibido pago:lista){
+			if(pago.getClabe()!=null){
+				CuentaCliente cuenta= cuentaclientedao.getByClabe(pago.getClabe());
+				if(cuenta!= null){
+					pago.setId_cliente(cuenta.getId_cliente());
+					Cliente cliente= clientedao.get(cuenta.getId_cliente());
+					pago.setId_brocker(cliente.getIdBrocker());
+				}
+			}
+		}
 		pagosdao.save(lista);
 		this.crearOTs(lista);
 	}
@@ -77,8 +87,12 @@ public class PagoController {
 			ot.setIdPago(p.getId());
 			
 			//cargar id de responsable del cliente
-			ot.setIdResponsable(12L);
-			ot.setResguardo(p.getMonto());
+			
+//			Cliente c= clientedao.get(p.getId_cliente());
+			
+			
+			double monto =Math.round(p.getMonto() * 100.0) / 100.0;
+			ot.setResguardo(Float.parseFloat(monto+""));
 			ot.setTipo("Externa");
 			CuentaCliente cuenta= cuentaclientedao.getByClabe(p.getClabe());
 			if(cuenta!=null){
@@ -87,6 +101,8 @@ public class PagoController {
 				p.setId_cliente(c.getId());
 				ot.setIdBrocker(c.getIdBrocker());
 				p.setId_brocker(c.getIdBrocker());
+				ot.setIdResponsable(c.getResponsable());
+				ot.setNombreCliente(c.getNickname());
 			}
 			ots.add(ot);
 		}

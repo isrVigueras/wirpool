@@ -49,4 +49,9 @@ public class OrdenDeTrabajoDAOImp implements OrdenDeTrabajoDAO {
 		ofy().save().entities(ots);
 	}
 
+	@Override
+	public List<OrdenDeTrabajo> getFull(int page) {
+		return ofy().load().type(OrdenDeTrabajo.class).offset(25 * (page - 1)).limit(25).list();
+	}
+
 }

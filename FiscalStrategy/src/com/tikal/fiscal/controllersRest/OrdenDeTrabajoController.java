@@ -35,9 +35,15 @@ public class OrdenDeTrabajoController {
 		AsignadorDeCharset.asignar(req, res);
 		HttpSession sesion= req.getSession();
 		Usuario user=(Usuario) sesion.getAttribute("user");
+		List<OrdenDeTrabajo> lista=null;
 		if(user.getPerfil().compareTo("Ejecutivo")==0){
-			List<OrdenDeTrabajo>lista=otdao.getByResponsable(user.getId(), page);
+			lista=otdao.getByResponsable(user.getId(), page);
 			res.getWriter().print(JsonConvertidor.toJson(lista));
+		}else{
+			if(user.getPerfil().compareTo("AdministradorRoot")==0){
+				lista=otdao.getFull(page);
+				res.getWriter().print(JsonConvertidor.toJson(lista));
+			}
 		}
 		
 	}

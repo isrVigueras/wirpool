@@ -32,6 +32,8 @@ public class OrdenDeTrabajo {
 	@Index
 	private String estatus;
 	
+	private String nombreCliente;
+	
 	public Long getId() {
 		return id;
 	}
@@ -103,6 +105,12 @@ public class OrdenDeTrabajo {
 	}
 	public void setEstatus(String estatus) {
 		this.estatus = estatus;
+	}
+	public String getNombreCliente() {
+		return nombreCliente;
+	}
+	public void setNombreCliente(String nombreCliente) {
+		this.nombreCliente = nombreCliente;
 	}
 	
 	

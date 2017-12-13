@@ -20,17 +20,17 @@ public class CuentaDAOImp implements CuentaDAO {
 
 	@Override
 	public List<Cuenta> getPage(int page) {
-		return ofy().load().type(Cuenta.class).offset(25*(page - 1)).limit(25).list();
+		return ofy().load().type(Cuenta.class).filter("enabled",true).offset(25*(page - 1)).limit(25).list();
 	}
 
 	@Override
 	public List<Cuenta> getByCliente(Long idCliente, int page) {
-		return ofy().load().type(Cuenta.class).filter("idCliente",idCliente).offset(25*(page - 1)).limit(25).list();
+		return ofy().load().type(Cuenta.class).filter("idCliente",idCliente).filter("enabled",true).offset(25*(page - 1)).limit(25).list();
 	}
 
 	@Override
 	public List<Cuenta> getByEjecutivo(Long idEjecutivo, int page) {
-		return ofy().load().type(Cuenta.class).filter("idResponsable",idEjecutivo).offset(25*(page - 1)).limit(25).list();
+		return ofy().load().type(Cuenta.class).filter("enabled",true).filter("idResponsable",idEjecutivo).offset(25*(page - 1)).limit(25).list();
 	}
 
 	@Override
@@ -41,7 +41,7 @@ public class CuentaDAOImp implements CuentaDAO {
 
 	@Override
 	public List<Cuenta> getByBanco(String banco) {
-		return ofy().load().type(Cuenta.class).filter("banco",banco).list();
+		return ofy().load().type(Cuenta.class).filter("enabled",true).filter("banco",banco).list();
 	}
 
 }

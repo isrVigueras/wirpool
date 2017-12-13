@@ -30,7 +30,9 @@ public class CuentaController {
 	@RequestMapping(value={"/guardar"},method= RequestMethod.POST, consumes="application/json")
 	public void guardar(HttpServletResponse res, HttpServletRequest req, @RequestBody String json) throws UnsupportedEncodingException{
 		AsignadorDeCharset.asignar(req, res);
+		
 		Cuenta cuenta= (Cuenta) JsonConvertidor.fromJson(json, Cuenta.class);
+		cuenta.setEnabled(true);
 		cuentadao.save(cuenta);
 	}
 	

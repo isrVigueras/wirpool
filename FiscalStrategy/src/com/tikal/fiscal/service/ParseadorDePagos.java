@@ -13,7 +13,7 @@ public class ParseadorDePagos {
 	public static List<PagoRecibido>parsear(String info, String tipo,String cuenta){
 		List<PagoRecibido> lista= new ArrayList<PagoRecibido>();
 		switch(tipo){
-		case "Banorte":{
+		case "Banco Mercantil del Norte (Banorte)":{
 			lista= ParseadorDePagos.parseaBanorte(info);
 			break;
 		}
