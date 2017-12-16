@@ -40,7 +40,7 @@ public class OrdenDeTrabajoController {
 			lista=otdao.getByResponsable(user.getId(), page);
 			res.getWriter().print(JsonConvertidor.toJson(lista));
 		}else{
-			if(user.getPerfil().compareTo("AdministradorRoot")==0){
+			if(user.getPerfil().compareTo("AdministradorRoot")==0){	
 				lista=otdao.getFull(page);
 				res.getWriter().print(JsonConvertidor.toJson(lista));
 			}

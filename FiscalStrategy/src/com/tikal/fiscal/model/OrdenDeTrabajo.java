@@ -1,5 +1,6 @@
 package com.tikal.fiscal.model;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -71,8 +72,16 @@ public class OrdenDeTrabajo {
 		this.idBrocker = idBrocker;
 	}
 	public List<Movimiento> getMovimientos() {
+		if(this.movimientos==null){
+			this.movimientos= new ArrayList<Movimiento>();
+		}
 		return movimientos;
 	}
+	
+	public void addMovimiento(Movimiento m){
+		this.getMovimientos().add(m);
+	}
+	
 	public void setMovimientos(List<Movimiento> movimientos) {
 		this.movimientos = movimientos;
 	}

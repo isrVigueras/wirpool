@@ -63,14 +63,13 @@ public class ParseadorDePagos {
 				PagoRecibido pago= new PagoRecibido();
 	//			Cuenta|Fecha de Operación|Fecha|Referencia|Descripcion|Cod. Transac|Sucursal|Depósitos|Retiros|Saldo|Movimiento|Descripción Detallada|Cheque
 				pago.setCuenta(values[0]);
-				pago.setBanco("Banorte");
+				pago.setBanco("Banco Mercantil del Norte (Banorte)");
 				DateFormat sourceFormat = new SimpleDateFormat("dd/MM/yyyy");
 				String dateAsString = values[1];
 				Date date= new Date();
 				try {
 					date = sourceFormat.parse(dateAsString);
 				} catch (ParseException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 				pago.setFecha(date);
