@@ -86,14 +86,12 @@ public class ParseadorDePagos {
 				String detalle= values[11].toLowerCase();
 				if(detalle.contains("clabe")){
 					int index=detalle.indexOf("clabe")+6;
-					
 					String aux= detalle.substring(index,index +18);
 					pago.setClabe(aux);
 				}
 				lista.add(pago);
 			}
 		}
-		
 		return lista;
 	}
 }
