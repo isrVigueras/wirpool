@@ -95,9 +95,13 @@ $scope.EnviarFormulario = function() {
 			.crearUsuario($scope.usuario)
 			.then(
 					function(data) {
-						alert("Usuario creado correctamente");
-						$location
-								.path("/modificarusuarios");
+						var x = document.getElementById("snackbar")
+					    x.className = "show";
+						setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
+					    setTimeout(function(){ if($scope.usuario){window.location="#/modificarusuarios";} }, 3000);
+//						alert("Usuario creado correctamente");
+//						$location
+//								.path("/modificarusuarios");
 					})}else{
 						alert("Contraseña no valida, intente de nuevo");
 					}

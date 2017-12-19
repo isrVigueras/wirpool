@@ -149,10 +149,14 @@ app.controller("clientController",['usuarioservice','brockerservice','$scope','$
 		
 		$scope.client.enabled=true;
 		clientservice.guardarCliente($scope.client).then(function(data){
-			alert("Cliente Guardado Con Exito");
-			$location.path("/clientes");
+			var x = document.getElementById("snackbar")
+		    x.className = "show";
+			setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
+		    setTimeout(function(){ if($scope.client){window.location="#/clientes";} }, 3000);
+//			alert("Cliente Guardado Con Exito");
+//			$location.path("/clientes");
 //			$window.location.reload(1);
-			setTimeout(window.location.reload.bind(window.location), 1000);
+//			setTimeout(window.location.reload.bind(window.location), 1000);
 
 		});
 		

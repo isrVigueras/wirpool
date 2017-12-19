@@ -20,137 +20,13 @@
 				<td>{{ot.cliente}}</td>
 				<td>{{ot.resguardo}}</td>
 				<td>{{ot.estatus}}</td>
-				<td><button class="btn btn-small" data-toggle="modal" ng-click="ver(ot)" data-target="#myModalVista">
+				<td><button class="btn btn-small" ng-click="ver(ot)">
 						<i class="glyphicon glyphicon-eye-open"></i>
 					</button></td>
 			</tr>
 		</tbody>
 
 	</table>
- <!-- Modal Ver Detalles Orden de Trabajo	-->
-  <div class="modal fade" id="myModalVista" tabindex="-1" data-backdrop="static" role="dialog" aria-labelledby="myModalVista" aria-hidden="true">
-                           
-      <div class="modal-dialog" id="mdialTamanio">
-        <div class="modal-content">
-          <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-             <p class="modal-title" id="myModalLabel">Detalles de Orden de Trabajo </p>
-            
-          </div>
-          <div class="modal-body">
-           <h4>Datos Generales</h4>
-           <div>
-           id:<br><label>{{orden.id}}</label><br>
-           fecha de Inicio:<br><label>{{orden.fechaInicio}}</label><br>
-           id_cliente: <br><label>{{orden.id_cliente}}</label><br>
-           Nombre Cliente: <br><label>{{cliente.nickname}}</label><br>
-           id_pago:<br><label>{{orden.idPago}}</label><br>
-           Cuenta: <br><label>{{cuenta.cuenta}}</label><br>
-           Banco: <br><label>{{cuenta.banco}}</label><br>
-           resguardo:<br><label>${{orden.resguardo}}</label><br>
-                    
-           </div>
-           <br>
-           <div ng-show="ca">
-           <h4>Cuentas Asosiadas</h4>
-           <table class="table table-stripped">
-				<thead>
-					<tr>
-						<th style="width: 20%;">Banco</th>
-						<th style="width: 20%;">Cuenta</th>
-						<th style="width: 20%;">Clabe</th>
-						<th style="width: 20%;">Titular</th>
-						<th style="width: 20%;">Acciones</th>
-					</tr>
-				</thead>
-				<tbody>
-			
-					<tr ng-repeat="cuenta in ccuenta">
-						<td>{{cuenta.banco}}</td>
-						<td>{{cuenta.cuenta}}</td>
-						<td>{{cuenta.clabe}}</td>
-						<td>{{cuenta.nombre}}</td>
-						<td>
-						
-									<button title="Eliminar Cuenta" class="btn btn-small"
-										ng-click="eliminarcc(cuenta)">
-										<i class="glyphicon glyphicon-remove"></i>
-									</button>
-									</td>
-					</tr>
-			</tbody>
 
-	</table>
-	</div>
-	<br>
-	<div ng-show="rc">
-<!-- 	Formulario oculto cuando se precione el boton de Nueva cuenta abrirlo -->
-	<form id="forma" name="myForm">
-	<h4>Registro de Cuenta</h4><br>
-		<div class="col-md-6">
-			Banco: 
-			<input class="form-control"
-				ng-model="cuenta.banco" type="text" ng-required="true"><br>
-				
-			
-		</div>
-		<div class="col-md-6">
-			Cuenta: <input class="form-control"
-				ng-model="cuenta.cuenta" type="text" ng-required="true"><br>
-		</div>
-		
-		<div class="col-md-6">
-			Clabe: <input class="form-control"
-				ng-model="cuenta.clabe" type="text" ng-required="true"><br>
-		</div>
-		<div class="col-md-6">
-			Titular: <input class="form-control"
-				ng-model="cuenta.nombre" type="text" ng-required="true"><br>
-		</div>
-		
-		<!--    	   ^([A-ZÑ\x26]{3,4}([0-9]{2})(0[1-9]|1[0-2])(0[1-9]|1[0-9]|2[0-9]|3[0-1]))([A-Z\d]{3})?$ -->
-		
-
-		
-			<button value="Guardar" class="btn" ng-controller="clientcuentacontroller" onClick="this.disabled=true"
-				ng-click="myForm.$valid && guardaClienteCuenta(cliente.id)">Guardar</button>
-			<button ng-click="btnCancelar()" class="btn">Cancelar</button>
-	
-	</form>
-	
-	</div>
-          </div>
-          <div class="modal-footer">
-          <button type="button" class="btn btn-default" ng-controller="clientcuentacontroller" ng-show="btn" ng-click="hide()">Nueva Cuenta</button>
-            <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="reload()">Cerrar</button>
-          </div>
-        </div>
-      </div>
-    </div>
-<!--     MODAL PARA CONFIRMAICON DE ELIMINACION DEL CLIENTE -->
-    <div id="mdsino" class="modal fade">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" 
-
-                class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-                <h4 id="lblTitleConfirmYesNo" class="modal-title">Confirmation</h4>
-            </div>
-            <div class="modal-body">
-                <p id="lblMsgConfirmYesNo"></p>
-            </div>
-            <div class="modal-footer">
-                <button id="btnsi" 
-
-                type="button" class="btn btn-primary">Yes</button>
-                <button id="btnno" 
-
-                type="button" class="btn btn-default">No</button>
-            </div>
-        </div>
-    </div>
 </div>
 

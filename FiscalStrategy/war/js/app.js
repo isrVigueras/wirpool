@@ -62,6 +62,11 @@ app.config([ '$routeProvider', function($routeProvider) {
 		templateUrl : "pages/listOTs.html",
 		controller : "OTsListController"
 	});
+	$routeProvider.otherwise({
+		redirectTo : '/OrdenTrabajo',
+		templateUrl : "pages/ordenTrabajo.html",
+		controller : "ordenTrabajoController"
+	});
 }]);
 
 app.service('sessionService', [

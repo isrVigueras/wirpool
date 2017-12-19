@@ -102,10 +102,14 @@ app.controller("brockersController",['usuarioservice','$scope','$window', '$loca
 		$scope.brocker.tipo="brocker";
 		$scope.brocker.enabled=true;
 		brockerservice.guardarBrocker($scope.brocker).then(function(data){
-			alert("Brocker Guardado Con Exito");
-			$location.path("/listaBrocker");
-//			$window.location.reload(1);
-			setTimeout(window.location.reload.bind(window.location), 2000);
+			var x = document.getElementById("snackbar")
+		    x.className = "show";
+		    setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
+		    setTimeout(function(){ if($scope.brocker){window.location="#/listaBrocker";} }, 3000);
+//			alert("Brocker Guardado Con Exito");
+//			$location.path("/listaBrocker");
+////			$window.location.reload(1);
+//			setTimeout(window.location.reload.bind(window.location), 2000);
 
 		});
 	};

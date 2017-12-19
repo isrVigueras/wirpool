@@ -90,16 +90,8 @@ app.controller("OTsListController",['$scope','$window', '$location', '$cookieSto
 	$scope.cargarPagina(1);
 	
 	$scope.ver = function(data) {
-		$scope.orden=data;
-	    var length = $scope.orden.length;
-	    otservice.load($scope.ot.id).then(function(data) {
-	    	$scope.orden = data;
-
-	    });
-	    for ( i=0; i < length; i++) {  
-	      alert($scope.datosComp[i].nom_coe);
-	      
-	    };
+		$location.path("/ordenTrabajo");
+		$window.location.reload();
 	}
 	
 }]);

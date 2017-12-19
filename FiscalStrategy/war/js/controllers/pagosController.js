@@ -100,9 +100,12 @@ app.controller("pagosAddController",['$scope','$cookieStore', '$window', '$locat
 		
 		pagos.push($scope.pago);
 		pagosService.guardarPagos({pagos:pagos}).then(function(data){
-			alert("Pago Guardado con éxito");
-			$location.path("/listaOTs");
-			$window.location.reload();
+			
+			var x = document.getElementById("snackbar")
+		    x.className = "show";
+		    setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
+		    setTimeout(function(){ if($scope.pago){window.location="#/listaOTs";} }, 3000);
+		    
 		});
 		
 	}

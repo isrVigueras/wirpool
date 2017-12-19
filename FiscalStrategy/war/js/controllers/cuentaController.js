@@ -16,7 +16,7 @@ app.service("cuentaservice",['$http', '$q', function($http, $q){
 				d.resolve(response.data);
 			}, function(response) {
 				if(response.status==403){
-					alert("No está autorizado para realizar esta acción");
+					alert("No est� autorizado para realizar esta acci�n");
 					$location.path("/");
 				}
 			});
@@ -95,9 +95,13 @@ app.controller("cuentaController",['$scope','$window', '$location', '$cookieStor
 //	}
 	$scope.guardarCuenta= function(){
 		cuentaservice.guardarCuenta($scope.cuenta).then(function(data){
-			alert("Cuenta Guardado Con Exito");
-			$location.path("/cuentas");
-			$window.location.reload();
+			var x = document.getElementById("snackbar")
+		    x.className = "show";
+			setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
+		    setTimeout(function(){ if($scope.cuenta){window.location="#/cuentas";} }, 3000);
+//			alert("Cuenta Guardado Con Exito");
+//			$location.path("/cuentas");
+//			$window.location.reload("/cuentas");
 		});
 		
 	}
