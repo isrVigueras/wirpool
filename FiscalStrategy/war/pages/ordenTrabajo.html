@@ -1,0 +1,87 @@
+<section class="jumbotron">
+	<div class="container">
+		<h2>Ordenes de trabajo</h2>
+		<submenu />
+	</div>
+</section>
+
+<div class="container">
+<div class="infCliente">
+<div class="Dlabel">
+<label >Cliente</label>
+<br>
+</div>
+<br>
+<table style="width:100%" class="table table-stripped">
+ <thead>
+  <tr>
+    <th>Cliente</th>
+    <th>Responsable</th> 
+    <th>Brocker</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr ng-repeat="c in cliente">
+    <td>{{c.nickname}}</td>
+    <td>{{(usr | filter : {id: c.responsable})[0].usuario }}</td> 
+    <td>{{(bk | filter : {id: c.idBrocker})[0].nickname }}</td>
+  </tr>
+  </tbody>
+</table>
+	
+	</div>
+
+<div class="infPago">
+<div class="Dlabel">
+<label>Pago</label>
+<br>
+</div>
+<br>
+<table style="width:100%" class="table table-stripped">
+<thead>
+  <tr>
+    <th>Pago</th>
+    <th>Moneda</th> 
+    <th>Cuenta</th>
+    <th>Nombre</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr ng-repeat="p in ot">
+    <td>{{p.resguardo}}</td>
+    <td>{{}}</td> 
+    <td>{{}}</td>
+    <td></td>
+  </tr>
+  </tbody>
+</table>
+
+</div>
+
+<div class="infComisiones">
+<div class="Dlabel">
+<label >Calculos</label>
+<br>
+</div>
+<br>
+<table style="width:100%" class="table table-stripped">
+<thead>
+  <tr>
+    <th>Monto</th>
+    <th>IVA</th> 
+    <th>Total</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr>
+    <td></td>
+    <td></td> 
+    <td></td>
+  </tr>	
+  </tbody>
+</table>
+
+</div>	
+
+</div>
+
