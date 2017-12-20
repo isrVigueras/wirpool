@@ -58,4 +58,12 @@ public class ClienteController {
 		List<Cliente> lista= clientedao.getByBrocker(id);
 		res.getWriter().print(JsonConvertidor.toJson(lista));
 	}
+	
+	@RequestMapping(value={"/find/{id}"},method= RequestMethod.GET, produces="application/json")
+	public void getById(HttpServletResponse res, HttpServletRequest req, @PathVariable Long id) throws IOException{
+		AsignadorDeCharset.asignar(req, res);
+		Cliente  c= clientedao.get(id);
+		res.getWriter().print(JsonConvertidor.toJson(c));
+	}
+	
 }

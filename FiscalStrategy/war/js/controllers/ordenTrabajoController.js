@@ -2,10 +2,10 @@ app.service("ordenTrabajoservice",['$http', '$q', function($http, $q){
 	this.data=function(data){
 		var dataClient={};
 	};
-	this.loadCliente = function(page) {
+	this.loadCliente = function(id) {
 		var d = $q.defer();
 	
-		$http.get("").then(
+		$http.get("clientes/find/"+id).then(
 			function(response) {
 				d.resolve(response.data);
 			});

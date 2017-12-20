@@ -86,9 +86,6 @@ public class PagoController {
 			ot.setFechaInicio(p.getFecha());
 			ot.setIdPago(p.getId());
 
-			// cargar id de responsable del cliente
-
-			// Cliente c= clientedao.get(p.getId_cliente());
 
 			double monto = Math.round(p.getMonto() * 100.0) / 100.0;
 			ot.setResguardo(Float.parseFloat(monto + ""));
