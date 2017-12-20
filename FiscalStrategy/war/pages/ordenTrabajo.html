@@ -21,10 +21,10 @@
   </tr>
   </thead>
   <tbody>
-  <tr ng-repeat="c in cliente">
-    <td>{{c.nickname}}</td>
-    <td>{{(usr | filter : {id: c.responsable})[0].usuario }}</td> 
-    <td>{{(bk | filter : {id: c.idBrocker})[0].nickname }}</td>
+  <tr>
+    <td>{{cliente.nickname}}</td>
+    <td>{{cliente.idResponsable}}</td> 
+    <td>{{cliente.idBroker}}</td>
   </tr>
   </tbody>
 </table>
