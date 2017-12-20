@@ -39,7 +39,7 @@ public class PagoController {
 
 	@Autowired
 	CuentaClienteDAO cuentaclientedao;
-	
+
 	@Autowired
 	OrdenDeTrabajoDAO otdao;
 
@@ -64,12 +64,12 @@ public class PagoController {
 		PagosMultiplesVO pagos = (PagosMultiplesVO) JsonConvertidor.fromJson(json, PagosMultiplesVO.class);
 
 		List<PagoRecibido> lista = ParseadorDePagos.parsear(pagos.getDatos(), pagos.getTipo(), pagos.getCuenta());
-		for(PagoRecibido pago:lista){
-			if(pago.getClabe()!=null){
-				CuentaCliente cuenta= cuentaclientedao.getByClabe(pago.getClabe());
-				if(cuenta!= null){
+		for (PagoRecibido pago : lista) {
+			if (pago.getClabe() != null) {
+				CuentaCliente cuenta = cuentaclientedao.getByClabe(pago.getClabe());
+				if (cuenta != null) {
 					pago.setId_cliente(cuenta.getId_cliente());
-					Cliente cliente= clientedao.get(cuenta.getId_cliente());
+					Cliente cliente = clientedao.get(cuenta.getId_cliente());
 					pago.setId_brocker(cliente.getIdBrocker());
 				}
 			}
@@ -78,35 +78,41 @@ public class PagoController {
 		this.crearOTs(lista);
 	}
 
-	private void crearOTs(List<PagoRecibido> pagos){
-		List<OrdenDeTrabajo> ots= new ArrayList<OrdenDeTrabajo>();
-		for(PagoRecibido p:pagos){
+	private void crearOTs(List<PagoRecibido> pagos) {
+		List<OrdenDeTrabajo> ots = new ArrayList<OrdenDeTrabajo>();
+		for (PagoRecibido p : pagos) {
 			OrdenDeTrabajo ot = new OrdenDeTrabajo();
 			ot.setEstatus("Activo");
 			ot.setFechaInicio(p.getFecha());
 			ot.setIdPago(p.getId());
-			
-			//cargar id de responsable del cliente
-			
-//			Cliente c= clientedao.get(p.getId_cliente());
-			
-			
-			double monto =Math.round(p.getMonto() * 100.0) / 100.0;
-			ot.setResguardo(Float.parseFloat(monto+""));
+
+			// cargar id de responsable del cliente
+
+			// Cliente c= clientedao.get(p.getId_cliente());
+
+			double monto = Math.round(p.getMonto() * 100.0) / 100.0;
+			ot.setResguardo(Float.parseFloat(monto + ""));
 			ot.setTipo("Externa");
-			CuentaCliente cuenta= cuentaclientedao.getByClabe(p.getClabe());
-			if(cuenta!=null){
-				Cliente c= clientedao.get(cuenta.getId_cliente());
-				ot.setIdCliente(c.getId());
-				p.setId_cliente(c.getId());
-				ot.setIdBrocker(c.getIdBrocker());
-				p.setId_brocker(c.getIdBrocker());
-				ot.setIdResponsable(c.getResponsable());
-				ot.setNombreCliente(c.getNickname());
+			Cliente c=null;
+			if (p.getId() == null) {
+				CuentaCliente cuenta = cuentaclientedao.getByClabe(p.getClabe());
+				if (cuenta != null) {
+					 c = clientedao.get(cuenta.getId_cliente());
+				}
+			}else{
+				c= clientedao.get(p.getId_cliente());
+			}
+			if(c!=null){
+					ot.setIdCliente(c.getId());
+					p.setId_cliente(c.getId());
+					ot.setIdBrocker(c.getIdBrocker());
+					p.setId_brocker(c.getIdBrocker());
+					ot.setIdResponsable(c.getResponsable());
+					ot.setNombreCliente(c.getNickname());
 			}
 			ots.add(ot);
 		}
 		otdao.save(ots);
-		
+
 	}
 }
