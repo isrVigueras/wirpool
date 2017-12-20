@@ -49,7 +49,15 @@ app.service("otservice",['$http', '$q', function($http, $q){
 		return d.promise;
 	}
 	
+	
+	
 }]);
+//.factory('dataService', function() {
+//	  var _dataObj = {};
+//	  return {
+//	    dataObj: _dataObj
+//	  }
+//	});
 
 app.controller("OTsListController",['$scope','$window', '$location', '$cookieStore','otservice', function($scope, $window, $location, $cookieStore, otservice){
 	
@@ -90,8 +98,11 @@ app.controller("OTsListController",['$scope','$window', '$location', '$cookieSto
 	$scope.cargarPagina(1);
 	
 	$scope.ver = function(data) {
+		
 		$location.path("/ordenTrabajo");
 		$window.location.reload();
+		$cookieStore.put("idOt",data)
+//		$scope.listClient=data;
 	}
 	
 }]);

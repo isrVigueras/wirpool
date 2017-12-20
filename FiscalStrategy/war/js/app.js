@@ -63,7 +63,7 @@ app.config([ '$routeProvider', function($routeProvider) {
 		controller : "OTsListController"
 	});
 	$routeProvider.otherwise({
-		redirectTo : '/OrdenTrabajo',
+		redirectTo : '/OrdenTrabajo/',
 		templateUrl : "pages/ordenTrabajo.html",
 		controller : "ordenTrabajoController"
 	});
