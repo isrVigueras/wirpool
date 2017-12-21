@@ -24,6 +24,13 @@ app.service("ordenTrabajoservice",['$http', '$q', function($http, $q){
 }]);
 
 app.controller("ordenTrabajoController",['$scope','$window', '$location', '$cookieStore','ordenTrabajoservice','usuarioservice','brockerservice', function($scope, $window, $location, $cookieStore, ordenTrabajoservice,usuarioservice,brockerservice){
+	usuarioservice.consultarUsuariosTodos().then(function(data){
+		$scope.usuariosLista=data;
+	});
+	brockerservice.consultarBrockersTodos().then(function(data) {
+		$scope.brockerLista = data;
+
+});
 	ordenTrabajoservice.loadOT($cookieStore.get("idOt")).then(function(data){
 		$scope.ot= data;
 		ordenTrabajoservice.loadCliente($scope.ot.idCliente).then(function(data) {

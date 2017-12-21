@@ -23,8 +23,8 @@
   <tbody>
   <tr>
     <td>{{cliente.nickname}}</td>
-    <td>{{cliente.idResponsable}}</td> 
-    <td>{{cliente.idBroker}}</td>
+    <td>{{(usuariosLista | filter : {id: ot.idResponsable})[0].usuario }}</td> 
+    <td>{{(brockerLista | filter : {id: ot.idBrocker})[0].nickname }}</td>
   </tr>
   </tbody>
 </table>

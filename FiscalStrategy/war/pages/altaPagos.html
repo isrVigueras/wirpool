@@ -106,7 +106,7 @@
 		<div class="col-md-6">
 
 		Cliente:
-		<select class="form-control" ng-required=!multiple" ng-change="ver(cliente) || clear()" ng-model="pago.id_cliente">
+		<select class="form-control" ng-required="!multiple" ng-change="ver(cliente) || clear()" ng-model="pago.id_cliente">
 		<option></option>	
 		<option ng-repeat="c in cliente" value="{{c.id}}" >{{c.nickname}}</option>
 		</select>
@@ -122,7 +122,7 @@
 			Cuenta: 
 <!-- 		<input class="form-control" ng-model="pago.cuenta" -->
 <!-- 				type="text" ng-required="!multiple"> -->
-				<select class="form-control" ng-required=!multiple" ng-model="pago.cuenta" id="slc" ng-change="modifica($index)" value="{{cc.id}}">
+				<select class="form-control" ng-required="!multiple" ng-model="pago.cuenta" id="slc" ng-change="modifica($index)" value="{{cc.id}}">
 		<option ng-repeat="cc in ccuenta" >{{cc.cuenta}}</option>
 		</select>
 		
