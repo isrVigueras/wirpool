@@ -14,8 +14,8 @@ public class PagoRecibidoDAOImp implements PagoRecibidoDAO {
 	}
 
 	@Override
-	public void getPago(Long id) {
-		
+	public PagoRecibido getPago(Long id) {
+		return ofy().load().type(PagoRecibido.class).id(id).now();
 	}
 
 	@Override

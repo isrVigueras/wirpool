@@ -6,82 +6,117 @@
 </section>
 
 <div class="container">
-<div class="infCliente">
-<div class="Dlabel">
-<label >Cliente</label>
-<br>
-</div>
-<br>
-<table style="width:100%" class="table table-stripped">
- <thead>
-  <tr>
-    <th>Cliente</th>
-    <th>Responsable</th> 
-    <th>Brocker</th>
-  </tr>
-  </thead>
-  <tbody>
-  <tr>
-    <td>{{cliente.nickname}}</td>
-    <td>{{(usuariosLista | filter : {id: ot.idResponsable})[0].usuario }}</td> 
-    <td>{{(brockerLista | filter : {id: ot.idBrocker})[0].nickname }}</td>
-  </tr>
-  </tbody>
-</table>
-	
+	<div class="infCliente">
+		<div class="Dlabel">
+			<label>Cliente</label> <br>
+		</div>
+		<br>
+		<table style="width: 100%" class="table table-stripped">
+			<thead>
+				<tr>
+					<th>Cliente</th>
+					<th>Responsable</th>
+					<th>Brocker</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>{{ot.cliente.nickname}}</td>
+					<td>{{ot.responsable.usuario}}</td>
+					<td>{{ot.broker.nickname}}</td>
+				</tr>
+			</tbody>
+		</table>
+
 	</div>
 
-<div class="infPago">
-<div class="Dlabel">
-<label>Pago</label>
-<br>
-</div>
-<br>
-<table style="width:100%" class="table table-stripped">
-<thead>
-  <tr>
-    <th>Pago</th>
-    <th>Moneda</th> 
-    <th>Cuenta</th>
-    <th>Nombre</th>
-  </tr>
-  </thead>
-  <tbody>
-  <tr ng-repeat="p in ot">
-    <td>{{p.resguardo}}</td>
-    <td>{{}}</td> 
-    <td>{{}}</td>
-    <td></td>
-  </tr>
-  </tbody>
-</table>
+	<div class="infPago">
+		<div class="Dlabel">
+			<label>Pago</label> <br>
+		</div>
+		<br>
+		<table style="width: 100%" class="table table-stripped">
+			<thead>
+				<tr>
+					<th>Pago</th>
+					<th>Moneda</th>
+					<th>Banco</th>
+					<th>Cuenta</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>{{ot.pago.monto}}</td>
+					<td>{{ot.pago.moneda}}</td>
+					<td>{{ot.pago.banco}}</td>
+					<td>{{ot.pago.cuenta}}</td>
+				</tr>
+			</tbody>
+		</table>
 
+	</div>
+
+	<div class="infComisiones">
+		<div class="Dlabel">
+			<label>Calculos</label> <br>
+		</div>
+		<br>
+		<table style="width: 100%" class="table table-stripped">
+			<thead>
+				<tr>
+					<th>Importe</th>
+					<th>IVA</th>
+					<th>Total</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>{{importe}}</td>
+					<td>{{iva}}</td>
+					<td>{{ot.pago.monto}}</td>
+				</tr>
+			</tbody>
+		</table>
+
+	</div>
+	<div class="infComisiones">
+		<div class="Dlabel">
+			<label>Comisiones</label>
+		</div>
+		<table style="width: 100%" class="table table-stripped">
+			<thead>
+			<tr>
+				<th>Comisi&oacute;n</th>
+				<th>%</th>
+				<th>Monto</th>
+			</tr>
+			</thead>
+			<tbody>
+				<tr>
+				<td>Lic. </td>
+				<td><input type="number" ng-model="ot.ot.porLic"></td>
+				<td>{{redondea((ot.ot.porLic/100)*importe)}}</td>
+				</tr>
+				<tr>
+				<td>Despacho</td>
+				<td><input type="number" ng-model="ot.ot.porDes"></td>
+				<td>{{redondea((ot.ot.porDes/100)*importe)}}</td>
+				</tr>
+				<tr>
+				<td>Broker</td>
+				<td><input type="number" ng-model="ot.ot.porBrok"></td>
+				<td>{{redondea((ot.ot.porBrok/100)*importe)}}</td>
+				</tr>
+				
+			</tbody>
+		</table>
+	</div>
+	<div class="row">
+		<div class="col-md-12">
+			<button class="btn btn-primary" ng-click="actualizar()">Guardar</button>
+		</div>
+	</div>
+	<div id="snackbar">Se guard&oacute; exitosamente</div>
 </div>
 
-<div class="infComisiones">
-<div class="Dlabel">
-<label >Calculos</label>
-<br>
-</div>
-<br>
-<table style="width:100%" class="table table-stripped">
-<thead>
-  <tr>
-    <th>Monto</th>
-    <th>IVA</th> 
-    <th>Total</th>
-  </tr>
-  </thead>
-  <tbody>
-  <tr>
-    <td></td>
-    <td></td> 
-    <td></td>
-  </tr>	
-  </tbody>
-</table>
-
-</div>	
-
-</div>
 

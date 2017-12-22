@@ -16,10 +16,16 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import com.tikal.fiscal.controllersRest.VO.OrdenDeTrabajoVO;
+import com.tikal.fiscal.dao.ClienteDAO;
 import com.tikal.fiscal.dao.OrdenDeTrabajoDAO;
+import com.tikal.fiscal.dao.PagoRecibidoDAO;
+import com.tikal.fiscal.model.Cliente;
 import com.tikal.fiscal.model.Movimiento;
 import com.tikal.fiscal.model.OrdenDeTrabajo;
+import com.tikal.fiscal.model.PagoRecibido;
 import com.tikal.fiscal.model.Usuario;
+import com.tikal.fiscal.security.UsuarioDAO;
 import com.tikal.fiscal.util.AsignadorDeCharset;
 import com.tikal.fiscal.util.JsonConvertidor;
 
@@ -29,6 +35,15 @@ public class OrdenDeTrabajoController {
 
 	@Autowired
 	OrdenDeTrabajoDAO otdao;	
+	
+	@Autowired
+	ClienteDAO clientedao;
+	
+	@Autowired
+	PagoRecibidoDAO pagodao;
+	
+	@Autowired
+	UsuarioDAO usuariodao;
 	
 	@RequestMapping(value={"/load/{page}"},method= RequestMethod.GET, produces="application/json")
 	private void load(HttpServletRequest req, HttpServletResponse res, @PathVariable int page) throws IOException{
@@ -60,7 +75,25 @@ public class OrdenDeTrabajoController {
 	private void find(HttpServletRequest req, HttpServletResponse res, @PathVariable Long id) throws IOException{
 		AsignadorDeCharset.asignar(req, res);
 		OrdenDeTrabajo ot=otdao.get(id);
-		res.getWriter().print(JsonConvertidor.toJson(ot));
+		OrdenDeTrabajoVO otvo= new OrdenDeTrabajoVO();
+		if(ot.getIdCliente()!=null){
+			Cliente cliente= clientedao.get(ot.getIdCliente());
+			otvo.setCliente(cliente);
+		}
+		if(ot.getIdBrocker()!=null){
+			Cliente broker = clientedao.get(ot.getIdBrocker());
+			otvo.setBroker(broker);
+		}
+		if(ot.getIdResponsable()!=null){
+			Usuario u= usuariodao.consultarId(ot.getIdResponsable());
+			u.setPass("");
+			otvo.setResponsable(u);
+		}
+		PagoRecibido pago= pagodao.getPago(ot.getIdPago());
+		 
+		otvo.setOt(ot);
+		otvo.setPago(pago);
+		res.getWriter().print(JsonConvertidor.toJson(otvo));
 		
 	}
 	
@@ -72,6 +105,13 @@ public class OrdenDeTrabajoController {
 		m.setFecha(new Date());
 		ot.getMovimientos().add(m);
 		otdao.save(ot);
+	}
+	
+	@RequestMapping(value="/update/", method=RequestMethod.POST, consumes="application/json")
+	private void update(HttpServletRequest req, HttpServletResponse res, @RequestBody String json) throws UnsupportedEncodingException{
+		AsignadorDeCharset.asignar(req, res);
+		OrdenDeTrabajoVO vo= (OrdenDeTrabajoVO) JsonConvertidor.fromJson(json, OrdenDeTrabajoVO.class);
+		otdao.save(vo.getOt());
 	}
 	
 	private Long isEjecutivo(HttpServletRequest req){

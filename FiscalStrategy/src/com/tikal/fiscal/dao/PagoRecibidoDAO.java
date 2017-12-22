@@ -8,7 +8,7 @@ public interface PagoRecibidoDAO {
 	
 	public void save(PagoRecibido p);
 	
-	public void getPago(Long id);
+	public PagoRecibido getPago(Long id);
 	
 	public List<PagoRecibido> getPagos(int page);
 	

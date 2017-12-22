@@ -84,4 +84,9 @@ public class UsuarioDAOImp implements UsuarioDAO {
 		}
 		return usuario;	
 	}
+
+	@Override
+	public Usuario consultarId(Long id) {
+		return ofy().load().type(Usuario.class).id(id).now();
+	}
 }

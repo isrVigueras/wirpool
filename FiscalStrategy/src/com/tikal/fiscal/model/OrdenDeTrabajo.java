@@ -35,6 +35,10 @@ public class OrdenDeTrabajo {
 	
 	private String nombreCliente;
 	
+	private float porLic;
+	private float porBrok;
+	private float porDes;
+	
 	public Long getId() {
 		return id;
 	}
@@ -120,6 +124,24 @@ public class OrdenDeTrabajo {
 	}
 	public void setNombreCliente(String nombreCliente) {
 		this.nombreCliente = nombreCliente;
+	}
+	public float getPorLic() {
+		return porLic;
+	}
+	public void setPorLic(float porLic) {
+		this.porLic = porLic;
+	}
+	public float getPorBrok() {
+		return porBrok;
+	}
+	public void setPorBrok(float porBrok) {
+		this.porBrok = porBrok;
+	}
+	public float getPorDes() {
+		return porDes;
+	}
+	public void setPorDes(float porDes) {
+		this.porDes = porDes;
 	}
 	
 	
