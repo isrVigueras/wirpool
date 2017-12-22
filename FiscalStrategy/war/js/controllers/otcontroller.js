@@ -88,7 +88,7 @@ app.controller("OTsListController",['$scope','$window', '$location', '$cookieSto
 	});
 	
 	$scope.cargarPagina=function(page){
-		otservice.load(1).then(function(data){
+		otservice.load(page).then(function(data){
 			$scope.ots=data;
 		});
 		$scope.paginaActual=page;

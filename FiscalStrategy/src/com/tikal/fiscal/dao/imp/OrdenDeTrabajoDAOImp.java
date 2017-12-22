@@ -21,12 +21,12 @@ public class OrdenDeTrabajoDAOImp implements OrdenDeTrabajoDAO {
 
 	@Override
 	public List<OrdenDeTrabajo> getByCliente(Long id, int page) {
-		return ofy().load().type(OrdenDeTrabajo.class).filter("idCliente", id).offset(25 * (page - 1)).limit(25).list();
+		return ofy().load().type(OrdenDeTrabajo.class).filter("idCliente", id).order("- fechaInicio").offset(25 * (page - 1)).limit(25).list();
 	}
 
 	@Override
 	public List<OrdenDeTrabajo> getByResponsable(Long id, int page) {
-		return ofy().load().type(OrdenDeTrabajo.class).filter("idResponsable", id).offset(25 * (page - 1)).limit(25)
+		return ofy().load().type(OrdenDeTrabajo.class).filter("idResponsable", id).order("- fechaInicio").offset(25 * (page - 1)).limit(25)
 				.list();
 	}
 
@@ -51,7 +51,7 @@ public class OrdenDeTrabajoDAOImp implements OrdenDeTrabajoDAO {
 
 	@Override
 	public List<OrdenDeTrabajo> getFull(int page) {
-		return ofy().load().type(OrdenDeTrabajo.class).offset(25 * (page - 1)).limit(25).list();
+		return ofy().load().type(OrdenDeTrabajo.class).offset(25 * (page - 1)).order("- fechaInicio").limit(25).list();
 	}
 
 }

@@ -54,8 +54,9 @@ public class PagoController {
 		AsignadorDeCharset.asignar(req, res);
 		PagosVO pvo = (PagosVO) JsonConvertidor.fromJson(json, PagosVO.class);
 
-		this.crearOTs(pvo.getPagos());
 		pagosdao.save(pvo.getPagos());
+		this.crearOTs(pvo.getPagos());
+		
 	}
 
 	@RequestMapping(value = { "/procesarMultiple" }, method = RequestMethod.POST, consumes = "application/json")
