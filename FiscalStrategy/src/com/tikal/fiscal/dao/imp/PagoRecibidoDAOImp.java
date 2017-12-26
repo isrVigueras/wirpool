@@ -20,13 +20,22 @@ public class PagoRecibidoDAOImp implements PagoRecibidoDAO {
 
 	@Override
 	public List<PagoRecibido> getPagos(int page) {
-		// TODO Auto-generated method stub
-		return null;
+		return ofy().load().type(PagoRecibido.class).offset((page-1)*25).limit(25).list();
 	}
 
 	@Override
 	public void save(List<PagoRecibido> pagos) {
 		ofy().save().entities(pagos).now();
+	}
+
+	@Override
+	public PagoRecibido buscar(String ref) {
+		List<PagoRecibido> lista= ofy().load().type(PagoRecibido.class).filter("referencia",ref).list();
+		if(lista.size()==0){
+			return null;
+		}else{
+			return lista.get(0);
+		}
 	}
 
 }

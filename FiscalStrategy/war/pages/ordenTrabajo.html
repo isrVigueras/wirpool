@@ -85,30 +85,34 @@
 		</div>
 		<table style="width: 100%" class="table table-stripped">
 			<thead>
-			<tr>
-				<th>Comisi&oacute;n</th>
-				<th>%</th>
-				<th>Monto</th>
-			</tr>
+				<tr>
+					<th>Comisi&oacute;n</th>
+					<th>%</th>
+					<th>Monto</th>
+				</tr>
 			</thead>
 			<tbody>
 				<tr>
-				<td>Lic. </td>
-				<td><input type="number" ng-model="ot.ot.porLic"></td>
-				<td>{{redondea((ot.ot.porLic/100)*importe)}}</td>
+					<td>Lic.</td>
+					<td><input type="number" ng-model="ot.ot.porLic"></td>
+					<td>{{redondea((ot.ot.porLic/100)*importe)}}</td>
 				</tr>
 				<tr>
-				<td>Despacho</td>
-				<td><input type="number" ng-model="ot.ot.porDes"></td>
-				<td>{{redondea((ot.ot.porDes/100)*importe)}}</td>
+					<td>Despacho</td>
+					<td><input type="number" ng-model="ot.ot.porDes"></td>
+					<td>{{redondea((ot.ot.porDes/100)*importe)}}</td>
 				</tr>
 				<tr>
-				<td>Broker</td>
-				<td><input type="number" ng-model="ot.ot.porBrok"></td>
-				<td>{{redondea((ot.ot.porBrok/100)*importe)}}</td>
+					<td>Broker</td>
+					<td><input type="number" ng-model="ot.ot.porBrok"></td>
+					<td>{{redondea((ot.ot.porBrok/100)*importe)}}</td>
 				</tr>
-				
-			</tbody>
+				<tr>
+					<td>Retorno</td>
+					<td>{{16-ot.ot.porLic-ot.ot.porDes-ot.ot.porBrok}}
+				</tr>
+
+			</tbody>	
 		</table>
 	</div>
 	<div class="row">

@@ -23,6 +23,7 @@ public class PagoRecibido {
 	private Long id_cliente;
 	private float monto;
 	private String moneda;
+	@Index
 	private String referencia;
 	
 	public Long getId() {

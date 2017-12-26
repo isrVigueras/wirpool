@@ -66,6 +66,8 @@ app.controller("ordenTrabajoController",['$scope','$window', '$location', '$cook
 		})
 	}
 	
+	
+	
 	$scope.redondea=function(valor){
 		var aux= valor;
 		aux= aux.toFixed(2);

@@ -14,4 +14,5 @@ public interface PagoRecibidoDAO {
 	
 	public void save(List<PagoRecibido> pagos);
 
+	public PagoRecibido buscar(String ref);
 }

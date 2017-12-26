@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -47,7 +48,21 @@ public class PagoController {
 	public void prueba(HttpServletResponse res) throws IOException {
 		res.getWriter().println("Hola perrin");
 	}
+	
+	@RequestMapping(value = { "/buscar/{ref}" }, method = RequestMethod.GET)
+	public void buscar(HttpServletResponse res, HttpServletRequest req,@PathVariable String ref) throws IOException {
+		AsignadorDeCharset.asignar(req, res);
+		PagoRecibido pago= pagosdao.buscar(ref);
+		res.getWriter().print(JsonConvertidor.toJson(pago));
+	}
 
+	@RequestMapping(value = { "/page/{page}" }, method = RequestMethod.GET)
+	public void page(HttpServletResponse res, HttpServletRequest req,@PathVariable int page) throws IOException {
+		AsignadorDeCharset.asignar(req, res);
+		List<PagoRecibido> lista= pagosdao.getPagos(page);
+		res.getWriter().print(JsonConvertidor.toJson(lista));
+	}
+	
 	@RequestMapping(value = { "/save" }, method = RequestMethod.POST, consumes = "application/json")
 	public void guardaPagos(HttpServletResponse res, HttpServletRequest req, @RequestBody String json)
 			throws IOException {
