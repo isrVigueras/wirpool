@@ -6,7 +6,7 @@ app.config([ '$routeProvider', function($routeProvider) {
 	});
 	$routeProvider.when('/listaPagos', {
 		templateUrl : "pages/listaPagos.html",
-		controller : "pagosAddController"
+		controller : "ListaPagoController"
 	});
 	$routeProvider.when('/listaOTs', {
 		templateUrl : "pages/listOTs.html",

@@ -62,7 +62,7 @@ app.service("pagosService",['$http',"$q",function($http,$q){
 	}
 	this.consultarPagos = function() {
 		var d = $q.defer();
-		$http.get("/clientes/getPagina/1").then(function(response) {
+		$http.get("/pagos/page/1").then(function(response) {
 			d.resolve(response.data);
 		}, function(response) {
 			if(response.status==403){
@@ -81,6 +81,7 @@ app.service("pagosService",['$http',"$q",function($http,$q){
 			});
 		return d.promise;
 	}
+	
 	
 }]);
 
@@ -144,6 +145,39 @@ app.controller("pagosAddController",['$scope','$cookieStore', '$window', '$locat
 	},true);
 	$scope.clear=function(){
 		$scope.pago.banco="";
+	}
+	
+	
+}]);
+app.controller("ListaPagoController",['$scope','$cookieStore', '$window', '$location', 'pagosService','cuentaservice','clientservice', function($scope, $cookieStore, $window, $location, pagosService,cuentaservice,clientservice){
+	pagosService.consultarPagos().then(function(data) {
+		$scope.ListPagos = data;
+
+});
+	clientservice.consultarClientesTodos().then(function(data) {
+		$scope.clienteLista = data;
+
+});
+	
+	$scope.llenarPags=function(){
+		var inicio=0;
+		if($scope.paginaActual>5){
+			inicio=$scope.paginaActual-5;
+		}
+		var fin = inicio+9;
+		if(fin>$scope.maxPage){
+			fin=$scope.maxPage;
+		}
+		$scope.paginas=[];
+		for(var i = inicio; i< fin; i++){
+			$scope.paginas.push(i+1);
+		}
+		for(var i = inicio; i<= fin; i++){
+			$('#pagA'+i).removeClass("active");
+			$('#pagB'+i).removeClass("active");
+		}
+		$('#pagA'+$scope.paginaActual).addClass("active");
+		$('#pagB'+$scope.paginaActual).addClass("active");
 	}
 	
 }]);

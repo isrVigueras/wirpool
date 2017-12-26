@@ -1,15 +1,22 @@
 <section class="jumbotron">
 	<div class="container">
-	 <h2>Clientes</h2>
+	 <h2>Lista de Pagos</h2>
 		<submenu/>
 	</div>
 </section>
 <div class="container">
+<div class="col-md-6">
+			<ul class="pagination .pagination-sm" style="margin:0;">
+				<li ng-repeat="abc in paginas" id="{{'pagA'+abc}}"
+					ng-click="cargarPagina(abc)"><a>{{abc}}</a></li>
+
+			</ul>
+		</div>
 		<table class="table table-stripped">
 		<thead>
 			<tr>
 				<th>Banco</th>
-				<th>Clabe</th>
+				<th>Cuenta</th>
 				<th>Cliente</th>
 				<th>Monto</th>
 				<th>Referencia</th>
@@ -18,27 +25,20 @@
 		</thead>
 		<tbody>
 			
-			<tr ng-repeat="pagos in listaPagos">
+			<tr ng-repeat="pagos in ListPagos">
 				<td>{{pagos.banco}}</td>
-				<td>{{pagos.clabe}}</td>
-				<td>{{pagos.cliente}}</td>
-				<td>{{pagos.monto}}</td>
+				<td>{{pagos.cuenta}}</td>
+				<td>{{(clienteLista | filter : {id: pagos.id_cliente})[0].nickname }}</td>
+				<td>${{pagos.monto}}</td>
 				<td>{{pagos.referencia}}</td>
 				<td>
-				<button title="Ver Cliente"class="btn btn-small"
-						ng-click="ver(alerta.empresa)">
-						<i class="glyphicon glyphicon-eye-open"></i>
-					</button>
-							<button title="Editar Cliente"class="btn btn-small"
-								ng-click="editarCliente(ot.cliente.numCliente)">
-								<i class="glyphicon glyphicon-edit"></i>
-							</button>
-							<button title="Ver Cuenta" class="btn btn-small"
+							
+							<button title="Ver Pago" class="btn btn-small"
 								>
 								<i class="glyphicon glyphicon-credit-card"></i>
 							</button>
-							<button title="Eliminar Cliente" class="btn btn-small"
-								ng-click="eliminar(cliente)">
+							<button title="Eliminar Pago" class="btn btn-small"
+								ng-click="eliminar(pago)">
 								<i class="glyphicon glyphicon-remove"></i>
 							</button>
 							</td>
@@ -46,6 +46,13 @@
 		</tbody>
 
 	</table>
-	
+	<div class="row">
+			<div class="col-md-6">
+		 		<ul class="pagination .pagination-sm">
+					<li ng-repeat="abc in paginas" id="{{'pagB'+abc}}"
+						ng-click="cargarPagina(abc)"><a>{{abc}}</a></li>
+				</ul>
+			</div>
+</div>
 </div>
 
