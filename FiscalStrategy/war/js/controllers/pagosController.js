@@ -13,6 +13,15 @@ app.service("pagosService",['$http',"$q",function($http,$q){
 			});
 		return d.promise;
 	}
+	this.getPaginas = function(page) {
+		var d = $q.defer();
+	
+		$http.get("/pagos/page/").then(
+			function(response) {
+				d.resolve(response.data);
+			});
+		return d.promise;
+	}
 	this.consultarClientesTodos = function() {
 		var d = $q.defer();
 		$http.get("/clientes/getPagina/1").then(function(response) {
@@ -76,6 +85,16 @@ app.service("pagosService",['$http',"$q",function($http,$q){
 	this.getcc = function(id) {
 		var d = $q.defer();
 		$http.get("/cuentasCliente/todas/"+id).then(
+			function(response) {
+				d.resolve(response.data);
+			});
+		return d.promise;
+	}
+	
+	this.load = function(page) {
+		var d = $q.defer();
+	
+		$http.get("/pagos/page/"+page).then(
 			function(response) {
 				d.resolve(response.data);
 			});
@@ -150,14 +169,15 @@ app.controller("pagosAddController",['$scope','$cookieStore', '$window', '$locat
 	
 }]);
 app.controller("ListaPagoController",['$scope','$cookieStore', '$window', '$location', 'pagosService','cuentaservice','clientservice', function($scope, $cookieStore, $window, $location, pagosService,cuentaservice,clientservice){
-	pagosService.consultarPagos().then(function(data) {
-		$scope.ListPagos = data;
-
-});
+//	pagosService.consultarPagos().then(function(data) {
+//		$scope.ListPagos = data;
+//
+//});
 	clientservice.consultarClientesTodos().then(function(data) {
 		$scope.clienteLista = data;
 
 });
+	
 	
 	$scope.llenarPags=function(){
 		var inicio=0;
@@ -178,6 +198,29 @@ app.controller("ListaPagoController",['$scope','$cookieStore', '$window', '$loca
 		}
 		$('#pagA'+$scope.paginaActual).addClass("active");
 		$('#pagB'+$scope.paginaActual).addClass("active");
+	}
+
+	pagosService.getPaginas($cookieStore.get("rfcEmpresa")).then(function(data){
+		$scope.maxPage=data;
+		$scope.llenarPags();
+	});
+	
+	$scope.cargarPagina=function(page){
+		pagosService.load(page).then(function(data){
+			$scope.ListPagos=data;
+		});
+		$scope.paginaActual=page;
+		$scope.llenarPags();
+	}
+	
+	$scope.cargarPagina(1);
+	
+	$scope.ver = function(data) {
+		
+		$location.path("/ordenTrabajo");
+		$window.location.reload();
+		$cookieStore.put("idOt",data)
+//		$scope.listClient=data;
 	}
 	
 }]);
