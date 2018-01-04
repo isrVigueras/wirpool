@@ -162,18 +162,34 @@ app.controller("clientController",['usuarioservice','brockerservice','$scope','$
 		
 	};
 	$scope.eliminar = function(cliente){
-		var agree=confirm("¿Realmente desea eliminarlo? ");
-		  if (agree){
-			  console.log(cliente);
-			clientservice.eliminaCliente(cliente).then(function(send) {	
-				alert("Cliente Eliminado");
-				$location.path("/clientes");
-				$window.location.reload();
-			}) 
-			
-		  }else{
-			  alert("Eliminacion Cancelada");
-		  }
+		$('#mdsino').modal('show');
+		$("#btnsi").on("click", function(){
+		 
+				console.log(cliente);
+				clientservice.eliminaCliente(cliente).then(function(send) {	
+					alert("Cliente Eliminado");
+					$location.path("/clientes");
+					$window.location.reload();
+				}) 
+				
+			  
+		    
+		  });
+		$("#btnno").on("click", function(){
+			$("#mdsino").modal('hide');
+		});
+//		var agree=confirm("¿Realmente desea eliminarlo? ");
+//		  if (agree){
+//			  console.log(cliente);
+//			clientservice.eliminaCliente(cliente).then(function(send) {	
+//				alert("Cliente Eliminado");
+//				$location.path("/clientes");
+//				$window.location.reload();
+//			}) 
+//			
+//		  }else{
+//			  alert("Eliminacion Cancelada");
+//		  }
 		  
 		
 	};

@@ -148,18 +148,35 @@ app.controller("brockersController",['usuarioservice','$scope','$window', '$loca
 	};
 	
 	$scope.eliminar = function(bk){
-		var agree=confirm("¿Realmente desea eliminarlo? ");
-		  if (agree){
-			  console.log(bk);
+		$('#mdsino').modal('show');
+		$("#btnsi").on("click", function(){
+		 
+			console.log(bk);
 			  brockerservice.eliminaBrocker(bk).then(function(send) {	
 				alert("Brocker Eliminado");
+//				$('.modalgif').modal('show');
 				$location.path("/listaBrocker");
 				$window.location.reload();
 			}) 
-			
-		  }else{
-			  alert("Eliminacion Cancelada");
-		  }
+				
+			  
+		    
+		  });
+		$("#btnno").on("click", function(){
+			$("#mdsino").modal('hide');
+		});
+//		var agree=confirm("¿Realmente desea eliminarlo? ");
+//		  if (agree){
+//			  console.log(bk);
+//			  brockerservice.eliminaBrocker(bk).then(function(send) {	
+//				alert("Brocker Eliminado");
+//				$location.path("/listaBrocker");
+//				$window.location.reload();
+//			}) 
+//			
+//		  }else{
+//			  alert("Eliminacion Cancelada");
+//		  }
 		  
 		
 	};

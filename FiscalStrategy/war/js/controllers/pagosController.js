@@ -189,6 +189,7 @@ app.controller("ListaPagoController",['$scope','$cookieStore', '$window', '$loca
 			fin=$scope.maxPage;
 		}
 		$scope.paginas=[];
+		
 		for(var i = inicio; i< fin; i++){
 			$scope.paginas.push(i+1);
 		}
@@ -200,8 +201,9 @@ app.controller("ListaPagoController",['$scope','$cookieStore', '$window', '$loca
 		$('#pagB'+$scope.paginaActual).addClass("active");
 	}
 
-	pagosService.getPaginas($cookieStore.get("rfcEmpresa")).then(function(data){
+	pagosService.getPaginas().then(function(data){
 		$scope.maxPage=data;
+		console.log("Las Paginas Son",maxPage);
 		$scope.llenarPags();
 	});
 	
@@ -214,7 +216,6 @@ app.controller("ListaPagoController",['$scope','$cookieStore', '$window', '$loca
 	}
 	
 	$scope.cargarPagina(1);
-	
 	$scope.ver = function(data) {
 		
 		$location.path("/ordenTrabajo");

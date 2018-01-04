@@ -107,12 +107,27 @@ app.controller("cuentaController",['$scope','$window', '$location', '$cookieStor
 	}
 	
 	$scope.eliminar = function(cuenta){
-		
-		cuentaservice.eliminarCuenta(cuenta).then(function(send) {	
+		$('#mdsino').modal('show');
+		$("#btnsi").on("click", function(){
+		 
+			console.log(cuenta);
+			cuentaservice.eliminarCuenta(cuenta).then(function(send) {	
 				alert("Cuenta Eliminada");
 				$location.path("/cuentas");
 				$window.location.reload();
 			}) 
+				
+			  
+		    
+		  });
+		$("#btnno").on("click", function(){
+			$("#mdsino").modal('hide');
+		});
+//		cuentaservice.eliminarCuenta(cuenta).then(function(send) {	
+//				alert("Cuenta Eliminada");
+//				$location.path("/cuentas");
+//				$window.location.reload();
+//			}) 
 			
 		 
 		  

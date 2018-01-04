@@ -151,6 +151,9 @@ tr:nth-child(even) {
 #mdialTamanio{
       width: 60% !important;
     }
+    #mdlconfirmacion{
+      width: 10% !important;
+    }
     .modal-header {
 	background-color: #0C009B;
 	color: white;
@@ -161,7 +164,34 @@ tr:nth-child(even) {
 	box-shadow: 0px 6px 13px -4px rgba(167,190,235,1);
 	border-radius:10px 10px 10px 10px;
 }
-
+.pmdl {
+	text-align: center;
+	position: fixed;
+	margin-top: 2cm;
+}
+.modal-content-sm{
+	width: 50%;
+	top: 200px;
+}
+#btnsi{
+	background-color: #b30000;
+}
+#btnno{
+	background-color: #006622;
+}
+.modalgif {
+    display:    none;
+    position:   fixed;
+    z-index:    1000;
+    top:        0;
+    left:       0;
+    height:     50%;
+    width:      100%;
+    background: rgba( 255, 255, 255, .8 ) 
+                url('https://media.giphy.com/media/52qtwCtj9OLTi/giphy.gif') 
+                50% 50% 
+                no-repeat;
+}
 .modal-content {
     background-color: #fefefe;
     margin: 1% auto; /* 15% from the top and centered */
