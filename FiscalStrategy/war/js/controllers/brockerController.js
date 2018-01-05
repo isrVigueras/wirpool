@@ -114,18 +114,34 @@ app.controller("brockersController",['usuarioservice','$scope','$window', '$loca
 		});
 	};
 		$scope.eliminarcc = function(bcuenta){
-			var agree=confirm("¿Realmente desea eliminarlo? ");
-			  if (agree){
-			console.log(bcuenta);
-			brockerservice.eliminacuentabrocker(bcuenta).then(function(send) {	
-				alert("Cuenta del Cliente Eliminado");
-				$location.path("/listaBrocker");
-				$window.location.reload();
-				
-			}) 
-			  }else{
-				  alert("Se ha cancelado la Operacion");
-			  }
+			$('#mdsino').modal('show');
+			$("#btnsi").on("click", function(){
+			 
+				brockerservice.eliminacuentabrocker(bcuenta).then(function(send) {	
+					alert("Cuenta del Cliente Eliminado");
+					$location.path("/listaBrocker");
+					$window.location.reload();
+					
+				}) 
+					
+				  
+			    
+			  });
+			$("#btnno").on("click", function(){
+				$("#mdsino").modal('hide');
+			});
+//			var agree=confirm("¿Realmente desea eliminarlo? ");
+//			  if (agree){
+//			console.log(bcuenta);
+//			brockerservice.eliminacuentabrocker(bcuenta).then(function(send) {	
+//				alert("Cuenta del Cliente Eliminado");
+//				$location.path("/listaBrocker");
+//				$window.location.reload();
+//				
+//			}) 
+//			  }else{
+//				  alert("Se ha cancelado la Operacion");
+//			  }
 		};
 		
 		

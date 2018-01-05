@@ -243,18 +243,34 @@ $scope.ver = function(data) {
 }
 
 $scope.eliminarcc = function(cuenta){
-	var agree=confirm("¿Realmente desea eliminarlo? ");
-	  if (agree){
-	console.log(cuenta);
-	clientcuentaservice.eliminacuentacliente(cuenta).then(function(send) {	
-		alert("Cuenta del Cliente Eliminado");
-		$location.path("/clientes");
-		$window.location.reload();
-		
-	}) 
-	  }else{
-		  alert("Se ha cancelado la Operacion");
-	  }
+	$('#mdsino').modal('show');
+	$("#btnsi").on("click", function(){
+	 
+		console.log(cuenta);
+		clientcuentaservice.eliminacuentacliente(cuenta).then(function(send) {	
+			alert("Cuenta del Cliente Eliminado");
+			$location.path("/clientes");
+			$window.location.reload();
+			}) 
+			
+		  
+	    
+	  });
+	$("#btnno").on("click", function(){
+		$("#mdsino").modal('hide');
+	});
+//	var agree=confirm("¿Realmente desea eliminarlo? ");
+//	  if (agree){
+//	console.log(cuenta);
+//	clientcuentaservice.eliminacuentacliente(cuenta).then(function(send) {	
+//		alert("Cuenta del Cliente Eliminado");
+//		$location.path("/clientes");
+//		$window.location.reload();
+//		
+//	}) 
+//	  }else{
+//		  alert("Se ha cancelado la Operacion");
+//	  }
 };
 
 //	$scope.cargarPagina(1);
