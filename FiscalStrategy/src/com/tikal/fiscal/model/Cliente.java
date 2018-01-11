@@ -14,6 +14,7 @@ public class Cliente {
 	@Index private Long responsable;
 	@Index private Long idBrocker; 
 	@Index private boolean enabled;
+	private double saldo;
 	
 	public Long getResponsable() {
 		return responsable;
@@ -50,6 +51,12 @@ public class Cliente {
 	}
 	public void setEnabled(boolean enabled) {
 		this.enabled = enabled;
+	}
+	public double getSaldo() {
+		return saldo;
+	}
+	public void setSaldo(double saldo) {
+		this.saldo = saldo;
 	}
 	
 }

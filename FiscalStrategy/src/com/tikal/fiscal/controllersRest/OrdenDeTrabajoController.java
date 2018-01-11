@@ -45,6 +45,14 @@ public class OrdenDeTrabajoController {
 	@Autowired
 	UsuarioDAO usuariodao;
 	
+	@RequestMapping(value="/add/", method=RequestMethod.POST, consumes="application/json")
+	private void crear(HttpServletRequest req, HttpServletResponse res, @RequestBody String json) throws UnsupportedEncodingException{
+		AsignadorDeCharset.asignar(req, res);
+		OrdenDeTrabajo ot= (OrdenDeTrabajo) JsonConvertidor.fromJson(json, OrdenDeTrabajo.class);
+		otdao.save(ot);
+	}
+	
+	
 	@RequestMapping(value={"/load/{page}"},method= RequestMethod.GET, produces="application/json")
 	private void load(HttpServletRequest req, HttpServletResponse res, @PathVariable int page) throws IOException{
 		AsignadorDeCharset.asignar(req, res);
