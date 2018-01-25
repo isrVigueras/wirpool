@@ -33,7 +33,13 @@
 					<div ng-show="!form.emailconfirm.$untouched"><br><label ng-show="IsMatch">Los correos ingresados no coinciden</label></div>
 <!-- 					<br> Perfil:<select ng-model="usuario.perfil"> -->
 <!-- 						<option ng-repeat="x in perfiles" value="{{x.tipo}}" required ng-if="x.tipo!='AdministradorRoot'">{{x.tipo}}</option> -->
-					</select>
+<!-- 					</select> -->
+						Perfil: <select class="form-control" ng-model="usuario.perfil"
+										ng-required="!multiple" required>
+										<option>Ejecutivo</option>
+										<option>Administrador</option>
+										
+									</select><br>
 					<button type="submit" value="Guardar" class="btn" ng-show="acceptSubmit()">
 						Guardar</button>
 					<button type="submit" value="Limpiar" class="btn">Limpiar</button>
