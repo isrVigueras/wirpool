@@ -43,7 +43,6 @@ public class MovimientosController {
 				lista=movimientodao.getFull(page);
 				res.getWriter().print(JsonConvertidor.toJson(lista));
 		}
-		
 	}
 	@RequestMapping(value={"/paginas"},method= RequestMethod.GET, produces="application/json")
 	private void pages(HttpServletRequest req, HttpServletResponse res) throws IOException{

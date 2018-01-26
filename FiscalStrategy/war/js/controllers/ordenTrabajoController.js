@@ -333,7 +333,7 @@ app.controller("OTsAddController",['$scope','$cookieStore', '$window', '$locatio
 						$window.location.reload();
 					});
 			}else{
-				alert("No hay Comisiones registradas");
+				alert("No hay Comisiones registradas"); 
 			}	
 		}else{
 			alert("No hay Pagos registrados");
