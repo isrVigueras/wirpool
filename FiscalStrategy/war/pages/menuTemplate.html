@@ -1,6 +1,17 @@
 <div class="btn-group" role="group" aria-label="">
-	<a href="#/listaOTs" type="button" class="btn btn-default">Ordenes
+	<!-- <a href="#/listaOTs" type="button" class="btn btn-default">Ordenes
 		de Trabajo</a>
+		<div class="btn-group" role="group"> -->
+		<button type="button" class="btn btn-default dropdown-toggle"
+			data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+			Ordenes de Trabajo<span class="caret"></span>
+		</button>
+		<ul class="dropdown-menu" style="z-index: 2000">
+			<li><a href="#/listaOTs">Consultar</a></li>
+			<li><a href="#/altaOTs">Registrar</a></li>
+			
+		</ul>
+	</div>
 	<div class="btn-group" role="group">
 		<button type="button" class="btn btn-default dropdown-toggle"
 			data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -44,6 +55,15 @@
 			<li><a href="#/cuentas">Consultar</a></li>
 			<li><a href="#/altaCuenta">Registrar</a></li>
 			
+		</ul>
+	</div>
+	<div class="btn-group" role="group">
+		<button type="button" class="btn btn-default dropdown-toggle"
+			data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+			Pagos<span class="caret"></span>
+		</button>
+		<ul class="dropdown-menu" style="z-index: 2000">
+			<li><a href="#/pendientes">Pendientes</a></li>
 		</ul>
 	</div>
 	

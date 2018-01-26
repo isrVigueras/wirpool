@@ -1,6 +1,9 @@
 package com.tikal.fiscal.controllersRest.VO;
 
+import java.util.List;
+
 import com.tikal.fiscal.model.Cliente;
+import com.tikal.fiscal.model.Movimiento;
 import com.tikal.fiscal.model.OrdenDeTrabajo;
 import com.tikal.fiscal.model.PagoRecibido;
 import com.tikal.fiscal.model.Usuario;
@@ -13,9 +16,29 @@ public class OrdenDeTrabajoVO {
 	
 	private Cliente broker;
 	
-	private PagoRecibido pago;
+	private List<PagoRecibido> pagos;
+	
+	private List<Movimiento> movimientos;
+	
+	private List<Movimiento> comisiones;
 	
 	private Usuario responsable;
+
+	public List<Movimiento> getMovimientos() {
+		return movimientos;
+	}
+
+	public void setMovimientos(List<Movimiento> movimientos) {
+		this.movimientos = movimientos;
+	}
+
+	public List<Movimiento> getComisiones() {
+		return comisiones;
+	}
+
+	public void setComisiones(List<Movimiento> comisiones) {
+		this.comisiones = comisiones;
+	}
 
 	public OrdenDeTrabajo getOt() {
 		return ot;
@@ -41,20 +64,20 @@ public class OrdenDeTrabajoVO {
 		this.broker = broker;
 	}
 
-	public PagoRecibido getPago() {
-		return pago;
-	}
-
-	public void setPago(PagoRecibido pago) {
-		this.pago = pago;
-	}
-
 	public Usuario getResponsable() {
 		return responsable;
 	}
 
 	public void setResponsable(Usuario responsable) {
 		this.responsable = responsable;
+	}
+
+	public List<PagoRecibido> getPagos() {
+		return pagos;
+	}
+
+	public void setPagos(List<PagoRecibido> pagos) {
+		this.pagos = pagos;
 	}	
 	
 }

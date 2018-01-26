@@ -38,4 +38,9 @@ public class PagoRecibidoDAOImp implements PagoRecibidoDAO {
 		}
 	}
 
+	@Override
+	public List<PagoRecibido> getPagosByOT(Long idOt) {
+		return ofy().load().type(PagoRecibido.class).filter("ot", idOt).list();
+	}
+
 }

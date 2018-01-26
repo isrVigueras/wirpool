@@ -17,11 +17,13 @@ public class OrdenDeTrabajo {
 	private Long idResponsable;
 	@Index
 	private Long idCliente;
-	private List<Movimiento> comisiones;
+	private List<Long> comisiones;
+	private float saldoMov;
 	private float resguardo;
 	@Index
 	private Long idBrocker;
-	private List<Movimiento> movimientos;
+	private List<Long> movimientos;
+	private float saldoCom;
 	@Index
 	private Date fechaInicio;
 	@Index
@@ -36,9 +38,70 @@ public class OrdenDeTrabajo {
 	private String nombreCliente;
 	
 	private float porLic;
-	private float porBrok;
+	private float[] porBrok;
 	private float porDes;
 	
+	private float montoLic;
+	private float montoDes;
+	private float []montoBrok;
+	
+	private float importe;
+	private float total;
+	
+	private float retorno;
+	
+	
+	public float getSaldoMov() {
+		return saldoMov;
+	}
+	public void setSaldoMov(float saldoMov) {
+		this.saldoMov = saldoMov;
+	}
+	public float getSaldoCom() {
+		return saldoCom;
+	}
+	public void setSaldoCom(float saldoCom) {
+		this.saldoCom = saldoCom;
+	}
+	public float getRetorno() {
+		return retorno;
+	}
+	public void setRetorno(float retorno) {
+		this.retorno = retorno;
+	}
+	public float getMontoLic() {
+		return montoLic;
+	}
+	public void setMontoLic(float montoLic) {
+		this.montoLic = montoLic;
+	}
+	public float getMontoDes() {
+		return montoDes;
+	}
+	public void setMontoDes(float montoDes) {
+		this.montoDes = montoDes;
+	}
+	public float[] getMontoBrok() {
+		return montoBrok;
+	}
+	public void setMontoBrok(float[] montoBrok) {
+		this.montoBrok = montoBrok;
+	}
+	public float getImporte() {
+		return importe;
+	}
+	public void setImporte(float importe) {
+		this.importe = importe;
+	}
+	public float getTotal() {
+		return total;
+	}
+	public void setTotal(float total) {
+		this.total = total;
+	}
+	public void setPorBrok(float[] porBrok) {
+		this.porBrok = porBrok;
+	}
 	public Long getId() {
 		return id;
 	}
@@ -57,12 +120,7 @@ public class OrdenDeTrabajo {
 	public void setIdCliente(Long idCliente) {
 		this.idCliente = idCliente;
 	}
-	public List<Movimiento> getComisiones() {
-		return comisiones;
-	}
-	public void setComisiones(List<Movimiento> comisiones) {
-		this.comisiones = comisiones;
-	}
+
 	public float getResguardo() {
 		return resguardo;
 	}
@@ -75,20 +133,7 @@ public class OrdenDeTrabajo {
 	public void setIdBrocker(Long idBrocker) {
 		this.idBrocker = idBrocker;
 	}
-	public List<Movimiento> getMovimientos() {
-		if(this.movimientos==null){
-			this.movimientos= new ArrayList<Movimiento>();
-		}
-		return movimientos;
-	}
 	
-	public void addMovimiento(Movimiento m){
-		this.getMovimientos().add(m);
-	}
-	
-	public void setMovimientos(List<Movimiento> movimientos) {
-		this.movimientos = movimientos;
-	}
 	public Date getFechaInicio() {
 		return fechaInicio;
 	}
@@ -131,17 +176,33 @@ public class OrdenDeTrabajo {
 	public void setPorLic(float porLic) {
 		this.porLic = porLic;
 	}
-	public float getPorBrok() {
+
+	public float[] getPorBrok() {
 		return porBrok;
-	}
-	public void setPorBrok(float porBrok) {
-		this.porBrok = porBrok;
 	}
 	public float getPorDes() {
 		return porDes;
 	}
 	public void setPorDes(float porDes) {
 		this.porDes = porDes;
+	}
+	public List<Long> getComisiones() {
+		if(this.comisiones==null){
+			this.comisiones= new ArrayList<Long>();
+		}
+		return comisiones;
+	}
+	public void setComisiones(List<Long> comisiones) {
+		this.comisiones = comisiones;
+	}
+	public List<Long> getMovimientos() {
+		if(this.movimientos==null){
+			this.movimientos= new ArrayList<Long>();
+		}
+		return movimientos;
+	}
+	public void setMovimientos(List<Long> movimientos) {
+		this.movimientos = movimientos;
 	}
 	
 	

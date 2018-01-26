@@ -1,0 +1,398 @@
+<section class="jumbotron">
+	<div class="container">
+		<h2>Registro de Orden de Trabajo</h2>
+		<submenu />
+	</div>
+</section>
+
+<div class="container" >
+	<form id="forma" name="myForm">
+			<div class="Dlabel"><label>Pago</label></div>
+			<br>
+			<div>
+				<div class="row">
+					<div class="col-md-4">
+						<label>Cliente:</label>
+						<select name="cliente" class="form-control form-control-sm" ng-required="true"  ng-model="datos.idCliente">
+							<option ng-repeat="c in cliente" value="{{c.id}}" >{{c.nickname}}</option>
+						</select>
+					</div>
+					<div class="col-md-4">
+						<label>Banco:</label> 
+						<select name="banco" ng-model="pago.banco" class="form-control form-control-sm" ng-required="true" ng-change="Cuentas()" >
+							<option value="Banco Nacional de M&eacutexico (Banamex)">Banco
+								Nacional de M&eacutexico (Banamex)</option>
+							<option value="Banco Santander (M&eacutexico)">Banco
+								Santander (M&eacutexico)</option>
+							<option value="HSBC Mexico">HSBC M&eacutexico</option>
+							<option value="Scotiabank Inverlat">Scotiabank Inverlat</option>
+							<option value="BBVA Bancomer">BBVA Bancomer</option>
+							<option value="Banco Mercantil del Norte (Banorte)">Banco
+								Mercantil del Norte (Banorte)</option>
+							<option value="Banco Interacciones">Banco Interacciones</option>
+							<option value="Banco Inbursa">Banco Inbursa</option>
+							<option value="banca Mifel">banca Mifel</option>
+							<option value="Banco Regional de Monterrey">Banco
+								Regional de Monterrey</option>
+							<option value="Banco Invex">Banco Invex</option>
+							<option value="Banco del Bajio">Banco del Bajio</option>
+							<option value="Bansi">Bansi</option>
+							<option value="Banca Afirme">Banca Afirme</option>
+							<option value="Bank of America Mexico">Bank of America
+								M&eacutexico</option>
+							<option value="Banco JP Morgan">Banco JP Morgan</option>
+							<option value="Banco Ve Por Mas">Banco Ve Por Mas</option>
+							<option value="American Express Bank (Mexico)">American
+								Express Bank (M&eacutexico)</option>
+							<option value="Investa Bank">Investa Bank</option>
+							<option value="CiBanco">CiBanco</option>
+							<option value="Bank of Tokyo-Mitsubishi UFJ (Mexico)">Bank
+								of Tokyo-Mitsubishi UFJ (M&eacutexico)</option>
+							<option value="Banco Monex">Banco Monex</option>
+							<option value="Deutsche Bank Mexico">Deutsche Bank
+								M&eacutexico</option>
+							<option value="Banco Azteca">Banco Azteca</option>
+							<option value="Banco Credit Suisse (Mexico)">Banco
+								Credit Suisse (M&eacutexico)</option>
+							<option value="Banco Autofin Mexico">Banco Autofin
+								M&eacutexico</option>
+							<option value="Barclays Bank Mexico">Barclays Bank
+								M&eacutexico</option>
+							<option value="Banco Ahorro Famsa">Banco Ahorro Famsa</option>
+							<option value="Intercam Banco">Intercam Banco</option>
+							<option value="ABC Capital ">ABC Capital</option>
+							<option value="Banco Actinver">Banco Actinver</option>
+							<option value="Banco Compartamos">Banco Compartamos</option>
+							<option value="Banco Multiva">Banco Multiva</option>
+							<option value="UBS Bank Mexico">UBS Bank M&eacutexico</option>
+							<option value="Bancoppel">Bancoppel</option>
+							<option value="ConsuBanco">ConsuBanco</option>
+							<option value="Banco Wal-Mart de Mexico">Banco Wal-Mart
+								de M&eacutexico</option>
+							<option value="Volkswagen Bank">Volkswagen Bank</option>
+							<option value="Banco Base">Banco Base</option>
+							<option value="Banco Pagatodo">Banco Pagatodo</option>
+							<option value="Banco Forjadores">Banco Forjadores</option>
+							<option value="Bankaool">Bankaool</option>
+							<option value="Banco Inmobiliario Mexicano">Banco
+								Inmobiliario Mexicano</option>
+							<option value="Fundacion Donde Banco">Fundaci&oacuten
+								Dond&eacute Banco</option>
+							<option value="Banco Bancrea">Banco Bancrea</option>
+						</select>	
+					</div>
+					<div class="col-md-4">
+						<label>Cuentas:</label> 
+						<select name="cuentas" class="form-control form-control-sm" ng-required="true" ng-model="pago.cuenta" >
+					 		<option ng-repeat=" c in cuentas">{{c.cuenta}}</option> 
+						</select>	
+					</div>
+				</div>
+				<br>
+				<div class="row">				
+					<div class="col-md-2">
+						<label>Monto:</label> 
+						<input name="monto" class="form-control form-control-sm" ng-model="pago.monto" type="number" min="0" ng-required="true" ><br>
+					</div>
+					<!--    	   ^([A-ZÑ\x26]{3,4}([0-9]{2})(0[1-9]|1[0-2])(0[1-9]|1[0-9]|2[0-9]|3[0-1]))([A-Z\d]{3})?$ -->
+					<div class="col-md-2">
+						<label>Moneda:</label> 
+						<select name="moneda" class="form-control form-control-sm" ng-model="pago.moneda" ng-required="true">
+							<option>MXN</option>
+							<option>USD</option>
+							<option>EUR</option>
+							<option>CAD</option>
+						</select>
+					</div>
+ 					<div class="col-md-2">
+						<label>Fecha de Pago:</label> 
+						<input input-date class="form-control form-control-sm ng-empty ng-dirty ng-touched ng-invalid ng-invalid-date"
+							ng-model="pago.fechaPago" type="date" ng-required="true" /> 
+					</div>
+ <!-- 					<div class="col-md-2" align="right">
+						<button  class="btn" ng-click="myForm.$valid && addPago()"> Agregar Pago</button>
+					</div>  -->
+				</div>
+				<div align="right"><button  class="btn" ng-click="myForm.$valid && addPago()"> Agregar Pago</button></div> 
+				<br>
+			</div>
+			<div ng-show="tablaPagos">
+				<div class="Dlabel"><label>Pagos Agregados</label></div>
+				<table style="width: 100%" class="table table-stripped">
+					<thead>
+						<tr>
+							<th align="center">Cliente</th>
+							<th align="center"> Fecha de Pago </th>
+							<th align="center">Banco</th>
+							<th align="center">Cuenta</th>
+							<th align="center">Monto</th>
+							<th align="center">Moneda</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr ng-repeat="p in otVO.pagos">
+							<td>{{p.cliente}}</td>
+							<td>{{p.fpago}}</td>
+							<td>{{p.banco}}</td>
+							<td>{{p.cuenta}}</td>
+							<td>{{p.monto}}</td>
+							<td>{{p.moneda}}</td>
+							<td><button class="btn btn-small btn-info"  ng-click="eliminarRenglon($index)" title="Eliminar Pago">
+								<span class="glyphicon glyphicon-remove"></span></button>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		<br>
+		<div>
+			<div class="Dlabel">
+				<label>C&aacute;lculos</label>
+			</div>
+			<br>
+			<table style="width: 100%" class="table table-stripped">
+				<thead>
+					<tr>
+						<th>Importe</th>
+						<th>IVA</th>
+						<th>Total</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>{{datos.importe}}</td>
+						<td>{{datos.iva}}</td>
+						<td>{{datos.total}}</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<br>
+		<div class="infComisiones">
+			<div class="Dlabel">
+				<label>Comisiones</label>
+			</div>
+			<br>
+			<table style="width: 100%" class="table table-stripped">
+				<thead>
+					<tr>
+						<th>Comisi&oacute;n</th>
+						<th align="center"> % </th>
+						<th></th>
+						<th align="center">Monto</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>AJD</td>
+						<td><input type="number" min="0" ng-model="datos.porLic"   ng-change="calcularComisiones('Lic')"></td>
+						<td></td>
+						<td>{{datos.montoLic}}</td>
+					</tr>
+					<tr>
+						<td>J&A</td>
+						<td><input type="number" min="0" ng-model="datos.porDes"  ng-change="calcularComisiones('Des')"></td>
+						<td></td>
+						<td>{{datos.montoDes}}</td>
+					</tr>
+					<tr ng-repeat="brok in brokers">
+						<td>{{brok.nombre}}</td>
+						<td><input type="number" min="0" ng-model="brok.porBrok"  ng-change="calcularComisiones('Broke')"></td>
+						<td></td>
+						<td>{{brok.montoBrok}}</td>
+					</tr>
+					<tr>
+						<td>Retorno</td>
+						<td>{{datos.retorno}}</td>
+						<td></td>
+						<td>{{montoRetorno}}</td>
+					</tr>	
+					<tr>
+						<td></td>
+						<td></td>
+						<td align="right">Total Comisiones:</td>
+						<td>{{montosTotal}}</td>
+					</tr>
+				</tbody>	
+			</table>
+		</div>
+		<div align="right"><button  class="btn" ng-click="addBroker()"> Agregar Broker</button></div>
+		<br>
+		<div>
+			<div class="Dlabel">
+				<div class="row">
+					<div class="col-md-6" align="left"><label>Instrucciones Operaci&oacute;n Cliente</label></div>
+					<div class="col-md-6" align="right">
+						<button class="btn btn-small" ng-disabled="montoRetorno==null" data-toggle="modal" data-target="#myModalOper">Agregar</button>
+					</div>
+				</div>
+			</div>
+			<br>
+			<table style="width: 100%" class="table table-stripped" ng-show="tablaOper">
+				<thead>
+					<tr>
+						<th>Operaci&oacute;n</th>
+						<th align="center"> Descripci&oacute;n </th>
+						<th align="center"> Monto</th>
+						<th align="center"> Estatus</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr ng-repeat="op in otVO.movimientos">
+						<td>{{op.tipo}}</td>
+						<td>{{op.descripcion}}</td>
+						<td>{{op.monto}}</td>
+						<td>{{op.estatus}}</td>
+					</tr>
+					<tr>
+						<td></td>
+						<td align="right">Saldo Movimientos: </td>
+						<td>{{datos.saldoMov}}</td>
+						<td></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		
+		<div>
+			<div class="Dlabel">
+				<div class="row">
+					<div class="col-md-6" align="left"><label>Instrucciones Operaci&oacute;n Asesor</label></div>
+					<div class="col-md-6" align="right">
+						<button class="btn btn-small" ng-disabled="montosTotal==null" data-toggle="modal" data-target="#myModalOperAsesor">Agregar</button>
+					</div>
+				</div>
+			</div>
+			<br>
+			<table style="width: 100%" class="table table-stripped" ng-show="tablaOperAsesor">
+				<thead>
+					<tr>
+						<th>Operaci&oacute;n</th>
+						<th align="center"> Descripci&oacute;n </th>
+						<th align="center"> Monto</th>
+						<th align="center"> Estatus</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr ng-repeat="op in otVO.comisiones">
+						<td>{{op.tipo}}</td>
+						<td>{{op.descripcion}}</td>
+						<td>{{op.monto}}</td>
+						<td>{{op.estatus}}</td>
+					</tr>
+					<tr>
+						<td></td>
+						<td align="right">Saldo Comisiones: </td>
+						<td>{{datos.saldoCom}}</td>
+						<td></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		
+		<hr>
+		<div class="row" align="center">
+			<div class="col-md-12">
+				<br>
+				<button class="btn" value="Guardar" ng-click="guardarOT()">Guardar</button>
+				<button ng-click="LimpiarTodo()" class="btn">Limpiar</button>
+			</div>
+		</div>
+	</form>
+	<div id="snackbar"></div>
+</div>
+
+  <!-- Modal AddOper	-->
+  <div class="modal fade" id="myModalOper" tabindex="-1" data-backdrop="static" role="dialog" aria-labelledby="myModalOper" aria-hidden="true">                
+      <div class="modal-dialog" id="mdialTamanio">
+        <div class="modal-content">
+          <div class="modal-header">
+             <p class="modal-title" id="myModalLabel">Operacion Cliente</p>          
+          </div>
+          <div class="modal-body">
+	          <form>
+					<div class="row">
+	    				<div class="col-md-2">
+					    	<label class="control-label">Tipo de Operaci&oacute;n:</label>
+					    </div>
+					    <div class="col-md-4">
+			        		<select name="cuentas" class="form-control  mb-2"  ng-required="true" ng-model="operaciones.tipo" >
+				 				<option ng-repeat="op in tiposOp">{{op.nombre}}</option>
+				 			</select>
+				  		</div>
+				  		<div class="col-md-2" align="right">
+				  			<label class="control-label">Monto: </label>
+				  		</div>
+				  		<div class="col-md-4">
+	 						<input  class="form-control  mb-2" type="number" min="1" ng-required="true" ng-model="operaciones.monto">		
+				  		</div>
+				  	</div>
+				  	<br>
+				  	<div class="row">
+				  		<div class="col-md-2">
+				  			<label class="control-label">Descripci&oacute;n:</label>
+				  		</div>
+				  		<div class="col-md-10">
+							<input class="form-control  mb-2" type="text" ng-required="true"  ng-model="operaciones.descripcion"  placeholder="Detalle de Operacion..">			
+				  		</div>					
+					</div>
+					<br>
+					<div class="row" align="center">
+						<button class="btn btn-small" data-dismiss="modal"   ng-click="addOperacion()" >Guardar</button>
+					</div>
+	          </form>
+		  </div>
+			<br>
+      	   <div class="modal-footer">
+        		<button type="button" class="btn btn-default" data-dismiss="modal" >Cerrar</button>
+      		</div>
+        </div>
+      </div>
+</div>
+<!-- Modal AddOperAsesor	-->
+  <div class="modal fade" id="myModalOperAsesor" tabindex="-1" data-backdrop="static" role="dialog" aria-labelledby="myModalOper" aria-hidden="true">                
+      <div class="modal-dialog" id="mdialTamanio">
+        <div class="modal-content">
+          <div class="modal-header">
+             <p class="modal-title" id="myModalLabel">Operacion Asesor</p>          
+          </div>
+          <div class="modal-body">
+	          <form>
+					<div class="row">
+	    				<div class="col-md-2">
+					    	<label class="control-label">Tipo de Operaci&oacute;n:</label>
+					    </div>
+					    <div class="col-md-4">
+			        		<select name="cuentas" class="form-control  mb-2"  ng-required="true" ng-model="operaciones.tipo" >
+				 				<option ng-repeat="op in tiposOp">{{op.nombre}}</option>
+				 			</select>
+				  		</div>
+				  		<div class="col-md-2" align="right">
+				  			<label class="control-label">Monto: </label>
+				  		</div>
+				  		<div class="col-md-4">
+	 						<input  class="form-control  mb-2" type="number" min="1" ng-required="true" ng-model="operaciones.monto">		
+				  		</div>
+				  	</div>
+				  	<br>
+				  	<div class="row">
+				  		<div class="col-md-2">
+				  			<label class="control-label">Descripci&oacute;n:</label>
+				  		</div>
+				  		<div class="col-md-10">
+							<input class="form-control  mb-2" type="text" ng-required="true"  ng-model="operaciones.descripcion"  placeholder="Detalle de Operacion..">			
+				  		</div>					
+					</div>
+					<br>
+					<div class="row" align="center">
+						<button class="btn btn-small" data-dismiss="modal"   ng-click="addOperAsesor()" >Guardar</button>
+					</div>	
+	          </form>
+		  </div>
+			<br>
+      	   <div class="modal-footer">
+        		<button type="button" class="btn btn-default" data-dismiss="modal" >Cerrar</button>
+      		</div>
+        </div>
+      </div>
+</div>

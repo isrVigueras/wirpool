@@ -25,6 +25,8 @@ public class PagoRecibido {
 	private String moneda;
 	@Index
 	private String referencia;
+	@Index
+	private Long ot;
 	
 	public Long getId() {
 		return id;
@@ -85,6 +87,12 @@ public class PagoRecibido {
 	}
 	public void setReferencia(String referencia) {
 		this.referencia = referencia;
+	}
+	public Long getOt() {
+		return ot;
+	}
+	public void setOt(Long ot) {
+		this.ot = ot;
 	}
 	
 }

@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.tikal.fiscal.controllersRest.VO.OrdenDeTrabajoVO;
 import com.tikal.fiscal.dao.ClienteDAO;
+import com.tikal.fiscal.dao.MovimientoDAO;
 import com.tikal.fiscal.dao.OrdenDeTrabajoDAO;
 import com.tikal.fiscal.dao.PagoRecibidoDAO;
 import com.tikal.fiscal.model.Cliente;
@@ -45,11 +46,36 @@ public class OrdenDeTrabajoController {
 	@Autowired
 	UsuarioDAO usuariodao;
 	
+	@Autowired
+	MovimientoDAO movimientodao;
+	
 	@RequestMapping(value="/add/", method=RequestMethod.POST, consumes="application/json")
 	private void crear(HttpServletRequest req, HttpServletResponse res, @RequestBody String json) throws UnsupportedEncodingException{
 		AsignadorDeCharset.asignar(req, res);
-		OrdenDeTrabajo ot= (OrdenDeTrabajo) JsonConvertidor.fromJson(json, OrdenDeTrabajo.class);
+		OrdenDeTrabajoVO otvo= (OrdenDeTrabajoVO) JsonConvertidor.fromJson(json, OrdenDeTrabajoVO.class);
+		OrdenDeTrabajo ot= otvo.getOt();
+		
+		List<Movimiento> mM = otvo.getMovimientos();
+		for(int i=0;i<mM.size();i++){
+			movimientodao.save(mM.get(i));
+			ot.getMovimientos().add(mM.get(i).getId());
+		}
+		List<Movimiento> mC = otvo.getComisiones();
+		for(int i=0;i<mC.size();i++){
+			movimientodao.save(mC.get(i));
+			ot.getComisiones().add(mC.get(i).getId());
+		}
+		
 		otdao.save(ot);
+		List<PagoRecibido> pagos = otvo.getPagos();
+		PagoRecibido pago;
+		for(int i=0; i<pagos.size(); i++){
+			pago= pagos.get(i);
+			pago.setOt(ot.getId());
+		}
+		
+		pagodao.save(pagos);
+		
 	}
 	
 	
@@ -84,8 +110,11 @@ public class OrdenDeTrabajoController {
 		AsignadorDeCharset.asignar(req, res);
 		OrdenDeTrabajo ot=otdao.get(id);
 		OrdenDeTrabajoVO otvo= new OrdenDeTrabajoVO();
+		
 		if(ot.getIdCliente()!=null){
 			Cliente cliente= clientedao.get(ot.getIdCliente());
+			ot.setIdBrocker(cliente.getIdBrocker());
+			ot.setIdResponsable(cliente.getResponsable());
 			otvo.setCliente(cliente);
 		}
 		if(ot.getIdBrocker()!=null){
@@ -97,10 +126,15 @@ public class OrdenDeTrabajoController {
 			u.setPass("");
 			otvo.setResponsable(u);
 		}
-		PagoRecibido pago= pagodao.getPago(ot.getIdPago());
-		 
+		
+		List<Movimiento> mov = movimientodao.getByIds(ot.getMovimientos());
+		otvo.setMovimientos(mov);
+		List<Movimiento> com = movimientodao.getByIds(ot.getComisiones());
+		otvo.setComisiones(com);
+		
+		List<PagoRecibido> pagos= pagodao.getPagosByOT(ot.getId());
+		otvo.setPagos(pagos);
 		otvo.setOt(ot);
-		otvo.setPago(pago);
 		res.getWriter().print(JsonConvertidor.toJson(otvo));
 		
 	}
@@ -111,15 +145,22 @@ public class OrdenDeTrabajoController {
 		OrdenDeTrabajo ot=otdao.get(id);
 		Movimiento m= (Movimiento) JsonConvertidor.fromJson(json, Movimiento.class);
 		m.setFecha(new Date());
-		ot.getMovimientos().add(m);
+		//ot.getMovimientos().add(m);
 		otdao.save(ot);
 	}
 	
 	@RequestMapping(value="/update/", method=RequestMethod.POST, consumes="application/json")
 	private void update(HttpServletRequest req, HttpServletResponse res, @RequestBody String json) throws UnsupportedEncodingException{
 		AsignadorDeCharset.asignar(req, res);
-		OrdenDeTrabajoVO vo= (OrdenDeTrabajoVO) JsonConvertidor.fromJson(json, OrdenDeTrabajoVO.class);
-		otdao.save(vo.getOt());
+		OrdenDeTrabajoVO otvo= (OrdenDeTrabajoVO) JsonConvertidor.fromJson(json, OrdenDeTrabajoVO.class);
+		List<Movimiento> mM = otvo.getMovimientos();
+		for(int i=0;i<mM.size();i++){
+			movimientodao.save(mM.get(i));
+		}
+		List<Movimiento> mC = otvo.getComisiones();
+		for(int i=0;i<mC.size();i++){
+			movimientodao.save(mC.get(i));
+		}
 	}
 	
 	private Long isEjecutivo(HttpServletRequest req){

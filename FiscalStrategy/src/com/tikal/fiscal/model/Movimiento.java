@@ -8,7 +8,11 @@ import com.googlecode.objectify.annotation.Index;
 
 @Entity
 public class Movimiento {
+	
 	@Id
+	private Long id;
+	
+	@Index
 	private Long id_cuenta;
 	@Index
 	private Long cuentaCliente;
@@ -25,6 +29,16 @@ public class Movimiento {
 	private String moneda;
 	@Index
 	private String tipo;
+	private String descripcion;
+	
+	
+	
+	public String getDescripcion() {
+		return descripcion;
+	}
+	public void setDescripcion(String descripcion) {
+		this.descripcion = descripcion;
+	}
 	public Long getId_cuenta() {
 		return id_cuenta;
 	}
@@ -90,6 +104,12 @@ public class Movimiento {
 	}
 	public void setTipo(String tipo) {
 		this.tipo = tipo;
+	}
+	public Long getId() {
+		return id;
+	}
+	public void setId(Long id) {
+		this.id = id;
 	}
 	
 	

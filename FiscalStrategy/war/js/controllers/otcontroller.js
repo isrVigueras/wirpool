@@ -98,10 +98,9 @@ app.controller("OTsListController",['$scope','$window', '$location', '$cookieSto
 	$scope.cargarPagina(1);
 	
 	$scope.ver = function(data) {
-		
 		$location.path("/ordenTrabajo");
-		$window.location.reload();
-		$cookieStore.put("idOt",data)
+		//$window.location.reload();
+		$cookieStore.put("idOt",data);
 //		$scope.listClient=data;
 	}
 	

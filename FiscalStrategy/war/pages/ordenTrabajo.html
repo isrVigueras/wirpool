@@ -21,9 +21,9 @@
 			</thead>
 			<tbody>
 				<tr>
-					<td>{{ot.cliente.nickname}}</td>
-					<td>{{ot.responsable.usuario}}</td>
-					<td>{{ot.broker.nickname}}</td>
+					<td>{{otvo.cliente.nickname}}</td>
+					<td>{{otvo.responsable.usuario}}</td>
+					<td>{{otvo.broker.nickname}}</td>
 				</tr>
 			</tbody>
 		</table>
@@ -45,11 +45,11 @@
 				</tr>
 			</thead>
 			<tbody>
-				<tr>
-					<td>{{ot.pago.monto}}</td>
-					<td>{{ot.pago.moneda}}</td>
-					<td>{{ot.pago.banco}}</td>
-					<td>{{ot.pago.cuenta}}</td>
+				<tr ng-repeat="p in otvo.pagos">
+					<td>{{p.monto}}</td>
+					<td>{{p.moneda}}</td>
+					<td>{{p.banco}}</td>
+					<td>{{p.cuenta}}</td>
 				</tr>
 			</tbody>
 		</table>
@@ -71,9 +71,9 @@
 			</thead>
 			<tbody>
 				<tr>
-					<td>{{importe}}</td>
+					<td>{{otvo.ot.importe}}</td>
 					<td>{{iva}}</td>
-					<td>{{ot.pago.monto}}</td>
+					<td>{{otvo.ot.total}}</td>
 				</tr>
 			</tbody>
 		</table>
@@ -87,40 +87,313 @@
 			<thead>
 				<tr>
 					<th>Comisi&oacute;n</th>
-					<th>%</th>
-					<th>Monto</th>
+					<th align="center">%</th>
+					<th align="center">Monto</th>
 				</tr>
 			</thead>
 			<tbody>
-				<tr>
-					<td>Lic.</td>
-					<td><input type="number" ng-model="ot.ot.porLic"></td>
-					<td>{{redondea((ot.ot.porLic/100)*importe)}}</td>
+				<tr class="ng-scope">
+					<td class="ng-binding">Lic.</td>
+					<td class="ng-binding">{{otvo.ot.porLic}}</td>
+					<td class="ng-binding">{{otvo.ot.montoLic}}</td>
 				</tr>
-				<tr>
-					<td>Despacho</td>
-					<td><input type="number" ng-model="ot.ot.porDes"></td>
-					<td>{{redondea((ot.ot.porDes/100)*importe)}}</td>
+				<tr class="ng-scope">
+					<td class="ng-binding">Despacho</td>
+					<td class="ng-binding">{{otvo.ot.porDes}}</td>
+					<td class="ng-binding">{{otvo.ot.montoDes}}</td>
 				</tr>
-				<tr>
-					<td>Broker</td>
-					<td><input type="number" ng-model="ot.ot.porBrok"></td>
-					<td>{{redondea((ot.ot.porBrok/100)*importe)}}</td>
+				<tr  class="ng-scope" ng-repeat="brok in brokers">
+					<td class="ng-binding">{{brok.nombre}}</td>
+					<td class="ng-binding">{{brok.porBrok}}</td>
+					<td class="ng-binding">{{brok.montoBrok}}</td>
 				</tr>
-				<tr>
-					<td>Retorno</td>
-					<td>{{16-ot.ot.porLic-ot.ot.porDes-ot.ot.porBrok}}
+				<tr class="ng-scope">
+					<td class="ng-binding">Retorno</td>
+					<td class="ng-binding">{{otvo.ot.retorno}}</td>
+					<td class="ng-binding">{{montoRetorno}}</td>
 				</tr>
 
 			</tbody>	
 		</table>
 	</div>
-	<div class="row">
-		<div class="col-md-12">
-			<button class="btn btn-primary" ng-click="actualizar()">Guardar</button>
+	<br>
+	<div class="infComisiones">
+		<div class="Dlabel">
+			<label>Operaci&oacute;n Cliente</label>
+		</div>
+		<table style="width: 100%" class="table table-stripped">
+			<thead>
+				<tr class="ng-scope">
+					<th>Tipo de Operaci&oacute;n</th>
+					<th align="center">Descripci&oacute;n</th>
+					<th align="center">Monto</th>
+					<th align="center">Banco</th>
+					<th align="center">Cuenta</th>
+					<th align="center" >Estatus</th>
+					<th></th>
+					<th></th>
+					<th></th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr ng-repeat="mov in otvo.movimientos" class="ng-scope">
+					<td class="ng-binding">{{mov.tipo}}</td>
+					<td class="ng-binding">{{mov.descripcion}}</td>
+					<td class="ng-binding">{{mov.monto}}</td>
+					<td class="ng-binding" >{{mov.banco}}</td>
+					<td class="ng-binding" >{{mov.cuenta}}</td>
+					<td class="ng-binding">{{mov.estatus}}</td>
+					<td class="ng-binding" align="center"><button id="cancelOp" ng-hide="mov.estatus=='CANCELADO' || " class="btn btn-small"  ng-click="cancelarOp($index, 'OPC')" title="Cancelar">
+								<span class="glyphicon glyphicon-remove"></span>
+						</button>
+					</td>
+					<td class="ng-binding">
+						<button class="btn btn-small"   data-toggle="modal" 
+							ng-show="perfil && mov.estatus!='CANCELADO'" ng-disabled="mov.fecha != null && mov.numTransaccion != null" 
+							ng-click="cargarMov($index,'OPC')" data-target="#modalEditar">
+							<span class="glyphicon glyphicon-edit"></span>
+						</button>
+					</td>
+					<td class="ng-binding">
+						<button class="btn btn-small"  data-toggle="modal" 
+						 ng-show="perfil && mov.estatus!='CANCELADO'" ng-disabled="mov.banco==null && mov.cuenta==null" 
+						 ng-click="cargarMov($index,'OPC')" data-target="#modalVerificar">
+							<span class="glyphicon glyphicon-ok"></span>
+						</button>
+					</td>
+				</tr>
+			</tbody>	
+		</table>
+		<label>Saldo Movimientos: $</label>{{otvo.ot.saldoMov}}
+	</div>
+	<br>
+	<div class="infComisiones">
+		<div class="Dlabel">
+			<label>Operaci&oacute;n Asesor</label>
+		</div>
+		<table style="width: 100%" class="table table-stripped">
+			<thead>
+				<tr class="ng-scope">
+					<th>Tipo de Operaci&oacute;n</th>
+					<th align="center">Descripci&oacute;n</th>
+					<th align="center">Monto</th>
+					<th align="center">Banco</th>
+					<th align="center">Cuenta</th>
+					<th align="center">Estatus</th>
+					<th></th>
+					<th></th>
+					<th></th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr ng-repeat="mov in otvo.comisiones" class="ng-scope">
+					<td class="ng-binding">{{mov.tipo}}</td>
+					<td class="ng-binding">{{mov.descripcion}}</td>
+					<td class="ng-binding">{{mov.monto}}</td>
+					<td class="ng-binding">{{mov.banco}}</td>
+					<td class="ng-binding">{{mov.cuenta}}</td>
+					<td class="ng-binding">{{mov.estatus}}</td>
+					<td align="center" class="ng-binding"><button id="cancelOp" ng-hide="mov.estatus=='CANCELADO'" class="btn btn-small"  ng-click="cancelarOp($index, 'OPA')" title="Cancelar">
+								<span class="glyphicon glyphicon-remove"></span>
+						</button>
+					</td>
+					<td class="ng-binding">
+						<button class="btn btn-small" ng-show="perfil && mov.estatus!='CANCELADO'" data-toggle="modal" ng-click="cargarMov($index,'OPA')" data-target="#modalEditar">
+							<span class="glyphicon glyphicon-edit"></span>
+						</button>
+					</td>
+					<td class="ng-binding">
+						<button class="btn btn-small" ng-show="perfil && mov.estatus!='CANCELADO'" data-toggle="modal"  ng-click="cargarMov($index,'OPA||')" data-target="#modalVerificar">
+							<span class="glyphicon glyphicon-ok"></span>
+						</button>
+					</td>
+				</tr>
+			</tbody>	
+		</table>
+		<div>
+			<label>Saldo Comisiones: $</label>{{otvo.ot.saldoCom}}
 		</div>
 	</div>
+	
+ 	<div class="row" ng-show="perfil">
+		<div class="col-md-12" align="center">
+			<button class="btn btn-primary" ng-click="actualizar()">Guardar</button>
+		</div>
+	</div> 
 	<div id="snackbar">Se guard&oacute; exitosamente</div>
+
 </div>
+
+ <!-- Modal EditOper	-->
+  <div class="modal fade" id="modalEditar" tabindex="-1" data-backdrop="static" role="dialog" aria-hidden="true">                
+      <div class="modal-dialog" id="mdialTamanio">
+        <div class="modal-content">
+          <div class="modal-header">
+             <p class="modal-title" id="myModalLabel">Detalle de Operaci&oacute;n</p>          
+          </div>
+          <div class="modal-body">
+	          <form>
+	          	<div class="row">
+	    			<div class="col-md-4">
+					   	<label class="control-label">Tipo de Operaci&oacute;n:</label>
+					   	<input class="form-control  mb-2" type="text" ng-disabled="true" value="{{mov.tipo}}">
+				  	</div>
+				  	<div class="col-md-2">
+				  		<label class="control-label">Monto: </label>
+	 					<input class="form-control  mb-2" type="text"  ng-disabled="true" value="{{mov.monto}}">		
+				  	</div>
+			  		<div class="col-md-6">
+			  			<label class="control-label">Descripci&oacute;n:</label>
+						<input class="form-control  mb-2" type="text" ng-disabled="true" value="{{mov.descripcion}}">			
+			  		</div>					
+				</div>
+				<br><br>
+				<div class="row">
+					<div class="col-md-6">
+						<label class="control-label">Banco:</label>		 
+						<select name="banco" ng-model="mov.banco" class="form-control form-control-sm" ng-required="true" ng-change="Cuentas()" >
+							<option value="Banco Nacional de M&eacutexico (Banamex)">Banco
+								Nacional de M&eacutexico (Banamex)</option>
+							<option value="Banco Santander (M&eacutexico)">Banco
+								Santander (M&eacutexico)</option>
+							<option value="HSBC Mexico">HSBC M&eacutexico</option>
+							<option value="Scotiabank Inverlat">Scotiabank Inverlat</option>
+							<option value="BBVA Bancomer">BBVA Bancomer</option>
+							<option value="Banco Mercantil del Norte (Banorte)">Banco
+								Mercantil del Norte (Banorte)</option>
+							<option value="Banco Interacciones">Banco Interacciones</option>
+							<option value="Banco Inbursa">Banco Inbursa</option>
+							<option value="banca Mifel">banca Mifel</option>
+							<option value="Banco Regional de Monterrey">Banco
+								Regional de Monterrey</option>
+							<option value="Banco Invex">Banco Invex</option>
+							<option value="Banco del Bajio">Banco del Bajio</option>
+							<option value="Bansi">Bansi</option>
+							<option value="Banca Afirme">Banca Afirme</option>
+							<option value="Bank of America Mexico">Bank of America
+								M&eacutexico</option>
+							<option value="Banco JP Morgan">Banco JP Morgan</option>
+							<option value="Banco Ve Por Mas">Banco Ve Por Mas</option>
+							<option value="American Express Bank (Mexico)">American
+								Express Bank (M&eacutexico)</option>
+							<option value="Investa Bank">Investa Bank</option>
+							<option value="CiBanco">CiBanco</option>
+							<option value="Bank of Tokyo-Mitsubishi UFJ (Mexico)">Bank
+								of Tokyo-Mitsubishi UFJ (M&eacutexico)</option>
+							<option value="Banco Monex">Banco Monex</option>
+							<option value="Deutsche Bank Mexico">Deutsche Bank
+								M&eacutexico</option>
+							<option value="Banco Azteca">Banco Azteca</option>
+							<option value="Banco Credit Suisse (Mexico)">Banco
+								Credit Suisse (M&eacutexico)</option>
+							<option value="Banco Autofin Mexico">Banco Autofin
+								M&eacutexico</option>
+							<option value="Barclays Bank Mexico">Barclays Bank
+								M&eacutexico</option>
+							<option value="Banco Ahorro Famsa">Banco Ahorro Famsa</option>
+							<option value="Intercam Banco">Intercam Banco</option>
+							<option value="ABC Capital ">ABC Capital</option>
+							<option value="Banco Actinver">Banco Actinver</option>
+							<option value="Banco Compartamos">Banco Compartamos</option>
+							<option value="Banco Multiva">Banco Multiva</option>
+							<option value="UBS Bank Mexico">UBS Bank M&eacutexico</option>
+							<option value="Bancoppel">Bancoppel</option>
+							<option value="ConsuBanco">ConsuBanco</option>
+							<option value="Banco Wal-Mart de Mexico">Banco Wal-Mart
+								de M&eacutexico</option>
+							<option value="Volkswagen Bank">Volkswagen Bank</option>
+							<option value="Banco Base">Banco Base</option>
+							<option value="Banco Pagatodo">Banco Pagatodo</option>
+							<option value="Banco Forjadores">Banco Forjadores</option>
+							<option value="Bankaool">Bankaool</option>
+							<option value="Banco Inmobiliario Mexicano">Banco
+								Inmobiliario Mexicano</option>
+							<option value="Fundacion Donde Banco">Fundaci&oacuten
+								Dond&eacute Banco</option>
+							<option value="Banco Bancrea">Banco Bancrea</option>
+						</select>	
+					</div>
+					<div class="col-md-6">
+						<label class="control-label">Cuentas:</label>
+						<select name="cuentas" class="form-control form-control-sm" ng-required="true" ng-model="mov.cuenta" value="{{mov.cuenta}}">
+					 		<option ng-repeat=" c in cuentas">{{c.cuenta}}</option> 
+						</select>	
+					</div>
+				</div>
+				<br><br>
+				<div class="row" align="center">
+					<button class="btn btn-small" data-dismiss="modal"   ng-click="updateMov()" >Guardar</button>
+				</div>	
+	          </form>
+		  </div>
+			<br>
+      	   <div class="modal-footer">
+        		<button type="button" class="btn btn-default" data-dismiss="modal" >Cerrar</button>
+      		</div>
+        </div>
+      </div>
+</div>
+
+
+<!-- Modal Verificar-->
+  <div class="modal fade" id="modalVerificar" tabindex="-1" data-backdrop="static" role="dialog" aria-hidden="true">                
+      <div class="modal-dialog" id="mdialTamanio">
+        <div class="modal-content">
+          <div class="modal-header">
+             <p class="modal-title" id="myModalLabel">Validar Operaci&oacute;n</p>          
+          </div>
+          <div class="modal-body">
+	          <form>
+	          	<div class="row">
+	    			<div class="col-md-1"></div>
+	    			<div class="col-md-2"><label class="control-label">Tipo de Operaci&oacute;n:</label></div>
+	    			<div class="col-md-2">{{mov.tipo}}</div>
+				  	<div class="col-md-3" align="right"><label class="control-label" >Monto: $</label></div>
+				  	<div class="col-md-2"><label>{{mov.monto}}</label></div>
+				  	<div class="col-md-1"></div>
+				 </div>
+				 <br>
+				 <div class="row">
+				 	<div class="col-md-1"></div>
+				 	<div class="col-md-2"><label class="control-label">Banco: </label></div>
+					<div class="col-md-3">{{mov.banco}}</div> 
+			  		<div class="col-md-2" align="right"><label class="control-label">No. de Cheque:</label></div>
+					<div class="col-md-3"><input class="form-control  mb-2" type="number"></div>
+					<div class="col-md-1"></div>					
+				</div>
+				<br>
+				<div class="row">
+					<div class="col-md-1"></div>
+					<div class="col-md-2"><label class="control-label">Cuenta: </label></div>
+					<div class="col-md-2">{{mov.cuenta}}</div> 
+					<div class="col-md-1"></div>
+					<div class="col-md-2" align="right"><label class="control-label">Fecha:</label></div>
+					<div class="col-md-3">	 
+						<input input-date class="form-control form-control-sm ng-empty ng-dirty ng-touched ng-invalid ng-invalid-date"
+							ng-model="mov.fecha" type="date">
+					</div>
+					<div class="col-md-1"></div>
+				</div>
+				<br>
+				<div class="row">
+					<div class="col-md-1"></div>
+					<div class="col-md-2"><label class="control-label">Descripci&oacute;n: </label></div>
+			  		<div class="col-md-8">{{mov.descripcion}}</div>
+			  		<div class="col-md-1"></div>
+			  	</div>
+				<br><br>
+				<div class="row" align="center">
+					<button class="btn btn-small" data-dismiss="modal"   ng-click="validMov()" >Validar Movimiento</button>
+				</div>	
+	          </form>
+		  </div>
+			<br>
+      	   <div class="modal-footer">
+        		<button type="button" class="btn btn-default" data-dismiss="modal" >Cerrar</button>
+      		</div>
+        </div>
+      </div>
+</div>
+
 
 

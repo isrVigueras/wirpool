@@ -8,6 +8,10 @@ app.config([ '$routeProvider', function($routeProvider) {
 		templateUrl : "pages/listaPagos.html",
 		controller : "ListaPagoController"
 	});
+	$routeProvider.when('/altaOTs', {
+		templateUrl : "pages/altaOTs.html",
+		controller: "OTsAddController"
+	});
 	$routeProvider.when('/listaOTs', {
 		templateUrl : "pages/listOTs.html",
 		controller : "OTsListController"
