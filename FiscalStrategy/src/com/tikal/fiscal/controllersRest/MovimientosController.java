@@ -30,7 +30,7 @@ import com.tikal.fiscal.util.JsonConvertidor;
 @RequestMapping(value={"/movimientos"})
 public class MovimientosController {
 	
-	@Autowired
+	@Autowired 
 	MovimientoDAO movimientodao;
 	
 	@RequestMapping(value={"/load/{page}"},method= RequestMethod.GET, produces="application/json")
@@ -43,7 +43,6 @@ public class MovimientosController {
 				lista=movimientodao.getFull(page);
 				res.getWriter().print(JsonConvertidor.toJson(lista));
 		}
-		
 	}
 	@RequestMapping(value={"/paginas"},method= RequestMethod.GET, produces="application/json")
 	private void pages(HttpServletRequest req, HttpServletResponse res) throws IOException{

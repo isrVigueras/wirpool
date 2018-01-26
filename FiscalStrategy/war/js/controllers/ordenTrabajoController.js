@@ -318,7 +318,7 @@ app.controller("OTsAddController",['$scope','$cookieStore', '$window', '$locatio
 
 	}
 	
-	$scope.guardarOT=function(){
+	$scope.guardarOT=function(){ 
 		if($scope.tablaPagos == true){
 			if($scope.datos.porLic != null || $scope.datos.porDes != null || $scope.datos.porBrok.length != 0){
 					for(var i in $scope.brokers){
@@ -333,7 +333,7 @@ app.controller("OTsAddController",['$scope','$cookieStore', '$window', '$locatio
 						$window.location.reload();
 					});
 			}else{
-				alert("No hay Comisiones registradas");
+				alert("No hay Comisiones registradas"); 
 			}	
 		}else{
 			alert("No hay Pagos registrados");

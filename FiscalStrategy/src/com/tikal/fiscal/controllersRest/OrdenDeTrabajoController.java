@@ -139,7 +139,7 @@ public class OrdenDeTrabajoController {
 		
 	}
 	
-	@RequestMapping(value="/addMovimiento/{id}", method=RequestMethod.POST, consumes="application/json")
+	@RequestMapping(value="/addMovimiento/", method=RequestMethod.POST, consumes="application/json")
 	private void addMovimiento(HttpServletRequest req, HttpServletResponse res, @RequestBody String json, @PathVariable Long id) throws UnsupportedEncodingException{
 		AsignadorDeCharset.asignar(req, res);
 		OrdenDeTrabajo ot=otdao.get(id);
