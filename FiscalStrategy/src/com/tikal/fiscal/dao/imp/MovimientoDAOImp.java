@@ -7,6 +7,7 @@ import java.util.List;
 
 import com.tikal.fiscal.dao.MovimientoDAO;
 import com.tikal.fiscal.model.Movimiento;
+import com.tikal.fiscal.model.OrdenDeTrabajo;
 
 public class MovimientoDAOImp implements MovimientoDAO {
 
@@ -30,6 +31,26 @@ public class MovimientoDAOImp implements MovimientoDAO {
 		List<Movimiento> m = new ArrayList<Movimiento>();
 		m.addAll(ofy().load().type(Movimiento.class).ids(ids).values());
 		return m;
+	}
+
+
+	@Override
+	public List<Movimiento> getFull(int page) {
+		return ofy().load().type(Movimiento.class).offset(25 * (page - 1)).order("- fechaCreacion").limit(25).list();
+	}
+
+	@Override
+	public int getPages(Long id) {
+		int pages = 0;
+		if (id != null) {
+			pages = ofy().load().type(Movimiento.class).filter("id", id).list().size();
+
+		} else {
+			pages = ofy().load().type(Movimiento.class).list().size();
+		}
+		pages = pages / 25;
+		pages++;
+		return pages;
 	}
 
 }

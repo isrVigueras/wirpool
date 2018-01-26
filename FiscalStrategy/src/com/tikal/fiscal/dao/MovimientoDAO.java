@@ -14,5 +14,8 @@ public interface MovimientoDAO {
 	
 	public List<Movimiento> getByIds(List<Long> ids);
 	
+	public List<Movimiento> getFull(int page);
+	
+	public int getPages(Long id);
 	
 }

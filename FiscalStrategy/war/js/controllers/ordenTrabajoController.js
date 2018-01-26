@@ -62,7 +62,6 @@ app.service("ordenTrabajoservice",['$http', '$q', function($http, $q){
 	
 	this.addot=function(ot){
 		var d = $q.defer();
-		console.log("addot");
 		$http.post("ots/add/",ot).then(
 			function(response) {
 				d.resolve(response.data);
@@ -119,7 +118,7 @@ app.controller("OTsAddController",['$scope','$cookieStore', '$window', '$locatio
 			saldoCom: null,
 	}
 	
-	$scope.tiposOp = [{id:1, nombre: "20-Transfer"},{id:2, nombre: "40-Resguardo"}];
+	$scope.tiposOp = [{id:1, nombre: "20-Transfer"},{id:2, nombre: "40-Resguardo"} ,{id:3, nombre: "60-Efectivo"}];
 	
 	$scope.operaciones={
 		tipo: null,
@@ -385,7 +384,7 @@ app.controller("OTsAddController",['$scope','$cookieStore', '$window', '$locatio
 }]);
 
 
-app.controller("ordenTrabajoController",['$scope','$window', '$location', '$cookieStore','ordenTrabajoservice','usuarioservice','brockerservice', function($scope, $window, $location, $cookieStore, ordenTrabajoservice,usuarioservice,brockerservice){
+app.controller("ordenTrabajoController",['$scope','$window', '$location', '$cookieStore','ordenTrabajoservice','usuarioservice','brockerservice',function($scope, $window, $location, $cookieStore, ordenTrabajoservice,usuarioservice,brockerservice){
 	var indice = null;
 	var tipoOperacion= null;
 	$scope.perfil=false;
@@ -400,7 +399,6 @@ app.controller("ordenTrabajoController",['$scope','$window', '$location', '$cook
 	}
 	
 	ordenTrabajoservice.loadot($cookieStore.get("idOt")).then(function(data){
-		console.log(data);
 		$scope.otvo= data;
 		if($scope.otvo.responsable.perfil=="Ejecutivo"){
 			$scope.perfil=true;

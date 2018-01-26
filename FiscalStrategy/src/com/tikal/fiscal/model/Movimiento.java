@@ -15,7 +15,7 @@ public class Movimiento {
 	@Index
 	private Long id_cuenta;
 	@Index
-	private Long cuentaCliente;
+	private Date fechaCreacion;
 	private float monto;
 	
 	@Index
@@ -30,9 +30,16 @@ public class Movimiento {
 	@Index
 	private String tipo;
 	private String descripcion;
+	private Long idresponsable;
 	
 	
 	
+	public Long getIdresponsable() {
+		return idresponsable;
+	}
+	public void setIdresponsable(Long idresponsable) {
+		this.idresponsable = idresponsable;
+	}
 	public String getDescripcion() {
 		return descripcion;
 	}
@@ -44,12 +51,6 @@ public class Movimiento {
 	}
 	public void setId_cuenta(Long id_cuenta) {
 		this.id_cuenta = id_cuenta;
-	}
-	public Long getCuentaCliente() {
-		return cuentaCliente;
-	}
-	public void setCuentaCliente(Long cuentaCliente) {
-		this.cuentaCliente = cuentaCliente;
 	}
 	public float getMonto() {
 		return monto;
@@ -110,6 +111,12 @@ public class Movimiento {
 	}
 	public void setId(Long id) {
 		this.id = id;
+	}
+	public Date getFechaCreacion() {
+		return fechaCreacion;
+	}
+	public void setFechaCreacion(Date fechaCreacion) {
+		this.fechaCreacion = fechaCreacion;
 	}
 	
 	
