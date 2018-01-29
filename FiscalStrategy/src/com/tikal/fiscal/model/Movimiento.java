@@ -14,7 +14,7 @@ public class Movimiento {
 	
 	@Index
 	private Long id_cuenta;
-	@Index
+	@Index 
 	private Date fechaCreacion;
 	private float monto;
 	

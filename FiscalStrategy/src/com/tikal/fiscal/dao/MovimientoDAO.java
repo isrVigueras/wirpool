@@ -7,7 +7,7 @@ import com.tikal.fiscal.model.Movimiento;
 public interface MovimientoDAO {
 	
 	public void save(Movimiento m);
-	
+	 
 	public Movimiento get(Long id);
 	
 	public List<Movimiento> getByOT(Long idOt);
