@@ -13,7 +13,7 @@ public class MovimientoDAOImp implements MovimientoDAO {
 
 	@Override
 	public void save(Movimiento m) {
-		ofy().save().entity(m).now();
+		ofy().save().entity(m).now(); 
 	}
 
 	@Override

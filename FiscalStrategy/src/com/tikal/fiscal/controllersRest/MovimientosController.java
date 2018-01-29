@@ -29,7 +29,7 @@ import com.tikal.fiscal.util.JsonConvertidor;
 @Controller
 @RequestMapping(value={"/movimientos"})
 public class MovimientosController {
-	
+	 
 	@Autowired 
 	MovimientoDAO movimientodao;
 	
