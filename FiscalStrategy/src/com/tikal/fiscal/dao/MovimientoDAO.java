@@ -13,7 +13,7 @@ public interface MovimientoDAO {
 	public List<Movimiento> getByOT(Long idOt);
 	
 	public List<Movimiento> getByIds(List<Long> ids);
-	
+	 
 	public List<Movimiento> getFull(int page, String tipo); 
 	
 	public int getPages(Long id);

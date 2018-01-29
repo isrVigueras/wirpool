@@ -29,7 +29,7 @@ import com.tikal.fiscal.util.JsonConvertidor;
 @Controller
 @RequestMapping(value={"/movimientos"})
 public class MovimientosController {
-	 
+	     
 	@Autowired 
 	MovimientoDAO movimientodao;
 	
@@ -44,6 +44,7 @@ public class MovimientosController {
 				res.getWriter().print(JsonConvertidor.toJson(lista));
 		}
 	} 
+	
 	@RequestMapping(value={"/paginas"},method= RequestMethod.GET, produces="application/json")
 	private void pages(HttpServletRequest req, HttpServletResponse res) throws IOException{
 		AsignadorDeCharset.asignar(req, res);
