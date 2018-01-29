@@ -69,9 +69,18 @@ app.service("ordenTrabajoservice",['$http', '$q', function($http, $q){
 		return d.promise;
 	}
 	
+	this.addMov=function(ot){
+		var d = $q.defer();
+		$http.post("ots/addMovimiento/",ot).then(
+			function(response) {
+				d.resolve(response.data);
+			});
+		return d.promise;
+	}
+	
 	this.updateot=function(ot){
 		var d = $q.defer();
-		$http.post("ots/update/",ot).then(
+		$http.post("movimientos/update/",ot).then(
 			function(response) {
 				d.resolve(response.data);
 			});
@@ -118,7 +127,7 @@ app.controller("OTsAddController",['$scope','$cookieStore', '$window', '$locatio
 			saldoCom: null,
 	}
 	
-	$scope.tiposOp = [{id:1, nombre: "20-Transfer"},{id:2, nombre: "40-Resguardo"} ,{id:3, nombre: "60-Efectivo"}];
+	$scope.tiposOp = TiposOperacion();
 	
 	$scope.operaciones={
 		tipo: null,
@@ -160,29 +169,21 @@ app.controller("OTsAddController",['$scope','$cookieStore', '$window', '$locatio
 		$scope.brokers.push(renglon);
 	}
 	
-	$scope.addOperacion= function(){
+	$scope.addOper= function(operacion){
 		if($scope.operaciones.tipo != null && $scope.operaciones.descripcion != null && $scope.operaciones.monto != null){
 			var renglon= {tipo: $scope.operaciones.tipo, descripcion: $scope.operaciones.descripcion , monto:$scope.operaciones.monto, estatus:$scope.operaciones.estatus}
-			$scope.otVO.movimientos.push(renglon);
-			$scope.tablaOper="true";
+			if(operacion=='OPC'){
+				$scope.otVO.movimientos.push(renglon);
+				$scope.tablaOper="true";
+				$scope.datos.saldoMov= calcularSaldo($scope.otVO.movimientos,$scope.montoRetorno,$scope.datos.importe);
+			}else{
+				$scope.otVO.comisiones.push(renglon);
+				$scope.tablaOperAsesor="true";
+				$scope.datos.saldoCom=calcularSaldo($scope.otVO.comisiones,$scope.montosTotal,$scope.datos.importe);
+			}
 			$scope.operaciones.tipo=null;
 			$scope.operaciones.descripcion=null;
 			$scope.operaciones.monto=null;
-			$scope.datos.saldoMov= calcularSaldo($scope.otVO.movimientos,$scope.montoRetorno,$scope.datos.importe);
-		}else{
-			alert("No se registraron datos");
-		}
-	}
-	
-	$scope.addOperAsesor= function(){
-		if($scope.operaciones.tipo != null && $scope.operaciones.descripcion != null && $scope.operaciones.monto != null){
-			var renglon= {tipo: $scope.operaciones.tipo, descripcion: $scope.operaciones.descripcion , monto:$scope.operaciones.monto, estatus:$scope.operaciones.estatus}
-			$scope.otVO.comisiones.push(renglon);
-			$scope.tablaOperAsesor="true";
-			$scope.operaciones.tipo=null;
-			$scope.operaciones.descripcion=null;
-			$scope.operaciones.monto=null;
-			$scope.datos.saldoCom=calcularSaldo($scope.otVO.comisiones,$scope.montosTotal,$scope.datos.importe);
 		}else{
 			alert("No se registraron datos");
 		}
@@ -289,23 +290,6 @@ app.controller("OTsAddController",['$scope','$cookieStore', '$window', '$locatio
 		}	
 	}	
 	
-//	$scope.calcularSaldo=function(operacion){
-//		var sumatoria= 0;
-//		var arreglo = null;
-//		var monto=null;
-//		if(operacion=="OPC"){
-//			for(var i in $scope.otVO.movimientos){
-//				 sumatoria= sumatoria + $scope.otVO.movimientos[i].monto; 
-//			}
-//			$scope.datos.saldoMov= $scope.redondea((parseInt($scope.montoRetorno) + parseInt($scope.datos.importe)) - sumatoria);
-//		}else{
-//			for(var i in $scope.otVO.comisiones){
-//				 sumatoria= sumatoria + $scope.otVO.comisiones[i].monto; 
-//			}
-//			$scope.datos.saldoCom= $scope.redondea((parseInt($scope.montosTotal) + parseInt($scope.datos.importe)) - sumatoria);
-//		} 
-//	}
-	
 	$scope.eliminarRenglon=function(renglon){
 		$scope.otVO.pagos.splice(renglon, 1);
 		if($scope.otVO.pagos.length == 0){
@@ -376,17 +360,13 @@ app.controller("OTsAddController",['$scope','$cookieStore', '$window', '$locatio
 		
 	}
 	
-//	$scope.reload = function(){	
-//		$location.path("/altaOTs");
-//		$window.location.reload();
-//	}
-	
 }]);
 
 
 app.controller("ordenTrabajoController",['$scope','$window', '$location', '$cookieStore','ordenTrabajoservice','usuarioservice','brockerservice',function($scope, $window, $location, $cookieStore, ordenTrabajoservice,usuarioservice,brockerservice){
 	var indice = null;
 	var tipoOperacion= null;
+	$scope.tiposOp = TiposOperacion();
 	$scope.perfil=false;
 	$scope.mov={
 			tipo: null,
@@ -425,10 +405,16 @@ app.controller("ordenTrabajoController",['$scope','$window', '$location', '$cook
 			if(operacion=="OPC"){
 				$scope.otvo.movimientos[index].estatus="CANCELADO";
 				$scope.otvo.ot.saldoMov=calcularSaldo($scope.otvo.movimientos,$scope.montoRetorno,$scope.otvo.ot.importe);
+				ordenTrabajoservice.updateot($scope.otvo.movimientos[index]).then(function(data){
+					$window.location.reload();
+				});
 			}
 			if(operacion=="OPA"){
 				$scope.otvo.comisiones[index].estatus="CANCELADO";
 				$scope.otvo.ot.saldoCom=calcularSaldo($scope.otvo.comisiones,$scope.montosTotal,$scope.otvo.ot.importe);
+				ordenTrabajoservice.updateot($scope.otvo.comisiones[index]).then(function(data){
+					$window.location.reload();
+				});
 			}
 		}
 		
@@ -463,9 +449,15 @@ app.controller("ordenTrabajoController",['$scope','$window', '$location', '$cook
 		if(tipoOperacion=='OPC'){
 			$scope.otvo.movimientos[indice].banco=$scope.mov.banco;
 			$scope.otvo.movimientos[indice].cuenta=$scope.mov.cuenta;
+			ordenTrabajoservice.updateot($scope.otvo.movimientos[indice]).then(function(data){
+				$window.location.reload();
+			});
 		}else{
 			$scope.otvo.comisiones[indice].banco=$scope.mov.banco;
 			$scope.otvo.comisiones[indice].cuenta=$scope.mov.cuenta;
+			ordenTrabajoservice.updateot($scope.otvo.comisiones[indice]).then(function(data){
+				$window.location.reload();
+			});
 		}
 		$scope.limpiarMov();
 	}
@@ -475,20 +467,40 @@ app.controller("ordenTrabajoController",['$scope','$window', '$location', '$cook
 			$scope.otvo.movimientos[indice].numTransaccion=$scope.mov.numTransaccion;
 			$scope.otvo.movimientos[indice].fecha=$scope.mov.fecha;
 			$scope.otvo.movimientos[indice].estatus="VALIDADO"
+				ordenTrabajoservice.updateot($scope.otvo.movimientos[indice]).then(function(data){
+					$window.location.reload();
+				});
 		}else{
 			$scope.otvo.comisiones[indice].numTransaccion=$scope.mov.numTransaccion;
 			$scope.otvo.comisiones[indice].fecha=$scope.mov.fecha;
 			$scope.otvo.comisiones[indice].estatus="VALIDADO"
+				ordenTrabajoservice.updateot($scope.otvo.comisiones[indice]).then(function(data){
+					$window.location.reload();
+				});
 		}
 		$scope.limpiarMov();
 	}
 	
-	$scope.actualizar=function(){
-		ordenTrabajoservice.updateot($scope.otvo).then(function(data){
-			showAlert("Se guardó la Orden de trabajo",$window);
-			$location.path("/listaOTs");
-			$window.location.reload();
-		})
+	
+	$scope.addOper= function(operacion){
+		if($scope.operaciones.tipo != null && $scope.operaciones.descripcion != null && $scope.operaciones.monto != null){
+			var renglon= {tipo: $scope.operaciones.tipo, descripcion: $scope.operaciones.descripcion , monto:$scope.operaciones.monto, estatus:"ACTIVO"}
+			if(operacion=='OPC'){
+				$scope.otvo.movimientos.push(renglon);
+				$scope.otvo.ot.saldoMov= calcularSaldo($scope.otvo.movimientos,$scope.montoRetorno,$scope.otvo.ot.importe);
+			}else{
+				$scope.otvo.comisiones.push(renglon);
+				$scope.otvo.ot.saldoCom= calcularSaldo($scope.otvo.comisiones,$scope.montoRetorno,$scope.otvo.ot.importe);
+			}
+			$scope.operaciones.tipo=null;
+			$scope.operaciones.descripcion=null;
+			$scope.operaciones.monto=null;
+			ordenTrabajoservice.addot($scope.otvo).then(function(data){
+				$window.location.reload();
+			});
+		}else{
+			alert("No se registraron datos");
+		}
 	}
 	
 	$scope.limpiarMov=function(){
@@ -500,6 +512,11 @@ app.controller("ordenTrabajoController",['$scope','$window', '$location', '$cook
 		$scope.mov.fecha= null;
 		$scope.mov.numTransaccion= null;
 		
+	}
+	
+	$scope.regresar=function(){
+			$location.path("/listaOTs");
+			$window.location.reload();
 	}
 	
 }]);	

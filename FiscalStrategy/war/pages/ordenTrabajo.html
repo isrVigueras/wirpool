@@ -20,7 +20,7 @@
 				</tr>
 			</thead>
 			<tbody>
-				<tr>
+				<tr >
 					<td>{{otvo.cliente.nickname}}</td>
 					<td>{{otvo.responsable.usuario}}</td>
 					<td>{{otvo.broker.nickname}}</td>
@@ -112,14 +112,20 @@
 					<td class="ng-binding">{{otvo.ot.retorno}}</td>
 					<td class="ng-binding">{{montoRetorno}}</td>
 				</tr>
-
 			</tbody>	
 		</table>
 	</div>
 	<br>
 	<div class="infComisiones">
 		<div class="Dlabel">
-			<label>Operaci&oacute;n Cliente</label>
+			<div class="row">
+				<div class="col-md-6">
+					<label>Operaci&oacute;n Cliente</label>
+				</div>
+				<div class="col-md-6" align="right">
+					<button class="btn btn-small"  data-toggle="modal" data-target="#myModalOper">Agregar</button>
+				</div>
+			</div>
 		</div>
 		<table style="width: 100%" class="table table-stripped">
 			<thead>
@@ -169,7 +175,14 @@
 	<br>
 	<div class="infComisiones">
 		<div class="Dlabel">
-			<label>Operaci&oacute;n Asesor</label>
+			<div class="row">
+				<div class="col-md-6" >
+					<label>Operaci&oacute;n Asesor</label>
+				</div>
+				<div class="col-md-6" align="right">
+					<button class="btn btn-small" data-toggle="modal" data-target="#myModalOperAsesor">Agregar</button>
+				</div>
+			</div>
 		</div>
 		<table style="width: 100%" class="table table-stripped">
 			<thead>
@@ -198,12 +211,16 @@
 						</button>
 					</td>
 					<td class="ng-binding">
-						<button class="btn btn-small" ng-show="perfil && mov.estatus!='CANCELADO' && mov.tipo != '60-Efectivo'" data-toggle="modal" ng-click="cargarMov($index,'OPA')" data-target="#modalEditar">
+						<button class="btn btn-small" data-toggle="modal" data-target="#modalEditar"
+							ng-show="perfil && mov.estatus!='CANCELADO' && mov.tipo != '60-Efectivo'" ng-disabled="mov.fecha != null && mov.numTransaccion != null"
+							 ng-click="cargarMov($index,'OPA')" >
 							<span class="glyphicon glyphicon-edit"></span>
 						</button>
 					</td>
 					<td class="ng-binding">
-						<button class="btn btn-small" ng-show="perfil && mov.estatus!='CANCELADO' && mov.tipo != '60-Efectivo'" data-toggle="modal"  ng-click="cargarMov($index,'OPA||')" data-target="#modalVerificar">
+						<button class="btn btn-small" data-toggle="modal"   data-target="#modalVerificar"
+							ng-show="perfil && mov.estatus!='CANCELADO' && mov.tipo != '60-Efectivo'" ng-disabled="mov.banco==null && mov.cuenta==null"
+							ng-click="cargarMov($index,'OPA')" >
 							<span class="glyphicon glyphicon-ok"></span>
 						</button>
 					</td>
@@ -215,9 +232,10 @@
 		</div>
 	</div>
 	
- 	<div class="row" ng-show="perfil">
-		<div class="col-md-12" align="center">
-			<button class="btn btn-primary" ng-click="actualizar()">Guardar</button>
+ 	<div class="row" >
+		<div class="col-md-12">
+		<hr>
+			<button class="btn btn-primary" ng-click="regresar()">Regresar</button>
 		</div>
 	</div> 
 	<div id="snackbar">Se guard&oacute; exitosamente</div>
@@ -397,3 +415,98 @@
 
 
 
+
+  <!-- Modal AddOper	-->
+  <div class="modal fade" id="myModalOper" tabindex="-1" data-backdrop="static" role="dialog" aria-labelledby="myModalOper" aria-hidden="true">                
+      <div class="modal-dialog" id="mdialTamanio">
+        <div class="modal-content">
+          <div class="modal-header">
+             <p class="modal-title" id="myModalLabel">Operacion Cliente</p>          
+          </div>
+          <div class="modal-body">
+	          <form>
+					<div class="row">
+	    				<div class="col-md-2">
+					    	<label class="control-label">Tipo de Operaci&oacute;n:</label>
+					    </div>
+					    <div class="col-md-4">
+			        		<select name="cuentas" class="form-control  mb-2"  ng-required="true" ng-model="operaciones.tipo" >
+				 				<option ng-repeat="op in tiposOp">{{op.nombre}}</option>
+				 			</select>
+				  		</div>
+				  		<div class="col-md-2" align="right">
+				  			<label class="control-label">Monto: </label>
+				  		</div>
+				  		<div class="col-md-4">
+	 						<input  class="form-control  mb-2" type="number" min="1" ng-required="true" ng-model="operaciones.monto">		
+				  		</div>
+				  	</div>
+				  	<br>
+				  	<div class="row">
+				  		<div class="col-md-2">
+				  			<label class="control-label">Descripci&oacute;n:</label>
+				  		</div>
+				  		<div class="col-md-10">
+							<input class="form-control  mb-2" type="text" ng-required="true"  ng-model="operaciones.descripcion"  placeholder="Detalle de Operacion..">			
+				  		</div>					
+					</div>
+					<br>
+					<div class="row" align="center">
+						<button class="btn btn-small" data-dismiss="modal"   ng-click="addOper('OPC')" >Guardar</button>
+					</div>
+	          </form>
+		  </div>
+			<br>
+      	   <div class="modal-footer">
+        		<button type="button" class="btn btn-default" data-dismiss="modal" >Cerrar</button>
+      		</div>
+        </div>
+      </div>
+</div>
+<!-- <!-- Modal AddOperAsesor	-->
+  <div class="modal fade" id="myModalOperAsesor" tabindex="-1" data-backdrop="static" role="dialog" aria-labelledby="myModalOper" aria-hidden="true">                
+      <div class="modal-dialog" id="mdialTamanio">
+        <div class="modal-content">
+          <div class="modal-header">
+             <p class="modal-title" id="myModalLabel">Operacion Asesor</p>          
+          </div>
+          <div class="modal-body">
+	          <form>
+					<div class="row">
+	    				<div class="col-md-2">
+					    	<label class="control-label">Tipo de Operaci&oacute;n:</label>
+					    </div>
+					    <div class="col-md-4">
+			        		<select name="cuentas" class="form-control  mb-2"  ng-required="true" ng-model="operaciones.tipo" >
+				 				<option ng-repeat="op in tiposOp">{{op.nombre}}</option>
+				 			</select>
+				  		</div>
+				  		<div class="col-md-2" align="right">
+				  			<label class="control-label">Monto: </label>
+				  		</div>
+				  		<div class="col-md-4">
+	 						<input  class="form-control  mb-2" type="number" min="1" ng-required="true" ng-model="operaciones.monto">		
+				  		</div>
+				  	</div>
+				  	<br>
+				  	<div class="row">
+				  		<div class="col-md-2">
+				  			<label class="control-label">Descripci&oacute;n:</label>
+				  		</div>
+				  		<div class="col-md-10">
+							<input class="form-control  mb-2" type="text" ng-required="true"  ng-model="operaciones.descripcion"  placeholder="Detalle de Operacion..">			
+				  		</div>					
+					</div>
+					<br>
+					<div class="row" align="center">
+						<button class="btn btn-small" data-dismiss="modal"   ng-click="addOper('OPA')" >Guardar</button>
+					</div>	
+	          </form>
+		  </div>
+			<br>
+      	   <div class="modal-footer">
+        		<button type="button" class="btn btn-default" data-dismiss="modal" >Cerrar</button>
+      		</div>
+        </div>
+      </div>
+</div>

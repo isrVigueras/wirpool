@@ -40,10 +40,10 @@ public class MovimientosController {
 		Usuario user=(Usuario) sesion.getAttribute("user");
 		List<Movimiento> lista=null;
 		if(user.getPerfil().compareTo("Caja")==0){	
-				lista=movimientodao.getFull(page);
+				lista=movimientodao.getFull(page, "60-Efectivo");
 				res.getWriter().print(JsonConvertidor.toJson(lista));
 		}
-	}
+	} 
 	@RequestMapping(value={"/paginas"},method= RequestMethod.GET, produces="application/json")
 	private void pages(HttpServletRequest req, HttpServletResponse res) throws IOException{
 		AsignadorDeCharset.asignar(req, res);
@@ -61,8 +61,7 @@ public class MovimientosController {
 	@RequestMapping(value="/update/", method=RequestMethod.POST, consumes="application/json")
 	private void update(HttpServletRequest req, HttpServletResponse res, @RequestBody String json) throws UnsupportedEncodingException{
 		AsignadorDeCharset.asignar(req, res);
-		Movimiento mov= (Movimiento) JsonConvertidor.fromJson(json, OrdenDeTrabajoVO.class);
-		mov.setFechaCreacion(new Date());
+		Movimiento mov= (Movimiento) JsonConvertidor.fromJson(json, Movimiento.class);
 		movimientodao.save(mov);
 	}
 	

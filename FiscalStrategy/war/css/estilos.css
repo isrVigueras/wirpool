@@ -133,6 +133,7 @@ tr:nth-child(even) {
 
 .table-striped>tbody>tr:nth-of-type(odd) {
     background-color: #ffffff;
+      table-layout: fixed;
 }
 .table>tbody>tr>td, .table>tbody>tr>th, .table>tfoot>tr>td, .table>tfoot>tr>th, .table>thead>tr>td, .table>thead>tr>th {
     padding: 5px;

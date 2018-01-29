@@ -35,8 +35,8 @@ public class MovimientoDAOImp implements MovimientoDAO {
 
 
 	@Override
-	public List<Movimiento> getFull(int page) {
-		return ofy().load().type(Movimiento.class).offset(25 * (page - 1)).order("- fechaCreacion").limit(25).list();
+	public List<Movimiento> getFull(int page, String tipo) {
+		return ofy().load().type(Movimiento.class).filter("tipo",tipo).offset(25 * (page - 1)).order("- fechaCreacion").limit(25).list();
 	}
 
 	@Override

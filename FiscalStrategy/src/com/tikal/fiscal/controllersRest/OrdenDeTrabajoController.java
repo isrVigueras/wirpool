@@ -57,11 +57,13 @@ public class OrdenDeTrabajoController {
 		
 		List<Movimiento> mM = otvo.getMovimientos();
 		for(int i=0;i<mM.size();i++){
+			mM.get(i).setFechaCreacion(new Date());
 			movimientodao.save(mM.get(i));
 			ot.getMovimientos().add(mM.get(i).getId());
 		}
 		List<Movimiento> mC = otvo.getComisiones();
 		for(int i=0;i<mC.size();i++){
+			mC.get(i).setFechaCreacion(new Date());
 			movimientodao.save(mC.get(i));
 			ot.getComisiones().add(mC.get(i).getId());
 		}
@@ -137,29 +139,35 @@ public class OrdenDeTrabajoController {
 		otvo.setOt(ot);
 		res.getWriter().print(JsonConvertidor.toJson(otvo));
 		
-	}
+	} 
 	
 	@RequestMapping(value="/addMovimiento/", method=RequestMethod.POST, consumes="application/json")
-	private void addMovimiento(HttpServletRequest req, HttpServletResponse res, @RequestBody String json, @PathVariable Long id) throws UnsupportedEncodingException{
-		AsignadorDeCharset.asignar(req, res);
-		OrdenDeTrabajo ot=otdao.get(id);
-		Movimiento m= (Movimiento) JsonConvertidor.fromJson(json, Movimiento.class);
-		m.setFecha(new Date());
-		//ot.getMovimientos().add(m);
-		otdao.save(ot);
-	}
-	
-	@RequestMapping(value="/update/", method=RequestMethod.POST, consumes="application/json")
-	private void update(HttpServletRequest req, HttpServletResponse res, @RequestBody String json) throws UnsupportedEncodingException{
+	private void addMovimiento(HttpServletRequest req, HttpServletResponse res, @RequestBody String json) throws IOException{
 		AsignadorDeCharset.asignar(req, res);
 		OrdenDeTrabajoVO otvo= (OrdenDeTrabajoVO) JsonConvertidor.fromJson(json, OrdenDeTrabajoVO.class);
-		List<Movimiento> mM = otvo.getMovimientos();
-		for(int i=0;i<mM.size();i++){
-			movimientodao.save(mM.get(i));
-		}
-		List<Movimiento> mC = otvo.getComisiones();
-		for(int i=0;i<mC.size();i++){
-			movimientodao.save(mC.get(i));
+		OrdenDeTrabajo ot = otvo.getOt();
+		HttpSession sesion= req.getSession();
+		Usuario user=(Usuario) sesion.getAttribute("user");
+		if(user.getPerfil().compareTo("Ejecutivo")==0 || user.getPerfil().compareTo("Administrativo")==0){
+				List<Movimiento> m = otvo.getMovimientos();
+				for(int i=0; i<m.size();i++){
+					if(m.get(i).getId() == null){
+						m.get(i).setFechaCreacion(new Date());
+						movimientodao.save(m.get(i));
+						ot.getMovimientos().add(m.get(i).getId());
+					}
+				}
+				List<Movimiento> c = otvo.getComisiones();
+				for(int i=0; i<c.size();i++){
+					if(c.get(i).getId() == null){
+						c.get(i).setFechaCreacion(new Date());
+						movimientodao.save(c.get(i));
+						ot.getMovimientos().add(c.get(i).getId());
+					}
+				}
+		}else{
+			String error = "Usuario sin permisos para realizar esta accion";
+			res.getWriter().print(JsonConvertidor.toJson(error));
 		}
 	}
 	
