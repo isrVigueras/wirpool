@@ -39,16 +39,11 @@ public class MovimientosController {
 		HttpSession sesion= req.getSession();
 		Usuario user=(Usuario) sesion.getAttribute("user");
 		List<Movimiento> lista=null;
-		if(user.getPerfil().compareTo("Caja")==0){	
+//		if(user.getPerfil().compareTo("Caja")==0){	
 				lista=movimientodao.getFull(page, "60-Efectivo");
 				res.getWriter().print(JsonConvertidor.toJson(lista));
-		}
-<<<<<<< HEAD
-	} 
-	
-=======
+//		}
 	}
->>>>>>> branch 'master' of https://github.com/isrVigueras/wirpool
 	@RequestMapping(value={"/paginas"},method= RequestMethod.GET, produces="application/json")
 	private void pages(HttpServletRequest req, HttpServletResponse res) throws IOException{
 		AsignadorDeCharset.asignar(req, res);

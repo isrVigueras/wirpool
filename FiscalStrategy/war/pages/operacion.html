@@ -1,0 +1,185 @@
+<section class="jumbotron">
+	<div class="container">
+		<h2>Ordenes de trabajo</h2>
+		<submenu />
+	</div>
+</section>
+<div class="container">
+<div class="infComisiones">
+		<div class="Dlabel">
+			<label>Operaci&oacute;n Cliente</label>
+		</div><br>
+		<div class="col-md-6">
+			<ul class="pagination .pagination-sm" style="margin:0;">
+				<li ng-repeat="abc in paginas" id="{{'pagA'+abc}}"
+					ng-click="cargarPagina(abc)"><a>{{abc}}</a></li>
+
+			</ul>
+		</div>
+		<table style="width: 100%" class="table table-stripped">
+			<thead>
+				<tr class="ng-scope">
+					<th>Tipo de Operaci&oacute;n</th>
+					<th align="center">Descripci&oacute;n</th>
+					<th align="center">Monto</th>
+					<th align="center" >Estatus</th>
+					<th></th>
+					<th></th>
+					<th></th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr ng-repeat="mov in otvo.movimientos" class="ng-scope" ng-if="mov.tipo='60-Efectivo'">
+					<td class="ng-binding">{{mov.tipo}}</td>
+					<td class="ng-binding">{{mov.descripcion}}</td>
+					<td class="ng-binding">{{mov.monto}}</td>
+					<td class="ng-binding">{{mov.estatus}}</td>
+<!-- 					<td class="ng-binding" align="center"><button id="cancelOp" ng-hide="mov.estatus=='CANCELADO' || " class="btn btn-small"  ng-click="cancelarOp($index, 'OPC')" title="Cancelar"> -->
+<!-- 								<span class="glyphicon glyphicon-remove"></span> -->
+<!-- 						</button> -->
+<!-- 					</td> -->
+					<td class="ng-binding">
+						<button class="btn btn-small"   data-toggle="modal" 
+							ng-show="perfil && mov.estatus!='CANCELADO'" ng-disabled="mov.fecha != null && mov.numTransaccion != null" 
+							ng-click="cargarMov($index,'OPC')" data-target="#modalEditar">
+							<span class="glyphicon glyphicon-edit"></span>
+						</button>
+					</td>
+					<td class="ng-binding">
+						<button class="btn btn-small"  data-toggle="modal" 
+						 ng-show="perfil && mov.estatus!='CANCELADO'" ng-disabled="mov.banco==null && mov.cuenta==null" 
+						 ng-click="cargarMov($index)" data-target="#modalVerificar" title="Verificar">
+							<span class="glyphicon glyphicon-ok"></span>
+						</button>
+					</td>
+				</tr>
+			</tbody>	
+		</table>
+		
+		<div class="col-md-6">
+			<ul class="pagination .pagination-sm" style="margin:0;">
+				<li ng-repeat="abc in paginas" id="{{'pagB'+abc}}"
+					ng-click="cargarPagina(abc)"><a>{{abc}}</a></li>
+
+			</ul>
+		</div>
+	</div>
+	
+	</div>
+	
+	<!-- Modal EditOper	-->
+  <div class="modal fade" id="modalEditar" tabindex="-1" data-backdrop="static" role="dialog" aria-hidden="true">                
+      <div class="modal-dialog" id="mdialTamanio">
+        <div class="modal-content">
+          <div class="modal-header">
+             <p class="modal-title" id="myModalLabel">Detalle de Operaci&oacute;n</p>          
+          </div>
+          <div class="modal-body">
+	          <form>
+	          	<div class="row">
+	    			<div class="col-md-4">
+					   	<label class="control-label">Tipo de Operaci&oacute;n:</label>
+					   	<input class="form-control  mb-2" type="text" ng-disabled="true" value="{{mov.tipo}}">
+				  	</div>
+				  	<div class="col-md-2">
+				  		<label class="control-label">Monto: </label>
+	 					<input class="form-control  mb-2" type="text"  ng-disabled="true" value="{{mov.monto}}">		
+				  	</div>
+			  		<div class="col-md-6">
+			  			<label class="control-label">Descripci&oacute;n:</label>
+						<input class="form-control  mb-2" type="text" ng-disabled="true" value="{{mov.descripcion}}">			
+			  		</div>					
+				</div>
+				<br><br>
+				<div class="row">
+					<div class="col-md-6">
+						<label class="control-label">Banco:</label>		 
+						<select class="form-control" ng-required="!multiple" ng-model="mov.banco" id="slc" ng-required="true" ng-change="Cuentas()">
+						
+		<option ng-repeat="cc in banco" >{{cc.banco}}</option>
+		<option selected="selected"></option>
+		</select>
+
+					</div>
+					<div class="col-md-6">
+						<label class="control-label">Cuentas:</label>
+						<select name="cuentas" class="form-control form-control-sm" ng-required="true" ng-model="mov.cuenta" value="{{mov.cuenta}}">
+					 		<option ng-repeat=" c in cuentas">{{c.cuenta}}</option> 
+						</select>	
+					</div>
+				</div>
+				<br><br>
+				<div class="row" align="center">
+					<button class="btn btn-small" data-dismiss="modal"   ng-click="updateMov()" >Guardar</button>
+				</div>	 
+	          </form>
+		  </div>
+			<br>
+      	   <div class="modal-footer">
+        		<button type="button" class="btn btn-default" data-dismiss="modal" >Cerrar</button>
+      		</div>
+        </div>
+      </div>
+</div>
+
+
+<!-- Modal Verificar-->
+  <div class="modal fade" id="modalVerificar" tabindex="-1" data-backdrop="static" role="dialog" aria-hidden="true">                
+      <div class="modal-dialog" id="mdialTamanio">
+        <div class="modal-content">
+          <div class="modal-header">
+             <p class="modal-title" id="myModalLabel">Validar Operaci&oacute;n</p>          
+          </div>
+          <div class="modal-body">
+	          <form>
+	          	<div class="row">
+	    			<div class="col-md-1"></div>
+	    			<div class="col-md-2"><label class="control-label">Tipo de Operaci&oacute;n:</label></div>
+	    			<div class="col-md-2">{{mov.tipo}}</div>
+				  	<div class="col-md-3" align="right"><label class="control-label" >Monto: $</label></div>
+				  	<div class="col-md-2"><label>{{mov.monto}}</label></div>
+				  	<div class="col-md-1"></div>
+				 </div>
+				 <br>
+				 <div class="row">
+				 	<div class="col-md-1"></div>
+				 	<div class="col-md-2"><label class="control-label">Banco: </label></div>
+					<div class="col-md-3">{{mov.banco}}</div> 
+			  		<div class="col-md-2" align="right"><label class="control-label">No. de Cheque:</label></div>
+					<div class="col-md-3"><input class="form-control  mb-2" type="number"></div>
+					<div class="col-md-1"></div>					
+				</div>
+				<br>
+				<div class="row">
+					<div class="col-md-1"></div>
+					<div class="col-md-2"><label class="control-label">Cuenta: </label></div>
+					<div class="col-md-2">{{mov.cuenta}}</div> 
+					<div class="col-md-1"></div>
+					<div class="col-md-2" align="right"><label class="control-label">Fecha:</label></div>
+					<div class="col-md-3">	 
+						<input input-date class="form-control form-control-sm ng-empty ng-dirty ng-touched ng-invalid ng-invalid-date"
+							ng-model="mov.fecha" type="date">
+					</div>
+					<div class="col-md-1"></div>
+				</div>
+				<br>
+				<div class="row">
+					<div class="col-md-1"></div>
+					<div class="col-md-2"><label class="control-label">Descripci&oacute;n: </label></div>
+			  		<div class="col-md-8">{{mov.descripcion}}</div>
+			  		<div class="col-md-1"></div>
+			  	</div>
+				<br><br>
+				<div class="row" align="center">
+					<button class="btn btn-small" data-dismiss="modal"   ng-click="validMov()" >Validar Movimiento</button>
+				</div>	
+	          </form>
+		  </div>
+			<br>
+      	   <div class="modal-footer">
+        		<button type="button" class="btn btn-default" data-dismiss="modal" >Cerrar</button>
+      		</div>
+        </div>
+      </div>
+</div>
+	
