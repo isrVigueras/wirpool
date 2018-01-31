@@ -34,20 +34,20 @@
 					<td class="ng-binding">{{mov.descripcion}}</td>
 					<td class="ng-binding">{{mov.monto}}</td>
 					<td class="ng-binding">{{mov.estatus}}</td>
-<!-- 					<td class="ng-binding" align="center"><button id="cancelOp" ng-hide="mov.estatus=='CANCELADO' || " class="btn btn-small"  ng-click="cancelarOp($index, 'OPC')" title="Cancelar"> -->
+<!-- 					<td class="ng-binding" align="center"><button id="cancelOp" ng-hide="mov.estatus=='CANCELADO'" class="btn btn-small"  ng-click="cancelarOp($index, 'OPC')" title="Cancelar"> -->
 <!-- 								<span class="glyphicon glyphicon-remove"></span> -->
 <!-- 						</button> -->
 <!-- 					</td> -->
 					<td class="ng-binding">
 						<button class="btn btn-small"   data-toggle="modal" 
-							ng-show="perfil && mov.estatus!='CANCELADO'" ng-disabled="mov.fecha != null && mov.numTransaccion != null" 
+							ng-show="perfil && mov.estatus!='CANCELADO'" ng-disabled="mov.fecha != null && mov.numTransaccion != null || mov.estatus=='VALIDADO'" 
 							ng-click="cargarMov($index,'OPC')" data-target="#modalEditar">
 							<span class="glyphicon glyphicon-edit"></span>
 						</button>
 					</td>
 					<td class="ng-binding">
 						<button class="btn btn-small"  data-toggle="modal" 
-						 ng-show="perfil && mov.estatus!='CANCELADO'" ng-disabled="mov.banco==null && mov.cuenta==null" 
+						 ng-show="perfil && mov.estatus!='CANCELADO'" ng-disabled="mov.banco==null && mov.cuenta==null || mov.estatus=='VALIDADO'" 
 						 ng-click="cargarMov($index)" data-target="#modalVerificar" title="Verificar">
 							<span class="glyphicon glyphicon-ok"></span>
 						</button>
