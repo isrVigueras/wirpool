@@ -274,5 +274,19 @@ $scope.eliminarcc = function(cuenta){
 };
 
 //	$scope.cargarPagina(1);
-	
+$scope.nobrocker="true";
+
+$('#addbrocker').on("click", function () {
+	nobrocker="false";
+//    if (!this.checked) {
+//    	$scope.nobrocker="true";
+//		
+//		
+//    }else{ 
+//    	
+//    	$scope.nobrocker="false";
+//		
+//    }
+});	
+
 }]);

@@ -64,8 +64,12 @@ app.config([ '$routeProvider', function($routeProvider) {
 		templateUrl : "pages/pendienteListClients.html",
 		controller : "OTsListController"
 	});
-	$routeProvider.when('/ListaPendiente', {
+	$routeProvider.when('/ListaPendienteA', {
 		templateUrl : "pages/operacion.html",
+		controller : "OTPendientes"
+	});
+	$routeProvider.when('/ListaPendienteV', {
+		templateUrl : "pages/listaValidados.html",
 		controller : "OTPendientes"
 	});
 	$routeProvider.when('/ordenTrabajo',{
