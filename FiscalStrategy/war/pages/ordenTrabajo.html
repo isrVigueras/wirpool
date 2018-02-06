@@ -42,6 +42,7 @@
 					<th>Moneda</th>
 					<th>Banco</th>
 					<th>Cuenta</th>
+					<th>fecha</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -50,6 +51,7 @@
 					<td>{{p.moneda}}</td>
 					<td>{{p.banco}}</td>
 					<td>{{p.cuenta}}</td>
+					<td>{{p.fecha}}</td>
 				</tr>
 			</tbody>
 		</table>
@@ -152,17 +154,17 @@
 					<td class="ng-binding" align="center"><button id="cancelOp" ng-hide="mov.estatus=='CANCELADO'" class="btn btn-small"  ng-click="cancelarOp($index, 'OPC')" title="Cancelar">
 								<span class="glyphicon glyphicon-remove"></span>
 						</button>
-					</td>
+					 </td>
 					<td class="ng-binding">
 						<button class="btn btn-small"   data-toggle="modal" 
-							ng-show="perfil && mov.estatus!='CANCELADO' && mov.tipo != '60-Efectivo'" ng-disabled="mov.fecha != null && mov.numTransaccion != null" 
+							ng-show="perfil && mov.estatus!='CANCELADO' && mov.tipo != '60-Efectivo'" ng-disabled="mov.estatus == 'VALIDADO'"
 							ng-click="cargarMov($index,'OPC')" data-target="#modalEditar">
 							<span class="glyphicon glyphicon-edit"></span>
 						</button>
 					</td>
 					<td class="ng-binding">
 						<button class="btn btn-small"  data-toggle="modal" 
-						 ng-show="perfil && mov.estatus!='CANCELADO' && mov.tipo != '60-Efectivo'" ng-disabled="mov.banco==null && mov.cuenta==null" 
+						 ng-show="mov.estatus!='CANCELADO' && mov.tipo != '60-Efectivo'" ng-disabled="mov.estatus == 'VALIDADO'"
 						 ng-click="cargarMov($index,'OPC')" data-target="#modalVerificar">
 							<span class="glyphicon glyphicon-ok"></span>
 						</button>
@@ -209,17 +211,17 @@
 					<td align="center" class="ng-binding"><button id="cancelOp" ng-hide="mov.estatus=='CANCELADO'" class="btn btn-small"  ng-click="cancelarOp($index, 'OPA')" title="Cancelar">
 								<span class="glyphicon glyphicon-remove"></span>
 						</button>
-					</td>
-					<td class="ng-binding">
+ 					</td>
+					<td class="ng-binding"> 
 						<button class="btn btn-small" data-toggle="modal" data-target="#modalEditar"
-							ng-show="perfil && mov.estatus!='CANCELADO' && mov.tipo != '60-Efectivo'" ng-disabled="mov.fecha != null && mov.numTransaccion != null"
+							ng-show="perfil && mov.estatus!='CANCELADO' && mov.tipo != '60-Efectivo'" ng-disabled="mov.estatus == 'VALIDADO'"
 							 ng-click="cargarMov($index,'OPA')" >
 							<span class="glyphicon glyphicon-edit"></span>
 						</button>
-					</td>
-					<td class="ng-binding">
+		 			</td>
+					<td class="ng-binding"> 
 						<button class="btn btn-small" data-toggle="modal"   data-target="#modalVerificar"
-							ng-show="perfil && mov.estatus!='CANCELADO' && mov.tipo != '60-Efectivo'" ng-disabled="mov.banco==null && mov.cuenta==null"
+							ng-show="mov.estatus!='CANCELADO' && mov.tipo != '60-Efectivo'" ng-disabled="mov.estatus == 'VALIDADO'"
 							ng-click="cargarMov($index,'OPA')" >
 							<span class="glyphicon glyphicon-ok"></span>
 						</button>
@@ -271,10 +273,10 @@
 						<label class="control-label">Banco:</label>		 
 						<select name="banco" ng-model="mov.banco" class="form-control form-control-sm" ng-required="true" ng-change="Cuentas()" >
 							<option value="Banco Nacional de M&eacutexico (Banamex)">Banco
-								Nacional de M&eacutexico (Banamex)</option>
+								Nacional de M&eacute;xico (Banamex)</option>
 							<option value="Banco Santander (M&eacutexico)">Banco
-								Santander (M&eacutexico)</option>
-							<option value="HSBC Mexico">HSBC M&eacutexico</option>
+								Santander (M&eacute;xico)</option>
+							<option value="HSBC Mexico">HSBC M&eacute;xico</option>
 							<option value="Scotiabank Inverlat">Scotiabank Inverlat</option>
 							<option value="BBVA Bancomer">BBVA Bancomer</option>
 							<option value="Banco Mercantil del Norte (Banorte)">Banco
@@ -289,25 +291,25 @@
 							<option value="Bansi">Bansi</option>
 							<option value="Banca Afirme">Banca Afirme</option>
 							<option value="Bank of America Mexico">Bank of America
-								M&eacutexico</option>
+								M&eacute;xico</option>
 							<option value="Banco JP Morgan">Banco JP Morgan</option>
 							<option value="Banco Ve Por Mas">Banco Ve Por Mas</option>
 							<option value="American Express Bank (Mexico)">American
-								Express Bank (M&eacutexico)</option>
+								Express Bank (M&eacute;xico)</option>
 							<option value="Investa Bank">Investa Bank</option>
 							<option value="CiBanco">CiBanco</option>
 							<option value="Bank of Tokyo-Mitsubishi UFJ (Mexico)">Bank
-								of Tokyo-Mitsubishi UFJ (M&eacutexico)</option>
+								of Tokyo-Mitsubishi UFJ (M&eacute;xico)</option>
 							<option value="Banco Monex">Banco Monex</option>
 							<option value="Deutsche Bank Mexico">Deutsche Bank
-								M&eacutexico</option>
+								M&eacute;xico</option>
 							<option value="Banco Azteca">Banco Azteca</option>
 							<option value="Banco Credit Suisse (Mexico)">Banco
-								Credit Suisse (M&eacutexico)</option>
+								Credit Suisse (M&eacute;xico)</option>
 							<option value="Banco Autofin Mexico">Banco Autofin
-								M&eacutexico</option>
+								M&eacute;xico</option>
 							<option value="Barclays Bank Mexico">Barclays Bank
-								M&eacutexico</option>
+								M&eacute;xico</option>
 							<option value="Banco Ahorro Famsa">Banco Ahorro Famsa</option>
 							<option value="Intercam Banco">Intercam Banco</option>
 							<option value="ABC Capital ">ABC Capital</option>
@@ -318,7 +320,7 @@
 							<option value="Bancoppel">Bancoppel</option>
 							<option value="ConsuBanco">ConsuBanco</option>
 							<option value="Banco Wal-Mart de Mexico">Banco Wal-Mart
-								de M&eacutexico</option>
+								de M&eacute;xico</option>
 							<option value="Volkswagen Bank">Volkswagen Bank</option>
 							<option value="Banco Base">Banco Base</option>
 							<option value="Banco Pagatodo">Banco Pagatodo</option>
@@ -326,8 +328,8 @@
 							<option value="Bankaool">Bankaool</option>
 							<option value="Banco Inmobiliario Mexicano">Banco
 								Inmobiliario Mexicano</option>
-							<option value="Fundacion Donde Banco">Fundaci&oacuten
-								Dond&eacute Banco</option>
+							<option value="Fundacion Donde Banco">Fundaci&oacute;n
+								Dond&eacute; Banco</option>
 							<option value="Banco Bancrea">Banco Bancrea</option>
 						</select>	
 					</div>
@@ -375,7 +377,7 @@
 				 	<div class="col-md-1"></div>
 				 	<div class="col-md-2"><label class="control-label">Banco: </label></div>
 					<div class="col-md-3">{{mov.banco}}</div> 
-			  		<div class="col-md-2" align="right"><label class="control-label">No. de Cheque:</label></div>
+			  		<div class="col-md-2" align="right"><label class="control-label">No. de Cheque/Transacci&oacute;n:</label></div>
 					<div class="col-md-3"><input class="form-control  mb-2" type="number"></div>
 					<div class="col-md-1"></div>					
 				</div>
@@ -438,7 +440,7 @@
 				  			<label class="control-label">Monto: </label>
 				  		</div>
 				  		<div class="col-md-4">
-	 						<input  class="form-control  mb-2" type="number" min="1" ng-required="true" ng-model="operaciones.monto">		
+	 						<input  class="form-control  mb-2" type="number" min="1" ng-required="true" ng-model="operaciones.monto" ng-change="verificarSaldo('OPC')">		
 				  		</div>
 				  	</div>
 				  	<br>
@@ -451,6 +453,8 @@
 				  		</div>					
 					</div>
 					<br>
+					<div align="center">{{errorSaldo}}</div>
+					<br>
 					<div class="row" align="center">
 						<button class="btn btn-small" data-dismiss="modal"   ng-click="addOper('OPC')" >Guardar</button>
 					</div>
@@ -458,7 +462,7 @@
 		  </div>
 			<br>
       	   <div class="modal-footer">
-        		<button type="button" class="btn btn-default" data-dismiss="modal" >Cerrar</button>
+        		<button type="button" class="btn btn-default" data-dismiss="modal" ng-clic="limpiaOperaciones()">Cerrar</button>
       		</div>
         </div>
       </div>
@@ -485,7 +489,7 @@
 				  			<label class="control-label">Monto: </label>
 				  		</div>
 				  		<div class="col-md-4">
-	 						<input  class="form-control  mb-2" type="number" min="1" ng-required="true" ng-model="operaciones.monto">		
+	 						<input  class="form-control  mb-2" type="number" min="1" ng-required="true" ng-model="operaciones.monto" ng-change="verificarSaldo('OPA')">		
 				  		</div>
 				  	</div>
 				  	<br>
@@ -498,6 +502,8 @@
 				  		</div>					
 					</div>
 					<br>
+					<div align="center">{{errorSaldo}}</div>
+					<br>
 					<div class="row" align="center">
 						<button class="btn btn-small" data-dismiss="modal"   ng-click="addOper('OPA')" >Guardar</button>
 					</div>	
@@ -505,7 +511,7 @@
 		  </div>
 			<br>
       	   <div class="modal-footer">
-        		<button type="button" class="btn btn-default" data-dismiss="modal" >Cerrar</button>
+        		<button type="button" class="btn btn-default" data-dismiss="modal" ng-clik="limpiaOperaciones()">Cerrar</button>
       		</div>
         </div>
       </div>

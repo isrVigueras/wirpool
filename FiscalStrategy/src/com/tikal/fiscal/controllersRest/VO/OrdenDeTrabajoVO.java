@@ -23,6 +23,7 @@ public class OrdenDeTrabajoVO {
 	private List<Movimiento> comisiones;
 	
 	private Usuario responsable;
+	
 
 	public List<Movimiento> getMovimientos() {
 		return movimientos;
@@ -78,6 +79,6 @@ public class OrdenDeTrabajoVO {
 
 	public void setPagos(List<PagoRecibido> pagos) {
 		this.pagos = pagos;
-	}	
-	
+	}
+
 }

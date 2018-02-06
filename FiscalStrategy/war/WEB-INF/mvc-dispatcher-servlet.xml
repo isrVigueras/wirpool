@@ -23,6 +23,7 @@
 	<bean class="com.tikal.fiscal.dao.imp.CuentaClienteDAOImp"></bean>
 	<bean class="com.tikal.fiscal.dao.imp.CuentaDAOImp"></bean>
 	<bean class="com.tikal.fiscal.dao.imp.MovimientoDAOImp"></bean>
+	<bean class="com.tikal.fiscal.dao.imp.FolioOTImp"></bean>
 	
 
 

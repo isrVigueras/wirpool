@@ -11,6 +11,7 @@ public class Cuenta {
 	
 	@Index
 	private String banco;
+	@Index
 	private String cuenta;
 	@Index
 	private String clabe;

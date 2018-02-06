@@ -19,4 +19,6 @@ public interface CuentaDAO {
 	
 	public List<Cuenta> getByBanco(String banco);
 	
+	public List<Cuenta> getByCuenta(String cuenta);
+	
 }

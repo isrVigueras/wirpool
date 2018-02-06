@@ -2,6 +2,7 @@ package com.tikal.fiscal.controllersRest;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -16,12 +17,18 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.pdf.PdfWriter;
 import com.tikal.fiscal.controllersRest.VO.OrdenDeTrabajoVO;
 import com.tikal.fiscal.dao.ClienteDAO;
+import com.tikal.fiscal.dao.CuentaDAO;
+import com.tikal.fiscal.dao.FolioOtDAO;
 import com.tikal.fiscal.dao.MovimientoDAO;
 import com.tikal.fiscal.dao.OrdenDeTrabajoDAO;
 import com.tikal.fiscal.dao.PagoRecibidoDAO;
 import com.tikal.fiscal.model.Cliente;
+import com.tikal.fiscal.model.Cuenta;
+import com.tikal.fiscal.model.FolioOT;
 import com.tikal.fiscal.model.Movimiento;
 import com.tikal.fiscal.model.OrdenDeTrabajo;
 import com.tikal.fiscal.model.PagoRecibido;
@@ -29,11 +36,12 @@ import com.tikal.fiscal.model.Usuario;
 import com.tikal.fiscal.security.UsuarioDAO;
 import com.tikal.fiscal.util.AsignadorDeCharset;
 import com.tikal.fiscal.util.JsonConvertidor;
+import com.tikal.fiscal.util.PDFot;
 
 @Controller
 @RequestMapping(value={"/ots"})
 public class OrdenDeTrabajoController {
-
+	
 	@Autowired
 	OrdenDeTrabajoDAO otdao;	
 	
@@ -49,11 +57,25 @@ public class OrdenDeTrabajoController {
 	@Autowired
 	MovimientoDAO movimientodao;
 	
+	@Autowired
+	CuentaDAO cuentadao;
+	
+	@Autowired
+	FolioOtDAO foliodao;
+	
 	@RequestMapping(value="/add/", method=RequestMethod.POST, consumes="application/json")
 	private void crear(HttpServletRequest req, HttpServletResponse res, @RequestBody String json) throws UnsupportedEncodingException{
 		AsignadorDeCharset.asignar(req, res);
 		OrdenDeTrabajoVO otvo= (OrdenDeTrabajoVO) JsonConvertidor.fromJson(json, OrdenDeTrabajoVO.class);
 		OrdenDeTrabajo ot= otvo.getOt();
+		FolioOT generaFolio = new FolioOT ();
+		if(foliodao.getAll().size() > 0){
+			List<FolioOT> numfolio = foliodao.getAll();
+			generaFolio.setNoFolio(numfolio.get(0).getNoFolio() + 1);
+			foliodao.save(generaFolio);
+		}else{
+			foliodao.save(generaFolio);
+		}
 		
 		List<Movimiento> mM = otvo.getMovimientos();
 		for(int i=0;i<mM.size();i++){
@@ -68,6 +90,7 @@ public class OrdenDeTrabajoController {
 			ot.getComisiones().add(mC.get(i).getId());
 		}
 		
+		ot.setFolioImpresion(1);
 		otdao.save(ot);
 		List<PagoRecibido> pagos = otvo.getPagos();
 		PagoRecibido pago;
@@ -178,5 +201,78 @@ public class OrdenDeTrabajoController {
 			return user.getId();
 		}
 		return null;
+	}
+	
+	@RequestMapping(value = {"/descargaOt/{id}" }, method = RequestMethod.GET)
+	public void pdfNota(HttpServletRequest req, HttpServletResponse res, @PathVariable Long id) throws IOException, DocumentException{
+		AsignadorDeCharset.asignar(req, res);
+		HttpSession sesion= req.getSession();
+		Usuario user=(Usuario) sesion.getAttribute("user");
+		//if(user.getPerfil().compareTo("Ejecutivo")==0){
+			res.setContentType("Application/PDF");
+			OrdenDeTrabajoVO otvo=armaOTVO(id);
+			List<PagoRecibido> pagos= otvo.getPagos();
+			List<Cuenta> cuentas = new ArrayList<Cuenta>();
+			for(int i=0; i<pagos.size(); i++){
+				List<Cuenta> aux = cuentadao.getByCuenta(pagos.get(i).getCuenta());
+				if(aux.size() > 0){
+					cuentas.add(aux.get(0));
+				}
+			}
+			PDFot pdf = new PDFot();
+			PdfWriter writer = PdfWriter.getInstance(pdf.getDocument(), res.getOutputStream());
+			pdf.getDocument().open();
+			pdf.construirPdf(foliodao.get("1"), otvo, cuentas);
+			pdf.getDocument().close();
+			res.getOutputStream().flush();
+			res.getOutputStream().close();
+//		}else{
+//			res.sendError(403);
+//		}
+	}
+	
+	
+	
+	private OrdenDeTrabajoVO armaOTVO (Long id){
+		OrdenDeTrabajo ot=otdao.get(id);
+		OrdenDeTrabajoVO otvo= new OrdenDeTrabajoVO();
+		
+		if(ot.getFolioImpresion() > 0){
+			int siguiente = ot.getFolioImpresion();
+			siguiente++;
+			ot.setFolioImpresion(siguiente);
+			otdao.save(ot);
+		}
+		
+		if(ot.getIdCliente()!=null){
+			Cliente cliente= clientedao.get(ot.getIdCliente());
+			ot.setIdBrocker(cliente.getIdBrocker());
+			ot.setIdResponsable(cliente.getResponsable());
+			otvo.setCliente(cliente);
+		}
+		
+		if(ot.getIdBrocker()!=null){
+			Cliente broker = clientedao.get(ot.getIdBrocker());
+			otvo.setBroker(broker);
+		}else{
+			Cliente broker = new Cliente();
+			broker.setNickname("No especificado");
+			otvo.setBroker(broker);
+		}
+		if(ot.getIdResponsable()!=null){
+			Usuario u= usuariodao.consultarId(ot.getIdResponsable());
+			u.setPass("");
+			otvo.setResponsable(u);
+		}
+		
+		List<Movimiento> mov = movimientodao.getByIds(ot.getMovimientos());
+		otvo.setMovimientos(mov);
+		List<Movimiento> com = movimientodao.getByIds(ot.getComisiones());
+		otvo.setComisiones(com);
+		
+		List<PagoRecibido> pagos= pagodao.getPagosByOT(ot.getId());
+		otvo.setPagos(pagos);
+		otvo.setOt(ot);		
+		return otvo;
 	}
 }

@@ -21,10 +21,10 @@
 						<label>Banco:</label> 
 						<select name="banco" ng-model="pago.banco" class="form-control form-control-sm" ng-required="true" ng-change="Cuentas()" >
 							<option value="Banco Nacional de M&eacutexico (Banamex)">Banco
-								Nacional de M&eacutexico (Banamex)</option>
+								Nacional de M&eacute;xico (Banamex)</option>
 							<option value="Banco Santander (M&eacutexico)">Banco
-								Santander (M&eacutexico)</option>
-							<option value="HSBC Mexico">HSBC M&eacutexico</option>
+								Santander (M&eacute;xico)</option>
+							<option value="HSBC Mexico">HSBC M&eacute;xico</option>
 							<option value="Scotiabank Inverlat">Scotiabank Inverlat</option>
 							<option value="BBVA Bancomer">BBVA Bancomer</option>
 							<option value="Banco Mercantil del Norte (Banorte)">Banco
@@ -39,25 +39,25 @@
 							<option value="Bansi">Bansi</option>
 							<option value="Banca Afirme">Banca Afirme</option>
 							<option value="Bank of America Mexico">Bank of America
-								M&eacutexico</option>
+								M&eacute;xico</option>
 							<option value="Banco JP Morgan">Banco JP Morgan</option>
 							<option value="Banco Ve Por Mas">Banco Ve Por Mas</option>
 							<option value="American Express Bank (Mexico)">American
-								Express Bank (M&eacutexico)</option>
+								Express Bank (M&eacute;xico)</option>
 							<option value="Investa Bank">Investa Bank</option>
 							<option value="CiBanco">CiBanco</option>
 							<option value="Bank of Tokyo-Mitsubishi UFJ (Mexico)">Bank
-								of Tokyo-Mitsubishi UFJ (M&eacutexico)</option>
+								of Tokyo-Mitsubishi UFJ (M&eacute;xico)</option>
 							<option value="Banco Monex">Banco Monex</option>
 							<option value="Deutsche Bank Mexico">Deutsche Bank
-								M&eacutexico</option>
+								M&eacute;xico</option>
 							<option value="Banco Azteca">Banco Azteca</option>
 							<option value="Banco Credit Suisse (Mexico)">Banco
-								Credit Suisse (M&eacutexico)</option>
+								Credit Suisse (M&eacute;xico)</option>
 							<option value="Banco Autofin Mexico">Banco Autofin
-								M&eacutexico</option>
+								M&eacute;xico</option>
 							<option value="Barclays Bank Mexico">Barclays Bank
-								M&eacutexico</option>
+								M&eacute;xico</option>
 							<option value="Banco Ahorro Famsa">Banco Ahorro Famsa</option>
 							<option value="Intercam Banco">Intercam Banco</option>
 							<option value="ABC Capital ">ABC Capital</option>
@@ -68,7 +68,7 @@
 							<option value="Bancoppel">Bancoppel</option>
 							<option value="ConsuBanco">ConsuBanco</option>
 							<option value="Banco Wal-Mart de Mexico">Banco Wal-Mart
-								de M&eacutexico</option>
+								de M&eacute;xico</option>
 							<option value="Volkswagen Bank">Volkswagen Bank</option>
 							<option value="Banco Base">Banco Base</option>
 							<option value="Banco Pagatodo">Banco Pagatodo</option>
@@ -77,7 +77,7 @@
 							<option value="Banco Inmobiliario Mexicano">Banco
 								Inmobiliario Mexicano</option>
 							<option value="Fundacion Donde Banco">Fundaci&oacuten
-								Dond&eacute Banco</option>
+								Dond&eacute; Banco</option>
 							<option value="Banco Bancrea">Banco Bancrea</option>
 						</select>	
 					</div>
@@ -92,7 +92,7 @@
 				<div class="row">				
 					<div class="col-md-2">
 						<label>Monto:</label> 
-						<input name="monto" class="form-control form-control-sm" ng-model="pago.monto" type="number" min="0" ng-required="true" ><br>
+						<input name="monto" class="form-control form-control-sm" ng-model="pago.monto" type="number" min="0" ><br>
 					</div>
 					<!--    	   ^([A-ZÑ\x26]{3,4}([0-9]{2})(0[1-9]|1[0-2])(0[1-9]|1[0-9]|2[0-9]|3[0-1]))([A-Z\d]{3})?$ -->
 					<div class="col-md-2">
@@ -107,7 +107,7 @@
  					<div class="col-md-2">
 						<label>Fecha de Pago:</label> 
 						<input input-date class="form-control form-control-sm ng-empty ng-dirty ng-touched ng-invalid ng-invalid-date"
-							ng-model="pago.fechaPago" type="date" ng-required="true" /> 
+							ng-model="pago.fecha" type="date" ng-required="true" /> 
 					</div>
  <!-- 					<div class="col-md-2" align="right">
 						<button  class="btn" ng-click="myForm.$valid && addPago()"> Agregar Pago</button>
@@ -132,7 +132,7 @@
 					<tbody>
 						<tr ng-repeat="p in otVO.pagos">
 							<td>{{p.cliente}}</td>
-							<td>{{p.fpago}}</td>
+							<td>{{p.fecha}}</td>
 							<td>{{p.banco}}</td>
 							<td>{{p.cuenta}}</td>
 							<td>{{p.monto}}</td>
@@ -324,9 +324,9 @@
 				  			<label class="control-label">Monto: </label>
 				  		</div>
 				  		<div class="col-md-4">
-	 						<input  class="form-control  mb-2" type="number" min="1" ng-required="true" ng-model="operaciones.monto">		
+	 						<input  class="form-control  mb-2" type="number" min="1" ng-required="true" ng-model="operaciones.monto"  ng-change="verificarSaldo('OPC')">		
 				  		</div>
-				  	</div>
+				  	</div> 
 				  	<br>
 				  	<div class="row">
 				  		<div class="col-md-2">
@@ -337,6 +337,8 @@
 				  		</div>					
 					</div>
 					<br>
+					<div align="center">{{errorSaldo}}</div>
+					<br>
 					<div class="row" align="center">
 						<button class="btn btn-small" data-dismiss="modal"   ng-click="addOper('OPC')" >Guardar</button>
 					</div>
@@ -344,7 +346,7 @@
 		  </div>
 			<br>
       	   <div class="modal-footer">
-        		<button type="button" class="btn btn-default" data-dismiss="modal" >Cerrar</button>
+        		<button type="button" class="btn btn-default" data-dismiss="modal"  ng-click="limpiaOperaciones()">Cerrar</button>
       		</div>
         </div>
       </div>
@@ -371,7 +373,7 @@
 				  			<label class="control-label">Monto: </label>
 				  		</div>
 				  		<div class="col-md-4">
-	 						<input  class="form-control  mb-2" type="number" min="1" ng-required="true" ng-model="operaciones.monto">		
+	 						<input  class="form-control  mb-2" type="number" min="1" ng-required="true" ng-model="operaciones.monto" ng-change="verificarSaldo('OPA')">		
 				  		</div>
 				  	</div>
 				  	<br>
@@ -384,6 +386,8 @@
 				  		</div>					
 					</div>
 					<br>
+					<div align="center">{{errorSaldo}}</div>
+					<br>
 					<div class="row" align="center">
 						<button class="btn btn-small" data-dismiss="modal"   ng-click="addOper('OPA')" >Guardar</button>
 					</div>	
@@ -391,7 +395,7 @@
 		  </div>
 			<br>
       	   <div class="modal-footer">
-        		<button type="button" class="btn btn-default" data-dismiss="modal" >Cerrar</button>
+        		<button type="button" class="btn btn-default" data-dismiss="modal"  ng-click="limpiaOperaciones()">Cerrar</button>
       		</div>
         </div>
       </div>

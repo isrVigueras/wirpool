@@ -46,10 +46,13 @@ public class OrdenDeTrabajo {
 	private float []montoBrok;
 	
 	private float importe;
+	private float iva;
 	private float total;
 	
 	private float retorno;
+	private float totalComisiones;
 	
+	private int folioImpresion;
 	
 	public float getSaldoMov() {
 		return saldoMov;
@@ -204,6 +207,23 @@ public class OrdenDeTrabajo {
 	public void setMovimientos(List<Long> movimientos) {
 		this.movimientos = movimientos;
 	}
-	
+	public float getIva() {
+		return iva;
+	}
+	public void setIva(float iva) {
+		this.iva = iva;
+	}
+	public float getTotalComisiones() {
+		return totalComisiones;
+	}
+	public void setTotalComisiones(float totalComisiones) {
+		this.totalComisiones = totalComisiones;
+	}
+	public int getFolioImpresion() {
+		return folioImpresion;
+	}
+	public void setFolioImpresion(int folioImpresion) {
+		this.folioImpresion = folioImpresion;
+	}
 	
 }

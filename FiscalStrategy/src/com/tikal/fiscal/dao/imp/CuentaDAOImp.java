@@ -1,10 +1,12 @@
 package com.tikal.fiscal.dao.imp;
 
+import static com.googlecode.objectify.ObjectifyService.ofy;
+
+import java.util.ArrayList;
 import java.util.List;
 
 import com.tikal.fiscal.dao.CuentaDAO;
 import com.tikal.fiscal.model.Cuenta;
-import static com.googlecode.objectify.ObjectifyService.ofy;
 
 public class CuentaDAOImp implements CuentaDAO {
 
@@ -42,6 +44,15 @@ public class CuentaDAOImp implements CuentaDAO {
 	@Override
 	public List<Cuenta> getByBanco(String banco) {
 		return ofy().load().type(Cuenta.class).filter("enabled",true).filter("banco",banco).list();
+	}
+
+	@Override
+	public List<Cuenta> getByCuenta(String cuenta) {
+		List<Cuenta> lista= ofy().load().type(Cuenta.class).filter("enabled",true).filter("cuenta", cuenta).list();
+		if(lista.size()>0){
+			return lista;
+		}
+		return new ArrayList<Cuenta>(); 
 	}
 
 }
