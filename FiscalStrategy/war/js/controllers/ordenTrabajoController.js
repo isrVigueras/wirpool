@@ -116,6 +116,7 @@ app.service("ordenTrabajoservice",['$http', '$q', function($http, $q){
 }]);
 
 app.controller("OTsAddController",['$scope','$cookieStore', '$window', '$location', 'ordenTrabajoservice','cuentaservice', function($scope, $cookieStore, $window, $location, ordenTrabajoservice,cuentaservice){
+	$scope.bancos = catalogoBancos();
 	$scope.tablaPagos= false;
 	$scope.tablaOper= false;
 	$scope.tablaOperAsesor=false;
@@ -179,7 +180,7 @@ app.controller("OTsAddController",['$scope','$cookieStore', '$window', '$locatio
 				$scope.datos.nombreCliente = $scope.cliente[i].nickname;
 			}
 		}
-		var renglon= {cliente:$scope.datos.nombreCliente, fecha:$scope.pago.fecha,banco:$scope.pago.banco, cuenta:$scope.pago.cuenta, monto:$scope.pago.monto, moneda:$scope.pago.moneda}
+		var renglon= {cliente:$scope.datos.nombreCliente, fecha:$scope.pago.fecha, banco:$scope.pago.banco, cuenta:$scope.pago.cuenta, monto:$scope.pago.monto, moneda:$scope.pago.moneda}
 		$scope.otVO.pagos.push(renglon);
 		$scope.tablaPagos=true;
 		$scope.limpiaPago();
@@ -439,6 +440,7 @@ app.controller("ordenTrabajoController",['$scope','$window', '$location', '$cook
 	var indice = null;
 	var tipoOperacion= null;
 	$scope.tiposOp = TiposOperacion();
+	$scope.bancos = catalogoBancos();
 	$scope.perfil=false;
 	$scope.errorSaldo=" ";
 	$scope.mov={

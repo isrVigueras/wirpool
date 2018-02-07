@@ -30,7 +30,13 @@
 					<td>{{ot.estatus}}</td>
 					<td><button class="btn btn-small" ng-click="ver(ot.id)">
 							<i class="glyphicon glyphicon-eye-open"></i>
-						</button></td>
+						</button>
+						<a class="btn btn-info" data-toggle="tooltip"
+							title="Imprimir OT"
+							href=" ots/descargaOt/{{ot.id}}" download="ordenDeTrabajo.pdf">
+							<i class="glyphicon glyphicon-print"></i>
+						</a>	
+					</td>
 				</tr>
 			</tbody>	
 		</table>

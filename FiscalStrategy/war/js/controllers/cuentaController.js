@@ -56,6 +56,7 @@ app.service("cuentaservice",['$http', '$q', function($http, $q){
 //}]);
 
 app.controller("cuentaController",['$scope','$window', '$location', '$cookieStore','cuentaservice', function($scope, $window, $location, $cookieStore, cuentaservice){
+	$scope.bancos = catalogoBancos();
 	cuentaservice.load().then(function(data) {
 		$scope.cuentas = data;
 
