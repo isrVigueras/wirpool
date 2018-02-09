@@ -232,12 +232,10 @@ public class OrdenDeTrabajoController {
 	}
 	
 
-	@RequestMapping(value={"/getClientesBrokers/{page}"},method= RequestMethod.GET, produces="application/json")
-	public void getPage(HttpServletResponse res, HttpServletRequest req, @PathVariable int page) throws IOException{
+	@RequestMapping(value={"/getClientesBrokers"},method= RequestMethod.GET, produces="application/json")
+	public void getPage(HttpServletResponse res, HttpServletRequest req) throws IOException{
 		AsignadorDeCharset.asignar(req, res);
-		List<Cliente> lista= clientedao.getClientes(page, "cliente");
-		List<Cliente> aux= clientedao.getClientes(page, "brocker");
-		lista.addAll(aux);
+		List<Cliente> lista= clientedao.getAll();
 		res.getWriter().print(JsonConvertidor.toJson(lista));
 	}
 	

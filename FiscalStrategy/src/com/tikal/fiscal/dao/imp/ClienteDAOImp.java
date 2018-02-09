@@ -31,7 +31,7 @@ public class ClienteDAOImp implements ClienteDAO{
 	}
 
 	@Override
-	public void eliminar(Cliente c) {
+	public void eliminar(Cliente c) { 
 		c.setEnabled(false);
 		this.save(c);
 	}
@@ -45,6 +45,12 @@ public class ClienteDAOImp implements ClienteDAO{
 	@Override
 	public List<Cliente> getTipo(String tipo) {
 		List<Cliente> lista= ofy().load().type(Cliente.class).filter("enabled",true).filter("tipo","tipo").list();
+		return lista;
+	}
+
+	@Override
+	public List<Cliente> getAll() {
+		List<Cliente> lista= ofy().load().type(Cliente.class).filter("enabled",true).list();
 		return lista;
 	}
 
