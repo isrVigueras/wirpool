@@ -16,7 +16,7 @@ function calcularSaldo(prox, arrMov, total,importe){
 
 
 function TiposOperacion (){
-	var tiposOp = [{id:1, nombre: "20-Transfer"},{id:2, nombre: "40-Resguardo"} ,{id:3, nombre: "60-Efectivo"},{id:3, nombre: "80-Cheque"}];
+	var tiposOp = [{id:1, nombre: "Transfer"},{id:2, nombre: "Resguardo"} ,{id:3, nombre: "Efectivo"},{id:3, nombre: "Cheque"}];
 	return tiposOp;
 }
 

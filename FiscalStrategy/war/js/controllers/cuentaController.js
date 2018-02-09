@@ -48,7 +48,7 @@ app.service("cuentaservice",['$http', '$q', function($http, $q){
 //				d.resolve(response.data);
 //			});
 //		return d.promise;
-//	}
+//	} 
 	
 }]);
 //app.service("xservice",['$http', '$q', function($http, $q){
