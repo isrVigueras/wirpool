@@ -231,7 +231,15 @@ public class OrdenDeTrabajoController {
 //		}
 	}
 	
-	
+
+	@RequestMapping(value={"/getClientesBrokers/{page}"},method= RequestMethod.GET, produces="application/json")
+	public void getPage(HttpServletResponse res, HttpServletRequest req, @PathVariable int page) throws IOException{
+		AsignadorDeCharset.asignar(req, res);
+		List<Cliente> lista= clientedao.getClientes(page, "cliente");
+		List<Cliente> aux= clientedao.getClientes(page, "brocker");
+		lista.addAll(aux);
+		res.getWriter().print(JsonConvertidor.toJson(lista));
+	}
 	
 	private OrdenDeTrabajoVO armaOTVO (Long id){
 		OrdenDeTrabajo ot=otdao.get(id);
