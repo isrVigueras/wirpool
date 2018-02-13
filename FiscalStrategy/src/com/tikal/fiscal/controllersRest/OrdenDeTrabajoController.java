@@ -68,39 +68,55 @@ public class OrdenDeTrabajoController {
 		AsignadorDeCharset.asignar(req, res);
 		OrdenDeTrabajoVO otvo= (OrdenDeTrabajoVO) JsonConvertidor.fromJson(json, OrdenDeTrabajoVO.class);
 		OrdenDeTrabajo ot= otvo.getOt();
-		FolioOT generaFolio = new FolioOT ();
-		if(foliodao.getAll().size() > 0){
-			List<FolioOT> numfolio = foliodao.getAll();
-			generaFolio.setNoFolio(numfolio.get(0).getNoFolio() + 1);
-			foliodao.save(generaFolio);
+		HttpSession sesion= req.getSession();
+		Usuario user=(Usuario) sesion.getAttribute("user");
+		if(user.getPerfil().compareTo("Ejecutivo")==0 || user.getPerfil().compareTo("AdministradorRoot")==0 || user.getPerfil().compareTo("AdministradorRoot")==0){
+			ot.setIdResponsable(user.getId());
+			ot.setFolioImpresion(1);
+	
+			FolioOT generaFolio = new FolioOT ();
+			if(foliodao.getAll().size() > 0){
+				List<FolioOT> numfolio = foliodao.getAll();
+				generaFolio.setNoFolio(numfolio.get(0).getNoFolio() + 1);
+				foliodao.save(generaFolio);
+			}else{
+				foliodao.save(generaFolio);
+			}
+	
+			List<Movimiento> mM = otvo.getMovimientos();
+			for(int i=0;i<mM.size();i++){
+				mM.get(i).setFechaCreacion(new Date());
+				movimientodao.save(mM.get(i));
+				ot.getMovimientos().add(mM.get(i).getId());
+			}
+			List<Movimiento> mC = otvo.getComisiones();
+			for(int i=0;i<mC.size();i++){
+				mC.get(i).setFechaCreacion(new Date());
+				movimientodao.save(mC.get(i));
+				ot.getComisiones().add(mC.get(i).getId());
+			}
+			otdao.save(ot);
+			
+			List<PagoRecibido> pagos = otvo.getPagos();
+			PagoRecibido pago;
+			for(int i=0; i<pagos.size(); i++){
+				pago= pagos.get(i);
+				pago.setOt(ot.getId());
+			}
+			pagodao.save(pagos);
+			
+			if(otvo.getCliente() != null){
+				Cliente cliente= otvo.getCliente();
+				clientedao.save(cliente);
+			}
+			
+			if(otvo.getBroker() != null){
+				Cliente brocker= otvo.getBroker();
+				clientedao.save(brocker);
+			}
 		}else{
-			foliodao.save(generaFolio);
+			
 		}
-		
-		List<Movimiento> mM = otvo.getMovimientos();
-		for(int i=0;i<mM.size();i++){
-			mM.get(i).setFechaCreacion(new Date());
-			movimientodao.save(mM.get(i));
-			ot.getMovimientos().add(mM.get(i).getId());
-		}
-		List<Movimiento> mC = otvo.getComisiones();
-		for(int i=0;i<mC.size();i++){
-			mC.get(i).setFechaCreacion(new Date());
-			movimientodao.save(mC.get(i));
-			ot.getComisiones().add(mC.get(i).getId());
-		}
-		
-		ot.setFolioImpresion(1);
-		otdao.save(ot);
-		List<PagoRecibido> pagos = otvo.getPagos();
-		PagoRecibido pago;
-		for(int i=0; i<pagos.size(); i++){
-			pago= pagos.get(i);
-			pago.setOt(ot.getId());
-		}
-		
-		pagodao.save(pagos);
-		
 	}
 	
 	
@@ -114,9 +130,14 @@ public class OrdenDeTrabajoController {
 			lista=otdao.getByResponsable(user.getId(), page);
 			res.getWriter().print(JsonConvertidor.toJson(lista));
 		}else{
-			if(user.getPerfil().compareTo("AdministradorRoot")==0){	
+			if(user.getPerfil().compareTo("Administrador")==0 ){	
 				lista=otdao.getFull(page);
 				res.getWriter().print(JsonConvertidor.toJson(lista));
+			}else{
+				if(user.getPerfil().compareTo("AdministradorRoot")==0 ){
+					lista=otdao.getFull(page);
+					res.getWriter().print(JsonConvertidor.toJson(lista));
+				}
 			}
 		}
 		
@@ -124,7 +145,6 @@ public class OrdenDeTrabajoController {
 	@RequestMapping(value={"/paginas"},method= RequestMethod.GET, produces="application/json")
 	private void pages(HttpServletRequest req, HttpServletResponse res) throws IOException{
 		AsignadorDeCharset.asignar(req, res);
-		
 		Long id=this.isEjecutivo(req);
 		res.getWriter().print(otdao.getPages(id));
 	}
@@ -171,7 +191,7 @@ public class OrdenDeTrabajoController {
 		OrdenDeTrabajo ot = otvo.getOt();
 		HttpSession sesion= req.getSession();
 		Usuario user=(Usuario) sesion.getAttribute("user");
-		if(user.getPerfil().compareTo("Ejecutivo")==0 || user.getPerfil().compareTo("Administrativo")==0){
+		if(user.getPerfil().compareTo("Ejecutivo")==0 || user.getPerfil().compareTo("AdministradorRoot")==0){
 				List<Movimiento> m = otvo.getMovimientos();
 				for(int i=0; i<m.size();i++){
 					if(m.get(i).getId() == null){
@@ -185,9 +205,10 @@ public class OrdenDeTrabajoController {
 					if(c.get(i).getId() == null){
 						c.get(i).setFechaCreacion(new Date());
 						movimientodao.save(c.get(i));
-						ot.getMovimientos().add(c.get(i).getId());
+						ot.getComisiones().add(c.get(i).getId());
 					}
 				}
+				otdao.save(ot);
 		}else{
 			String error = "Usuario sin permisos para realizar esta accion";
 			res.getWriter().print(JsonConvertidor.toJson(error));
@@ -208,7 +229,7 @@ public class OrdenDeTrabajoController {
 		AsignadorDeCharset.asignar(req, res);
 		HttpSession sesion= req.getSession();
 		Usuario user=(Usuario) sesion.getAttribute("user");
-		//if(user.getPerfil().compareTo("Ejecutivo")==0){
+		if(user.getPerfil().compareTo("Ejecutivo")==0 || user.getPerfil().compareTo("AdministradorRoot")==0){
 			res.setContentType("Application/PDF");
 			OrdenDeTrabajoVO otvo=armaOTVO(id);
 			List<PagoRecibido> pagos= otvo.getPagos();
@@ -226,9 +247,10 @@ public class OrdenDeTrabajoController {
 			pdf.getDocument().close();
 			res.getOutputStream().flush();
 			res.getOutputStream().close();
-//		}else{
-//			res.sendError(403);
-//		}
+		}else{
+			String error = "Usuario sin permisos para realizar esta accion";
+			res.getWriter().print(JsonConvertidor.toJson(error));
+		}
 	}
 	
 

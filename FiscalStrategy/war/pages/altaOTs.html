@@ -13,7 +13,7 @@
 				<div class="row">
 					<div class="col-md-4">
 						<label>Cliente:</label>
-						<select name="cliente" class="form-control form-control-sm" ng-required="true"  ng-model="datos.idCliente">
+						<select name="cliente" class="form-control form-control-sm" ng-required="true"  ng-model="datos.idCliente" ng-disabled="clienteSeleccionado">
 							<option ng-repeat="c in cliente" value="{{c.id}}" >{{c.nickname}}</option>
 						</select>
 					</div>
@@ -304,7 +304,7 @@
 								<input input-date class="form-control form-control-sm ng-empty ng-dirty ng-touched ng-invalid ng-invalid-date"
 									ng-model="operaciones.fEmision" type="date" ng-required="true" />			
 					  		</div>
-					  		<div class="col-md-2">
+					  		<div class="col-md-2" align="right">
 					  			<label class="control-label">P&aacute;guese a: </label>
 					  		</div>
 					  		<div class="col-md-3">
@@ -393,7 +393,7 @@
 								<input input-date class="form-control form-control-sm ng-empty ng-dirty ng-touched ng-invalid ng-invalid-date"
 									ng-model="operaciones.fEmision" type="date" ng-required="true" />			
 					  		</div>
-					  		<div class="col-md-2">
+					  		<div class="col-md-2" align="right">
 					  			<label class="control-label">P&aacute;guese a: </label>
 					  		</div>
 					  		<div class="col-md-3">

@@ -6,8 +6,10 @@
 </section>
 
 <div class="container">
+	<div class="infCliente" ng-show="ordenCerrada">
+		<h2 align="right">Orden Cerrada <small> movimientos valid&aacute;dos</small></h2>
+	</div>
 	<div class="infCliente">
-		{{ordenCerrada}}
 		<div class="Dlabel">
 			<label>Cliente</label> <br>
 		</div>
@@ -126,7 +128,7 @@
 					<label>Operaci&oacute;n Cliente</label>
 				</div>
 				<div class="col-md-6" align="right">
-					<button class="btn btn-small"  data-toggle="modal" data-target="#myModalOper" ng-disabled="otvo.ot.saldoMov==0 && otvo.ot.saldoCom==0">Agregar</button>
+					<button class="btn btn-small"  data-toggle="modal" data-target="#myModalOper" ng-disabled="otvo.ot.saldoMov==0 ">Agregar</button>
 				</div>
 			</div>
 		</div>
@@ -160,14 +162,14 @@
 					 </td>
 					<td class="ng-binding">
 						<button class="btn btn-small"   data-toggle="modal" 
-							ng-show="perfil && mov.estatus!='CANCELADO' && mov.tipo != '60-Efectivo'" ng-hide="mov.estatus == 'VALIDADO'"
+							ng-show="perfil=='true' && mov.tipo != '60-Efectivo' && (mov.estatus!='CANCELADO' || mov.estatus=='VALIDADO')"  
 							ng-click="cargarMov($index,'OPC')" data-target="#modalEditar">
 							<span class="glyphicon glyphicon-edit"></span>
 						</button>
 					</td>
 					<td class="ng-binding">
 						<button class="btn btn-small"  data-toggle="modal" 
-						 ng-show="mov.estatus!='CANCELADO' && mov.tipo != '60-Efectivo'" ng-hide="mov.estatus == 'VALIDADO'"
+						 ng-show=" mov.tipo != '60-Efectivo' && (mov.estatus!='CANCELADO' || mov.estatus=='VALIDADO')" ng-disabled=" mov.banco==null && mov.cuenta == null"  
 						 ng-click="cargarMov($index,'OPC')" data-target="#modalVerificar">
 							<span class="glyphicon glyphicon-ok"></span>
 						</button>
@@ -185,7 +187,7 @@
 					<label>Operaci&oacute;n Asesor</label>
 				</div>
 				<div class="col-md-6" align="right">
-					<button class="btn btn-small" data-toggle="modal" data-target="#myModalOperAsesor" ng-disabled="otvo.ot.saldoMov==0 && otvo.ot.saldoCom==0"> Agregar</button>
+					<button class="btn btn-small" data-toggle="modal" data-target="#myModalOperAsesor" ng-disabled="otvo.ot.saldoCom==0"> Agregar</button>
 				</div>
 			</div>
 		</div>
@@ -213,20 +215,20 @@
 					<td class="ng-binding">{{mov.cuenta}}</td>
 					<td class="ng-binding">{{mov.estatus}}</td>
 					<td> <a ng-show="mov.tipo=='Cheque'" data-toggle="modal" data-target="#myModalCheque" ng-click="detalleCheque($index, 'OPC')">Detalle</a></td>
-					<td align="center" class="ng-binding"><button id="cancelOp" ng-hide="mov.estatus=='CANCELADO'" class="btn btn-small"  ng-click="cancelarOp($index, 'OPA')" title="Cancelar">
+					<td align="center" class="ng-binding"><button id="cancelOp" ng-hide="mov.estatus=='CANCELADO' || mov.estatus=='VALIDADO'" class="btn btn-small"  ng-click="cancelarOp($index, 'OPA')" title="Cancelar">
 								<span class="glyphicon glyphicon-remove"></span>
 						</button>
  					</td>
 					<td class="ng-binding"> 
 						<button class="btn btn-small" data-toggle="modal" data-target="#modalEditar"
-							ng-show="perfil && mov.estatus!='CANCELADO' && mov.tipo != '60-Efectivo'" ng-disabled="mov.estatus == 'VALIDADO'"
+							ng-show="perfil=='true' && mov.tipo != '60-Efectivo' && (mov.estatus!='CANCELADO' || mov.estatus=='VALIDADO')"
 							 ng-click="cargarMov($index,'OPA')" >
 							<span class="glyphicon glyphicon-edit"></span>
 						</button>
 		 			</td>
 					<td class="ng-binding"> 
 						<button class="btn btn-small" data-toggle="modal"   data-target="#modalVerificar"
-							ng-show="mov.estatus!='CANCELADO' && mov.tipo != '60-Efectivo'" ng-disabled="mov.estatus == 'VALIDADO'"
+							ng-show=" mov.tipo != '60-Efectivo' && (mov.estatus!='CANCELADO' || mov.estatus=='VALIDADO')" ng-disabled=" mov.banco==null && mov.cuenta==null"
 							ng-click="cargarMov($index,'OPA')" >
 							<span class="glyphicon glyphicon-ok"></span>
 						</button>
@@ -410,14 +412,14 @@
 					  		<div class="col-md-2">
 					  			<label class="control-label">Fecha de Emisi&oacute;n: </label>
 					  		</div>
-					  		<div class="col-md-2">
+					  		<div class="col-md-3">
 								<input input-date class="form-control form-control-sm ng-empty ng-dirty ng-touched ng-invalid ng-invalid-date"
 									ng-model="operaciones.fEmision" type="date" ng-required="true" />			
 					  		</div>
-					  		<div class="col-md-1">
+					  		<div class="col-md-2" align="right">
 					  			<label class="control-label">P&aacute;guese a: </label>
 					  		</div>
-					  		<div class="col-md-5">
+					  		<div class="col-md-3">
 								<input class="form-control  mb-2" type="text" ng-required="true"  ng-model="operaciones.pagarA">			
 					  		</div>
 					  		<div class="col-md-1"></div>				
@@ -499,14 +501,14 @@
 					  		<div class="col-md-2">
 					  			<label class="control-label">Fecha de Emisi&oacute;n: </label>
 					  		</div>
-					  		<div class="col-md-2">
+					  		<div class="col-md-3">
 								<input input-date class="form-control form-control-sm ng-empty ng-dirty ng-touched ng-invalid ng-invalid-date"
 									ng-model="operaciones.fEmision" type="date" ng-required="true" />			
 					  		</div>
-					  		<div class="col-md-1">
+					  		<div class="col-md-2" align="right">
 					  			<label class="control-label">P&aacute;guese a: </label>
 					  		</div>
-					  		<div class="col-md-5">
+					  		<div class="col-md-3">
 								<input class="form-control  mb-2" type="text" ng-required="true"  ng-model="operaciones.pagarA">			
 					  		</div>
 					  		<div class="col-md-1"></div>				

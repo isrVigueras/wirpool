@@ -48,6 +48,13 @@ public class BrockerController {
 		res.getWriter().print(JsonConvertidor.toJson(lista));
 	}
 	
+	@RequestMapping(value={"/buscarID/{id}"},method= RequestMethod.GET, produces="application/json")
+	public void buscar(HttpServletResponse res, HttpServletRequest req, @PathVariable Long id) throws IOException{
+		AsignadorDeCharset.asignar(req, res);
+		Cliente brocker= clientedao.get(id);
+		res.getWriter().print(JsonConvertidor.toJson(brocker));
+	}
+	
 	@RequestMapping(value={"/borrar"}, method= RequestMethod.POST, consumes="application/json")
 	public void delete(HttpServletResponse res, HttpServletRequest req, @RequestBody String json) throws UnsupportedEncodingException{
 		AsignadorDeCharset.asignar(req, res);
