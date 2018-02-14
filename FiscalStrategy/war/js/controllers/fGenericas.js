@@ -66,7 +66,8 @@ function catalogoBancos(){
 	  			   {id:42, nombre: "Bankaool"},
 	  			   {id:43, nombre: "Banco Inmobiliario M\u00E9xico"},
 	  			   {id:44, nombre: "Fundaci\u00F3n Donde Banco"},
-	  			   {id:45, nombre: "Banco Bancrea"}
+	  			   {id:45, nombre: "Banco Bancrea"},
+	  			   {id:46, nombre: "HSBC"}
 	  			  ];
 
 	return catBancos;

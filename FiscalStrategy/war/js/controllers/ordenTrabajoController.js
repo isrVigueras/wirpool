@@ -619,6 +619,7 @@ app.controller("ordenTrabajoController",['$scope','$window', '$location', '$cook
 	$scope.bancos = catalogoBancos();
 	$scope.errorSaldo=" ";
 	$scope.tipoResguardo= false;
+	$scope.cheque={fEmision: new Date(),pagarA:null,monto:null,montoLetra:null}
 	$scope.operaciones={tipo: null, descripcion: null, monto: null, estatus: "ACTIVO", cuenta: null, banco:null,fecha: new Date(),montoLetra: null,pagarA: null,fEmision: new Date()}
 	$scope.mov={
 		tipo: null,
@@ -635,12 +636,9 @@ app.controller("ordenTrabajoController",['$scope','$window', '$location', '$cook
 	}
 	
 	ordenTrabajoservice.loadot($cookieStore.get("idOt")).then(function(data){
+		$scope.perfil=true;  //pendiente permisos de usuario
 		$scope.otvo= data;
-		if($scope.otvo.responsable.perfil=="Administrador"){
-			$scope.perfil=true;
-		}else{
-			$scope.perfil=false;
-		}
+		crearListaDeCheques();
 		var sumaMontoPagos =0;
 		 $scope.sumaMontoBrok =0;
 		for(var i in $scope.otvo.pagos){
@@ -652,7 +650,7 @@ app.controller("ordenTrabajoController",['$scope','$window', '$location', '$cook
 			var cont= parseInt(i) + parseInt(1);
 			var nombre =  'Broker' + cont ;
 			var renglon= {nombre:nombre, porBrok:$scope.otvo.ot.porBrok[i], montoBrok: $scope.otvo.ot.montoBrok[i]};
-			$scope.brokers .push(renglon);
+			$scope.brokers.push(renglon);
 			$scope.sumaMontoBrok= parseInt($scope.sumaMontoBrok) + parseInt($scope.otvo.ot.montoBrok[i]);
 		}
 		
@@ -704,6 +702,32 @@ app.controller("ordenTrabajoController",['$scope','$window', '$location', '$cook
 		}else{
 			return ;
 		}
+	}
+	
+	//prepara listado de cheques para impresion
+	function crearListaDeCheques(){
+		$scope.listaChequesCliente = "";
+		$scope.listaChequesAsesor = "";
+		for(var i in $scope.otvo.movimientos){
+			if($scope.otvo.movimientos[i].tipo == "Cheque"){
+				if($scope.listaChequesCliente == ""){
+					$scope.listaChequesCliente= $scope.otvo.movimientos[i].id;
+				}else{
+					$scope.listaChequesCliente= $scope.listaChequesCliente + ',' + $scope.otvo.movimientos[i].id;
+				}
+			}
+		}
+		for(var i in $scope.otvo.comisiones){
+			if($scope.otvo.comisiones[i].tipo == "Cheque"){
+				if($scope.listaChequesAsesor == ""){
+					$scope.listaChequesAsesor= $scope.otvo.comisiones[i].id;
+				}else{
+					$scope.listaChequesAsesor= $scope.listaChequesAsesor + ',' + $scope.otvo.comisiones[i].id;
+				}
+			}
+		}
+		console.log($scope.listaChequesCliente);
+		console.log($scope.listaChequesAsesor);
 	}
 	
 	//icon editar

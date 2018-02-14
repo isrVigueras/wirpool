@@ -27,6 +27,9 @@ public class Movimiento {
 	private String estatus;
 	private String info;
 	private String moneda;
+	private Date fEmision;
+	private String montoLetra;
+	private String pagarA;
 	@Index
 	private String tipo;
 	private String descripcion;
@@ -117,6 +120,24 @@ public class Movimiento {
 	}
 	public void setFechaCreacion(Date fechaCreacion) {
 		this.fechaCreacion = fechaCreacion;
+	}
+	public Date getfEmision() {
+		return fEmision;
+	}
+	public void setfEmision(Date fEmision) {
+		this.fEmision = fEmision;
+	}
+	public String getMontoLetra() {
+		return montoLetra;
+	}
+	public void setMontoLetra(String montoLetra) {
+		this.montoLetra = montoLetra;
+	}
+	public String getPagarA() {
+		return pagarA;
+	}
+	public void setPagarA(String pagarA) {
+		this.pagarA = pagarA;
 	}
 	
 	

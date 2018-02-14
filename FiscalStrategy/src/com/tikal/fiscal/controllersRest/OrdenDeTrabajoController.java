@@ -36,6 +36,7 @@ import com.tikal.fiscal.model.Usuario;
 import com.tikal.fiscal.security.UsuarioDAO;
 import com.tikal.fiscal.util.AsignadorDeCharset;
 import com.tikal.fiscal.util.JsonConvertidor;
+import com.tikal.fiscal.util.PDFcheques;
 import com.tikal.fiscal.util.PDFot;
 
 @Controller
@@ -253,13 +254,65 @@ public class OrdenDeTrabajoController {
 		}
 	}
 	
-
+	
 	@RequestMapping(value={"/getClientesBrokers"},method= RequestMethod.GET, produces="application/json")
 	public void getPage(HttpServletResponse res, HttpServletRequest req) throws IOException{
 		AsignadorDeCharset.asignar(req, res);
 		List<Cliente> lista= clientedao.getAll();
 		res.getWriter().print(JsonConvertidor.toJson(lista));
 	}
+	
+	@RequestMapping(value = {"/imprimirCheque/{id}" }, method = RequestMethod.GET)
+	public void pdfCheque(HttpServletRequest req, HttpServletResponse res, @PathVariable Long id) throws IOException, DocumentException{
+		AsignadorDeCharset.asignar(req, res);
+		HttpSession sesion= req.getSession();
+		Usuario user=(Usuario) sesion.getAttribute("user");
+		if(user.getPerfil().compareTo("Ejecutivo")==0 || user.getPerfil().compareTo("AdministradorRoot")==0){
+			res.setContentType("Application/PDF");
+			List<Movimiento> cheques = new ArrayList<Movimiento>();
+			cheques.add(movimientodao.get(id));
+			
+			PDFcheques pdf= new PDFcheques();
+			PdfWriter.getInstance(pdf.getDocument(), res.getOutputStream());
+			pdf.getDocument().open();
+			pdf.construirPdf(cheques);
+			pdf.getDocument().close();
+			res.getOutputStream().flush();
+			res.getOutputStream().close();
+		}else{
+			String error = "Usuario sin permisos para realizar esta accion";
+			res.getWriter().print(JsonConvertidor.toJson(error));
+		}
+	}
+	
+	@RequestMapping(value = {"/imprimirCheques/{ids}" }, method = RequestMethod.GET)
+	public void pdfCheques(HttpServletRequest req, HttpServletResponse res, @PathVariable String ids) throws IOException, DocumentException{
+		AsignadorDeCharset.asignar(req, res);
+		HttpSession sesion= req.getSession();
+		Usuario user=(Usuario) sesion.getAttribute("user");
+		if(user.getPerfil().compareTo("Ejecutivo")==0 || user.getPerfil().compareTo("AdministradorRoot")==0){
+			res.setContentType("Application/PDF");
+			String[] lista= ids.split(",");
+			List<Movimiento> cheques = new ArrayList<Movimiento>();
+			for(int i=0;i<lista.length;i++){
+				Long idmov = Long.parseLong(lista[i]);
+				Movimiento mov = movimientodao.get(idmov);
+				cheques.add(mov);
+			}
+			
+			PDFcheques pdf= new PDFcheques();
+			PdfWriter writer = PdfWriter.getInstance(pdf.getDocument(), res.getOutputStream());
+			pdf.getDocument().open();
+			pdf.construirPdf(cheques);
+			pdf.getDocument().close();
+			res.getOutputStream().flush();
+			res.getOutputStream().close();
+		}else{
+			String error = "Usuario sin permisos para realizar esta accion";
+			res.getWriter().print(JsonConvertidor.toJson(error));
+		}
+	}
+	
 	
 	private OrdenDeTrabajoVO armaOTVO (Long id){
 		OrdenDeTrabajo ot=otdao.get(id);
