@@ -104,7 +104,7 @@ public class Movimiento {
 		this.moneda = moneda;
 	}
 	public String getTipo() {
-		return tipo;
+		return tipo;  
 	}
 	public void setTipo(String tipo) {
 		this.tipo = tipo;

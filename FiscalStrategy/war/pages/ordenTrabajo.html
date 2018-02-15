@@ -142,7 +142,7 @@
 					<th align="center">Cuenta</th>
 					<th align="center" >Estatus</th>
 					<th></th>
-					<th align="center"><a href="ots/imprimirCheques/{{listaChequesCliente}}" download="chequesPDF.pdf">Descargar</a></th>
+					<th></th>
 					<th></th>
 					<th></th>
 					<th></th>
@@ -156,26 +156,32 @@
 					<td class="ng-binding">{{mov.banco}}</td>
 					<td class="ng-binding">{{mov.cuenta}}</td>
 					<td class="ng-binding">{{mov.estatus}}</td>
-					<td class="ng-binding"  align="center"><a ng-show="mov.tipo=='Cheque'" data-toggle="modal" data-target="#myModalCheque" ng-click="detalleCheque($index, 'OPC')"><b>Detalle</b></a></td>
-					<td class="ng-binding"  align="center">
-						<a class="btn btn-info" data-toggle="tooltip" title="Descarga cheque" href="ots/imprimirCheque/{{mov.id}}" download="chequePDF.pdf">
+					<td class="ng-binding"  align="right">
+						<a ng-show="mov.tipo=='Cheque'" data-toggle="modal" data-target="#myModalCheque" ng-click="detalleCheque($index, 'OPC')"><b>Detalle</b></a>
+					</td>
+					<td class="ng-binding"  align="right">
+						<a class="btn btn-info" data-toggle="tooltip" title="Descarga cheque" 
+							ng-show="mov.tipo == 'Cheque' && mov.estatus!='CANCELADO'&& mov.banco!=null && mov.cuenta != null"
+							href="ots/imprimirCheque/{{mov.id}}" download="chequePDF.pdf">
 							<i class="glyphicon glyphicon-download-alt"></i>
 						</a>
 					</td>
-					<td class="ng-binding" align="center"><button id="cancelOp" ng-hide="mov.estatus=='CANCELADO' || mov.estatus=='VALIDADO'" class="btn btn-small"  ng-click="cancelarOp($index, 'OPC')" title="Cancelar">
+					<td class="ng-binding" align="right">
+						<button id="cancelOp" ng-hide="mov.estatus=='CANCELADO' || mov.estatus=='VALIDADO'" class="btn btn-small"  ng-click="cancelarOp($index, 'OPC')" title="Cancelar">
 								<span class="glyphicon glyphicon-remove"></span>
 						</button>
 					 </td>
-					<td class="ng-binding">
-						<button class="btn btn-small"   data-toggle="modal" 
-							ng-show="perfil== true && mov.tipo != '60-Efectivo' && (mov.estatus!='CANCELADO' || mov.estatus!='VALIDADO')"  
+					<td class="ng-binding" align="right">
+						<button class="btn btn-small" data-toggle="modal" 
+							ng-show="perfil== true && mov.tipo != 'Efectivo' && mov.estatus == 'ACTIVO'"  
 							ng-click="cargarMov($index,'OPC')" data-target="#modalEditar">
 							<span class="glyphicon glyphicon-edit"></span>
 						</button>
 					</td>
-					<td class="ng-binding">
+					<td class="ng-binding" align="right">
 						<button class="btn btn-small"  data-toggle="modal" 
-						 ng-show="mov.tipo != '60-Efectivo' && (mov.estatus!='CANCELADO' || mov.estatus!='VALIDADO')" ng-disabled="mov.banco==null && mov.cuenta == null"  
+						 ng-show="mov.tipo != 'Efectivo' &&  mov.estatus == 'ACTIVO'" 
+						 ng-disabled="mov.banco==null && mov.cuenta == null"  
 						 ng-click="cargarMov($index,'OPC')" data-target="#modalVerificar">
 							<span class="glyphicon glyphicon-ok"></span>
 						</button>
@@ -210,37 +216,49 @@
 					<th></th>
 					<th></th>
 					<th></th>
+					<th></th>					
 				</tr>
 			</thead>
-			<tbody>
-				<tr ng-repeat="mov in otvo.comisiones" class="ng-scope">
+			<tbody> 
+				<tr ng-repeat="mov in otvo.movimientos" class="ng-scope">
 					<td class="ng-binding">{{mov.tipo}}</td>
 					<td class="ng-binding">{{mov.descripcion}}</td>
 					<td class="ng-binding">{{mov.monto}}</td>
 					<td class="ng-binding">{{mov.banco}}</td>
 					<td class="ng-binding">{{mov.cuenta}}</td>
 					<td class="ng-binding">{{mov.estatus}}</td>
-					<td> <a ng-show="mov.tipo=='Cheque'" data-toggle="modal" data-target="#myModalCheque" ng-click="detalleCheque($index, 'OPC')"><b>Detalle</b></a></td>
-					<td align="center" class="ng-binding"><button id="cancelOp" ng-hide="mov.estatus=='CANCELADO' || mov.estatus=='VALIDADO'" class="btn btn-small"  ng-click="cancelarOp($index, 'OPA')" title="Cancelar">
+					<td class="ng-binding"  align="right">
+						<a ng-show="mov.tipo=='Cheque'" data-toggle="modal" data-target="#myModalCheque" ng-click="detalleCheque($index, 'OPA')"><b>Detalle</b></a>
+					</td>
+					<td class="ng-binding"  align="right">
+						<a class="btn btn-info" data-toggle="tooltip" title="Descarga cheque" 
+							ng-show="mov.tipo == 'Cheque' && mov.estatus!='CANCELADO'&& mov.banco!=null && mov.cuenta != null"
+							href="ots/imprimirCheque/{{mov.id}}" download="chequePDF.pdf">
+							<i class="glyphicon glyphicon-download-alt"></i>
+						</a>
+					</td>
+					<td class="ng-binding" align="right">
+						<button id="cancelOp" ng-hide="mov.estatus=='CANCELADO' || mov.estatus=='VALIDADO'" class="btn btn-small"  ng-click="cancelarOp($index, 'OPA')" title="Cancelar">
 								<span class="glyphicon glyphicon-remove"></span>
 						</button>
- 					</td>
-					<td class="ng-binding"> 
-						<button class="btn btn-small" data-toggle="modal" data-target="#modalEditar"
-							ng-show="perfil=='true' && mov.tipo != '60-Efectivo' && (mov.estatus!='CANCELADO' || mov.estatus=='VALIDADO')"
-							 ng-click="cargarMov($index,'OPA')" >
+					 </td>
+					<td class="ng-binding" align="right">
+						<button class="btn btn-small" data-toggle="modal" 
+							ng-show="perfil== true && mov.tipo != 'Efectivo' && mov.estatus == 'ACTIVO'"  
+							ng-click="cargarMov($index,'OPA')" data-target="#modalEditar">
 							<span class="glyphicon glyphicon-edit"></span>
 						</button>
-		 			</td>
-					<td class="ng-binding"> 
-						<button class="btn btn-small" data-toggle="modal"   data-target="#modalVerificar"
-							ng-show=" mov.tipo != '60-Efectivo' && (mov.estatus!='CANCELADO' || mov.estatus=='VALIDADO')" ng-disabled=" mov.banco==null && mov.cuenta==null"
-							ng-click="cargarMov($index,'OPA')" >
+					</td>
+					<td class="ng-binding" align="right">
+						<button class="btn btn-small"  data-toggle="modal" 
+						 ng-show="mov.tipo != 'Efectivo' &&  mov.estatus == 'ACTIVO'" 
+						 ng-disabled="mov.banco==null && mov.cuenta == null"  
+						 ng-click="cargarMov($index,'OPA')" data-target="#modalVerificar">
 							<span class="glyphicon glyphicon-ok"></span>
 						</button>
 					</td>
 				</tr>
-			</tbody>	
+			</tbody>
 		</table>
 		<div>
 			<label>Saldo Comisiones: $</label>{{otvo.ot.saldoCom}}

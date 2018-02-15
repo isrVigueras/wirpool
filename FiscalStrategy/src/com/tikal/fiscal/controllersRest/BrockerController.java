@@ -33,7 +33,7 @@ public class BrockerController {
 		clientedao.save(cliente);
 		
 	}
-	
+	  
 	@RequestMapping(value={"/getPagina/{page}"},method= RequestMethod.GET, produces="application/json")
 	public void getPage(HttpServletResponse res, HttpServletRequest req, @PathVariable int page) throws IOException{
 		AsignadorDeCharset.asignar(req, res);

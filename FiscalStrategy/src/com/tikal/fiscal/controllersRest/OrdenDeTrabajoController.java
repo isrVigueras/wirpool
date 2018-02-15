@@ -275,7 +275,7 @@ public class OrdenDeTrabajoController {
 			PDFcheques pdf= new PDFcheques();
 			PdfWriter.getInstance(pdf.getDocument(), res.getOutputStream());
 			pdf.getDocument().open();
-			pdf.construirPdf(cheques);
+			pdf.construirPdf(cheques);   
 			pdf.getDocument().close();
 			res.getOutputStream().flush();
 			res.getOutputStream().close();

@@ -118,9 +118,9 @@ app.service("ordenTrabajoservice",['$http', '$q', function($http, $q){
 		return d.promise;
 	}
 	
-	this.updateot=function(ot){
+	this.updateot=function(mov){
 		var d = $q.defer();
-		$http.post("movimientos/update/",ot).then(
+		$http.post("movimientos/update/",mov).then(
 			function(response) {
 				d.resolve(response.data);
 			});
@@ -667,16 +667,33 @@ app.controller("ordenTrabajoController",['$scope','$window', '$location', '$cook
 			if(operacion=="OPC"){
 				$scope.otvo.movimientos[index].estatus="CANCELADO";
 				$scope.otvo.ot.saldoMov=$scope.otvo.ot.saldoMov - $scope.otvo.movimientos[index].monto;
-				ordenTrabajoservice.updateot($scope.otvo.movimientos[index]).then(function(data){
-					$window.location.reload();
-				});
 			}
 			if(operacion=="OPA"){
 				$scope.otvo.comisiones[index].estatus="CANCELADO";
 				$scope.otvo.ot.saldoCom=$scope.otvo.ot.saldoCom -$scope.otvo.comisiones[index].monto; 
-				ordenTrabajoservice.updateot($scope.otvo.comisiones[index]).then(function(data){
-					$window.location.reload();
+			}
+			if(cerrarOrden()){
+				ordenTrabajoservice.addot($scope.otvo).then(function(data){
+					if(tipoOperacion=='OPC'){
+						ordenTrabajoservice.updateot($scope.otvo.movimientos[indice]).then(function(data){
+							$window.location.reload();
+						});
+					}else{
+						ordenTrabajoservice.updateot($scope.otvo.comisiones[indice]).then(function(data){
+							$window.location.reload();
+						});
+					}
 				});
+			}else{
+				if(tipoOperacion=='OPC'){
+					ordenTrabajoservice.updateot($scope.otvo.movimientos[indice]).then(function(data){
+						$window.location.reload();
+					});
+				}else{
+					ordenTrabajoservice.updateot($scope.otvo.comisiones[indice]).then(function(data){
+						$window.location.reload();
+					});
+				}
 			}
 		}
 	});	
@@ -694,13 +711,12 @@ app.controller("ordenTrabajoController",['$scope','$window', '$location', '$cook
 			}
 		}
 		if($scope.otvo.movimientos.length == contM && $scope.otvo.comisiones.length==contC){
-			if($scope.otvo.ot.saldoMov==0 && $scope.otvo.ot.salfoCom== 0){
+			if($scope.otvo.ot.saldoMov==0 || $scope.otvo.ot.saldoMov<0 && $scope.otvo.ot.salfoCom==0 || $scope.otvo.ot.saldoMov<0){
 				$scope.otvo.ot.estatus="Cerrada"
-				ordenTrabajoservice.addot($scope.otvo);
-				$window.location.reload();
+				return true;
 			}
 		}else{
-			return ;
+			return false;
 		}
 	}
 	
@@ -779,14 +795,34 @@ app.controller("ordenTrabajoController",['$scope','$window', '$location', '$cook
 			$scope.otvo.movimientos[indice].numTransaccion=$scope.mov.numTransaccion;
 			$scope.otvo.movimientos[indice].fecha=$scope.mov.fecha;
 			$scope.otvo.movimientos[indice].estatus="VALIDADO"
-				ordenTrabajoservice.updateot($scope.otvo.movimientos[indice]);
 		}else{
 			$scope.otvo.comisiones[indice].numTransaccion=$scope.mov.numTransaccion;
 			$scope.otvo.comisiones[indice].fecha=$scope.mov.fecha;
 			$scope.otvo.comisiones[indice].estatus="VALIDADO"
-				ordenTrabajoservice.updateot($scope.otvo.comisiones[indice]);
 		}
-		cerrarOrden();
+		if(cerrarOrden()){
+			ordenTrabajoservice.addot($scope.otvo).then(function(data){
+				if(tipoOperacion=='OPC'){
+					ordenTrabajoservice.updateot($scope.otvo.movimientos[indice]).then(function(data){
+						$window.location.reload();
+					});
+				}else{
+					ordenTrabajoservice.updateot($scope.otvo.comisiones[indice]).then(function(data){
+						$window.location.reload();
+					});
+				}
+			});
+		}else{
+			if(tipoOperacion=='OPC'){
+				ordenTrabajoservice.updateot($scope.otvo.movimientos[indice]).then(function(data){
+					$window.location.reload();
+				});
+			}else{
+				ordenTrabajoservice.updateot($scope.otvo.comisiones[indice]).then(function(data){
+					$window.location.reload();
+				});
+			}
+		}
 	}
 	
 	//Agregar movimientos

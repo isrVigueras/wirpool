@@ -185,7 +185,7 @@
 				<tbody>
 					<tr ng-repeat="op in otVO.movimientos">
 						<td>{{op.tipo}}</td>
-						<td>{{op.descripcion}}</td>
+						<td>{{op.descripcion}}</td>  
 						<td>{{op.monto}}</td>
 						<td>{{op.estatus}}</td>
 						<td> <a ng-show="op.tipo=='Cheque'" data-toggle="modal" data-target="#myModalCheque" ng-click="detalleCheque($index, 'OPC')"><b>Detalle</b></a></td>

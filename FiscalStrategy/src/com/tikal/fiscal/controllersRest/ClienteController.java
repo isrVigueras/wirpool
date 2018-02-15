@@ -20,7 +20,7 @@ import com.tikal.fiscal.model.Cliente;
 import com.tikal.fiscal.util.AsignadorDeCharset;
 import com.tikal.fiscal.util.JsonConvertidor;
 
-@Controller
+@Controller  
 @RequestMapping(value={"/clientes"})
 public class ClienteController {
 	
