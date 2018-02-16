@@ -83,19 +83,25 @@ public class OrdenDeTrabajoController {
 			}else{
 				foliodao.save(generaFolio);
 			}
-	
-			List<Movimiento> mM = otvo.getMovimientos();
-			for(int i=0;i<mM.size();i++){
-				mM.get(i).setFechaCreacion(new Date());
-				movimientodao.save(mM.get(i));
-				ot.getMovimientos().add(mM.get(i).getId());
+			
+			if(otvo.getMovimientos()!=null){
+				List<Movimiento> mM = otvo.getMovimientos();
+				for(int i=0;i<mM.size();i++){
+					mM.get(i).setFechaCreacion(new Date());
+					movimientodao.save(mM.get(i));
+					ot.getMovimientos().add(mM.get(i).getId());
+				}
 			}
-			List<Movimiento> mC = otvo.getComisiones();
-			for(int i=0;i<mC.size();i++){
-				mC.get(i).setFechaCreacion(new Date());
-				movimientodao.save(mC.get(i));
-				ot.getComisiones().add(mC.get(i).getId());
+			
+			if(otvo.getComisiones() != null){
+				List<Movimiento> mC = otvo.getComisiones();
+				for(int i=0;i<mC.size();i++){
+					mC.get(i).setFechaCreacion(new Date());
+					movimientodao.save(mC.get(i));
+					ot.getComisiones().add(mC.get(i).getId());
+				}
 			}
+			
 			otdao.save(ot);
 			
 			List<PagoRecibido> pagos = otvo.getPagos();
@@ -105,7 +111,7 @@ public class OrdenDeTrabajoController {
 				pago.setOt(ot.getId());
 			}
 			pagodao.save(pagos);
-			
+			  
 			if(otvo.getCliente() != null){
 				Cliente cliente= otvo.getCliente();
 				clientedao.save(cliente);

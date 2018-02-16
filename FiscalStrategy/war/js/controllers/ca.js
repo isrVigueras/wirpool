@@ -267,7 +267,7 @@ app.service("operacionesMovimientosService",['$http', '$q', function($http, $q){
 	
 }]);
 
-app.controller("CAController",['$scope','$cookieStore', '$window', '$location', 'CBService','cuentaservice','operacionesMovimientosService', function($scope, $cookieStore, $window, $location, CBService,cuentaservice,operacionesMovimientosService){
+app.controller("CAController",['$scope','$cookieStore', '$window', '$location', 'CBService','cuentaservice','operacionesMovimientosService',function($scope, $cookieStore, $window, $location, CBService,cuentaservice,operacionesMovimientosService){
 	$scope.bancos = catalogoBancos();
 	$scope.tablaPagos= false;
 	$scope.tablaOper= false;
@@ -285,8 +285,8 @@ app.controller("CAController",['$scope','$cookieStore', '$window', '$location', 
 	$scope.pago={
 			fecha: new Date(),
 			moneda:"MXN",
-			cuenta:"",
-			banco:"",
+//			cuenta:"",
+//			banco:"",
 			monto: null,
 	}
 	
@@ -299,16 +299,16 @@ app.controller("CAController",['$scope','$cookieStore', '$window', '$location', 
 			iva: null,
 			importe: 0.0,
 			total: 0.0,
-			porLic : null,
-			porDes : null,
-			porBrok: [],
-			montoLic : null,
-			montoDes : null,
-			montoBrok:[],
-			retorno: null,
+//			porLic : null,
+//			porDes : null,
+//			porBrok: [],
+//			montoLic : null,
+//			montoDes : null,
+//			montoBrok:[],
+//			retorno: null,
 			saldoMov: null,
-			saldoCom: null,
-			totalComisiones: null,
+//			saldoCom: null,
+//			totalComisiones: null,
 	}
 	
 	$scope.operaciones={
@@ -328,7 +328,7 @@ app.controller("CAController",['$scope','$cookieStore', '$window', '$location', 
 			ot: null,
 			pagos:[],
 			movimientos:[],	
-			comisiones:[],
+			//comisiones:[],
 			cliente: null,
 			broker: null
 	}
@@ -539,10 +539,10 @@ app.controller("CAController",['$scope','$cookieStore', '$window', '$location', 
 		if($scope.tablaPagos == true){
 
 				if($scope.tablaOper == true){
-					for(var i in $scope.brokers){
-						$scope.datos.porBrok.push($scope.brokers[i].porBrok);
-						$scope.datos.montoBrok.push($scope.brokers[i].montoBrok);
-					}
+//					for(var i in $scope.brokers){
+//						$scope.datos.porBrok.push($scope.brokers[i].porBrok);
+//						$scope.datos.montoBrok.push($scope.brokers[i].montoBrok);
+//					}
 					if($scope.datosCliente.saldo != null || $scope.datosCliente.saldo != 0){
 						$scope.otVO.cliente = $scope.datosCliente;
 					}
