@@ -12,6 +12,10 @@ app.config([ '$routeProvider', function($routeProvider) {
 		templateUrl : "pages/altaOTs.html",
 		controller: "OTsAddController"
 	});
+	$routeProvider.when('/otCA', {
+		templateUrl : "pages/CA.html",
+		controller: "CAController"
+	});
 	$routeProvider.when('/listaOTs', {
 		templateUrl : "pages/listOTs.html",
 		controller : "OTsListController"
