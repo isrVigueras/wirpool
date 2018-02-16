@@ -2,6 +2,7 @@ app.directive('submenu',function(){
 	return{
 		templateUrl:'pages/menuTemplate.html'
 	};
+	
 });
 
 app.controller('headerController',['$scope','$rootScope','$location','$http','$cookieStore',function($scope,$rootScope,$location,$http,$cookieStore){
@@ -22,6 +23,5 @@ app.controller('headerController',['$scope','$rootScope','$location','$http','$c
 			$scope.empresas={};
 		}
 		$location.path("/login");
-		console.log(response);
 	});
 }]);

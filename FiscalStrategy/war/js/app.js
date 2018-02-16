@@ -85,9 +85,9 @@ app.config([ '$routeProvider', function($routeProvider) {
 		templateUrl : "pages/listOTs.html",
 		controller : "OTsListController"
 	});
-	
-	
+		
 }]);
+
 
 app.service('sessionService', [
 	'$rootScope',
