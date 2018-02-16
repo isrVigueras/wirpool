@@ -1,8 +1,5 @@
 <div class="btn-group" role="group" aria-label="">
-	<!-- <a href="#/listaOTs" type="button" class="btn btn-default">Ordenes
-		de Trabajo</a>
-		<div class="btn-group" role="group"> -->
-		<button type="button" class="btn btn-default dropdown-toggle"
+		<button type="button" class="btn btn-default dropdown-toggle" ng-show="perfil=='Administrador' || perfil=='AdministradorRoot' || perfil=='Ejecutivo'"
 			data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 			Ordenes de Trabajo<span class="caret"></span>
 		</button>
@@ -14,7 +11,7 @@
 		</ul>
 	</div>
 	<div class="btn-group" role="group">
-		<button type="button" class="btn btn-default dropdown-toggle"
+		<button type="button" class="btn btn-default dropdown-toggle" ng-show="perfil=='Administrador' || perfil=='AdministradorRoot' || perfil=='Ejecutivo'"
 			data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 			Pagos<span class="caret"></span>
 		</button>
@@ -25,7 +22,7 @@
 		</ul>
 	</div>
 	<div class="btn-group" role="group">
-		<button type="button" class="btn btn-default dropdown-toggle"
+		<button type="button" class="btn btn-default dropdown-toggle" ng-show="perfil=='Administrador' || perfil=='AdministradorRoot' || perfil=='Ejecutivo'"
 			data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 			Clientes<span class="caret"></span>
 		</button>
@@ -36,7 +33,7 @@
 		</ul>
 	</div>
 	<div class="btn-group" role="group">
-		<button type="button" class="btn btn-default dropdown-toggle"
+		<button type="button" class="btn btn-default dropdown-toggle" ng-show="perfil=='Administrador' || perfil=='AdministradorRoot' || perfil=='Ejecutivo'"
 			data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 			Brockers<span class="caret"></span>
 		</button>
@@ -48,7 +45,7 @@
 	</div>
 	
 	<div class="btn-group" role="group">
-		<button type="button" class="btn btn-default dropdown-toggle"
+		<button type="button" class="btn btn-default dropdown-toggle" ng-show="perfil=='Administrador' || perfil=='AdministradorRoot' || perfil=='Ejecutivo'"
 			data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 			Cuentas<span class="caret"></span>
 		</button>
@@ -59,7 +56,7 @@
 		</ul>
 	</div>
 	<div class="btn-group" role="group">
-		<button type="button" class="btn btn-default dropdown-toggle"
+		<button type="button" class="btn btn-default dropdown-toggle" ng-show="perfil=='Caja' || perfil=='AdministradorRoot'"
 			data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 			Pagos<span class="caret"></span>
 		</button>
