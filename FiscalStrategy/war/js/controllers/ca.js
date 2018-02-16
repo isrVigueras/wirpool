@@ -147,7 +147,7 @@ app.service("CBService",['$http', '$q', function($http, $q){
 	
 }]);
 
-app.service("operacionesMovimientosService",['$http', '$q', function($http, $q){
+app.service("OPMS",['$http', '$q', function($http, $q){
 	objetos= {otvo:null, c:null, b:null};
 	this.addOper= function(operacion, operaciones, otVO, bndResguardo,cliente, brockerCliente){
 		if(operaciones.tipo == 'Cheque'){
@@ -160,6 +160,7 @@ app.service("operacionesMovimientosService",['$http', '$q', function($http, $q){
 		}else{
 			if(bndResguardo){
 				var renglon= {tipo: operaciones.tipo, descripcion: operaciones.descripcion , monto: operaciones.monto, estatus:"VALIDADO"}
+				cliente.saldo = cliente.saldo + operaciones.monto;
 			}else{
 				if(operaciones.tipo != null && operaciones.descripcion != null && operaciones.monto != null){
 					var renglon= {tipo: operaciones.tipo, descripcion: operaciones.descripcion , monto:operaciones.monto, estatus:operaciones.estatus}
@@ -169,58 +170,42 @@ app.service("operacionesMovimientosService",['$http', '$q', function($http, $q){
 			}
 		}
 		
-		if(operacion=='OPC'){
-			cliente.saldo = cliente.saldo + operaciones.monto;
-			otVO.movimientos.push(renglon);
-		}else{
-			brockerCliente.saldo = brockerCliente.saldo + operaciones.monto;
-			otVO.comisiones.push(renglon);
-		}
+		
+		otVO.movimientos.push(renglon);
 		objetos.otvo=otVO;
 		objetos.c= cliente;
 		objetos.b= brockerCliente;
 		return objetos;
 	} 
 	
-//	this.isResguardo=function(operacion, operaciones,bndResguardo, datos){
-//		objetos={op: null,datos: null, resguardo:null}
-//		if(operaciones.tipo=='Resguardo'){
-//			var mensaje = confirm("Esta opci\u00F3n mueve el saldo actual a la cuenta de resguardo.. Deseas continuar?");
-//			if (mensaje) {
-//				bndResguardo = true;
-//				if(operacion=='OPC'){
-//					datos.saldoMov= datos.saldoMov * 1;					
-//					if(datos.saldoMov > 0){
-//						operaciones.monto= datos.saldoMov;
-//						operaciones.descripcion= "Se va saldo a cuenta de resguardo";
-//						datos.saldoMov= 0;
-//					}else{
-//						alert("No se tiene saldo acumulado");
-//						bndResguardo = false;
-//						operaciones.descripcion ="";
-//					}
-//				}else{
-//					datos.saldoCom= datos.saldoCom * 1;	
-//					if(datos.saldoCom > 0){
-//						operaciones.monto= datos.saldoCom;
-//						operaciones.descripcion= "Se va saldo a cuenta de resguardo";
-//						datos.saldoCom= 0;
-//					}else{
-//						alert("No se tiene saldo acumulado");
-//						bndResguardo = false;
-//						operaciones.descripcion ="";
-//					}
-//				}
-//			}
-//		}else{
-//			operaciones.descripcion ="";
-//			bndResguardo = false;
-//		}
-//		objetos.op= operaciones;
-//		objetos.datos= datos;
-//		objetos.resguardo= bndResguardo;
-//		return objetos;
-//	}
+	this.isResguardo=function(operacion, operaciones,bndResguardo, datos){
+		objetos={op: null,datos: null, resguardo:null}
+		if(operaciones.tipo=='Resguardo'){
+			var mensaje = confirm("Esta opci\u00F3n mueve el saldo actual a la cuenta de resguardo.. Deseas continuar?");
+			if (mensaje) {
+				bndResguardo = true;
+				if(operacion=='OPC'){
+					datos.saldoMov= datos.saldoMov * 1;					
+					if(datos.saldoMov > 0){
+						operaciones.monto= datos.saldoMov;
+						operaciones.descripcion= "Se va saldo a cuenta de resguardo";
+						datos.saldoMov= 0;
+					}else{
+						alert("No se tiene saldo acumulado");
+						bndResguardo = false;
+						operaciones.descripcion ="";
+					}
+				}
+			}
+		}else{
+			operaciones.descripcion ="";
+			bndResguardo = false;
+		}
+		objetos.op= operaciones;
+		objetos.datos= datos;
+		objetos.resguardo= bndResguardo;
+		return objetos;
+	}
 	
 	this.detalleCheque=function(index, operacion, otVO, cheque){
 		if(operacion == 'OPC'){
@@ -238,23 +223,16 @@ app.service("operacionesMovimientosService",['$http', '$q', function($http, $q){
 		return cheque;
 	}
 	
-	this.verificarSaldo=function(operacion, otvo, ot,operaciones,monto,suma){
+	this.verificarSaldo=function(otvo, ot,operaciones){
 		objetos={ error: null, saldo:null};
 		var cantidad = 0;
-		if(operacion== 'OPC'){
+		
 			if(otvo.movimientos.length != 0){
-				cantidad= calcularSaldo(operaciones.monto,otvo.movimientos,monto,ot.importe);
+				cantidad= calcularSaldoCA(operaciones.monto,otvo.movimientos,ot.total);
 			}else{
-				cantidad= ((parseFloat(monto) + parseFloat(ot.importe)) - operaciones.monto).toFixed(2);
+				cantidad= (parseFloat(ot.total) - operaciones.monto).toFixed(2);
 			}
-		}else{
-			if(otvo.comisiones.length != 0){
-				cantidad=calcularSaldo(operaciones.monto,otvo.comisiones,suma,0);
-			}else{
-				cantidad= (parseFloat(suma) - parseFloat(operaciones.monto)).toFixed(2);
-			}
-			
-		}
+		
 		if(cantidad > 0 ){
 			objetos.saldo= cantidad;
 			objetos.error= " ";
@@ -267,7 +245,7 @@ app.service("operacionesMovimientosService",['$http', '$q', function($http, $q){
 	
 }]);
 
-app.controller("CAController",['$scope','$cookieStore', '$window', '$location', 'CBService','cuentaservice','operacionesMovimientosService',function($scope, $cookieStore, $window, $location, CBService,cuentaservice,operacionesMovimientosService){
+app.controller("CAController",['$scope','$cookieStore', '$window', '$location', 'CBService','cuentaservice','OPMS',function($scope, $cookieStore, $window, $location, CBService,cuentaservice,OPMS){
 	$scope.bancos = catalogoBancos();
 	$scope.tablaPagos= false;
 	$scope.tablaOper= false;
@@ -299,11 +277,12 @@ app.controller("CAController",['$scope','$cookieStore', '$window', '$location', 
 			iva: null,
 			importe: 0.0,
 			total: 0.0,
+			tipo:"ca",
 //			porLic : null,
 //			porDes : null,
 //			porBrok: [],
-//			montoLic : null,
-//			montoDes : null,
+			montoLic : 0.0,
+			montoDes : 0.0,
 //			montoBrok:[],
 //			retorno: null,
 			saldoMov: null,
@@ -344,16 +323,16 @@ app.controller("CAController",['$scope','$cookieStore', '$window', '$location', 
 		if($scope.datos.nombreCliente == null){
 			datosCliente();
 		}
-		var renglon= {cliente:$scope.datos.nombreCliente, fecha:$scope.pago.fecha, banco:$scope.pago.banco, cuenta:$scope.pago.cuenta, monto:$scope.pago.monto, moneda:$scope.pago.moneda}
+		var renglon= {cliente:$scope.datos.nombreCliente, fecha:$scope.pago.fecha, monto:$scope.pago.monto, moneda:$scope.pago.moneda}
 		$scope.otVO.pagos.push(renglon);
 		$scope.tablaPagos=true;
 		$scope.limpiaPago();
 		$scope.clienteSeleccionado=true;
 		$scope.calcularImporte();
-		$scope.calcularMontos('Todos');
-		if($scope.otVO.pagos.length == 0){
-			$scope.calcularRetorno();
-		}
+//		$scope.calcularMontos('Todos');
+//		if($scope.otVO.pagos.length == 0){
+//			$scope.calcularRetorno();
+//		}
 		
 	}
 	
@@ -380,13 +359,10 @@ app.controller("CAController",['$scope','$cookieStore', '$window', '$location', 
 	}
 	
 	$scope.verificarSaldo=function(operacion){
-		var objs= operacionesMovimientosService.verificarSaldo(operacion, $scope.otVO, $scope.datos, $scope.operaciones,$scope.montoRetorno,$scope.sumaMontoBrok);
+		var objs= OPMS.verificarSaldo( $scope.otVO, $scope.datos, $scope.operaciones);
 		$scope.errorSaldo= objs.error;
-		if(operacion =='OPC'){
-			$scope.datos.saldoMov = objs.saldo;
-		}else{
-			$scope.datos.saldoCom = objs.saldo;
-		}
+		$scope.datos.saldoMov = objs.saldo;
+		
 		
 	}
 	$scope.getIndex=function(){
@@ -418,83 +394,84 @@ app.controller("CAController",['$scope','$cookieStore', '$window', '$location', 
 			sumaMontoPagos= sumaMontoPagos + $scope.otVO.pagos[i].monto;
 		}
 		$scope.datos.total= sumaMontoPagos
-		$scope.datos.importe = $scope.redondea(sumaMontoPagos / 1.16 );
-		$scope.datos.iva= $scope.redondea(sumaMontoPagos - $scope.datos.importe);
+//		$scope.datos.importe = $scope.redondea(sumaMontoPagos / 1.16 );
+//		$scope.datos.iva= $scope.redondea(sumaMontoPagos - $scope.datos.importe);
 	}
 	
-	$scope.calcularComisiones=function(param){
-		if($scope.tablaPagos== true){
-			$scope.calcularMontos(param);
-			if($scope.datos.porLic != null && $scope.datos.porDes != null){
-				for( var i in $scope.brokers){
-					if($scope.brokers[i].porBrok == null){
-						return;
-					}else{
-						$scope.calcularRetorno();
-					}
-				}
-			}else{
-		    	return;
-		    }			
-		}else{
-			alert("No se han registrado pagos.")
-			$scope.limpiaComisiones()
-		}
-	}
+//	$scope.calcularComisiones=function(param){
+//		if($scope.tablaPagos== true){
+//			$scope.calcularMontos(param);
+//			if($scope.datos.porLic != null && $scope.datos.porDes != null){
+//				for( var i in $scope.brokers){
+//					if($scope.brokers[i].porBrok == null){
+//						return;
+//					}else{
+//						$scope.calcularRetorno();
+//					}
+//				}
+//			}else{
+//		    	return;
+//		    }			
+//		}else{
+//			alert("No se han registrado pagos.")
+//			$scope.limpiaComisiones()
+//		}
+//	}
 	
-	$scope.calcularMontos=function(modelo){
-			switch(modelo) {
-		    case 'Lic' :
-		    	$scope.datos.montoLic = $scope.redondea(($scope.datos.porLic/100)*$scope.datos.importe);
-		        break;
-		    case 'Des':
-		    	$scope.datos.montoDes = $scope.redondea(($scope.datos.porDes/100)*$scope.datos.importe);
-		        break;
-		    case 'Broke':
-		    	for( var i in $scope.brokers){
-	    			$scope.brokers[i].montoBrok = $scope.redondea(($scope.brokers[i].porBrok/100)*$scope.datos.importe);
-	    		}
-		        break;
-		    case 'Todos':
-		    	$scope.datos.montoLic = $scope.redondea(($scope.datos.porLic/100)*$scope.datos.importe);
-		    	$scope.datos.montoDes = $scope.redondea(($scope.datos.porDes/100)*$scope.datos.importe);
-		    	for( var i in $scope.brokers){
-	    			$scope.brokers[i].montoBrok = $scope.redondea(($scope.brokers[i].porBrok/100)*$scope.datos.importe);
-	    		}
-		       
-		    	break;
-		     default:
-		    	 return;
-			}	
-	}
+//	$scope.calcularMontos=function(modelo){
+//			switch(modelo) {
+//		    case 'Lic' :
+//		    	$scope.datos.montoLic = $scope.redondea(($scope.datos.porLic/100)*$scope.datos.importe);
+//		        break;
+//		    case 'Des':
+//		    	$scope.datos.montoDes = $scope.redondea(($scope.datos.porDes/100)*$scope.datos.importe);
+//		        break;
+//		    case 'Broke':
+//		    	for( var i in $scope.brokers){
+//	    			$scope.brokers[i].montoBrok = $scope.redondea(($scope.brokers[i].porBrok/100)*$scope.datos.importe);
+//	    		}
+//		        break;
+//		    case 'Todos':
+//		    	$scope.datos.montoLic = $scope.redondea(($scope.datos.porLic/100)*$scope.datos.importe);
+//		    	$scope.datos.montoDes = $scope.redondea(($scope.datos.porDes/100)*$scope.datos.importe);
+//		    	for( var i in $scope.brokers){
+//	    			$scope.brokers[i].montoBrok = $scope.redondea(($scope.brokers[i].porBrok/100)*$scope.datos.importe);
+//	    		}
+//		       
+//		    	break;
+//		     default:
+//		    	 return;
+//			}	
 	
-	$scope.calcularRetorno= function(){
-		var totalPor=0;
-		var sumaBrok =0;
-		$scope.sumaMontoBrok =0;
-		
-		for( var i in $scope.brokers){
-			sumaBrok= sumaBrok + $scope.brokers[i].porBrok;
-			$scope.sumaMontoBrok= parseFloat($scope.sumaMontoBrok) + parseFloat($scope.brokers[i].montoBrok);
-		}
-
-		var retorno = 16-$scope.datos.porLic- $scope.datos.porDes- sumaBrok;
-		if(retorno > 0 ){
-			$scope.datos.retorno= retorno;
-			$scope.montoRetorno=$scope.redondea(($scope.datos.retorno/100)*$scope.datos.importe);
-			$scope.montosTotal = parseFloat($scope.datos.montoLic)+ parseFloat($scope.datos.montoDes) + parseFloat($scope.sumaMontoBrok) + parseInt($scope.montoRetorno);
-			$scope.datos.totalComisiones=$scope.redondea($scope.montosTotal);
-			totalPor=$scope.datos.porLic + $scope.datos.porDes + sumaBrok + $scope.datos.retorno;
-			
-			if(totalPor != 16){
-				alert("Error en asignacion de porcentajes.");
-    			$scope.datos.retorno= null;
-			}
-		}else{
-			alert("Error en asignacion de porcentajes.");
-			$scope.datos.retorno= null; 
-		}	
-	}	
+//	}
+	
+//	$scope.calcularRetorno= function(){
+//		var totalPor=0;
+//		var sumaBrok =0;
+//		$scope.sumaMontoBrok =0;
+//		
+//		for( var i in $scope.brokers){
+//			sumaBrok= sumaBrok + $scope.brokers[i].porBrok;
+//			$scope.sumaMontoBrok= parseFloat($scope.sumaMontoBrok) + parseFloat($scope.brokers[i].montoBrok);
+//		}
+//
+//		var retorno = 16-$scope.datos.porLic- $scope.datos.porDes- sumaBrok;
+//		if(retorno > 0 ){
+//			$scope.datos.retorno= retorno;
+//			$scope.montoRetorno=$scope.redondea(($scope.datos.retorno/100)*$scope.datos.importe);
+//			$scope.montosTotal = parseFloat($scope.datos.montoLic)+ parseFloat($scope.datos.montoDes) + parseFloat($scope.sumaMontoBrok) + parseInt($scope.montoRetorno);
+//			$scope.datos.totalComisiones=$scope.redondea($scope.montosTotal);
+//			totalPor=$scope.datos.porLic + $scope.datos.porDes + sumaBrok + $scope.datos.retorno;
+//			
+//			if(totalPor != 16){
+//				alert("Error en asignacion de porcentajes.");
+//    			$scope.datos.retorno= null;
+//			}
+//		}else{
+//			alert("Error en asignacion de porcentajes.");
+//			$scope.datos.retorno= null; 
+//		}	
+//	}	
 	
 	$scope.eliminarRenglon=function(renglon){
 		$scope.otVO.pagos.splice(renglon, 1);
@@ -503,35 +480,31 @@ app.controller("CAController",['$scope','$cookieStore', '$window', '$location', 
 			$scope.LimpiarTodo();
 		}else{
 			$scope.calcularImporte();
-			$scope.calcularMontos('Todos');
+//			$scope.calcularMontos('Todos');
 		}
 
 	}
 	
 
 	$scope.addOper= function(operacion){
-		var objs=operacionesMovimientosService.addOper(operacion,$scope.operaciones, $scope.otVO, $scope.tipoResguardo,$scope.datosCliente,$scope.brockerCliente);
+		var objs=OPMS.addOper(operacion,$scope.operaciones, $scope.otVO, $scope.tipoResguardo,$scope.datosCliente,$scope.brockerCliente);
 		$scope.otVO= objs.otvo;
 		$scope.datosCliente = objs.c;
 		$scope.brockercliente= objs.b;
-		if(operacion=='OPC'){
-			$scope.tablaOper=true;
-		}else{
-			$scope.tablaOperAsesor=true;
-		}
+		$scope.tablaOper=true;
 		$scope.limpiaOperaciones();	
 	} 
 
-//	$scope.isResguardo=function(operacion){
-//		$scope.errorSaldo="";
-//		var objs= operacionesMovimientosService.isResguardo(operacion, $scope.operaciones,$scope.tipoResguardo, $scope.datos);
-//		$scope.operaciones= objs.op;
-//		$scope.datos= objs.datos;
-//		$scope.tipoResguardo=objs.resguardo;
-//	}
+	$scope.isResguardo=function(operacion){
+		$scope.errorSaldo="";
+		var objs= OPMS.isResguardo(operacion, $scope.operaciones,$scope.tipoResguardo, $scope.datos);
+		$scope.operaciones= objs.op;
+		$scope.datos= objs.datos;
+		$scope.tipoResguardo=objs.resguardo;
+	}
 	
 	$scope.detalleCheque=function(index, operacion){
-		$scope.cheque =operacionesMovimientosService.detalleCheque(index, operacion, $scope.otVO, $scope.cheque);
+		$scope.cheque =OPMS.detalleCheque(index, operacion, $scope.otVO, $scope.cheque);
 	}
 
 	
@@ -581,8 +554,8 @@ app.controller("CAController",['$scope','$cookieStore', '$window', '$location', 
 	$scope.limpiaComisiones=function(){
 		$scope.datos.porLic = null;
 		$scope.datos.porDes =null;
-		$scope.datos.montoLic= null;
-		$scope.datos.montoDes= null;
+		$scope.datos.montoLic= 0.0;
+		$scope.datos.montoDes= 0.0;
 		$scope.datos.retorno= null;
 		$scope.datos.totalComisiones =  null;
 		for( var i in $scope.brokers){
