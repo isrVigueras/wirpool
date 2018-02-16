@@ -613,6 +613,9 @@ app.controller("OTsAddController",['$scope','$cookieStore', '$window', '$locatio
 
 
 app.controller("ordenTrabajoController",['$scope','$window', '$location', '$cookieStore','ordenTrabajoservice','usuarioservice','operacionesMovimientosService',function($scope, $window, $location, $cookieStore, ordenTrabajoservice,usuarioservice,operacionesMovimientosService){
+		$scope.permiso=true; 
+	
+	
 	var indice = null;
 	var tipoOperacion= null;
 	$scope.tiposOp = TiposOperacion();
@@ -636,7 +639,6 @@ app.controller("ordenTrabajoController",['$scope','$window', '$location', '$cook
 	}
 	
 	ordenTrabajoservice.loadot($cookieStore.get("idOt")).then(function(data){
-		$scope.perfil=true;  //pendiente permisos de usuario
 		$scope.otvo= data;
 		crearListaDeCheques();
 		var sumaMontoPagos =0;
