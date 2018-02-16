@@ -61,7 +61,7 @@
 
 	</div>
 
-	<div class="infComisiones">
+	<div class="infComisiones" ng-hide="tipoOT=='ca'">
 		<div class="Dlabel">
 			<label>Calculos</label> <br>
 		</div>
@@ -84,7 +84,7 @@
 		</table>
 
 	</div>
-	<div class="infComisiones">
+	<div class="infComisiones" ng-hide="tipoOT=='ca'">
 		<div class="Dlabel">
 			<label>Comisiones</label>
 		</div>
@@ -192,7 +192,7 @@
 		<label>Saldo Movimientos: $</label>{{otvo.ot.saldoMov}}
 	</div>
 	<br>
-	<div class="infComisiones">
+	<div class="infComisiones" ng-hide="tipoOT=='ca'">
 		<div class="Dlabel">
 			<div class="row">
 				<div class="col-md-6" >

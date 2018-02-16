@@ -615,7 +615,7 @@ app.controller("OTsAddController",['$scope','$cookieStore', '$window', '$locatio
 app.controller("ordenTrabajoController",['$scope','$window', '$location', '$cookieStore','ordenTrabajoservice','usuarioservice','operacionesMovimientosService',function($scope, $window, $location, $cookieStore, ordenTrabajoservice,usuarioservice,operacionesMovimientosService){
 		$scope.permiso=true; 
 	
-	
+		
 	var indice = null;
 	var tipoOperacion= null;
 	$scope.tiposOp = TiposOperacion();
@@ -646,18 +646,23 @@ app.controller("ordenTrabajoController",['$scope','$window', '$location', '$cook
 		for(var i in $scope.otvo.pagos){
 			var sumaMontoPagos= sumaMontoPagos + $scope.otvo.pagos[i].monto;
 		}
-		$scope.iva= (sumaMontoPagos - $scope.otvo.ot.importe).toFixed(2);
-		$scope.brokers = [];
-		for(var i in $scope.otvo.ot.porBrok){
-			var cont= parseInt(i) + parseInt(1);
-			var nombre =  'Broker' + cont ;
-			var renglon= {nombre:nombre, porBrok:$scope.otvo.ot.porBrok[i], montoBrok: $scope.otvo.ot.montoBrok[i]};
-			$scope.brokers.push(renglon);
-			$scope.sumaMontoBrok= parseInt($scope.sumaMontoBrok) + parseInt($scope.otvo.ot.montoBrok[i]);
+		if($scope.otvo.ot.tipo !="ca"){
+			$scope.tipoOT="general";
+			$scope.iva= (sumaMontoPagos - $scope.otvo.ot.importe).toFixed(2);
+			$scope.brokers = [];
+			for(var i in $scope.otvo.ot.porBrok){
+				var cont= parseInt(i) + parseInt(1);
+				var nombre =  'Broker' + cont ;
+				var renglon= {nombre:nombre, porBrok:$scope.otvo.ot.porBrok[i], montoBrok: $scope.otvo.ot.montoBrok[i]};
+				$scope.brokers.push(renglon);
+				$scope.sumaMontoBrok= parseInt($scope.sumaMontoBrok) + parseInt($scope.otvo.ot.montoBrok[i]);
+			}
+			
+			$scope.montoRetorno=(($scope.otvo.ot.retorno/100)*$scope.otvo.ot.importe).toFixed(2);
+			$scope.montosTotal = parseInt($scope.otvo.ot.montoLic)+ parseInt($scope.otvo.ot.montoDes) + parseInt($scope.sumaMontoBrok) + parseInt($scope.montoRetorno);
+		}else{
+			$scope.tipoOT="ca";
 		}
-		
-		$scope.montoRetorno=(($scope.otvo.ot.retorno/100)*$scope.otvo.ot.importe).toFixed(2);
-		$scope.montosTotal = parseInt($scope.otvo.ot.montoLic)+ parseInt($scope.otvo.ot.montoDes) + parseInt($scope.sumaMontoBrok) + parseInt($scope.montoRetorno);
 		
 		if($scope.otvo.ot.estatus=="Cerrada"){
 			$scope.ordenCerrada= true;
