@@ -105,6 +105,7 @@ app.service("pagosService",['$http',"$q",function($http,$q){
 }]);
 
 app.controller("pagosAddController",['$scope','$cookieStore', '$window', '$location', 'pagosService','cuentaservice', function($scope, $cookieStore, $window, $location, pagosService,cuentaservice){
+	
 	$scope.pago={
 			moneda:"MXN"
 	}
@@ -173,6 +174,7 @@ app.controller("ListaPagoController",['$scope','$cookieStore', '$window', '$loca
 //		$scope.ListPagos = data;
 //
 //});
+	
 	clientservice.consultarClientesTodos().then(function(data) {
 		$scope.clienteLista = data;
 

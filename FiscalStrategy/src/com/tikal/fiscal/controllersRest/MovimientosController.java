@@ -39,9 +39,12 @@ public class MovimientosController {
 		HttpSession sesion= req.getSession();
 		Usuario user=(Usuario) sesion.getAttribute("user");
 		List<Movimiento> lista=null;
-		if(user.getPerfil().compareTo("Caja")==0){	
-				lista=movimientodao.getFull(page, "60-Efectivo");
+		if(user.getPerfil().compareTo("Caja")==0 || user.getPerfil().compareTo("AdministradorRoot")==0){	
+				lista=movimientodao.getFull(page, "Efectivo");
 				res.getWriter().print(JsonConvertidor.toJson(lista));
+		}else{
+			String error = "Usuario sin permisos para realizar esta accion";
+			res.getWriter().print(JsonConvertidor.toJson(error));
 		}
 	}
 	

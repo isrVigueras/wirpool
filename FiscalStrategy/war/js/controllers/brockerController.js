@@ -89,10 +89,11 @@ app.controller("brockercuentacontroller",['clientservice','$scope','$window', '$
 //	}
 }]);
 app.controller("brockersController",['usuarioservice','$scope','$window', '$location', '$cookieStore','brockerservice', function(usuarioservice,$scope, $window, $location, $cookieStore, brockerservice){
+	
 	brockerservice.consultarBrockersTodos().then(function(data) {
 		$scope.brockerLista = data;
 
-});
+	});
 	
 	
 	usuarioservice.consultarUsuariosTodos().then(function(data){

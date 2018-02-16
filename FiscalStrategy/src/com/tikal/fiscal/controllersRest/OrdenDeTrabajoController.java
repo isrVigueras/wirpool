@@ -149,6 +149,7 @@ public class OrdenDeTrabajoController {
 		}
 		
 	}
+	
 	@RequestMapping(value={"/paginas"},method= RequestMethod.GET, produces="application/json")
 	private void pages(HttpServletRequest req, HttpServletResponse res) throws IOException{
 		AsignadorDeCharset.asignar(req, res);

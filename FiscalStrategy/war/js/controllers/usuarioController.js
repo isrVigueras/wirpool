@@ -58,8 +58,8 @@ app.service("usuarioservice",['$http', '$q', function($http, $q){
 app.service("perfilservice",['$http', '$q', function($http, $q){
 	
 }]);
-app.controller("userController",['$scope','$window', '$location', '$cookieStore','usuarioservice', function($scope, $window, $location, $cookieStore, usuarioservice){
-	
+app.controller("userController",['$scope','$window', '$location', '$cookieStore','usuarioservice',function($scope, $window, $location, $cookieStore, usuarioservice){
+
 	$scope.validate = function() {
 		  if ($scope.usuario.email != $scope.usuario.emailconfirm) {
 		    $scope.IsMatch=true;
@@ -114,8 +114,9 @@ $scope.EnviarFormulario = function() {
 app.controller("controladorListaUsuarios", [ '$scope', 'usuarioservice',
 	'perfilservice', '$location', '$window',
 	function($scope, usuarioservice, perfilservice, $location, $window) {
-
-		usuarioservice.consultarUsuariosTodos().then(function(data) {
+	
+	
+	usuarioservice.consultarUsuariosTodos().then(function(data) {
 			$scope.usuariosLista = data;
 		})
 

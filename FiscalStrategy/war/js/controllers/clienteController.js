@@ -76,6 +76,7 @@ app.service("clientcuentaservice",['$http', '$q', function($http, $q){
 	
 }]);
 app.controller("clientcuentacontroller",['$scope','$window', '$location', '$cookieStore','clientcuentaservice','$routeParams',function($scope, $window, $location, $cookieStore, clientcuentaservice,$routeParams){
+	
 	$scope.guardaClienteCuenta= function(id){
 		console.log($scope.cuenta);
 		$scope.cuenta.enabled=true;
@@ -97,6 +98,7 @@ app.controller("clientcuentacontroller",['$scope','$window', '$location', '$cook
 }]);
 
 app.controller("clientController",['usuarioservice','brockerservice','$scope','$window', '$location', '$cookieStore','clientservice','clientcuentaservice', function(usuarioservice,brockerservice, $scope, $window, $location, $cookieStore, clientservice,clientcuentaservice){
+	
 	clientservice.consultarClientesTodos().then(function(data) {
 			$scope.clienteLista = data;
 	
