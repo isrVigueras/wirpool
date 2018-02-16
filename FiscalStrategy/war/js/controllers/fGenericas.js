@@ -13,7 +13,21 @@ function calcularSaldo(prox, arrMov, total,importe){
 	saldo= ((parseFloat(total) + parseFloat(importe)) - sumatoria).toFixed(2);
 	return saldo;
 }
+function calcularSaldoCA(prox, arrMov, total){
+	var sumatoria= 0;
+	var arreglo = null;
+	var monto=null;
+	var saldo=0;
 
+	for(var i in arrMov){
+		if(arrMov[i].estatus== 'ACTIVO'){
+			sumatoria= sumatoria + arrMov[i].monto;
+		};
+	}
+	sumatoria =  sumatoria + prox;
+	saldo= (parseFloat(total) - sumatoria).toFixed(2);
+	return saldo;
+}
 
 function TiposOperacion (){
 	var tiposOp = [{id:1, nombre: "Transfer"},{id:2, nombre: "Resguardo"} ,{id:3, nombre: "Efectivo"},{id:3, nombre: "Cheque"}];
