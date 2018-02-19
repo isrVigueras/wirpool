@@ -1,7 +1,7 @@
 <section class="jumbotron">
 	<div class="container">
 		<h2>Ordenes de trabajo</h2>
-		<submenu />  
+			<submenu />
 	</div>
 </section>
 <div class="container">
@@ -26,7 +26,7 @@
 			<tbody>
 				<tr ng-repeat="ot in ots">
 					<td>{{ot.nombreCliente}}</td>
-					<td>{{ot.resguardo}}</td>
+					<td>{{ot.saldoMov}}</td>
 					<td>{{ot.estatus}}</td>
 					<td><button class="btn btn-small" ng-click="ver(ot.id)">
 							<i class="glyphicon glyphicon-eye-open"></i>
