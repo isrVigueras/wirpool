@@ -23,6 +23,11 @@ public class OrdenDeTrabajoDAOImp implements OrdenDeTrabajoDAO {
 	public List<OrdenDeTrabajo> getByCliente(Long id, int page) {
 		return ofy().load().type(OrdenDeTrabajo.class).filter("idCliente", id).order("- fechaInicio").offset(25 * (page - 1)).limit(25).list();
 	}
+	
+	@Override
+	public List<OrdenDeTrabajo> getByCliente(Long id) {
+		return ofy().load().type(OrdenDeTrabajo.class).filter("idCliente", id).order("- fechaInicio").list();
+	}
 
 	@Override
 	public List<OrdenDeTrabajo> getByResponsable(Long id, int page) {

@@ -73,7 +73,7 @@ public class OrdenDeTrabajoController {
 		Usuario user=(Usuario) sesion.getAttribute("user");
 		if(user.getPerfil().compareTo("Ejecutivo")==0 || user.getPerfil().compareTo("AdministradorRoot")==0 || user.getPerfil().compareTo("AdministradorRoot")==0){
 			ot.setIdResponsable(user.getId());
-			ot.setFolioImpresion(1);
+			ot.setFolioImpresion(0);
 	
 			FolioOT generaFolio = new FolioOT ();
 			if(foliodao.getAll().size() > 0){
@@ -190,7 +190,14 @@ public class OrdenDeTrabajoController {
 		otvo.setOt(ot);
 		res.getWriter().print(JsonConvertidor.toJson(otvo));
 		
-	} 
+	}
+	
+	@RequestMapping(value={"/findByCliente/{id}"},method= RequestMethod.GET, produces="application/json")
+	public void getByBrocker(HttpServletResponse res, HttpServletRequest req, @PathVariable Long id) throws IOException{
+		AsignadorDeCharset.asignar(req, res);
+		List<OrdenDeTrabajo> lista= otdao.getByCliente(id);
+		res.getWriter().print(JsonConvertidor.toJson(lista));
+	}
 	
 	@RequestMapping(value="/addMovimiento/", method=RequestMethod.POST, consumes="application/json")
 	private void addMovimiento(HttpServletRequest req, HttpServletResponse res, @RequestBody String json) throws IOException{

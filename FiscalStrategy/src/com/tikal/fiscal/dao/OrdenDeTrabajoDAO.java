@@ -13,7 +13,10 @@ public interface OrdenDeTrabajoDAO {
 	
 	public List<OrdenDeTrabajo> getByCliente(Long id, int page);
 	
+	public List<OrdenDeTrabajo> getByCliente(Long id);
+	
 	public List<OrdenDeTrabajo> getByResponsable(Long id, int page);
+	
 	public List<OrdenDeTrabajo> getFull(int page);
 	
 	public int getPages(Long id);
