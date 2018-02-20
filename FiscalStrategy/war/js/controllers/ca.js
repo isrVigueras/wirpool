@@ -519,9 +519,9 @@ app.controller("CAController",['$scope','$cookieStore', '$window', '$location', 
 					if($scope.datosCliente.saldo != null || $scope.datosCliente.saldo != 0){
 						$scope.otVO.cliente = $scope.datosCliente;
 					}
-					if($scope.brockerCliente.saldo != null || $scope.brockerCliente.saldo != 0){
-						$scope.otVO.broker = $scope.brockerCliente;
-					}
+//					if($scope.brockerCliente.saldo != null || $scope.brockerCliente.saldo != 0){
+//						$scope.otVO.broker = $scope.brockerCliente;
+//					}
 					$scope.otVO.ot = $scope.datos;
 					console.log($scope.otVO);
 					
