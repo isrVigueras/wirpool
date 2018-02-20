@@ -177,7 +177,7 @@ public class OrdenDeTrabajoController {
 		if(ot.getIdResponsable()!=null){
 			Usuario u= usuariodao.consultarId(ot.getIdResponsable());
 			u.setPass("");
-			otvo.setResponsable(u);
+			otvo.setResponsable(u);  
 		}
 		
 		List<Movimiento> mov = movimientodao.getByIds(ot.getMovimientos());

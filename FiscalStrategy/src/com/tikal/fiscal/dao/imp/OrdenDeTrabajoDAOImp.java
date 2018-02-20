@@ -12,7 +12,7 @@ public class OrdenDeTrabajoDAOImp implements OrdenDeTrabajoDAO {
 	@Override
 	public void save(OrdenDeTrabajo ot) {
 		ofy().save().entity(ot).now();
-	}
+	}  
 
 	@Override
 	public OrdenDeTrabajo get(Long id) {
