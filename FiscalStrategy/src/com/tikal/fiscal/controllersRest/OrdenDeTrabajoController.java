@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.pdf.PdfWriter;
+import com.tikal.fiscal.controllersRest.VO.MovimientosVO;
 import com.tikal.fiscal.controllersRest.VO.OrdenDeTrabajoVO;
 import com.tikal.fiscal.dao.ClienteDAO;
 import com.tikal.fiscal.dao.CuentaDAO;
@@ -205,27 +206,25 @@ public class OrdenDeTrabajoController {
 	@RequestMapping(value="/addMovimiento/", method=RequestMethod.POST, consumes="application/json")
 	private void addMovimiento(HttpServletRequest req, HttpServletResponse res, @RequestBody String json) throws IOException{
 		AsignadorDeCharset.asignar(req, res);
-		OrdenDeTrabajoVO otvo= (OrdenDeTrabajoVO) JsonConvertidor.fromJson(json, OrdenDeTrabajoVO.class);
-		OrdenDeTrabajo ot = otvo.getOt();
+		MovimientosVO m= (MovimientosVO) JsonConvertidor.fromJson(json, MovimientosVO.class);
 		HttpSession sesion= req.getSession();
 		Usuario user=(Usuario) sesion.getAttribute("user");
-		if(user.getPerfil().compareTo("Ejecutivo")==0 || user.getPerfil().compareTo("AdministradorRoot")==0){
-				List<Movimiento> m = otvo.getMovimientos();
-				for(int i=0; i<m.size();i++){
-					if(m.get(i).getId() == null){
-						m.get(i).setFechaCreacion(new Date());
-						movimientodao.save(m.get(i));
-						ot.getMovimientos().add(m.get(i).getId());
-					}
+		if(user.getPerfil().compareTo("Ejecutivo")==0 || user.getPerfil().compareTo("AdministradorRoot")==0 || user.getPerfil().compareTo("Administrador")==0){
+				Movimiento mov= m.getMovimiento();
+				OrdenDeTrabajo ot = otdao.get(m.getIdOt());
+				if(m.getBndMovimiento().compareTo("cliente")==0){
+						mov.setFechaCreacion(new Date());
+						movimientodao.save(mov);
+						ot.getMovimientos().add(mov.getId());
+						ot.setSaldoMov(m.getSaldo());
 				}
-				List<Movimiento> c = otvo.getComisiones();
-				for(int i=0; i<c.size();i++){
-					if(c.get(i).getId() == null){
-						c.get(i).setFechaCreacion(new Date());
-						movimientodao.save(c.get(i));
-						ot.getComisiones().add(c.get(i).getId());
-					}
+				if(m.getBndMovimiento().compareTo("asesor")==0){
+					mov.setFechaCreacion(new Date());
+					movimientodao.save(mov);
+					ot.getComisiones().add(mov.getId());
+					ot.setSaldoCom(m.getSaldo());
 				}
+				
 				otdao.save(ot);
 		}else{
 			String error = "Usuario sin permisos para realizar esta accion";

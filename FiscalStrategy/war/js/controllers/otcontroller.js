@@ -60,7 +60,6 @@ app.service("otservice",['$http', '$q', function($http, $q){
 //	});
 
 app.controller("OTsListController",['$scope','$window', '$location', '$cookieStore','otservice', function($scope, $window, $location, $cookieStore, otservice){
-	
 	$scope.llenarPags=function(){
 		var inicio=0;
 		if($scope.paginaActual>5){
@@ -101,7 +100,7 @@ app.controller("OTsListController",['$scope','$window', '$location', '$cookieSto
 		$location.path("/ordenTrabajo");
 		//$window.location.reload();
 		$cookieStore.put("idOt",data);
-//		$scope.listClient=data;
+		$scope.listClient=data;
 	}
 	
 }]);

@@ -241,7 +241,7 @@ public class PDFot {
 
 	}
 	
-	//OT Genéricas
+	//OT Normal
 	private void construirBocetoCompleto(Long fOT,OrdenDeTrabajoVO otvo, List<Cuenta> cuentas) throws DocumentException{	
 		//Tabla1
 		PdfPTable tablaEncabezado = new PdfPTable(2);
@@ -337,7 +337,7 @@ public class PDFot {
 		celdaLeyendaEncabezado.setBorder(PdfPCell.NO_BORDER);
 		Phrase fraseLeyendaEncabezado = new Phrase();
 		agregarChunkYNuevaLinea("Base para comisiones " + "$" + String.valueOf(otvo.getOt().getIva()), font3, fraseLeyendaEncabezado);
-		agregarChunkYNuevaLinea("% para comisiones  16", font3, fraseLeyendaEncabezado);
+		agregarChunkYNuevaLinea("% para comisiones " + String.valueOf(otvo.getOt().getPorciento()), font3, fraseLeyendaEncabezado);
 		celdaLeyendaEncabezado.setPhrase(fraseLeyendaEncabezado);
 		
 		tablaEncabezado.addCell(celdaLeyendaEncabezado);

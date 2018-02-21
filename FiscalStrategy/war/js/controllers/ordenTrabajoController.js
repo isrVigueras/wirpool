@@ -47,16 +47,15 @@ app.service("ordenTrabajoservice",['$http', '$q', function($http, $q){
 	
 	this.loadPendientes = function(page) {
 		var d = $q.defer();
-	
 		$http.get("/movimientos/load/"+page).then(
 			function(response) {
 				d.resolve(response.data);
 			});
 		return d.promise;
 	}
+	
 	this.getPaginasPendientes = function(page) {
 		var d = $q.defer();
-	
 		$http.get("/movimientos/paginas").then(
 			function(response) {
 				d.resolve(response.data);
@@ -109,9 +108,9 @@ app.service("ordenTrabajoservice",['$http', '$q', function($http, $q){
 		return d.promise;
 	}
 	
-	this.addMov=function(otvo){
+	this.addMov=function(movimientosvo){
 		var d = $q.defer();
-		$http.post("ots/addMovimiento/",otvo).then(
+		$http.post("ots/addMovimiento/",movimientosvo).then(
 			function(response) {
 				d.resolve(response.data);
 			});
@@ -267,14 +266,13 @@ app.service("operacionesMovimientosService",['$http', '$q', function($http, $q){
 	
 }]);
 
-app.controller("OTsAddController",['$scope','$cookieStore', '$window', '$location', 'ordenTrabajoservice','cuentaservice','operacionesMovimientosService', function($scope, $cookieStore, $window, $location, ordenTrabajoservice,cuentaservice,operacionesMovimientosService){
+app.controller("OTsAddController",['$route','$scope','$cookieStore', '$window', '$location', 'ordenTrabajoservice','cuentaservice','operacionesMovimientosService', function($route, $scope, $cookieStore, $window, $location, ordenTrabajoservice,cuentaservice,operacionesMovimientosService){
 	$scope.bancos = catalogoBancos();
 	$scope.tablaPagos= false;
 	$scope.tablaOper= false;
 	$scope.tablaOperAsesor=false;
 	$scope.cuentas=null;
 	$scope.montoRetorno=null;
-	$scope.montosTotal=null;
 	$scope.brokers = [{id:1, nombre: "Broker1", porBrok: null,montoBrok: null }];
 	$scope.operacion = {tipo: null, descripcion: null , monto: null, estatus:null};
 	$scope.errorSaldo=" ";
@@ -309,6 +307,8 @@ app.controller("OTsAddController",['$scope','$cookieStore', '$window', '$locatio
 			saldoMov: null,
 			saldoCom: null,
 			totalComisiones: null,
+			tipo: "normal",
+			porciento: 16
 	}
 	
 	$scope.operaciones={
@@ -350,7 +350,7 @@ app.controller("OTsAddController",['$scope','$cookieStore', '$window', '$locatio
 		$scope.limpiaPago();
 		$scope.clienteSeleccionado=true;
 		$scope.calcularImporte();
-		$scope.calcularMontos('Todos');
+		//$scope.calcularMontos('Todos');
 		if($scope.otVO.pagos.length == 0){
 			$scope.calcularRetorno();
 		}
@@ -397,6 +397,7 @@ app.controller("OTsAddController",['$scope','$cookieStore', '$window', '$locatio
 	$scope.Cuentas = function() {
 		 ordenTrabajoservice.consultarCuentas($scope.pago.banco).then(function(data){
 			 $scope.cuentas= data;
+			 console.log(data);
 		 }); 
 	};
 	
@@ -412,8 +413,10 @@ app.controller("OTsAddController",['$scope','$cookieStore', '$window', '$locatio
 			sumaMontoPagos= sumaMontoPagos + $scope.otVO.pagos[i].monto;
 		}
 		$scope.datos.total= sumaMontoPagos
-		$scope.datos.importe = $scope.redondea(sumaMontoPagos / 1.16 );
+		var div= ("1." + $scope.datos.porciento)*1;
+		$scope.datos.importe = $scope.redondea(sumaMontoPagos / div);
 		$scope.datos.iva= $scope.redondea(sumaMontoPagos - $scope.datos.importe);
+		$scope.calcularComisiones('Todos');
 	}
 	
 	$scope.calcularComisiones=function(param){
@@ -426,7 +429,7 @@ app.controller("OTsAddController",['$scope','$cookieStore', '$window', '$locatio
 					}else{
 						$scope.calcularRetorno();
 					}
-				}
+				}                         
 			}else{
 		    	return;
 		    }			
@@ -454,8 +457,7 @@ app.controller("OTsAddController",['$scope','$cookieStore', '$window', '$locatio
 		    	$scope.datos.montoDes = $scope.redondea(($scope.datos.porDes/100)*$scope.datos.importe);
 		    	for( var i in $scope.brokers){
 	    			$scope.brokers[i].montoBrok = $scope.redondea(($scope.brokers[i].porBrok/100)*$scope.datos.importe);
-	    		}
-		       
+	    		}	       
 		    	break;
 		     default:
 		    	 return;
@@ -463,32 +465,26 @@ app.controller("OTsAddController",['$scope','$cookieStore', '$window', '$locatio
 	}
 	
 	$scope.calcularRetorno= function(){
-		var totalPor=0;
+		$scope.totalPor=0;
 		var sumaBrok =0;
 		$scope.sumaMontoBrok =0;
 		
 		for( var i in $scope.brokers){
 			sumaBrok= sumaBrok + $scope.brokers[i].porBrok;
-			$scope.sumaMontoBrok= parseFloat($scope.sumaMontoBrok) + parseFloat($scope.brokers[i].montoBrok);
+			$scope.sumaMontoBrok= $scope.sumaMontoBrok * 1 + $scope.brokers[i].montoBrok * 1;
 		}
 
-		var retorno = 16-$scope.datos.porLic- $scope.datos.porDes- sumaBrok;
+		var retorno = $scope.datos.porciento-$scope.datos.porLic- $scope.datos.porDes- sumaBrok;
 		if(retorno > 0 ){
 			$scope.datos.retorno= retorno;
 			$scope.montoRetorno=$scope.redondea(($scope.datos.retorno/100)*$scope.datos.importe);
-			$scope.montosTotal = parseFloat($scope.datos.montoLic)+ parseFloat($scope.datos.montoDes) + parseFloat($scope.sumaMontoBrok) + parseInt($scope.montoRetorno);
-			$scope.datos.totalComisiones=$scope.redondea($scope.montosTotal);
-			totalPor=$scope.datos.porLic + $scope.datos.porDes + sumaBrok + $scope.datos.retorno;
-			
-			if(totalPor != 16){
-				alert("Error en asignacion de porcentajes.");
-    			$scope.datos.retorno= null;
-			}
+			 var montosTotal = ($scope.datos.montoLic * 1)+ ($scope.datos.montoDes * 1) + ($scope.sumaMontoBrok * 1) + ($scope.montoRetorno * 1);
+			$scope.datos.totalComisiones=$scope.redondea(montosTotal);
+			$scope.totalPor=$scope.datos.porLic + $scope.datos.porDes + sumaBrok + $scope.datos.retorno;
 		}else{
-			alert("Error en asignacion de porcentajes.");
 			$scope.datos.retorno= null; 
 		}	
-	}	
+	}	  	
 	
 	$scope.eliminarRenglon=function(renglon){
 		$scope.otVO.pagos.splice(renglon, 1);
@@ -497,11 +493,18 @@ app.controller("OTsAddController",['$scope','$cookieStore', '$window', '$locatio
 			$scope.LimpiarTodo();
 		}else{
 			$scope.calcularImporte();
-			$scope.calcularMontos('Todos');
+			//$scope.calcularMontos('Todos');
 		}
-
 	}
-	
+
+	$scope.verificaPorcentajes=function(){
+		if($scope.datos.retorno == null && $scope.totalPor != $scope.datos.porciento){
+			alert("ERROR: Revisar porcentajes asignados");
+			$scope.datos.retorno= null;
+		}else{
+			  $("#myModalOper").modal();
+		}
+	}
 
 	$scope.addOper= function(operacion){
 		var objs=operacionesMovimientosService.addOper(operacion,$scope.operaciones, $scope.otVO, $scope.tipoResguardo,$scope.datosCliente,$scope.brockerCliente);
@@ -527,7 +530,7 @@ app.controller("OTsAddController",['$scope','$cookieStore', '$window', '$locatio
 	$scope.detalleCheque=function(index, operacion){
 		$scope.cheque =operacionesMovimientosService.detalleCheque(index, operacion, $scope.otVO, $scope.cheque);
 	}
-
+	
 	
 	$scope.guardarOT=function(){
 		if($scope.tablaPagos == true){
@@ -549,7 +552,7 @@ app.controller("OTsAddController",['$scope','$cookieStore', '$window', '$locatio
 					ordenTrabajoservice.addot($scope.otVO).then(function(data){
 						showAlert("Alta de Orden de trabajo Exitosa");
 						$location.path("/listaOTs");
-						$window.location.reload();
+						//...........s
 					});
 					
 				}else{
@@ -613,9 +616,7 @@ app.controller("OTsAddController",['$scope','$cookieStore', '$window', '$locatio
 
 
 app.controller("ordenTrabajoController",['$scope','$window', '$location', '$cookieStore','ordenTrabajoservice','usuarioservice','operacionesMovimientosService',function($scope, $window, $location, $cookieStore, ordenTrabajoservice,usuarioservice,operacionesMovimientosService){
-		$scope.permiso=true; 
-	
-		
+	$scope.permiso=true; 
 	var indice = null;
 	var tipoOperacion= null;
 	$scope.tiposOp = TiposOperacion();
@@ -624,22 +625,12 @@ app.controller("ordenTrabajoController",['$scope','$window', '$location', '$cook
 	$scope.tipoResguardo= false;
 	$scope.cheque={fEmision: new Date(),pagarA:null,monto:null,montoLetra:null}
 	$scope.operaciones={tipo: null, descripcion: null, monto: null, estatus: "ACTIVO", cuenta: null, banco:null,fecha: new Date(),montoLetra: null,pagarA: null,fEmision: new Date()}
-	$scope.mov={
-		tipo: null,
-		monto: null,
-		descripcion: null,
-		banco: null,
-		cuenta: null,
-		numTransaccion:null,
-		fecha:new Date(),
-		estatus: null,
-		montoLetra: null,
-		pagarA: null,
-		fEmision: new Date(),
-	}
+	$scope.mov={tipo: null,monto: null,descripcion: null,banco: null,cuenta: null,numTransaccion:null,fecha:new Date(),estatus: null,montoLetra: null,pagarA: null,fEmision: new Date()}
+	$scope.movimientosVO={movimiento:null,idOt:null,bndMovimiento:null,saldo:null}
 	
 	ordenTrabajoservice.loadot($cookieStore.get("idOt")).then(function(data){
 		$scope.otvo= data;
+		console.log(data);	
 		crearListaDeCheques();
 		var sumaMontoPagos =0;
 		 $scope.sumaMontoBrok =0;
@@ -836,18 +827,26 @@ app.controller("ordenTrabajoController",['$scope','$window', '$location', '$cook
 	$scope.addOper= function(operacion){
 		var objs=operacionesMovimientosService.addOper(operacion,$scope.operaciones, $scope.otvo, $scope.tipoResguardo,$scope.otvo.cliente,$scope.otvo.broker);
 		$scope.otvo = objs.otvo;
+		$scope.movimientosVO.movimiento=$scope.operaciones;
+		$scope.movimientosVO.idOt=$scope.otvo.ot.id;
 		if(operacion=="OPC"){
 			if($scope.tipoResguardo){
 				ordenTrabajoservice.guardaCliente(objs.c);
 			}
-			ordenTrabajoservice.addMov($scope.otvo).then(function(data){
+			$scope.movimientosVO.bndMovimiento="cliente";
+			$scope.movimientosVO.saldo=$scope.otvo.ot.saldoMov;
+			console.log($scope.movimientosVO);
+			ordenTrabajoservice.addMov($scope.movimientosVO).then(function(data){
 				$window.location.reload();
 			});
 		}else{
 			if($scope.tipoResguardo){
 				ordenTrabajoservice.guardaCliente(objs.b);
 			}
-			ordenTrabajoservice.addMov($scope.otvo).then(function(data){
+			$scope.movimientosVO.bndMovimiento="asesor";
+			$scope.movimientosVO.saldo=$scope.otvo.ot.saldoCom;
+			console.log($scope.movimientosVO);
+			ordenTrabajoservice.addMov($scope.movimientosVO).then(function(data){
 				$window.location.reload();
 			});
 		}
@@ -872,9 +871,9 @@ app.controller("ordenTrabajoController",['$scope','$window', '$location', '$cook
 		var objs= operacionesMovimientosService.verificarSaldo(operacion, $scope.otvo,$scope.otvo.ot, $scope.operaciones,$scope.montoRetorno,$scope.sumaMontoBrok);
 		$scope.errorSaldo= objs.error;
 		if(operacion == 'OPC'){
-			$scope.otvo.ot.saldoMOV = objs.otvo;
+			$scope.otvo.ot.saldoMov = objs.saldo;
 		}else{
-			$scope.otvo.ot.saldoCom= objs.otvo;
+			$scope.otvo.ot.saldoCom= objs.saldo;
 		}
 	}
 	
