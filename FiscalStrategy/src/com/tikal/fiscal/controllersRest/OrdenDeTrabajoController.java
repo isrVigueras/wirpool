@@ -74,14 +74,17 @@ public class OrdenDeTrabajoController {
 		if(user.getPerfil().compareTo("Ejecutivo")==0 || user.getPerfil().compareTo("AdministradorRoot")==0 || user.getPerfil().compareTo("AdministradorRoot")==0){
 			ot.setIdResponsable(user.getId());
 			ot.setFolioImpresion(0);
-	
 			FolioOT generaFolio = new FolioOT ();
+			
 			if(foliodao.getAll().size() > 0){
 				List<FolioOT> numfolio = foliodao.getAll();
-				generaFolio.setNoFolio(numfolio.get(0).getNoFolio() + 1);
+				Long nuevoFolio = numfolio.get(0).getNoFolio() + 1;
+				generaFolio.setNoFolio(nuevoFolio);
 				foliodao.save(generaFolio);
+				ot.setId(nuevoFolio);
 			}else{
 				foliodao.save(generaFolio);
+				ot.setId(generaFolio.getNoFolio());
 			}
 			
 			if(otvo.getMovimientos()!=null){
@@ -101,8 +104,8 @@ public class OrdenDeTrabajoController {
 					ot.getComisiones().add(mC.get(i).getId());
 				}
 			}
-			
 			otdao.save(ot);
+			
 			
 			List<PagoRecibido> pagos = otvo.getPagos();
 			PagoRecibido pago;
@@ -258,7 +261,7 @@ public class OrdenDeTrabajoController {
 			PDFot pdf = new PDFot();
 			PdfWriter writer = PdfWriter.getInstance(pdf.getDocument(), res.getOutputStream());
 			pdf.getDocument().open();
-			pdf.construirPdf(foliodao.get("1"), otvo, cuentas);
+			pdf.construirPdf(otvo, cuentas);
 			pdf.getDocument().close();
 			res.getOutputStream().flush();
 			res.getOutputStream().close();
@@ -336,6 +339,9 @@ public class OrdenDeTrabajoController {
 			int siguiente = ot.getFolioImpresion();
 			siguiente++;
 			ot.setFolioImpresion(siguiente);
+			otdao.save(ot);
+		}else{
+			ot.setFolioImpresion(1);
 			otdao.save(ot);
 		}
 		

@@ -1,9 +1,6 @@
 package com.tikal.fiscal.util;
 
-import java.io.IOException;
-import java.net.MalformedURLException;
 import java.text.NumberFormat;
-import java.util.Date;
 import java.util.List;
 
 import com.itextpdf.text.BaseColor;
@@ -15,15 +12,10 @@ import com.itextpdf.text.Font;
 import com.itextpdf.text.PageSize;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.Phrase;
-import com.itextpdf.text.pdf.ColumnText;
-import com.itextpdf.text.pdf.PdfContentByte;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
-import com.itextpdf.text.pdf.PdfPageEventHelper;
-import com.itextpdf.text.pdf.PdfWriter;
 import com.tikal.fiscal.controllersRest.VO.OrdenDeTrabajoVO;
 import com.tikal.fiscal.model.Cuenta;
-import com.tikal.fiscal.model.FolioOT;
 import com.tikal.fiscal.model.Movimiento;
 import com.tikal.fiscal.model.PagoRecibido;
 
@@ -31,15 +23,11 @@ import com.tikal.fiscal.model.PagoRecibido;
 public class PDFot {
 
 	private Document document;
-	private NumberFormat formatter = NumberFormat.getCurrencyInstance();
 	//private MyFooter pieDePagina = new MyFooter(null);
 
-	private Font fontTituloSellos = new Font(Font.FontFamily.HELVETICA, 6.5F, Font.BOLD);
-	private Font fontContenidoSellos = new Font(Font.FontFamily.HELVETICA, 6.5F, Font.NORMAL);
 	private Font font1 = new Font(Font.FontFamily.HELVETICA, 7F, Font.BOLD);
 	private Font font2 = new Font(Font.FontFamily.HELVETICA, 6.5F, Font.BOLD);
 	private Font font3 = new Font(Font.FontFamily.HELVETICA, 6.5F, Font.NORMAL);
-	private Font fontSerieYFolio = new Font(Font.FontFamily.HELVETICA, 8.5F, Font.BOLD);
 	private Font fontHead = new Font(Font.FontFamily.HELVETICA, 7.5F, Font.NORMAL);
 	
 	private PdfPCell emptyCell = new PdfPCell();
@@ -57,8 +45,12 @@ public class PDFot {
 		return document;
 	}
 	
-	public Document construirPdf(FolioOT folioOT,OrdenDeTrabajoVO otvo , List<Cuenta> cuentas) throws DocumentException{
-			construirBoceto(folioOT.getNoFolio(),otvo, cuentas);
+	public Document construirPdf(OrdenDeTrabajoVO otvo , List<Cuenta> cuentas) throws DocumentException{
+		if(otvo.getOt().getTipo().compareTo("ca") == 0){
+			construirBocetoCA(otvo.getOt().getId(),otvo, cuentas);
+		}else{
+			construirBocetoCompleto(otvo.getOt().getId(),otvo, cuentas);
+		}
 			return document;
 	}
 
@@ -108,6 +100,21 @@ public class PDFot {
 		tabla.addCell(celda);
 	}
 	
+	private String calcularSaldoCA(List<Movimiento>arrMov, float total){
+		float sumatoria= 0;
+		float monto= 0;
+		float saldo=0;
+		
+		for(int i=0; i< arrMov.size();i++){
+			if(arrMov.get(i).getEstatus() == "ACTIVO"){
+				sumatoria= sumatoria + arrMov.get(i).getMonto();
+			};
+		}
+			
+		saldo=total - sumatoria;
+		return String.format("%.2f", saldo);
+	}
+	
 	private String calcularSaldo(List<Movimiento>arrMov, float total, float importe){
 		float sumatoria= 0;
 		float monto= 0;
@@ -122,7 +129,120 @@ public class PDFot {
 		return String.format("%.2f", saldo);
 	}
 	
-	private void construirBoceto(Long fOT,OrdenDeTrabajoVO otvo, List<Cuenta> cuentas) throws DocumentException{	
+	//OT Cuenta Acumulada
+	private void construirBocetoCA(Long fOT,OrdenDeTrabajoVO otvo, List<Cuenta> cuentas) throws DocumentException{
+		//Tabla1
+		PdfPTable tablaEncabezado = new PdfPTable(2);
+		tablaEncabezado.setWidthPercentage(100);
+		tablaEncabezado.setWidths(new float[] { 50, 50 });
+		
+	  	//Datos del cliente
+		PdfPCell celdaDatos = new PdfPCell();
+		celdaDatos.setBorder(PdfPCell.NO_BORDER);
+		PdfPTable cliente = new PdfPTable(2);
+		cliente.setWidthPercentage(100);
+		cliente.setWidths(new float[] { 40, 60 });
+		PdfPCell celdaCliente = new PdfPCell();
+		Phrase fraseDatosCliente = new Phrase();
+		if(otvo.getCliente().getNickname() != null || otvo.getCliente().getNickname()!= ""){
+			agregarChunkYNuevaLinea("CLIENTE: ", font1, fraseDatosCliente);
+		}else{
+			agregarChunkYNuevaLinea("BROKER: ", font1, fraseDatosCliente);
+		}
+		agregarChunkYNuevaLinea("FECHA: ", font1, fraseDatosCliente);
+		agregarChunkYNuevaLinea("CUENTA ACUMULATIVA: ", font1, fraseDatosCliente);
+		celdaCliente.setPhrase(fraseDatosCliente);
+		cliente.addCell(celdaCliente);
+		PdfPCell celdaClienteDos = new PdfPCell();
+		Phrase fraseDatosResp = new Phrase();
+		if(otvo.getCliente().getNickname() != null || otvo.getCliente().getNickname()!= ""){
+			agregarChunkYNuevaLinea(otvo.getCliente().getNickname(), font1, fraseDatosResp);
+			agregarChunkYNuevaLinea(otvo.getOt().getFechaInicio().toString(), font1, fraseDatosResp);
+			agregarChunkYNuevaLinea(String.valueOf(otvo.getCliente().getSaldo()), font1, fraseDatosResp);
+		}else{
+			agregarChunkYNuevaLinea(otvo.getBroker().getNickname(), font1, fraseDatosResp);
+			agregarChunkYNuevaLinea(otvo.getOt().getFechaInicio().toString(), font1, fraseDatosResp);
+			agregarChunkYNuevaLinea(String.valueOf(otvo.getBroker().getSaldo()), font1, fraseDatosResp);
+		}
+		celdaClienteDos.setPhrase(fraseDatosResp);
+		cliente.addCell(celdaClienteDos);
+		
+		celdaDatos.addElement(cliente);
+		tablaEncabezado.addCell(celdaDatos);	
+		
+		//Datos del numero de factura y Respnsable
+		PdfPCell celdaContador = new PdfPCell();
+		celdaContador.setBorder(PdfPCell.NO_BORDER);
+		PdfPTable contadorPDF = new PdfPTable(3);
+		contadorPDF.setWidthPercentage(100);
+		contadorPDF.setWidths(new float[] { 40, 20 ,40 });
+		PdfPCell celdaContadorPDF = new PdfPCell();
+		celdaContadorPDF.setBorder(PdfPCell.NO_BORDER);
+		Phrase fraseContadorPDF = new Phrase();
+		celdaContadorPDF.setBackgroundColor(BaseColor.GRAY);
+		agregarChunkYNuevaLinea("Orden " + String.valueOf(fOT), font1, fraseContadorPDF);
+		agregarChunkYNuevaLinea("NO AUTORIZADA", font1, fraseContadorPDF);
+		celdaContadorPDF.setPhrase(fraseContadorPDF);
+		contadorPDF.addCell(celdaContadorPDF);
+		agregarCeldaSinBorde(String.valueOf(otvo.getOt().getFolioImpresion()), font1, contadorPDF, false);
+		PdfPCell celdaResponsable = new PdfPCell();
+		celdaResponsable.setBorder(PdfPCell.NO_BORDER);
+		celdaResponsable.setHorizontalAlignment(Element.ALIGN_RIGHT);
+		Phrase fraseResponsable = new Phrase();
+		agregarChunkYNuevaLinea(otvo.getResponsable().getUsername(), font1, fraseResponsable);
+		celdaResponsable.setPhrase(fraseResponsable);
+		contadorPDF.addCell(celdaResponsable);
+		
+		celdaContador.addElement(contadorPDF);
+		tablaEncabezado.addCell(celdaContador);
+		document.add(tablaEncabezado);
+		
+		//Tabla 2 Instrucciones Op-Cliente
+		PdfPTable tablaOPCliente = new PdfPTable(3);
+		tablaOPCliente.setWidthPercentage(80);
+		tablaOPCliente.setWidths(new float[] {30,50,20});
+		tablaOPCliente.setHorizontalAlignment(Element.ALIGN_CENTER);
+		agregarCeldaConFondo(" ", fontHead, tablaOPCliente, true);
+		agregarCeldaConFondo("Instrucciones Operación Cliente", fontHead, tablaOPCliente, true);
+		agregarCeldaConFondo(" ", fontHead, tablaOPCliente, true);
+		List<Movimiento> movimientos = otvo.getMovimientos();
+		for(int i=0; i<movimientos.size();i++){
+			agregarCeldaSinBorde(movimientos.get(i).getTipo(), font3, tablaOPCliente, true);
+			agregarCeldaSinBorde(movimientos.get(i).getDescripcion(), font3, tablaOPCliente, true);
+			agregarCeldaSinBorde("$ " + String.valueOf(movimientos.get(i).getMonto()), font3, tablaOPCliente, true);
+		}
+		String saldoMov = calcularSaldoCA(movimientos, otvo.getOt().getTotal());
+		agregarCeldaSinBorde(" ",font3, tablaOPCliente,false);
+		agregarCeldaSinBorde(" ",font1, tablaOPCliente,false);
+		agregarCeldaSinBorde(" Total: $ " + saldoMov,font1, tablaOPCliente,true);
+		
+		tablaOPCliente.setSpacingBefore(4);
+		tablaOPCliente.setSpacingAfter(3);
+		document.add(tablaOPCliente);
+		
+		//Tabla 3- Depòsitos
+		PdfPTable tablaPagos = new PdfPTable(2);
+		tablaPagos.setWidthPercentage(60);
+		tablaPagos.setHorizontalAlignment(Element.ALIGN_CENTER);
+		tablaPagos.setWidths(new float[] {50,50});
+		agregarCeldaConFondo("DEPÓSITO (S)", fontHead, tablaPagos,true);
+		agregarCeldaConFondo(" ", fontHead, tablaPagos, true);
+		List<PagoRecibido> pagos = otvo.getPagos();
+			for(int i=0; i<pagos.size();i++){
+				agregarCeldaConBorde(pagos.get(i).getFecha().toString(), font3, tablaPagos, "centro");
+				agregarCeldaConBorde("$ " + String.valueOf(pagos.get(i).getMonto()), font3, tablaPagos, "centro");
+			}
+		agregarCeldaSinBorde("  ",font1, tablaPagos,false);
+		agregarCeldaSinBorde("Total: $ " + String.valueOf(otvo.getOt().getTotal()),font1, tablaPagos,true);
+				
+		tablaPagos.setSpacingBefore(4);
+		tablaPagos.setSpacingAfter(3);
+		document.add(tablaPagos);
+
+	}
+	
+	//OT Genéricas
+	private void construirBocetoCompleto(Long fOT,OrdenDeTrabajoVO otvo, List<Cuenta> cuentas) throws DocumentException{	
 		//Tabla1
 		PdfPTable tablaEncabezado = new PdfPTable(2);
 		tablaEncabezado.setWidthPercentage(100);
@@ -152,7 +272,7 @@ public class PDFot {
 		celdaDatos.addElement(cliente);
 		tablaEncabezado.addCell(celdaDatos);	
 		
-		//Datos del numero de factura y Resopnsable
+		//Datos del numero de factura y Respnsable
 		PdfPCell celdaContador = new PdfPCell();
 		celdaContador.setBorder(PdfPCell.NO_BORDER);
 		PdfPTable contadorPDF = new PdfPTable(3);
@@ -254,7 +374,7 @@ public class PDFot {
 		float [] porBrokers= otvo.getOt().getPorBrok();
 		float [] montoBrokers = otvo.getOt().getMontoBrok();
 		if(porBrokers.length == montoBrokers.length){
-			for (int i=0; i<porBrokers.length ;i++) {
+			for (int i=0; i<porBrokers.length ;i++) {	
 				String nombre="Brocker";
 				cont++;
 				nombre = nombre + cont;
@@ -311,7 +431,7 @@ public class PDFot {
 		tablaOPCliente.setSpacingAfter(3);
 		document.add(tablaOPCliente);
 		
-		//Tabla 3 Instrucciones Op-Asesor
+		//Tabla 4 Instrucciones Op-Asesor
 		PdfPTable tablaOPAsesor = new PdfPTable(3);
 		tablaOPAsesor.setWidthPercentage(100);
 		tablaOPAsesor.setWidths(new float[] {30,50,20});
@@ -339,7 +459,7 @@ public class PDFot {
 		document.add(tablaOPAsesor);
 		
 		
-		//Tabla 4- Depòsitos
+		//Tabla 5- Depòsitos
 		PdfPTable tablaPagos = new PdfPTable(4);
 		tablaPagos.setWidthPercentage(80);
 		tablaPagos.setHorizontalAlignment(Element.ALIGN_CENTER);
