@@ -63,16 +63,7 @@ app.service("ordenTrabajoservice",['$http', '$q', function($http, $q){
 		return d.promise;
 	}
 	
-	this.consultarCuentasCliente = function(id) {
-		var d = $q.defer();
-		$http.get("/cuentasCliente/todas/"+id).then(
-			function(response) {
-				d.resolve(response.data);
-			});
-		return d.promise;
-	} 
-	
-	this.consultarCuentas = function(banco){
+	this.consultarCuentasPorBanco = function(banco){
 		var d = $q.defer();
 		$http.get("/cuentas/getTipo/"+banco).then(
 			function(response) {
@@ -340,6 +331,17 @@ app.controller("OTsAddController",['$route','$scope','$cookieStore', '$window', 
 			montoLetra:null
 	}
 	
+	ordenTrabajoservice.consultarClientesTodos().then(function(data) {
+		$scope.cliente = data;
+	});
+	
+	$scope.Cuentas = function() {
+		 ordenTrabajoservice.consultarCuentasPorBanco($scope.pago.banco).then(function(data){
+			 $scope.cuentas= data;
+			 console.log(data);
+		 }); 
+	};
+	
 	$scope.addPago=function(){
 		if($scope.datos.nombreCliente == null){
 			datosCliente();
@@ -389,17 +391,6 @@ app.controller("OTsAddController",['$route','$scope','$cookieStore', '$window', 
 		}
 		
 	}
-	
-	ordenTrabajoservice.consultarClientesTodos().then(function(data) {
-		$scope.cliente = data;
-	});
-	
-	$scope.Cuentas = function() {
-		 ordenTrabajoservice.consultarCuentas($scope.pago.banco).then(function(data){
-			 $scope.cuentas= data;
-			 console.log(data);
-		 }); 
-	};
 	
 	$scope.redondea=function(valor){
 		var aux= valor;
@@ -764,7 +755,7 @@ app.controller("ordenTrabajoController",['$scope','$window', '$location', '$cook
 	}
 
 	$scope.Cuentas = function() {
-		 ordenTrabajoservice.consultarCuentas($scope.mov.banco).then(function(data){
+		 ordenTrabajoservice.consultarCuentasPorBanco($scope.mov.banco).then(function(data){
 			 $scope.cuentas= data;
 		 }); 
 	}
