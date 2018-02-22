@@ -6,17 +6,58 @@
 </section>
 <div class="container">
 	<div class="row">
+		<div class="col-md-3">
+			<div class="input-group">
+				<input type="text" class="form-control" placeholder="No. OT"
+					ng-model="buscar.noot">
+				<div class="input-group-btn">
+					<button class="btn btn-default" type="submit"
+						ng-click="filtroOT(buscar.noot)">
+						<i class="glyphicon glyphicon-search"></i>
+					</button>
+				</div>
+				
+			</div>
+			
+		</div>
+		<div class="col-md-3">
+			<div class="input-group">
+				<select ng-model="find.id" class="form-control" placeholder="Cientes..." ng-value="{{cb.id}}" id="filID">
+				<option ng-repeat="cb in cbtodos" >{{cb.nickname}}</option>
+					<!-- 					<option disabled selected>Serie...</option> -->
+					<!-- 					<option>Z</option> -->
+				</select>
+				<div class="input-group-btn">
+					<button class="btn btn-default" type="submit"
+						ng-click="filtroCliente()">
+						<i class="glyphicon glyphicon-search"></i>
+					</button>
+				</div>
+			</div>
+		</div>
+		<div class="col-md-3">
+		
+		<button class="btn btn-small" ng-click="verTodo()">Ver Todo
+						</button>
+		</div>
+
+
+	</div>
+	<br>
+	<div class="row">
 		<div class="col-md-6">
 			<ul class="pagination .pagination-sm" style="margin:0;">
 				<li ng-repeat="abc in paginas" id="{{'pagA'+abc}}"
 					ng-click="cargarPagina(abc)"><a>{{abc}}</a></li>
 
 			</ul>
+			
 		</div>
 		<br>
 		<table class="table table-stripped">
 			<thead>
 				<tr>
+					<th>No. OT</th>
 					<th>Cliente</th>
 					<th>Saldo</th>
 					<th>Status</th>
@@ -25,6 +66,7 @@
 			</thead>
 			<tbody>
 				<tr ng-repeat="ot in ots">
+					<td>{{ot.id}}</td>
 					<td>{{ot.nombreCliente}}</td>
 					<td>{{ot.saldoMov}}</td>
 					<td>{{ot.estatus}}</td>
@@ -47,6 +89,7 @@
 				<li ng-repeat="abc in paginas" id="{{'pagB'+abc}}"
 					ng-click="cargarPagina(abc)"><a>{{abc}}</a></li>
 			</ul>
+			
 		</div>
 	</div>
 </div>

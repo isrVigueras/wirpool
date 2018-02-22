@@ -20,6 +20,20 @@ app.service("otservice",['$http', '$q', function($http, $q){
 		});
 		return d.promise;
 	}
+	this.FiltroOT=function(id){
+		var d = $q.defer();
+		$http.get("ots/find/"+id).then(function(response) {
+				d.resolve(response.data);
+			});
+		return d.promise;
+	}
+	this.FiltroCliente=function(id){
+		var d = $q.defer();
+		$http.get("ots/findByCliente/"+id).then(function(response) {
+				d.resolve(response.data);
+			});
+		return d.promise;
+	}
 	this.consultarCuentas = function(page) {
 		var d = $q.defer();
 	
@@ -49,7 +63,18 @@ app.service("otservice",['$http', '$q', function($http, $q){
 		return d.promise;
 	}
 	
-	
+	this.consultarCB = function() {
+		var d = $q.defer();
+		$http.get("/ots/getClientesBrokers/").then(function(response) {
+			d.resolve(response.data);
+		}, function(response) {
+			if(response.status==403){
+				alert("No tiene permiso de realizar esta acción");
+				//$location.path("/login");
+			}
+		});
+		return d.promise;
+	}
 	
 }]);
 //.factory('dataService', function() {
@@ -60,7 +85,22 @@ app.service("otservice",['$http', '$q', function($http, $q){
 //	});
 
 app.controller("OTsListController",['$scope','$window', '$location', '$cookieStore','otservice', function($scope, $window, $location, $cookieStore, otservice){
-	
+	otservice.consultarCB().then(function(data) {
+		$scope.cbtodos = data;
+	});
+	$scope.filtroOT=function(id){
+	otservice.FiltroOT(id).then(function(data){
+		$scope.ots=data;
+	});
+	}
+	$scope.filtroCliente=function(id){
+		otservice.FiltroCliente($scope.filtroCL).then(function(data){
+			$scope.ots=data;
+		});
+		}
+	$scope.verTodo=function(){
+		$scope.cargarPagina(1);
+	}
 	$scope.llenarPags=function(){
 		var inicio=0;
 		if($scope.paginaActual>5){
@@ -104,6 +144,17 @@ app.controller("OTsListController",['$scope','$window', '$location', '$cookieSto
 //		$scope.listClient=data;
 	}
 	
+	$scope.verPedientes = function(data) {
+		$location.path("/ListaPendiente");
+		//$window.location.reload();
+		$cookieStore.put("idOt",data);
+//		$scope.listClient=data;
+	}
+	$("#filID").on("click", function(){
+		var x = document.getElementById("filID").selectedIndex;
+		$scope.filtroCL=$scope.cbtodos[x];
+		$scope.filtroCL=$scope.filtroCL.id;
+		}) 
 }]);
 
 
