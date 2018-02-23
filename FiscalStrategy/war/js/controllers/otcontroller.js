@@ -85,6 +85,7 @@ app.service("otservice",['$http', '$q', function($http, $q){
 //	});
 
 app.controller("OTsListController",['$scope','$window', '$location', '$cookieStore','otservice', function($scope, $window, $location, $cookieStore, otservice){
+<<<<<<< HEAD
 	otservice.consultarCB().then(function(data) {
 		$scope.cbtodos = data;
 	});
@@ -101,6 +102,8 @@ app.controller("OTsListController",['$scope','$window', '$location', '$cookieSto
 	$scope.verTodo=function(){
 		$scope.cargarPagina(1);
 	}
+=======
+>>>>>>> branch 'master' of https://github.com/isrVigueras/wirpool
 	$scope.llenarPags=function(){
 		var inicio=0;
 		if($scope.paginaActual>5){
@@ -139,7 +142,7 @@ app.controller("OTsListController",['$scope','$window', '$location', '$cookieSto
 		$location.path("/ordenTrabajo");
 		//$window.location.reload();
 		$cookieStore.put("idOt",data);
-//		$scope.listClient=data;
+		$scope.listClient=data;
 	}
 	
 	$scope.verPedientes = function(data) {
