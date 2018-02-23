@@ -126,7 +126,6 @@ app.controller("OTsListController",['$scope','$window', '$location', '$cookieSto
 		$scope.maxPage=data;
 		$scope.llenarPags();
 	});
-	
 	$scope.cargarPagina=function(page){
 		otservice.load(page).then(function(data){
 			$scope.ots=data;
