@@ -134,7 +134,6 @@ app.controller("OTsListController",['$scope','$window', '$location', '$cookieSto
 		$scope.paginaActual=page;
 		$scope.llenarPags();
 	}
-	
 	$scope.cargarPagina(1);
 	
 	$scope.ver = function(data) {
