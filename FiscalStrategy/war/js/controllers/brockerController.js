@@ -25,6 +25,18 @@ app.service("brockerservice",['$http', '$q', function($http, $q){
 		});
 		return d.promise;
 	};
+	this.consultarBrockersAll = function() {
+		var d = $q.defer();
+		$http.get("/brockers/todos/").then(function(response) {
+			d.resolve(response.data);
+		}, function(response) {
+			if(response.status==403){
+				//alert("No tiene permiso de realizar esta acción");
+				$location.path("/login");
+			}
+		});
+		return d.promise;
+	};
 	this.consultarCB = function(id) {
 		var d = $q.defer();
 		$http.get("/clientes/getByBrocker/"+id).then(function(response) {
