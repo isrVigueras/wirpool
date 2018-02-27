@@ -245,7 +245,9 @@ app.service("OPMS",['$http', '$q', function($http, $q){
 	
 }]);
 
-app.controller("CAController",['$scope','$cookieStore', '$window', '$location', 'CBService','cuentaservice','OPMS',function($scope, $cookieStore, $window, $location, CBService,cuentaservice,OPMS){
+app.controller("CAController",['$scope','$cookieStore', '$window', '$location', 'CBService','cuentaservice','OPMS','userFactory','notificacionesService',function($scope, $cookieStore, $window, $location, CBService,cuentaservice,OPMS,userFactory,notificacionesService){
+	
+	$scope.perfilUsuario = userFactory.getUsuarioPerfil();  //obtener perfl de usuario para pintar el menú al qe tiene acceso
 	$scope.bancos = catalogoBancos();
 	$scope.tablaPagos= false;
 	$scope.tablaOper= false;
@@ -397,82 +399,7 @@ app.controller("CAController",['$scope','$cookieStore', '$window', '$location', 
 //		$scope.datos.importe = $scope.redondea(sumaMontoPagos / 1.16 );
 //		$scope.datos.iva= $scope.redondea(sumaMontoPagos - $scope.datos.importe);
 	}
-	
-//	$scope.calcularComisiones=function(param){
-//		if($scope.tablaPagos== true){
-//			$scope.calcularMontos(param);
-//			if($scope.datos.porLic != null && $scope.datos.porDes != null){
-//				for( var i in $scope.brokers){
-//					if($scope.brokers[i].porBrok == null){
-//						return;
-//					}else{
-//						$scope.calcularRetorno();
-//					}
-//				}
-//			}else{
-//		    	return;
-//		    }			
-//		}else{
-//			alert("No se han registrado pagos.")
-//			$scope.limpiaComisiones()
-//		}
-//	}
-	
-//	$scope.calcularMontos=function(modelo){
-//			switch(modelo) {
-//		    case 'Lic' :
-//		    	$scope.datos.montoLic = $scope.redondea(($scope.datos.porLic/100)*$scope.datos.importe);
-//		        break;
-//		    case 'Des':
-//		    	$scope.datos.montoDes = $scope.redondea(($scope.datos.porDes/100)*$scope.datos.importe);
-//		        break;
-//		    case 'Broke':
-//		    	for( var i in $scope.brokers){
-//	    			$scope.brokers[i].montoBrok = $scope.redondea(($scope.brokers[i].porBrok/100)*$scope.datos.importe);
-//	    		}
-//		        break;
-//		    case 'Todos':
-//		    	$scope.datos.montoLic = $scope.redondea(($scope.datos.porLic/100)*$scope.datos.importe);
-//		    	$scope.datos.montoDes = $scope.redondea(($scope.datos.porDes/100)*$scope.datos.importe);
-//		    	for( var i in $scope.brokers){
-//	    			$scope.brokers[i].montoBrok = $scope.redondea(($scope.brokers[i].porBrok/100)*$scope.datos.importe);
-//	    		}
-//		       
-//		    	break;
-//		     default:
-//		    	 return;
-//			}	
-	
-//	}
-	
-//	$scope.calcularRetorno= function(){
-//		var totalPor=0;
-//		var sumaBrok =0;
-//		$scope.sumaMontoBrok =0;
-//		
-//		for( var i in $scope.brokers){
-//			sumaBrok= sumaBrok + $scope.brokers[i].porBrok;
-//			$scope.sumaMontoBrok= parseFloat($scope.sumaMontoBrok) + parseFloat($scope.brokers[i].montoBrok);
-//		}
-//
-//		var retorno = 16-$scope.datos.porLic- $scope.datos.porDes- sumaBrok;
-//		if(retorno > 0 ){
-//			$scope.datos.retorno= retorno;
-//			$scope.montoRetorno=$scope.redondea(($scope.datos.retorno/100)*$scope.datos.importe);
-//			$scope.montosTotal = parseFloat($scope.datos.montoLic)+ parseFloat($scope.datos.montoDes) + parseFloat($scope.sumaMontoBrok) + parseInt($scope.montoRetorno);
-//			$scope.datos.totalComisiones=$scope.redondea($scope.montosTotal);
-//			totalPor=$scope.datos.porLic + $scope.datos.porDes + sumaBrok + $scope.datos.retorno;
-//			
-//			if(totalPor != 16){
-//				alert("Error en asignacion de porcentajes.");
-//    			$scope.datos.retorno= null;
-//			}
-//		}else{
-//			alert("Error en asignacion de porcentajes.");
-//			$scope.datos.retorno= null; 
-//		}	
-//	}	
-	
+		
 	$scope.eliminarRenglon=function(renglon){
 		$scope.otVO.pagos.splice(renglon, 1);
 		if($scope.otVO.pagos.length == 0){
@@ -480,7 +407,6 @@ app.controller("CAController",['$scope','$cookieStore', '$window', '$location', 
 			$scope.LimpiarTodo();
 		}else{
 			$scope.calcularImporte();
-//			$scope.calcularMontos('Todos');
 		}
 
 	}

@@ -48,6 +48,7 @@ public class OrdenDeTrabajo {
 	private float importe;
 	private float iva;
 	private float total;
+	private float porciento;
 	
 	private float retorno;
 	private float totalComisiones;
@@ -224,6 +225,12 @@ public class OrdenDeTrabajo {
 	}
 	public void setFolioImpresion(int folioImpresion) {
 		this.folioImpresion = folioImpresion;
+	}
+	public float getPorciento() {
+		return porciento;
+	}
+	public void setPorciento(float porciento) {
+		this.porciento = porciento;
 	}
 	
 }

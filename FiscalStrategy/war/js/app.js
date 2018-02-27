@@ -1,5 +1,13 @@
 var app=angular.module("app",['ngRoute', 'ngCookies' ]);
 app.config([ '$routeProvider', function($routeProvider) {
+	$routeProvider.when('/notificaciones', {
+		templateUrl : "pages/Notificaciones.html",
+		controller : "notificacionesController"
+	});
+	$routeProvider.when('/login', {
+		templateUrl : "pages/login.html",
+		controller : "navigation"
+	});
 	$routeProvider.when('/altaPagos', {
 		templateUrl : "pages/altaPagos.html",
 		controller : "pagosAddController"
@@ -19,10 +27,6 @@ app.config([ '$routeProvider', function($routeProvider) {
 	$routeProvider.when('/listaOTs', {
 		templateUrl : "pages/listOTs.html",
 		controller : "OTsListController"
-	});
-	$routeProvider.when('/login', {
-		templateUrl : "pages/login.html",
-		controller : "navigation"
 	});
 	$routeProvider.when('/clientes', {
 		templateUrl : "pages/listClientes.html",
@@ -85,16 +89,32 @@ app.config([ '$routeProvider', function($routeProvider) {
 		templateUrl : "pages/listOTs.html",
 		controller : "OTsListController"
 	});
-		
 }]);
 
+app.factory("userFactory", function(){
+	var usuarioFirmado={usuario:"", pass:"",perfil:""};
+	
+	    var respuesta={
+	    	getUsuarioFirmado: function(){
+	            return usuarioFirmado;
+	        },
+	        setUsuarioFirmado: function(user){
+	        	usuarioFirmado = user;
+	        },
+	        getUsuarioPerfil: function(){
+	            return usuarioFirmado.perfil;
+	        }
+	    }
+	return respuesta;
+});
 
 app.service('sessionService', [
 	'$rootScope',
 	'$http',
 	'$location',
 	'$q',
-	function($rootScope, $http, $location, $q) {
+	'userFactory',
+	function($rootScope, $http, $location, $q,userFactory) {
 		this.authenticate = function(credentials, callback) {
 
 			var headers = credentials ? {
@@ -105,9 +125,13 @@ app.service('sessionService', [
 			$http.get('user', {
 				headers : headers
 			}).success(function(data) {
+				userFactory.setUsuarioFirmado(data);
 				if (data.usuario) {
 					$rootScope.authenticated = true;
 					$rootScope.variable = true;
+					$http.get("/notificacion/numAlertas/"+ data.id).then(function(response){
+						$rootScope.numNotificaciones=response.data;
+					})
 					$location.path("/listaOTs");
 				} else {
 					$rootScope.authenticated = false;
@@ -128,13 +152,10 @@ app.service('sessionService', [
 			});
 			return d.promise;
 		}
-	} ]);
+} ]);
 
-app.controller('navigation', [ 'sessionService', '$rootScope', '$scope',
-	'$http', '$location',
-
-	function(sessionService, $rootScope, $scope, $http, $location) {
-
+app.controller('navigation', [ 'sessionService', '$rootScope', '$scope','$http', '$location','userFactory',
+	function(sessionService, $rootScope, $scope, $http, $location,userFactory) {
 		$scope.credentials = {};
 		$scope.login = function() {
 			sessionService.authenticate($scope.credentials, function() {
@@ -147,4 +168,14 @@ app.controller('navigation', [ 'sessionService', '$rootScope', '$scope',
 				}
 			});
 		};
-	} ]);
+} ]);
+
+app.run(['$rootScope','$http','sessionService','userFactory',function ($rootScope,$http,sessionService,userFactory) {
+	sessionService.isAuthenticated().then(function(data){
+		var us= data;
+		userFactory.setUsuarioFirmado(us);	
+		$http.get("/notificacion/numAlertas/"+ us.id).then(function(response){
+			$rootScope.numNotificaciones=response.data;
+		})
+	});
+}]);

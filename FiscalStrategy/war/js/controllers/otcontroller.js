@@ -64,6 +64,7 @@ app.service("otservice",['$http', '$q', function($http, $q){
 	}
 	
 	this.consultarCB = function() {
+ 
 		var d = $q.defer();
 		$http.get("/ots/getClientesBrokers/").then(function(response) {
 			d.resolve(response.data);
@@ -77,15 +78,9 @@ app.service("otservice",['$http', '$q', function($http, $q){
 	}
 	
 }]);
-//.factory('dataService', function() {
-//	  var _dataObj = {};
-//	  return {
-//	    dataObj: _dataObj
-//	  }
-//	});
 
-app.controller("OTsListController",['$scope','$window', '$location', '$cookieStore','otservice', function($scope, $window, $location, $cookieStore, otservice){
-
+app.controller("OTsListController",['$scope','$window', '$location', '$cookieStore','otservice','userFactory', function($scope, $window, $location, $cookieStore, otservice,userFactory){
+	$scope.perfilUsuario = userFactory.getUsuarioPerfil();  //obtener perfl de usuario para pintar el menú al qe tiene acceso
 	otservice.consultarCB().then(function(data) {
 		$scope.cbtodos = data;
 	});
@@ -128,6 +123,7 @@ app.controller("OTsListController",['$scope','$window', '$location', '$cookieSto
 		$scope.maxPage=data;
 		$scope.llenarPags();
 	});
+ 
 	$scope.cargarPagina=function(page){
 		otservice.load(page).then(function(data){
 			$scope.ots=data;
@@ -135,6 +131,7 @@ app.controller("OTsListController",['$scope','$window', '$location', '$cookieSto
 		$scope.paginaActual=page;
 		$scope.llenarPags();
 	}
+ 
 	$scope.cargarPagina(1);
 	
 	$scope.ver = function(data) {

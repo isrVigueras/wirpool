@@ -1,69 +1,78 @@
-<div class="btn-group" role="group" aria-label="">
-		<button type="button" class="btn btn-default dropdown-toggle" 
-			data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-			Ordenes de Trabajo<span class="caret"></span>
-		</button>
-		<ul class="dropdown-menu" style="z-index: 2000">
-			<li><a href="#/listaOTs">Consultar</a></li>
-			<li><a href="#/altaOTs">Registrar</a></li>
-			<li><a href="#/otCA">Orden de Trabajo CA</a></li>
-			
-		</ul>
-	</div>
-	<div class="btn-group" role="group">
-		<button type="button" class="btn btn-default dropdown-toggle" 
-			data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-			Pagos<span class="caret"></span>
-		</button>
-		<ul class="dropdown-menu" style="z-index: 2000">
-			<li><a href="#/listaPagos">Consultar</a></li>
-			<li><a href="#/altaPagos">Registrar</a></li>
-			
-		</ul>
-	</div>
-	<div class="btn-group" role="group">
-		<button type="button" class="btn btn-default dropdown-toggle" 
-			data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-			Clientes<span class="caret"></span>
-		</button>
-		<ul class="dropdown-menu" style="z-index: 2000">
-			<li><a href="#/clientes">Consultar</a></li>
-			<li><a href="#/altaCliente">Registrar</a></li>
-			
-		</ul>
-	</div>
-	<div class="btn-group" role="group">
-		<button type="button" class="btn btn-default dropdown-toggle" 
-			data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-			Brockers<span class="caret"></span>
-		</button>
-		<ul class="dropdown-menu" style="z-index: 2000">
-			<li><a href="#/listaBrocker">Consultar</a></li>
-			<li><a href="#/altaBrocker">Registrar</a></li>
-			
-		</ul>
-	</div>
-	
-	<div class="btn-group" role="group">
-		<button type="button" class="btn btn-default dropdown-toggle" 
-			data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-			Cuentas<span class="caret"></span>
-		</button>
-		<ul class="dropdown-menu" style="z-index: 2000">
-			<li><a href="#/cuentas">Consultar</a></li>
-			<li><a href="#/altaCuenta">Registrar</a></li>
-			
-		</ul>
-	</div>
-	<div class="btn-group" role="group">
-		<button type="button" class="btn btn-default dropdown-toggle" 
-			data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-			Pagos Efectivo<span class="caret"></span>
-		</button>
-		<ul class="dropdown-menu" style="z-index: 2000">
-			<li><a href="#/ListaPendienteA">Activos</a></li>
-			<li><a href="#/ListaPendienteV">Validados</a></li>
-		</ul>
-	</div>
-
+<div class="row">
+		<div class="col-md-8">
+			<div class="btn-group" role="group" aria-label="">
+					<button type="button" class="btn btn-default dropdown-toggle" ng-show="perfil=='Ejecutivo' || perfil=='Administrador' || perfil=='AdministradorRoot'"
+						data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						Ordenes de Trabajo<span class="caret"></span>
+					</button>
+					<ul class="dropdown-menu" style="z-index: 2000">
+						<li><a href="#/listaOTs">Consultar</a></li>
+						<li><a href="#/altaOTs">Registrar</a></li>
+						<li><a href="#/otCA">Orden de Trabajo CA</a></li>
+						
+					</ul>
+				</div>
+<!-- 				<div class="btn-group" role="group">
+					<button type="button" class="btn btn-default dropdown-toggle" ng-show="perfil=='Ejecutivo' || perfil=='Administrador' || perfil=='AdministradorRoot'"
+						data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						Pagos<span class="caret"></span>
+					</button>
+					<ul class="dropdown-menu" style="z-index: 2000">
+						<li><a href="#/listaPagos">Consultar</a></li>
+						<li><a href="#/altaPagos">Registrar</a></li>
+						
+					</ul>
+				</div> -->
+				<div class="btn-group" role="group">
+					<button type="button" class="btn btn-default dropdown-toggle" ng-show="perfil=='Ejecutivo' || perfil=='Administrador' || perfil=='AdministradorRoot'"
+						data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						Clientes<span class="caret"></span>
+					</button>
+					<ul class="dropdown-menu" style="z-index: 2000">
+						<li><a href="#/clientes">Consultar</a></li>
+						<li><a href="#/altaCliente">Registrar</a></li>
+						
+					</ul>
+				</div>
+				<div class="btn-group" role="group">
+					<button type="button" class="btn btn-default dropdown-toggle" ng-show="perfil=='Ejecutivo' || perfil=='Administrador' || perfil=='AdministradorRoot'"
+						data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						Brockers<span class="caret"></span>
+					</button>
+					<ul class="dropdown-menu" style="z-index: 2000">
+						<li><a href="#/listaBrocker">Consultar</a></li>
+						<li><a href="#/altaBrocker">Registrar</a></li>	
+					</ul>
+				</div>
+				
+				<div class="btn-group" role="group">
+					<button type="button" class="btn btn-default dropdown-toggle" ng-show="perfil=='Ejecutivo' || perfil=='Administrador' || perfil=='AdministradorRoot'"
+						data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						Cuentas<span class="caret"></span>
+					</button>
+					<ul class="dropdown-menu" style="z-index: 2000">
+						<li><a href="#/cuentas">Consultar</a></li>
+						<li><a href="#/altaCuenta">Registrar</a></li>
+						
+					</ul>
+				</div>
+				<div class="btn-group" role="group">
+					<button type="button" class="btn btn-default dropdown-toggle" ng-show="perfil=='Caja' || perfil=='Administrador' || perfil=='AdministradorRoot'"
+						data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						Pagos Efectivo<span class="caret"></span>
+					</button>
+					<ul class="dropdown-menu" style="z-index: 2000">
+						<li><a href="#/ListaPendienteA">Activos</a></li>
+						<li><a href="#/ListaPendienteV">Validados</a></li>
+					</ul>
+				</div>
+		</div>
+		<div class="col-md-4">
+				<div class="btn-group" role="group" align="right" ng-show="perfil=='Ejecutivo' || perfil=='Caja' || perfil=='Administrador' || perfil=='AdministradorRoot'">
+					<a  href="#/notificaciones" style="color:#FFFFFF">Notificaciones</a> 
+					<i class="glyphicon glyphicon-comment"></i>
+					<span class="label label-warning" >{{numNotificaciones}}</span>
+				</div>
+		</div>
 </div>
+   

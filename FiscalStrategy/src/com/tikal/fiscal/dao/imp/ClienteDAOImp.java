@@ -44,7 +44,7 @@ public class ClienteDAOImp implements ClienteDAO{
 
 	@Override
 	public List<Cliente> getTipo(String tipo) {
-		List<Cliente> lista= ofy().load().type(Cliente.class).filter("enabled",true).filter("tipo","tipo").list();
+		List<Cliente> lista= ofy().load().type(Cliente.class).filter("enabled",true).filter("tipo", tipo).list();
 		return lista;
 	}
 

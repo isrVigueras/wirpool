@@ -1,4 +1,5 @@
-app.controller("OTPendientes",['$scope','$window', '$location', '$cookieStore','ordenTrabajoservice','usuarioservice','brockerservice','otservice','cuentaservice',function($scope, $window, $location, $cookieStore, ordenTrabajoservice,usuarioservice,brockerservice,otservice,cuentaservice){
+app.controller("OTPendientes",['$scope','$window', '$location', '$cookieStore','ordenTrabajoservice','usuarioservice','brockerservice','otservice','cuentaservice','userFactory',function($scope, $window, $location, $cookieStore, ordenTrabajoservice,usuarioservice,brockerservice,otservice,cuentaservice,userFactory){
+	$scope.perfilUsuario = userFactory.getUsuarioPerfil();  //obtener perfl de usuario para pintar el menú al qe tiene acceso
 	cuentaservice.load().then(function(data) {
 		$scope.banco = data;
 

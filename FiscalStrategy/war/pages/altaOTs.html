@@ -1,7 +1,7 @@
 <section class="jumbotron">
 	<div class="container">
 		<h2>Registro de Orden de Trabajo</h2>
-		<submenu />
+		<submenu perfil="perfilUsuario"/>  
 	</div>
 </section>
 
@@ -24,7 +24,7 @@
 						</select>	
 					</div>
 					<div class="col-md-4">
-						<label>Cuentas:</label> 
+						<label>No. de Cuenta:</label> 
 						<select name="cuentas" class="form-control form-control-sm" ng-required="true" ng-model="pago.cuenta" >
 					 		<option ng-repeat=" c in cuentas">{{c.cuenta}}</option> 
 						</select>	
@@ -51,9 +51,13 @@
 						<input input-date class="form-control form-control-sm ng-empty ng-dirty ng-touched ng-invalid ng-invalid-date"
 							ng-model="pago.fecha" type="date" ng-required="true" /> 
 					</div>
- <!-- 					<div class="col-md-2" align="right">
-						<button  class="btn" ng-click="myForm.$valid && addPago()"> Agregar Pago</button>
-					</div>  -->
+ 					<div class="col-md-2" align="right"></div>
+ 					<div class="col-md-4">
+ 						<label>Nombre de la Cuenta:</label> 
+						<select name="cuentas" class="form-control form-control-sm" ng-required="true" ng-model="pago.cuenta" >
+					 		<option ng-repeat=" c in cuentas" value="{{c.cuenta}}">{{c.nombre}}</option> 
+						</select>
+ 					</div> 
 				</div>
 				<div align="right"><button  class="btn" ng-click="myForm.$valid && addPago()" ng-enabled="datos.saldoMov==0 && datos.saldoCom==0"> Agregar Pago</button></div> 
 				<br>
@@ -120,27 +124,27 @@
 				<thead>
 					<tr>
 						<th>Comisi&oacute;n</th>
-						<th align="center"> % </th>
+						<th> % <input style="width: 15%" type="number" min="1" ng-model="datos.porciento"  ng-change="calcularImporte()"></th>
 						<th></th>
-						<th align="center">Monto</th>
+						<th>Monto</th>
 					</tr>
 				</thead>
-				<tbody>
+				<tbody>	
 					<tr>
 						<td>AJD</td>
-						<td><input type="number" min="0" ng-model="datos.porLic"   ng-change="calcularComisiones('Lic')"></td>
+						<td><input style="width: 20%" type="number" min="0" ng-model="datos.porLic"   ng-change="calcularComisiones('Lic')"></td>
 						<td></td>
 						<td>{{datos.montoLic}}</td>
 					</tr>
 					<tr>
 						<td>J&A</td>
-						<td><input type="number" min="0" ng-model="datos.porDes"  ng-change="calcularComisiones('Des')"></td>
+						<td><input style="width: 20%" type="number" min="0" ng-model="datos.porDes"  ng-change="calcularComisiones('Des')"></td>
 						<td></td>
 						<td>{{datos.montoDes}}</td>
 					</tr>
 					<tr ng-repeat="brok in brokers">
 						<td>{{brok.nombre}}</td>
-						<td><input type="number" min="0" ng-model="brok.porBrok"  ng-change="calcularComisiones('Broke')"></td>
+						<td><input style="width: 20%" type="number" min="0" ng-model="brok.porBrok"  ng-change="calcularComisiones('Broke')"></td>
 						<td></td>
 						<td>{{brok.montoBrok}}</td>
 					</tr>
@@ -153,8 +157,8 @@
 					<tr>
 						<td></td>
 						<td></td>
-						<td align="right">Total Comisiones:</td>
-						<td>{{montosTotal}}</td>
+						<td align="right">Total Comisiones: </td>
+						<td>{{datos.totalComisiones}}</td>
 					</tr>
 				</tbody>	
 			</table>
@@ -167,7 +171,8 @@
 				<div class="row">
 					<div class="col-md-6" align="left"><label>Instrucciones Operaci&oacute;n Cliente</label></div>
 					<div class="col-md-6" align="right">
-						<button class="btn btn-small" ng-disabled="montoRetorno==null || (datos.saldoMov==0 && datos.saldoCom==0)" data-toggle="modal" data-target="#myModalOper" >Agregar</button>
+						<!-- <button class="btn btn-small" ng-disabled="montoRetorno==null || (datos.saldoMov==0 && datos.saldoCom==0)" data-toggle="modal" data-target="#myModalOper">Agregar</button> -->
+						<button class="btn btn-small" ng-disabled="montoRetorno==null || (datos.saldoMov==0 && datos.saldoCom==0)" id="#myModalOper"  ng-click="verificaPorcentajes('OPC')">Agregar</button> 
 					</div>
 				</div>
 			</div>
@@ -206,7 +211,8 @@
 				<div class="row">
 					<div class="col-md-6" align="left"><label>Instrucciones Operaci&oacute;n Asesor</label></div>
 					<div class="col-md-6" align="right">
-						<button class="btn btn-small" ng-disabled="montosTotal==null || (datos.saldoMov==0 && datos.saldoCom==0)" data-toggle="modal" data-target="#myModalOperAsesor">Agregar</button>
+						<!-- <button class="btn btn-small" ng-disabled="datos.totalComisiones == null || (datos.saldoMov==0 && datos.saldoCom==0)" data-toggle="modal" data-target="#myModalOperAsesor">Agregar</button> -->
+						<button class="btn btn-small" ng-disabled="datos.totalComisiones == null || (datos.saldoMov==0 && datos.saldoCom==0)" id="#myModalOperAsesor"  ng-click="verificaPorcentajes('OPA')">Agregar</button>
 					</div>
 				</div>
 			</div>

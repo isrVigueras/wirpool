@@ -1,7 +1,6 @@
 package com.tikal.fiscal.controllersRest;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -19,17 +18,20 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.pdf.PdfWriter;
+import com.tikal.fiscal.controllersRest.VO.MovimientosVO;
 import com.tikal.fiscal.controllersRest.VO.OrdenDeTrabajoVO;
 import com.tikal.fiscal.dao.ClienteDAO;
 import com.tikal.fiscal.dao.CuentaDAO;
 import com.tikal.fiscal.dao.FolioOtDAO;
 import com.tikal.fiscal.dao.MovimientoDAO;
+import com.tikal.fiscal.dao.NotificacionDAO;
 import com.tikal.fiscal.dao.OrdenDeTrabajoDAO;
 import com.tikal.fiscal.dao.PagoRecibidoDAO;
 import com.tikal.fiscal.model.Cliente;
 import com.tikal.fiscal.model.Cuenta;
 import com.tikal.fiscal.model.FolioOT;
 import com.tikal.fiscal.model.Movimiento;
+import com.tikal.fiscal.model.Notificacion;
 import com.tikal.fiscal.model.OrdenDeTrabajo;
 import com.tikal.fiscal.model.PagoRecibido;
 import com.tikal.fiscal.model.Usuario;
@@ -64,8 +66,11 @@ public class OrdenDeTrabajoController {
 	@Autowired
 	FolioOtDAO foliodao;
 	
+	@Autowired
+	NotificacionDAO notificaciondao;
+	
 	@RequestMapping(value="/add/", method=RequestMethod.POST, consumes="application/json")
-	private void crear(HttpServletRequest req, HttpServletResponse res, @RequestBody String json) throws UnsupportedEncodingException{
+	private void crear(HttpServletRequest req, HttpServletResponse res, @RequestBody String json) throws IOException{
 		AsignadorDeCharset.asignar(req, res);
 		OrdenDeTrabajoVO otvo= (OrdenDeTrabajoVO) JsonConvertidor.fromJson(json, OrdenDeTrabajoVO.class);
 		OrdenDeTrabajo ot= otvo.getOt();
@@ -106,7 +111,6 @@ public class OrdenDeTrabajoController {
 			}
 			otdao.save(ot);
 			
-			
 			List<PagoRecibido> pagos = otvo.getPagos();
 			PagoRecibido pago;
 			for(int i=0; i<pagos.size(); i++){
@@ -124,8 +128,16 @@ public class OrdenDeTrabajoController {
 				Cliente brocker= otvo.getBroker();
 				clientedao.save(brocker);
 			}
+	
+			Usuario us= usuariodao.consultarPorPerfil("Administrador");
+			Notificacion notificacion = new Notificacion();
+			notificacion.setResponsabe(us.getId());
+			notificacion.setIdOt(ot.getId());
+			notificacion.setMensaje("Falta editar y validar movimientos");
+			notificaciondao.save(notificacion);
 		}else{
-			
+			String error = "Usuario sin permisos para realizar esta accion";
+			res.getWriter().print(JsonConvertidor.toJson(error));
 		}
 	}
 	
@@ -170,7 +182,7 @@ public class OrdenDeTrabajoController {
 		if(ot.getIdCliente()!=null){
 			Cliente cliente= clientedao.get(ot.getIdCliente());
 			ot.setIdBrocker(cliente.getIdBrocker());
-			ot.setIdResponsable(cliente.getResponsable());
+			//ot.setIdResponsable(cliente.getResponsable());
 			otvo.setCliente(cliente);
 		}
 		if(ot.getIdBrocker()!=null){
@@ -205,26 +217,24 @@ public class OrdenDeTrabajoController {
 	@RequestMapping(value="/addMovimiento/", method=RequestMethod.POST, consumes="application/json")
 	private void addMovimiento(HttpServletRequest req, HttpServletResponse res, @RequestBody String json) throws IOException{
 		AsignadorDeCharset.asignar(req, res);
-		OrdenDeTrabajoVO otvo= (OrdenDeTrabajoVO) JsonConvertidor.fromJson(json, OrdenDeTrabajoVO.class);
-		OrdenDeTrabajo ot = otvo.getOt();
+		MovimientosVO m= (MovimientosVO) JsonConvertidor.fromJson(json, MovimientosVO.class);
 		HttpSession sesion= req.getSession();
 		Usuario user=(Usuario) sesion.getAttribute("user");
-		if(user.getPerfil().compareTo("Ejecutivo")==0 || user.getPerfil().compareTo("AdministradorRoot")==0){
-				List<Movimiento> m = otvo.getMovimientos();
-				for(int i=0; i<m.size();i++){
-					if(m.get(i).getId() == null){
-						m.get(i).setFechaCreacion(new Date());
-						movimientodao.save(m.get(i));
-						ot.getMovimientos().add(m.get(i).getId());
-					}
+		if(user.getPerfil().compareTo("Ejecutivo")==0 || user.getPerfil().compareTo("AdministradorRoot")==0 || user.getPerfil().compareTo("Administrador")==0){
+				Movimiento mov= m.getMovimiento();
+				OrdenDeTrabajo ot = otdao.get(m.getIdOt());
+				
+				if(m.getBndMovimiento().compareTo("cliente")==0){
+						mov.setFechaCreacion(new Date());
+						movimientodao.save(mov);
+						ot.getMovimientos().add(mov.getId());
+						ot.setSaldoMov(m.getSaldo());
 				}
-				List<Movimiento> c = otvo.getComisiones();
-				for(int i=0; i<c.size();i++){
-					if(c.get(i).getId() == null){
-						c.get(i).setFechaCreacion(new Date());
-						movimientodao.save(c.get(i));
-						ot.getComisiones().add(c.get(i).getId());
-					}
+				if(m.getBndMovimiento().compareTo("asesor")==0){
+					mov.setFechaCreacion(new Date());
+					movimientodao.save(mov);
+					ot.getComisiones().add(mov.getId());
+					ot.setSaldoCom(m.getSaldo());
 				}
 				otdao.save(ot);
 		}else{
@@ -375,5 +385,5 @@ public class OrdenDeTrabajoController {
 		otvo.setPagos(pagos);
 		otvo.setOt(ot);		
 		return otvo;
-	}
+	};
 }

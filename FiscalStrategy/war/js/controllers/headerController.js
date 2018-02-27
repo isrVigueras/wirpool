@@ -1,8 +1,9 @@
 app.directive('submenu',function(){
 	return{
+		restrict: "AE",
+		scope: {perfil: '=perfil'},
 		templateUrl:'pages/menuTemplate.html'
 	};
-	
 });
 
 app.controller('headerController',['$scope','$rootScope','$location','$http','$cookieStore',function($scope,$rootScope,$location,$http,$cookieStore){
