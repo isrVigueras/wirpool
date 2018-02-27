@@ -107,7 +107,6 @@ app.controller("clientController",['usuarioservice','brockerservice','$scope','$
 	usuarioservice.consultarUsuariosAll().then(function(data){
 		$scope.usuariosLista=data;
 	});
-	
 	brockerservice.consultarBrockersTodos().then(function(data) {
 		$scope.brockerLista = data;
 
