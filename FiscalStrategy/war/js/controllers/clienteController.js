@@ -76,7 +76,7 @@ app.service("clientcuentaservice",['$http', '$q', function($http, $q){
 	
 }]);
 app.controller("clientcuentacontroller",['$scope','$window', '$location', '$cookieStore','clientcuentaservice','$routeParams',function($scope, $window, $location, $cookieStore, clientcuentaservice,$routeParams){
-	
+	$scope.perfilUsuario = userFactory.getUsuarioPerfil();  //obtener perfl de usuario para pintar el menú al qe tiene acceso
 	$scope.guardaClienteCuenta= function(id){
 		console.log($scope.cuenta);
 		$scope.cuenta.enabled=true;
@@ -98,7 +98,7 @@ app.controller("clientcuentacontroller",['$scope','$window', '$location', '$cook
 }]);
 
 app.controller("clientController",['usuarioservice','brockerservice','$scope','$window', '$location', '$cookieStore','clientservice','clientcuentaservice', function(usuarioservice,brockerservice, $scope, $window, $location, $cookieStore, clientservice,clientcuentaservice){
-	
+	$scope.perfilUsuario = userFactory.getUsuarioPerfil();  //obtener perfl de usuario para pintar el menú al qe tiene acceso
 	clientservice.consultarClientesTodos().then(function(data) {
 			$scope.clienteLista = data;
 	
