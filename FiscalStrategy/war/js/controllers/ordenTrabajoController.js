@@ -152,7 +152,7 @@ app.service("operacionesMovimientosService",['$http', '$q', function($http, $q){
 			}
 		}else{
 			if(bndResguardo){
-				var renglon= {tipo: operaciones.tipo, descripcion: operaciones.descripcion , monto: operaciones.monto, estatus:"VALIDADO"}
+				var renglon= {tipo: operaciones.tipo, descripcion: operaciones.descripcion , monto: operaciones.monto, estatus:"AUTORIZADO"}
 			}else{
 				if(operaciones.tipo != null && operaciones.descripcion != null && operaciones.monto != null){
 					var renglon= {tipo: operaciones.tipo, descripcion: operaciones.descripcion , monto:operaciones.monto, estatus:operaciones.estatus}
@@ -439,13 +439,16 @@ app.controller("OTsAddController",['$route','$scope','$cookieStore', '$window', 
 			switch(modelo) {
 		    case 'Lic' :
 		    	$scope.datos.montoLic = $scope.redondea(($scope.datos.porLic/100)*$scope.datos.importe);
+		    	$("#AJC").val($scope.datos.montoLic);
 		        break;
 		    case 'Des':
 		    	$scope.datos.montoDes = $scope.redondea(($scope.datos.porDes/100)*$scope.datos.importe);
+		    	$("#Des").val($scope.datos.montoDes);
 		        break;
 		    case 'Broke':
 		    	for( var i in $scope.brokers){
 	    			$scope.brokers[i].montoBrok = $scope.redondea(($scope.brokers[i].porBrok/100)*$scope.datos.importe);
+	    			$("#broke").val($scope.brokers[i].montoBrok);
 	    		}
 		        break;
 		    case 'Todos':
@@ -472,7 +475,7 @@ app.controller("OTsAddController",['$route','$scope','$cookieStore', '$window', 
 
 		var retorno = $scope.datos.porciento-$scope.datos.porLic- $scope.datos.porDes- sumaBrok;
 		if(retorno > 0 ){
-			$scope.datos.retorno= retorno;
+			$scope.datos.retorno= $scope.redondea(retorno);
 			$scope.montoRetorno=$scope.redondea(($scope.datos.retorno/100)*$scope.datos.importe);
 			 var montosTotal = ($scope.datos.montoLic * 1)+ ($scope.datos.montoDes * 1) + ($scope.sumaMontoBrok * 1) + ($scope.montoRetorno * 1);
 			$scope.datos.totalComisiones=$scope.redondea(montosTotal);
@@ -480,7 +483,58 @@ app.controller("OTsAddController",['$route','$scope','$cookieStore', '$window', 
 		}else{
 			$scope.datos.retorno= null; 
 		}	
-	}	  	
+	}	 
+	
+	$scope.calcularComisionesM=function(param){
+		if($scope.tablaPagos== true){
+			$scope.calcularMontosM(param);
+			if($scope.datos.porLic != null && $scope.datos.porDes != null){
+				for( var i in $scope.brokers){
+					if($scope.brokers[i].porBrok == null){
+						return;
+					}else{
+						$scope.calcularRetorno();
+					}
+				}                         
+			}else{
+		    	return;
+		    }			
+		}else{
+			alert("No se han registrado pagos.")
+			$scope.limpiaComisiones()
+		}
+	}
+	
+	$scope.calcularMontosM=function(modelo){
+			switch(modelo) {
+		    case 'Lic' :
+		    	$scope.datos.porLic=$scope.redondea(($scope.datos.montoLic * 100)/$scope.datos.importe);
+//		    	$scope.datos.montoLic = $scope.redondea(($scope.datos.porLic/100)*$scope.datos.importe);
+		    	$("#porLic").val($scope.datos.porLic);
+		        break;
+		    case 'Des':
+		    	$scope.datos.porDes=$scope.redondea(($scope.datos.montoDes * 100)/$scope.datos.importe);
+//		    	$scope.datos.montoDes = $scope.redondea(($scope.datos.porDes/100)*$scope.datos.importe);
+		    	$("#porDes").val($scope.datos.porDes);
+		        break;
+		    case 'Broke':
+		    	for( var i in $scope.brokers){
+		    		$scope.brokers[i].porBrok=$scope.redondea(($scope.brokers[i].montoBrok * 100)/ $scope.datos.importe);
+//	    			$scope.brokers[i].montoBrok = $scope.redondea(($scope.brokers[i].porBrok/100)*$scope.datos.importe);
+	    			$("#porbroke").val($scope.brokers[i].montoBrok);
+	    		}
+		        break;
+		    case 'Todos':
+		    	$scope.datos.montoLic = $scope.redondea(($scope.datos.porLic/100)*$scope.datos.importe);
+		    	$scope.datos.montoDes = $scope.redondea(($scope.datos.porDes/100)*$scope.datos.importe);
+		    	for( var i in $scope.brokers){
+	    			$scope.brokers[i].montoBrok = $scope.redondea(($scope.brokers[i].porBrok/100)*$scope.datos.importe);
+	    		}	       
+		    	break;
+		     default:
+		    	 return;
+			}	
+	}
 	
 	$scope.eliminarRenglon=function(renglon){
 		$scope.otVO.pagos.splice(renglon, 1);
@@ -704,12 +758,12 @@ app.controller("ordenTrabajoController",['$scope','$window', '$location', '$cook
 	function cerrarOrden(){
 		var contM=0, contC=0;
 		for(var i in $scope.otvo.movimientos){
-			if($scope.otvo.movimientos[i].estatus=='VALIDADO' || $scope.otvo.movimientos[i].estatus=='CANCELADO'){
+			if($scope.otvo.movimientos[i].estatus=='AUTORIZADO' || $scope.otvo.movimientos[i].estatus=='CANCELADO'){
 				contM++;
 			}
 		}
 		for(var i in $scope.otvo.comisiones){
-			if($scope.otvo.comisiones[i].estatus=='VALIDADO' || $scope.otvo.comisiones[i].estatus=='CANCELADO'){
+			if($scope.otvo.comisiones[i].estatus=='AUTORIZADO' || $scope.otvo.comisiones[i].estatus=='CANCELADO'){
 				contC++;
 			}
 		}
@@ -802,11 +856,11 @@ app.controller("ordenTrabajoController",['$scope','$window', '$location', '$cook
 		if(tipoOperacion=='OPC'){
 			$scope.otvo.movimientos[indice].numTransaccion=$scope.mov.numTransaccion;
 			$scope.otvo.movimientos[indice].fecha=$scope.mov.fecha;
-			$scope.otvo.movimientos[indice].estatus="VALIDADO"
+			$scope.otvo.movimientos[indice].estatus="AUTORIZADO"
 		}else{
 			$scope.otvo.comisiones[indice].numTransaccion=$scope.mov.numTransaccion;
 			$scope.otvo.comisiones[indice].fecha=$scope.mov.fecha;
-			$scope.otvo.comisiones[indice].estatus="VALIDADO"
+			$scope.otvo.comisiones[indice].estatus="AUTORIZADO"
 		}
 		if(cerrarOrden()){
 			ordenTrabajoservice.addot($scope.otvo).then(function(data){
