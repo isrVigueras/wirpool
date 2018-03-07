@@ -173,7 +173,8 @@ app.controller('navigation', [ 'sessionService', '$rootScope', '$scope','$http',
 app.run(['$rootScope','$http','sessionService','userFactory',function ($rootScope,$http,sessionService,userFactory) {
 	sessionService.isAuthenticated().then(function(data){
 		var us= data;
-		userFactory.setUsuarioFirmado(us);	
+		userFactory.setUsuarioFirmado(us);
+		$rootScope.perfilUsuario=userFactory.getUsuarioPerfil();
 		$http.get("/notificacion/numAlertas/"+ us.id).then(function(response){
 			$rootScope.numNotificaciones=response.data;
 		})
