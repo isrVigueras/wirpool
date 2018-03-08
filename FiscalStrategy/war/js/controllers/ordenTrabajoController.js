@@ -439,16 +439,19 @@ app.controller("OTsAddController",['$route','$scope','$cookieStore', '$window', 
 			switch(modelo) {
 		    case 'Lic' :
 		    	$scope.datos.montoLic = $scope.redondea(($scope.datos.porLic/100)*$scope.datos.importe);
-		    	$("#AJC").val($scope.datos.montoLic);
+		    	$scope.datos.montoLic=$scope.datos.montoLic*1;
+//		    	$("#AJC").val($scope.datos.montoLic);
 		        break;
 		    case 'Des':
 		    	$scope.datos.montoDes = $scope.redondea(($scope.datos.porDes/100)*$scope.datos.importe);
-		    	$("#Des").val($scope.datos.montoDes);
+		    	$scope.datos.montoDes= $scope.datos.montoDes*1;
+//		    	$("#Des").val($scope.datos.montoDes);
 		        break;
 		    case 'Broke':
 		    	for( var i in $scope.brokers){
 	    			$scope.brokers[i].montoBrok = $scope.redondea(($scope.brokers[i].porBrok/100)*$scope.datos.importe);
-	    			$("#broke").val($scope.brokers[i].montoBrok);
+	    			$scope.brokers[i].montoBrok= $scope.brokers[i].montoBrok*1;
+//	    			$("#broke").val($scope.brokers[i].montoBrok);
 	    		}
 		        break;
 		    case 'Todos':
@@ -521,7 +524,7 @@ app.controller("OTsAddController",['$route','$scope','$cookieStore', '$window', 
 		    	for( var i in $scope.brokers){
 		    		$scope.brokers[i].porBrok=$scope.redondea(($scope.brokers[i].montoBrok * 100)/ $scope.datos.importe);
 //	    			$scope.brokers[i].montoBrok = $scope.redondea(($scope.brokers[i].porBrok/100)*$scope.datos.importe);
-	    			$("#porbroke").val($scope.brokers[i].montoBrok);
+	    			$("#porbroke").val($scope.brokers[i].porBrok);
 	    		}
 		        break;
 		    case 'Todos':
@@ -546,7 +549,13 @@ app.controller("OTsAddController",['$route','$scope','$cookieStore', '$window', 
 			//$scope.calcularMontos('Todos');
 		}
 	}
-
+	$scope.eliminarRenglonICliente=function(renglon){
+		$scope.otVO.movimientos.splice(renglon, 1);
+		$scope.verificarSaldo('OPC');
+		if($scope.otVO.movimientos.length == 0){
+			$scope.tablaOper=false;
+		}
+	}
 	$scope.verificaPorcentajes=function(operacion){
 		if($scope.datos.retorno == null && $scope.totalPor != $scope.datos.porciento){
 			alert("ERROR: Revisar porcentajes asignados");
@@ -688,6 +697,9 @@ app.controller("ordenTrabajoController",['$scope','$window', '$location', '$cook
 	
 	ordenTrabajoservice.loadot($cookieStore.get("idOt")).then(function(data){
 		$scope.otvo= data;
+		$scope.mont=$scope.otvo.pagos.monto;
+		number_format($scope.mont);
+		console.log(number_format);
 		console.log(data);	
 		crearListaDeCheques();
 		
@@ -719,7 +731,28 @@ app.controller("ordenTrabajoController",['$scope','$window', '$location', '$cook
 		}else{
 			$scope.ordenCerrada=false;
 		};
-		
+		function number_format(amount, decimals) {
+
+		    amount += ''; // por si pasan un numero en vez de un string
+		    amount = parseFloat(amount.replace(/[^0-9\.]/g, '')); // elimino cualquier cosa que no sea numero o punto
+
+		    decimals = decimals || 0; // por si la variable no fue fue pasada
+
+		    // si no es un numero o es igual a cero retorno el mismo cero
+		    if (isNaN(amount) || amount === 0) 
+		        return parseFloat(0).toFixed(decimals);
+
+		    // si es mayor o menor que cero retorno el valor formateado como numero
+		    amount = '' + amount.toFixed(decimals);
+
+		    var amount_parts = amount.split('.'),
+		        regexp = /(\d+)(\d{3})/;
+
+		    while (regexp.test(amount_parts[0]))
+		        amount_parts[0] = amount_parts[0].replace(regexp, '$1' + ',' + '$2');
+
+		    return amount_parts.join('.');
+		}
 		$scope.cancelarOp = function(index,	operacion){
 			if(operacion=="OPC"){
 				$scope.otvo.movimientos[index].estatus="CANCELADO";

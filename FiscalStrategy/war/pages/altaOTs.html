@@ -196,6 +196,8 @@
 						<td>{{op.descripcion}}</td>  
 						<td>{{op.monto}}</td>
 						<td>{{op.estatus}}</td>
+						<td><button class="btn btn-small btn-info"  ng-click="eliminarRenglonICliente($index)" title="Eliminar Instruccion">
+								<span class="glyphicon glyphicon-remove"></span></button>
 						<td> <a ng-show="op.tipo=='Cheque'" data-toggle="modal" data-target="#myModalCheque" ng-click="detalleCheque($index, 'OPC')"><b>Detalle</b></a></td>
 					</tr>
 					<tr>
