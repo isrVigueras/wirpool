@@ -440,18 +440,18 @@ app.controller("OTsAddController",['$route','$scope','$cookieStore', '$window', 
 		    case 'Lic' :
 		    	$scope.datos.montoLic = $scope.redondea(($scope.datos.porLic/100)*$scope.datos.importe);
 		    	$scope.datos.montoLic=$scope.datos.montoLic*1;
-//		    	$("#AJC").val($scope.datos.montoLic);
+
 		        break;
 		    case 'Des':
 		    	$scope.datos.montoDes = $scope.redondea(($scope.datos.porDes/100)*$scope.datos.importe);
 		    	$scope.datos.montoDes= $scope.datos.montoDes*1;
-//		    	$("#Des").val($scope.datos.montoDes);
+
 		        break;
 		    case 'Broke':
 		    	for( var i in $scope.brokers){
 	    			$scope.brokers[i].montoBrok = $scope.redondea(($scope.brokers[i].porBrok/100)*$scope.datos.importe);
 	    			$scope.brokers[i].montoBrok= $scope.brokers[i].montoBrok*1;
-//	    			$("#broke").val($scope.brokers[i].montoBrok);
+
 	    		}
 		        break;
 		    case 'Todos':
