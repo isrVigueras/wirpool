@@ -123,7 +123,7 @@ public class OrdenDeTrabajoController {
 				pago.setOt(ot.getId());
 				RegistroPago reg= regPagodao.buscar(pago.getReferencia());
 				if(reg!=null){
-					if(reg.getBanco().compareToIgnoreCase(pago.getBanco())==0 && reg.getEstatus().compareTo("ASIGNADO")!=0){
+					if(reg.getBanco().compareToIgnoreCase(pago.getBanco())==0 && reg.getEstatus()!=null && pago.getMonto()== reg.getMonto() && reg.getCuenta() == pago.getCuenta()){
 						reg.setEstatus("ASIGNADO");
 						reg.setOt(ot.getId());
 						reg.setValidado(true);

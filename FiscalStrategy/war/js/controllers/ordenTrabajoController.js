@@ -357,7 +357,7 @@ app.controller("OTsAddController",['$route','$scope','$cookieStore', '$window', 
 		if($scope.datos.nombreCliente == null){
 			datosCliente();
 		}
-		var renglon= {cliente:$scope.datos.nombreCliente, fecha:$scope.pago.fecha, banco:$scope.pago.banco, cuenta:$scope.pago.cuenta, monto:$scope.pago.monto, moneda:$scope.pago.moneda}
+		var renglon= {cliente:$scope.datos.nombreCliente, fecha:$scope.pago.fecha, banco:$scope.pago.banco, cuenta:$scope.pago.cuenta, monto:$scope.pago.monto, moneda:$scope.pago.moneda, referencia= $scope.pago.referencia}
 		$scope.otVO.pagos.push(renglon);
 		$scope.tablaPagos=true;
 		$scope.limpiaPago();

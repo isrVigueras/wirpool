@@ -39,6 +39,7 @@ function catalogoBancos(){
 	var catBancos = [{id:1, nombre: "Banco Nacional de M\u00E9xico (Banamex)"},
 	  			   {id:2, nombre: "Banco Santander (M\u00E9xico)"}, 
 	  			   {id:3, nombre: "Scotiabank Inverlat"},
+	  			   {id:90, nombre: "HSBC M\u00E9xico"},
 	  			   {id:4, nombre: "BBVA Bancomer"},
 	  			   {id:5, nombre: "Banco Mercantil del Norte (Banorte)"},
 	  			   {id:6, nombre: "Mercantil del Norte (Banorte)"},
@@ -81,7 +82,6 @@ function catalogoBancos(){
 	  			   {id:43, nombre: "Banco Inmobiliario M\u00E9xico"},
 	  			   {id:44, nombre: "Fundaci\u00F3n Donde Banco"},
 	  			   {id:45, nombre: "Banco Bancrea"},
-	  			   {id:46, nombre: "HSBC"}
 	  			  ];
 
 	return catBancos;
