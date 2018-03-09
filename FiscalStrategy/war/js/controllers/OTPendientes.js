@@ -36,7 +36,7 @@ app.controller("OTPendientes",['$scope','$window', '$location', '$cookieStore','
 		
 	};
 	$scope.Cuentas = function() {
-		 ordenTrabajoservice.consultarCuentas($scope.mov.banco).then(function(data){
+		 ordenTrabajoservice.consultarCuentasPorBanco($scope.mov.banco).then(function(data){
 			 $scope.cuentas= data;
 		 }); 
 	};

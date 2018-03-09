@@ -88,7 +88,7 @@
 							<td>{{p.fecha}}</td>
 							<td>{{p.banco}}</td>
 							<td>{{p.cuenta}}</td>
-							<td>{{p.monto}}</td>
+							<td>{{p.monto | currency}}</td>
 							<td>{{p.moneda}}</td>
 							<td><button class="btn btn-small btn-info"  ng-click="eliminarRenglon($index)" title="Eliminar Pago">
 								<span class="glyphicon glyphicon-remove"></span></button>
@@ -114,9 +114,9 @@
 				</thead>
 				<tbody>
 					<tr>
-						<td>{{datos.importe}}</td>
-						<td>{{datos.iva}}</td>
-						<td>{{datos.total}}</td>
+						<td>{{datos.importe | currency}}</td>
+						<td>{{datos.iva | currency}}</td>
+						<td>{{datos.tota | currencyl}}</td>
 					</tr>
 				</tbody>
 			</table>
@@ -202,7 +202,7 @@
 					<tr ng-repeat="op in otVO.movimientos">
 						<td>{{op.tipo}}</td>
 						<td>{{op.descripcion}}</td>  
-						<td>{{op.monto}}</td>
+						<td>{{op.monto | currency}}</td>
 						<td>{{op.estatus}}</td>
 						<td><button class="btn btn-small btn-info"  ng-click="eliminarRenglonICliente($index)" title="Eliminar Instruccion">
 								<span class="glyphicon glyphicon-remove"></span></button>
@@ -211,7 +211,7 @@
 					<tr>
 						<td></td>
 						<td align="right">Saldo Movimientos: </td>
-						<td>{{datos.saldoMov}}</td>
+						<td>{{datos.saldoMov | currency}}</td>
 						<td></td>
 						<td></td>
 					</tr>
@@ -244,14 +244,14 @@
 					<tr ng-repeat="op in otVO.comisiones">
 						<td>{{op.tipo}}</td>
 						<td>{{op.descripcion}}</td>
-						<td>{{op.monto}}</td>
+						<td>{{op.monto | currency}}</td>
 						<td>{{op.estatus}}</td>
 						<td> <a ng-show="op.tipo=='Cheque'" data-toggle="modal" data-target="#myModalCheque" ng-click="detalleCheque($index, 'OPA')"><b>Detalle</b></a></td>
 					</tr>
 					<tr>
 						<td></td>
 						<td align="right">Saldo Comisiones: </td>
-						<td>{{datos.saldoCom}}</td>
+						<td>{{datos.saldoCom | currency}}</td>
 						<td></td>
 						<td></td>
 					</tr>

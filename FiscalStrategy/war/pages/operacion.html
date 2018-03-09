@@ -35,7 +35,7 @@
 				<tr ng-repeat="mov in otvo" class="ng-scope" ng-if="mov.estatus== 'ACTIVO'">
 					<td class="ng-binding">{{mov.tipo}}</td>
 					<td class="ng-binding">{{mov.descripcion}}</td>
-					<td class="ng-binding">{{mov.monto}}</td>
+					<td class="ng-binding">{{mov.monto | currency}}</td>
 					<td class="ng-binding">{{mov.estatus}}</td>
 <!-- 					<td class="ng-binding" align="center"><button id="cancelOp" ng-hide="mov.estatus=='CANCELADO'" class="btn btn-small"  ng-click="cancelarOp($index, 'OPC')" title="Cancelar"> -->
 <!-- 								<span class="glyphicon glyphicon-remove"></span> -->
@@ -86,7 +86,7 @@
 				  	</div>
 				  	<div class="col-md-2">
 				  		<label class="control-label">Monto: </label>
-	 					<input class="form-control  mb-2" type="text"  ng-disabled="true" value="{{mov.monto}}">		
+	 					<input class="form-control  mb-2" type="text"  ng-disabled="true" value="{{mov.monto | currency}}">		
 				  	</div>
 			  		<div class="col-md-6">
 			  			<label class="control-label">Descripci&oacute;n:</label>
@@ -139,8 +139,8 @@
 	    			<div class="col-md-1"></div>
 	    			<div class="col-md-2"><label class="control-label">Tipo de Operaci&oacute;n:</label></div>
 	    			<div class="col-md-2">{{mov.tipo}}</div>
-				  	<div class="col-md-3" align="right"><label class="control-label" >Monto: $</label></div>
-				  	<div class="col-md-2"><label>{{mov.monto}}</label></div>
+				  	<div class="col-md-3" align="right"><label class="control-label" >Monto:</label></div>
+				  	<div class="col-md-2"><label>{{mov.monto | currency}}</label></div>
 				  	<div class="col-md-1"></div>
 				 </div>
 				 <br>
