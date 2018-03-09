@@ -235,6 +235,7 @@ app.service("operacionesMovimientosService",['$http', '$q', function($http, $q){
 		objetos={ error: null, saldo:null};
 		var cantidad = 0;
 		var btndisble="false";
+		
 		if(operacion== 'OPC'){
 			if(otvo.movimientos.length != 0){
 				cantidad= calcularSaldo(operaciones.monto,otvo.movimientos,monto,ot.importe);
@@ -394,6 +395,11 @@ app.controller("OTsAddController",['$route','$scope','$cookieStore', '$window', 
 	$scope.verificarSaldo=function(operacion){
 		var objs= operacionesMovimientosService.verificarSaldo(operacion, $scope.otVO, $scope.datos, $scope.operaciones,$scope.montoRetorno,$scope.sumaMontoBrok);
 		$scope.errorSaldo= objs.error;
+		if($scope.errorSaldo==" "){
+			$scope.dis=false;
+		}else{
+			$scope.dis=true;
+		}
 		if(operacion =='OPC'){
 			$scope.datos.saldoMov = objs.saldo;
 			
