@@ -234,6 +234,7 @@ app.service("operacionesMovimientosService",['$http', '$q', function($http, $q){
 	this.verificarSaldo=function(operacion, otvo, ot,operaciones,monto,suma){
 		objetos={ error: null, saldo:null};
 		var cantidad = 0;
+		var btndisble="false";
 		if(operacion== 'OPC'){
 			if(otvo.movimientos.length != 0){
 				cantidad= calcularSaldo(operaciones.monto,otvo.movimientos,monto,ot.importe);
@@ -251,8 +252,12 @@ app.service("operacionesMovimientosService",['$http', '$q', function($http, $q){
 		if(cantidad > 0 ){
 			objetos.saldo= cantidad;
 			objetos.error= " ";
+			btndisble=false;
+			
 		}else{
-			objetos.error="* ERROR: EL monto sobrepasa el saldo establecido * "; 
+			objetos.error="* ERROR: EL monto sobrepasa el saldo establecido *"; 
+			btndisble=true;
+			console.log(btndisble);
 		}
 		
 		return objetos;
@@ -391,6 +396,7 @@ app.controller("OTsAddController",['$route','$scope','$cookieStore', '$window', 
 		$scope.errorSaldo= objs.error;
 		if(operacion =='OPC'){
 			$scope.datos.saldoMov = objs.saldo;
+			
 		}else{
 			$scope.datos.saldoCom = objs.saldo;
 		}
@@ -698,8 +704,6 @@ app.controller("ordenTrabajoController",['$scope','$window', '$location', '$cook
 	ordenTrabajoservice.loadot($cookieStore.get("idOt")).then(function(data){
 		$scope.otvo= data;
 		$scope.mont=$scope.otvo.pagos.monto;
-		number_format($scope.mont);
-		console.log(number_format);
 		console.log(data);	
 		crearListaDeCheques();
 		
@@ -731,28 +735,7 @@ app.controller("ordenTrabajoController",['$scope','$window', '$location', '$cook
 		}else{
 			$scope.ordenCerrada=false;
 		};
-		function number_format(amount, decimals) {
-
-		    amount += ''; // por si pasan un numero en vez de un string
-		    amount = parseFloat(amount.replace(/[^0-9\.]/g, '')); // elimino cualquier cosa que no sea numero o punto
-
-		    decimals = decimals || 0; // por si la variable no fue fue pasada
-
-		    // si no es un numero o es igual a cero retorno el mismo cero
-		    if (isNaN(amount) || amount === 0) 
-		        return parseFloat(0).toFixed(decimals);
-
-		    // si es mayor o menor que cero retorno el valor formateado como numero
-		    amount = '' + amount.toFixed(decimals);
-
-		    var amount_parts = amount.split('.'),
-		        regexp = /(\d+)(\d{3})/;
-
-		    while (regexp.test(amount_parts[0]))
-		        amount_parts[0] = amount_parts[0].replace(regexp, '$1' + ',' + '$2');
-
-		    return amount_parts.join('.');
-		}
+		
 		$scope.cancelarOp = function(index,	operacion){
 			if(operacion=="OPC"){
 				$scope.otvo.movimientos[index].estatus="CANCELADO";
@@ -967,13 +950,20 @@ app.controller("ordenTrabajoController",['$scope','$window', '$location', '$cook
 	$scope.verificarSaldo=function(operacion){
 		var objs= operacionesMovimientosService.verificarSaldo(operacion, $scope.otvo,$scope.otvo.ot, $scope.operaciones,$scope.montoRetorno,$scope.sumaMontoBrok);
 		$scope.errorSaldo= objs.error;
+		
+		if($scope.errorSaldo==" "){
+			$scope.dis=false;
+		}else{
+			$scope.dis=true;
+		}
 		if(operacion == 'OPC'){
 			$scope.otvo.ot.saldoMov = objs.saldo;
+			
 		}else{
 			$scope.otvo.ot.saldoCom= objs.saldo;
 		}
 	}
-	
+
 	$scope.limpiarMov=function(){
 		$scope.mov.tipo= null;
 		$scope.mov.monto= null;

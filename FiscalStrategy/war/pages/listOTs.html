@@ -67,7 +67,7 @@
 				<tr ng-repeat="ot in ots">
 					<td>{{ot.id}}</td>
 					<td>{{ot.nombreCliente}}</td>
-					<td>{{ot.saldoMov}}</td>
+					<td>{{ot.saldoMov | currency}}</td>
 					<td>{{ot.estatus}}</td>
 					<td><button class="btn btn-small" ng-click="ver(ot.id)">
 							<i class="glyphicon glyphicon-eye-open"></i>

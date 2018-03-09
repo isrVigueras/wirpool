@@ -19,7 +19,7 @@
 					</div>
 					<div class="col-md-4">
 						<label>Cuenta Acomulativa:</label> 
-						<input type="text" class="form-control form-control-sm" ng-model="cb.saldo" value="{{cb.saldo}}" ng-disabled="true">
+						<input type="text" class="form-control form-control-sm" ng-model="cb.saldo | currency" value="{{cb.saldo}}" ng-disabled="true">
 					</div>
 				</div>
 				<br>
@@ -65,7 +65,7 @@
 						<tr ng-repeat="p in otVO.pagos">
 							<td>{{p.cliente}}</td>
 							<td>{{p.fecha}}</td>
-							<td>{{p.monto}}</td>
+							<td>{{p.monto | currency}}</td>
 							<td>{{p.moneda}}</td>
 							<td><button class="btn btn-small btn-info"  ng-click="eliminarRenglon($index)" title="Eliminar Pago">
 								<span class="glyphicon glyphicon-remove"></span></button>
@@ -102,7 +102,7 @@
 					<tr ng-repeat="op in otVO.movimientos">
 						<td>{{op.tipo}}</td>
 						<td>{{op.descripcion}}</td>  
-						<td>{{op.monto}}</td>
+						<td>{{op.monto | currency}}</td>
 						<td>{{op.estatus}}</td>
 						<td> <a ng-show="op.tipo=='Cheque'" data-toggle="modal" data-target="#myModalCheque" ng-click="detalleCheque($index, 'OPC')"><b>Detalle</b></a></td>
 					</tr>

@@ -50,7 +50,7 @@
 			</thead>
 			<tbody>
 				<tr ng-repeat="p in otvo.pagos">
-					<td>{{p.monto}}</td>
+					<td>{{p.monto | currency}}</td>
 					<td>{{p.moneda}}</td>
 					<td>{{p.banco}}</td>
 					<td>{{p.cuenta}}</td>
@@ -76,9 +76,9 @@
 			</thead>
 			<tbody>
 				<tr>
-					<td>{{otvo.ot.importe}}</td>
-					<td>{{iva}}</td>
-					<td>{{otvo.ot.total}}</td>
+					<td>{{otvo.ot.importe | currency}}</td>
+					<td>{{iva | currency }}</td>
+					<td>{{otvo.ot.total | currency}}</td>
 				</tr>
 			</tbody>
 		</table>
@@ -100,22 +100,22 @@
 				<tr class="ng-scope">
 					<td class="ng-binding">AJD</td>
 					<td class="ng-binding">{{otvo.ot.porLic}}</td>
-					<td class="ng-binding">{{otvo.ot.montoLic}}</td>
+					<td class="ng-binding">{{otvo.ot.montoLic | currency}}</td>
 				</tr>
 				<tr class="ng-scope">
 					<td class="ng-binding">J&A</td>
 					<td class="ng-binding">{{otvo.ot.porDes}}</td>
-					<td class="ng-binding">{{otvo.ot.montoDes}}</td>
+					<td class="ng-binding">{{otvo.ot.montoDes | currency}}</td>
 				</tr>
 				<tr  class="ng-scope" ng-repeat="brok in brokers">
 					<td class="ng-binding">{{brok.nombre}}</td>
 					<td class="ng-binding">{{brok.porBrok}}</td>
-					<td class="ng-binding">{{brok.montoBrok}}</td>
+					<td class="ng-binding">{{brok.montoBrok | currency}}</td>
 				</tr>
 				<tr class="ng-scope">
 					<td class="ng-binding">Retorno</td>
 					<td class="ng-binding">{{otvo.ot.retorno}}</td>
-					<td class="ng-binding">{{montoRetorno}}</td>
+					<td class="ng-binding">{{montoRetorno | currency}}</td>
 				</tr>
 			</tbody>	
 		</table>
@@ -152,7 +152,7 @@
 				<tr ng-repeat="mov in otvo.movimientos" class="ng-scope">
 					<td class="ng-binding">{{mov.tipo}}</td>
 					<td class="ng-binding">{{mov.descripcion}}</td>
-					<td class="ng-binding">{{mov.monto}}</td>
+					<td class="ng-binding">{{mov.monto | currency}}</td>
 					<td class="ng-binding">{{mov.banco}}</td>
 					<td class="ng-binding">{{mov.cuenta}}</td>
 					<td class="ng-binding">{{mov.estatus}}</td>
@@ -223,7 +223,7 @@
 				<tr ng-repeat="mov in otvo.comisiones" class="ng-scope">
 					<td class="ng-binding">{{mov.tipo}}</td>
 					<td class="ng-binding">{{mov.descripcion}}</td>
-					<td class="ng-binding">{{mov.monto}}</td>
+					<td class="ng-binding">{{mov.monto | currency}}</td>
 					<td class="ng-binding">{{mov.banco}}</td>
 					<td class="ng-binding">{{mov.cuenta}}</td>
 					<td class="ng-binding">{{mov.estatus}}</td>
@@ -342,7 +342,7 @@
 	    			<div class="col-md-2"><label class="control-label">Tipo de Operaci&oacute;n:</label></div>
 	    			<div class="col-md-2">{{mov.tipo}}</div>
 				  	<div class="col-md-3" align="right"><label class="control-label" >Monto: $</label></div>
-				  	<div class="col-md-2"><label>{{mov.monto}}</label></div>
+				  	<div class="col-md-2"><label>{{mov.monto | currency}}</label></div>
 				  	<div class="col-md-1"></div>
 				 </div>
 				 <br>
@@ -465,7 +465,7 @@
 					<div align="center">{{errorSaldo}}</div>
 					<br>
 					<div class="row" align="center">
-						<button class="btn btn-small" data-dismiss="modal"   ng-click="addOper('OPC')" >Guardar</button>
+						<button class="btn btn-small" data-dismiss="modal" ng-disabled="dis"  ng-click="addOper('OPC')" >Guardar</button>
 					</div>
 	          </form>
 		  </div>
@@ -578,7 +578,7 @@
       <div class="modal-body">
 			<div class="row" >
 				<div class="col-sm-1" ><label class="control-label">Monto: </label></div>
-				<div class="col-sm-3" >$ {{cheque.monto}}</div>
+				<div class="col-sm-3" > {{cheque.monto | currency}}</div>
 				<div class="col-sm-3" align="right"><label class="control-label">Fecha de Emisi&oacute;n:  </label></div>
 				<div class="col-sm-5">{{cheque.fEmision}}</div>
 			</div>
