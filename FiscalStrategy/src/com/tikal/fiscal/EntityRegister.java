@@ -9,6 +9,7 @@ import com.tikal.fiscal.model.Movimiento;
 import com.tikal.fiscal.model.Notificacion;
 import com.tikal.fiscal.model.OrdenDeTrabajo;
 import com.tikal.fiscal.model.PagoRecibido;
+import com.tikal.fiscal.model.RegistroPago;
 import com.tikal.fiscal.model.Usuario;
 
 public class EntityRegister {
@@ -22,6 +23,7 @@ public class EntityRegister {
 		this.registrar(Movimiento.class);
 		this.registrar(FolioOT.class);
 		this.registrar(Notificacion.class);
+		this.registrar(RegistroPago.class);
 	}
 	
 	private <T> void registrar(Class<T> clase) {

@@ -17,6 +17,7 @@
 	<bean class="com.tikal.fiscal.security.UsuarioDAOImp"></bean>
 	
 	<!-- DAOS Objectify -->
+	<bean class="com.tikal.fiscal.dao.imp.RegistroPagoDAOImp"></bean>
 	<bean class="com.tikal.fiscal.dao.imp.PagoRecibidoDAOImp"></bean>
 	<bean class="com.tikal.fiscal.dao.imp.OrdenDeTrabajoDAOImp"></bean>
 	<bean class="com.tikal.fiscal.dao.imp.ClienteDAOImp"></bean>

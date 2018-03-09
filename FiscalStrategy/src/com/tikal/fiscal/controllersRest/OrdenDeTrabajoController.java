@@ -27,6 +27,7 @@ import com.tikal.fiscal.dao.MovimientoDAO;
 import com.tikal.fiscal.dao.NotificacionDAO;
 import com.tikal.fiscal.dao.OrdenDeTrabajoDAO;
 import com.tikal.fiscal.dao.PagoRecibidoDAO;
+import com.tikal.fiscal.dao.RegistroPagoDAO;
 import com.tikal.fiscal.model.Cliente;
 import com.tikal.fiscal.model.Cuenta;
 import com.tikal.fiscal.model.FolioOT;
@@ -34,6 +35,7 @@ import com.tikal.fiscal.model.Movimiento;
 import com.tikal.fiscal.model.Notificacion;
 import com.tikal.fiscal.model.OrdenDeTrabajo;
 import com.tikal.fiscal.model.PagoRecibido;
+import com.tikal.fiscal.model.RegistroPago;
 import com.tikal.fiscal.model.Usuario;
 import com.tikal.fiscal.security.UsuarioDAO;
 import com.tikal.fiscal.util.AsignadorDeCharset;
@@ -53,6 +55,9 @@ public class OrdenDeTrabajoController {
 	
 	@Autowired
 	PagoRecibidoDAO pagodao;
+	
+	@Autowired
+	RegistroPagoDAO regPagodao;
 	
 	@Autowired
 	UsuarioDAO usuariodao;
@@ -116,6 +121,15 @@ public class OrdenDeTrabajoController {
 			for(int i=0; i<pagos.size(); i++){
 				pago= pagos.get(i);
 				pago.setOt(ot.getId());
+				RegistroPago reg= regPagodao.buscar(pago.getReferencia());
+				if(reg!=null){
+					if(reg.getBanco().compareToIgnoreCase(pago.getBanco())==0 && reg.getEstatus().compareTo("ASIGNADO")!=0){
+						reg.setEstatus("ASIGNADO");
+						reg.setOt(ot.getId());
+						reg.setValidado(true);
+						pago.setValidado(true);
+					}
+				}
 			}
 			pagodao.save(pagos);
 			  

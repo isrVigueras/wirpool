@@ -16,7 +16,7 @@ app.service("pagosService",['$http',"$q",function($http,$q){
 	this.getPaginas = function(page) {
 		var d = $q.defer();
 	
-		$http.get("/pagos/page/").then(
+		$http.get("/pagos/pages").then(
 			function(response) {
 				d.resolve(response.data);
 			});
@@ -202,10 +202,9 @@ app.controller("ListaPagoController",['$scope','$cookieStore', '$window', '$loca
 		$('#pagA'+$scope.paginaActual).addClass("active");
 		$('#pagB'+$scope.paginaActual).addClass("active");
 	}
-
+	
 	pagosService.getPaginas().then(function(data){
 		$scope.maxPage=data;
-		console.log("Las Paginas Son",maxPage);
 		$scope.llenarPags();
 	});
 	
