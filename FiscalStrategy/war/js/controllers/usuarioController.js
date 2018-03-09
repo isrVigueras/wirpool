@@ -32,6 +32,18 @@ app.service("usuarioservice",['$http', '$q', function($http, $q){
 		});
 		return d.promise;
 	}
+	this.consultarUsuariosAll= function() {
+		var d = $q.defer();
+		$http.get("/usuario/consultarTodos").then(function(response) {
+			d.resolve(response.data);
+		}, function(response) {
+			if(response.status==403){
+				//alert("No tiene permiso de realizar esta acción");
+				$location.path("/login");
+			}
+		});
+		return d.promise;
+	}
 	this.eliminaUsuario = function(usuario) {
 		var d = $q.defer();
 		$http.post("/usuario/elimina", usuario).then(
