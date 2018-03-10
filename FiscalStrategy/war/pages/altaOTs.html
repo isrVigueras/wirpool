@@ -26,7 +26,7 @@
 					<div class="col-md-4">
 						<label>No. de Cuenta:</label> 
 						<select name="cuentas" class="form-control form-control-sm" ng-required="true" ng-model="pago.cuenta" >
-					 		<option ng-repeat=" c in cuentas">{{c.cuenta}}</option> 
+					 		<option ng-repeat=" c in cuentas" value="{{c.id}}">{{c.cuenta}}</option> 
 						</select>	
 					</div>
 				</div>
@@ -55,7 +55,7 @@
  					<div class="col-md-4">
  						<label>Nombre de la Cuenta:</label> 
 						<select name="cuentas" class="form-control form-control-sm" ng-required="true" ng-model="pago.cuenta" >
-					 		<option ng-repeat=" c in cuentas" value="{{c.cuenta}}">{{c.nombre}}</option> 
+					 		<option ng-repeat=" c in cuentas" value="{{c.id}}">{{c.nombre}}</option> 
 						</select>
  					</div> 
  					
