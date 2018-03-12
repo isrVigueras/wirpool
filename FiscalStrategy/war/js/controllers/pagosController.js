@@ -104,8 +104,8 @@ app.service("pagosService",['$http',"$q",function($http,$q){
 	
 }]);
 
-app.controller("pagosAddController",['$scope','$cookieStore', '$window', '$location', 'pagosService','cuentaservice','userFactory', function($scope, $cookieStore, $window, $location, pagosService,cuentaservice,userFactory){
-	$scope.perfilUsuario = userFactory.getUsuarioPerfil();  //obtener perfl de usuario para pintar el menú al qe tiene acceso
+app.controller("pagosAddController",['$rootScope', '$scope','$cookieStore', '$window', '$location', 'pagosService','cuentaservice','userFactory', function($rootScope,$scope, $cookieStore, $window, $location, pagosService,cuentaservice,userFactory){
+	$rootScope.perfilUsuario = userFactory.getUsuarioPerfil();  //obtener perfl de usuario para pintar el menú al qe tiene acceso
 	$scope.pago={
 			moneda:"MXN"
 	}
@@ -169,12 +169,12 @@ app.controller("pagosAddController",['$scope','$cookieStore', '$window', '$locat
 	
 	
 }]);
-app.controller("ListaPagoController",['$scope','$cookieStore', '$window', '$location', 'pagosService','cuentaservice','clientservice','userFactory', function($scope, $cookieStore, $window, $location, pagosService,cuentaservice,clientservice,userFactory){
+app.controller("ListaPagoController",['$rootScope', '$scope','$cookieStore', '$window', '$location', 'pagosService','cuentaservice','clientservice','userFactory', function($rootScope,$scope, $cookieStore, $window, $location, pagosService,cuentaservice,clientservice,userFactory){
 //	pagosService.consultarPagos().then(function(data) {
 //		$scope.ListPagos = data;
 //
 //});
-	$scope.perfilUsuario = userFactory.getUsuarioPerfil();  //obtener perfl de usuario para pintar el menú al qe tiene acceso
+	$rootScope.perfilUsuario = userFactory.getUsuarioPerfil();  //obtener perfl de usuario para pintar el menú al qe tiene acceso
 	clientservice.consultarClientesTodos().then(function(data) {
 		$scope.clienteLista = data;
 

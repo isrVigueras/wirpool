@@ -75,8 +75,8 @@ app.service("clientcuentaservice",['$http', '$q', function($http, $q){
 	};
 	
 }]);
-app.controller("clientcuentacontroller",['$scope','$window', '$location', '$cookieStore','clientcuentaservice','$routeParams', 'userFactory',function($scope, $window, $location, $cookieStore, clientcuentaservice,$routeParams, userFactory){
-	$scope.perfilUsuario = userFactory.getUsuarioPerfil();  //obtener perfl de usuario para pintar el menú al qe tiene acceso
+app.controller("clientcuentacontroller",['$rootScope', '$scope','$window', '$location', '$cookieStore','clientcuentaservice','$routeParams', 'userFactory',function($rootScope, $scope, $window, $location, $cookieStore, clientcuentaservice,$routeParams, userFactory){
+	$rootScope.perfilUsuario = userFactory.getUsuarioPerfil();  //obtener perfl de usuario para pintar el menú al qe tiene acceso
 	$scope.guardaClienteCuenta= function(id){
 		console.log($scope.cuenta);
 		$scope.cuenta.enabled=true;
@@ -97,8 +97,8 @@ app.controller("clientcuentacontroller",['$scope','$window', '$location', '$cook
 //	}
 }]);
 
-app.controller("clientController",['usuarioservice','brockerservice','$scope','$window', '$location', '$cookieStore','clientservice','clientcuentaservice', 'userFactory', function(usuarioservice,brockerservice, $scope, $window, $location, $cookieStore, clientservice,clientcuentaservice, userFactory){
-	$scope.perfilUsuario = userFactory.getUsuarioPerfil();  //obtener perfl de usuario para pintar el menú al qe tiene acceso
+app.controller("clientController",['$rootScope','usuarioservice','brockerservice','$scope','$window', '$location', '$cookieStore','clientservice','clientcuentaservice', 'userFactory', function($rootScope,usuarioservice,brockerservice, $scope, $window, $location, $cookieStore, clientservice,clientcuentaservice, userFactory){
+	$rootScope.perfilUsuario = userFactory.getUsuarioPerfil();  //obtener perfl de usuario para pintar el menú al qe tiene acceso
 	clientservice.consultarClientesTodos().then(function(data) {
 			$scope.clienteLista = data;
 	

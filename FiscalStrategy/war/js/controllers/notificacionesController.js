@@ -106,9 +106,9 @@ app.service('notificacionesService',['$http','$q','$location','$rootScope','$win
 	
 }]);
 
-app.controller('notificacionesController',['notificacionesService','$scope','$cookieStore','$location','userFactory',function(notificacionesService,$scope,$cookieStore,$location,userFactory){
+app.controller('notificacionesController',['$rootScope', 'notificacionesService','$scope','$cookieStore','$location','userFactory',function($rootScope,notificacionesService,$scope,$cookieStore,$location,userFactory){
 	
-	$scope.perfilUsuario = userFactory.getUsuarioPerfil();  //obtener perfl de usuario para pintar el menú al qe tiene acceso
+	$rootScope.perfilUsuario = userFactory.getUsuarioPerfil();  //obtener perfl de usuario para pintar el menú al qe tiene acceso
 	var us= userFactory.getUsuarioFirmado();
 	notificacionesService.consultar(us.id).then(function(data){
 		$scope.notificaciones=data;

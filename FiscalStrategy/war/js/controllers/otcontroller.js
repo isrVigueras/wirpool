@@ -79,8 +79,8 @@ app.service("otservice",['$http', '$q', function($http, $q){
 	
 }]);
 
-app.controller("OTsListController",['$scope','$window', '$location', '$cookieStore','otservice','userFactory', function($scope, $window, $location, $cookieStore, otservice,userFactory){
-	$scope.perfilUsuario = userFactory.getUsuarioPerfil();  //obtener perfl de usuario para pintar el menú al qe tiene acceso
+app.controller("OTsListController",['$rootScope','$scope','$window', '$location', '$cookieStore','otservice','userFactory', function($rootScope, $scope, $window, $location, $cookieStore, otservice,userFactory){
+	$rootScope.perfilUsuario = userFactory.getUsuarioPerfil();  //obtener perfl de usuario para pintar el menú al qe tiene acceso
 	otservice.consultarCB().then(function(data) {
 		$scope.cbtodos = data;
 	});

@@ -245,9 +245,9 @@ app.service("OPMS",['$http', '$q', function($http, $q){
 	
 }]);
 
-app.controller("CAController",['$scope','$cookieStore', '$window', '$location', 'CBService','cuentaservice','OPMS','userFactory','notificacionesService',function($scope, $cookieStore, $window, $location, CBService,cuentaservice,OPMS,userFactory,notificacionesService){
+app.controller("CAController",['$rootScope', '$scope','$cookieStore', '$window', '$location', 'CBService','cuentaservice','OPMS','userFactory','notificacionesService',function($rootScope, $scope, $cookieStore, $window, $location, CBService,cuentaservice,OPMS,userFactory,notificacionesService){
 	
-	$scope.perfilUsuario = userFactory.getUsuarioPerfil();  //obtener perfl de usuario para pintar el menú al qe tiene acceso
+	$rootScope.perfilUsuario = userFactory.getUsuarioPerfil();  //obtener perfl de usuario para pintar el menú al qe tiene acceso
 	$scope.bancos = catalogoBancos();
 	$scope.tablaPagos= false;
 	$scope.tablaOper= false;

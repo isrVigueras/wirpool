@@ -55,7 +55,7 @@ app.service("cuentaservice",['$http', '$q', function($http, $q){
 //	
 //}]);
 
-app.controller("cuentaController",['$scope','$window', '$location', '$cookieStore','cuentaservice','userFactory','$rootScope', function($scope, $window, $location, $cookieStore, cuentaservice,userFactory,$rootScope){
+app.controller("cuentaController",['$rootScope','$scope','$window', '$location', '$cookieStore','cuentaservice','userFactory','$rootScope', function($rootScope,$scope, $window, $location, $cookieStore, cuentaservice,userFactory,$rootScope){
 	$rootScope.perfilUsuario = userFactory.getUsuarioPerfil();  //obtener perfl de usuario para pintar el menú al qe tiene acceso
 	$scope.bancos = catalogoBancos();
 	cuentaservice.load().then(function(data) {

@@ -80,8 +80,8 @@ app.service("brockerservice",['$http', '$q', function($http, $q){
 	};
 }]);
 
-app.controller("brockercuentacontroller",['clientservice','$scope','$window', '$location', '$cookieStore','clientcuentaservice','$routeParams', 'userFactory',function(clientservice,$scope, $window, $location, $cookieStore, clientcuentaservice,$routeParams, userFactory){
-	$scope.perfilUsuario = userFactory.getUsuarioPerfil();  //obtener perfl de usuario para pintar el menú al qe tiene acceso
+app.controller("brockercuentacontroller",['$rootScope','clientservice','$scope','$window', '$location', '$cookieStore','clientcuentaservice','$routeParams', 'userFactory',function($rootScope,clientservice,$scope, $window, $location, $cookieStore, clientcuentaservice,$routeParams, userFactory){
+	$rootScope.perfilUsuario = userFactory.getUsuarioPerfil();  //obtener perfl de usuario para pintar el menú al qe tiene acceso
 	$scope.guardabrockerCuenta= function(id){
 		console.log($scope.cuenta);
 		$scope.cuenta.enabled=true;
@@ -101,8 +101,8 @@ app.controller("brockercuentacontroller",['clientservice','$scope','$window', '$
 //});
 //	}
 }]);
-app.controller("brockersController",['usuarioservice','$scope','$window', '$location', '$cookieStore','brockerservice', 'userFactory', function(usuarioservice,$scope, $window, $location, $cookieStore, brockerservice, userFactory){
-	$scope.perfilUsuario = userFactory.getUsuarioPerfil();  //obtener perfl de usuario para pintar el menú al qe tiene acceso
+app.controller("brockersController",['$rootScope','usuarioservice','$scope','$window', '$location', '$cookieStore','brockerservice', 'userFactory', function($rootScope,usuarioservice,$scope, $window, $location, $cookieStore, brockerservice, userFactory){
+	$rootScope.perfilUsuario = userFactory.getUsuarioPerfil();  //obtener perfl de usuario para pintar el menú al qe tiene acceso
 	brockerservice.consultarBrockersTodos().then(function(data) {
 		$scope.brockerLista = data;
 
