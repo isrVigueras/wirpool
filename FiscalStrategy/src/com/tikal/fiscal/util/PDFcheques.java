@@ -571,7 +571,7 @@ public class PDFcheques {
 		tabla.addCell(celdaPagarA);
 		
 		
-		
+	
 		PdfPCell celdaMonto = new PdfPCell();
 		Phrase fraseMonto = new Phrase();	
 		agregarChunkYNuevaLinea(String.valueOf(mov.getMonto()), font1, fraseMonto);
