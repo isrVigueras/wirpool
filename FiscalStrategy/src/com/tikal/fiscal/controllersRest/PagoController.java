@@ -20,10 +20,12 @@ import com.tikal.fiscal.dao.ClienteDAO;
 import com.tikal.fiscal.dao.CuentaClienteDAO;
 import com.tikal.fiscal.dao.OrdenDeTrabajoDAO;
 import com.tikal.fiscal.dao.PagoRecibidoDAO;
+import com.tikal.fiscal.dao.RegistroPagoDAO;
 import com.tikal.fiscal.model.Cliente;
 import com.tikal.fiscal.model.CuentaCliente;
 import com.tikal.fiscal.model.OrdenDeTrabajo;
 import com.tikal.fiscal.model.PagoRecibido;
+import com.tikal.fiscal.model.RegistroPago;
 import com.tikal.fiscal.service.ParseadorDePagos;
 import com.tikal.fiscal.util.AsignadorDeCharset;
 import com.tikal.fiscal.util.JsonConvertidor;
@@ -34,6 +36,9 @@ public class PagoController {
 
 	@Autowired
 	PagoRecibidoDAO pagosdao;
+	
+	@Autowired
+	RegistroPagoDAO regpagodao;
 
 	@Autowired
 	ClienteDAO clientedao;
@@ -59,8 +64,16 @@ public class PagoController {
 	@RequestMapping(value = { "/page/{page}" }, method = RequestMethod.GET)
 	public void page(HttpServletResponse res, HttpServletRequest req,@PathVariable int page) throws IOException {
 		AsignadorDeCharset.asignar(req, res);
-		List<PagoRecibido> lista= pagosdao.getPagos(page);
+		List<RegistroPago> lista= regpagodao.getPagos(page);
 		res.getWriter().print(JsonConvertidor.toJson(lista));
+	}
+	
+	@RequestMapping(value = { "/pages" }, method = RequestMethod.GET)
+	public void pages(HttpServletResponse res, HttpServletRequest req) throws IOException {
+		
+		AsignadorDeCharset.asignar(req, res);
+		
+		res.getWriter().print(regpagodao.getPaginas());
 	}
 	
 	@RequestMapping(value = { "/save" }, method = RequestMethod.POST, consumes = "application/json")
@@ -79,19 +92,20 @@ public class PagoController {
 		AsignadorDeCharset.asignar(req, res);
 		PagosMultiplesVO pagos = (PagosMultiplesVO) JsonConvertidor.fromJson(json, PagosMultiplesVO.class);
 
-		List<PagoRecibido> lista = ParseadorDePagos.parsear(pagos.getDatos(), pagos.getTipo(), pagos.getCuenta());
-		for (PagoRecibido pago : lista) {
-			if (pago.getClabe() != null) {
-				CuentaCliente cuenta = cuentaclientedao.getByClabe(pago.getClabe());
-				if (cuenta != null) {
-					pago.setId_cliente(cuenta.getId_cliente());
-					Cliente cliente = clientedao.get(cuenta.getId_cliente());
-					pago.setId_brocker(cliente.getIdBrocker());
+		List<RegistroPago> lista = ParseadorDePagos.parsear(pagos.getDatos(), pagos.getTipo(), pagos.getCuenta());
+		for (RegistroPago reg : lista) {
+			PagoRecibido pago = pagosdao.buscar(reg.getReferencia());
+			if(pago!=null){
+				if(reg.getBanco().compareToIgnoreCase(pago.getBanco())==0 && reg.getEstatus()==null && pago.getMonto()== reg.getMonto() && reg.getCuenta().compareTo(pago.getCuenta())==0){
+					pago.setValidado(true);
+					pagosdao.save(pago);
 				}
+				
 			}
 		}
-		pagosdao.save(lista);
-		this.crearOTs(lista);
+		
+		regpagodao.save(lista);
+//		this.crearOTs(lista);
 	}
 
 	private void crearOTs(List<PagoRecibido> pagos) {

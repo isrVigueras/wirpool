@@ -89,4 +89,14 @@ public class UsuarioDAOImp implements UsuarioDAO {
 	public Usuario consultarId(Long id) {
 		return ofy().load().type(Usuario.class).id(id).now();
 	}
+
+	@Override
+	public Usuario consultarPorPerfil(String perfil) {
+		List<Usuario> lista = ofy().load().type(Usuario.class).filter("perfil", perfil).list();	
+		Usuario usuario = new Usuario();
+		if(lista.size()>0){
+			return lista.get(0);
+		}
+		return usuario;	
+	}
 }

@@ -54,27 +54,15 @@ public class ServicioSesion {
 	@RequestMapping(value = { "/currentSession" }, method = RequestMethod.GET, produces = "application/json")
 	public void currentUser(HttpServletResponse res, HttpServletRequest req) throws IOException {
 		AsignadorDeCharset.asignar(req, res);
-		HttpSession s = req.getSession();
-		String n = (String) s.getAttribute("userName");
+		HttpSession sesion= req.getSession();
+		Usuario user=(Usuario) sesion.getAttribute("user");
+		String n = (String) sesion.getAttribute("userName");
 		if (n == null) {
 			res.sendError(400);
+		}else{
+			res.getWriter().print(JsonConvertidor.toJson(user));
 		}
 	}
 	
-//	public static boolean verificarPermiso(HttpServletRequest request, UsuarioDAO usuariodao, PerfilDAO  perfildao, int per){
-//		HttpSession s = request.getSession();
-//		String nombreUsuario = (String) s.getAttribute("userName");
-//		if(nombreUsuario == null){
-//			return false;
-//		}else{
-//			Usuario usuario = usuariodao.consultarUsuario(nombreUsuario);
-//			Perfil perfil = perfildao.consultarPerfil(usuario.getPerfil());
-//			if(perfil.getPermisos()[per]==true){
-//				return true;
-//			}
-//		}
-//		return false;
-//	}
-//	
 }
 
