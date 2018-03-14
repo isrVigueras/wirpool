@@ -1,26 +1,29 @@
 <section class="jumbotron">
 	<div class="container">
 		<h2>Registro de Pagos</h2>
-		<submenu />
+		<submenu perfil="perfilUsuario"/>
 	</div>
 </section>
 
-<div class="container">
-	<input type="checkbox" ng-model="multiple">M&uacute;ltiple
+<!-- <div class="container"> -->
+<!-- 	<input type="checkbox" ng-model="multiple">M&uacute;ltiple -->
 
-</div>
+<!-- </div> -->
+
+
+
 <hr>
-<div class="container" ng-show="multiple">
+<div class="container">
 	<div class="row">
 		<form id="forma2" name="myForm2">
 			<div class="col-md-12">
 				<div class="col-md-6">
 					Banco: <select ng-model="tipo" class="form-control">
-						<option value="Banco Nacional de M&eacutexico (Banamex)">Banco
+						<option value="Banco Nacional de M&eacute;xico (Banamex)">Banco
 							Nacional de M&eacutexico (Banamex)</option>
-						<option value="Banco Santander (M&eacutexico)">Banco
+						<option value="Banco Santander (M&eacute;xico)">Banco
 							Santander (M&eacutexico)</option>
-						<option value="HSBC Mexico">HSBC M&eacutexico</option>
+						<option value="HSBC M&eacute;xico">HSBC M&eacute;xico</option>
 						<option value="Scotiabank Inverlat">Scotiabank Inverlat</option>
 						<option value="BBVA Bancomer">BBVA Bancomer</option>
 						<option value="Banco Mercantil del Norte (Banorte)">Banco
@@ -101,71 +104,71 @@
 </div>
 
 
-<div class="container" ng-hide="multiple">
-	<form id="forma" name="myForm">
-		<div class="col-md-6">
+<!-- <div class="container" ng-hide="multiple"> -->
+<!-- 	<form id="forma" name="myForm"> -->
+<!-- 		<div class="col-md-6"> -->
 
-		Cliente:
-		<select class="form-control" ng-required="!multiple" ng-change="ver(cliente) || clear()" ng-model="pago.id_cliente">
-		<option></option>	
-		<option ng-repeat="c in cliente" value="{{c.id}}" >{{c.nickname}}</option>
-		</select>
-
-		</div>
-		<div class="col-md-2">
-			Fecha: <input input-date
-				class="form-control ng-empty ng-dirty ng-touched ng-invalid ng-invalid-date"
-				ng-model="pago.fecha" type="date" ng-required="!multiple" /> <br>
-		</div>
-		<div class="col-md-6">
-
-			Cuenta: 
-<!-- 		<input class="form-control" ng-model="pago.cuenta" -->
-<!-- 				type="text" ng-required="!multiple"> -->
-				<select class="form-control" ng-required="!multiple" ng-model="pago.cuenta" id="slc" ng-change="modifica($index)" value="{{cc.id}}">
-		<option ng-repeat="cc in ccuenta" >{{cc.cuenta}}</option>
-		</select>
-		
-
-		</div>
-		<div class="col-md-6">
-
-		
-			Banco: 
-			<input class="form-control" ng-model="pago.banco" type="text" id="banco" value="{{cc.banco}}"
-				ng-required="!multiple">
-<!--  				<select class="form-control" ng-required=!multiple" ng-model="pago.banco"> -->
-<!-- 		<option ng-repeat="cc in ccuenta">{{cc.banco}}</option> -->
+<!-- 		Cliente: -->
+<!-- 		<select class="form-control" ng-required="!multiple" ng-change="ver(cliente) || clear()" ng-model="pago.id_cliente"> -->
+<!-- 		<option></option>	 -->
+<!-- 		<option ng-repeat="c in cliente" value="{{c.id}}" >{{c.nickname}}</option> -->
 <!-- 		</select> -->
-		<br>
+
+<!-- 		</div> -->
+<!-- 		<div class="col-md-2"> -->
+<!-- 			Fecha: <input input-date -->
+<!-- 				class="form-control ng-empty ng-dirty ng-touched ng-invalid ng-invalid-date" -->
+<!-- 				ng-model="pago.fecha" type="date" ng-required="!multiple" /> <br> -->
+<!-- 		</div> -->
+<!-- 		<div class="col-md-6"> -->
+
+<!-- 			Cuenta:  -->
+<!-- <!-- 		<input class="form-control" ng-model="pago.cuenta" --> -->
+<!-- <!-- 				type="text" ng-required="!multiple"> --> -->
+<!-- 				<select class="form-control" ng-required="!multiple" ng-model="pago.cuenta" id="slc" ng-change="modifica($index)" value="{{cc.id}}"> -->
+<!-- 		<option ng-repeat="cc in ccuenta" >{{cc.cuenta}}</option> -->
+<!-- 		</select> -->
+		
+
+<!-- 		</div> -->
+<!-- 		<div class="col-md-6"> -->
+
+		
+<!-- 			Banco:  -->
+<!-- 			<input class="form-control" ng-model="pago.banco" type="text" id="banco" value="{{cc.banco}}" -->
+<!-- 				ng-required="!multiple"> -->
+<!-- <!--  				<select class="form-control" ng-required=!multiple" ng-model="pago.banco"> --> -->
+<!-- <!-- 		<option ng-repeat="cc in ccuenta">{{cc.banco}}</option> --> -->
+<!-- <!-- 		</select> --> -->
+<!-- 		<br> -->
 
 		
 
-		</div>
-		<div class="col-md-6">
-			Monto: <input class="form-control" ng-model="pago.monto" type="text"
-				ng-required="!multiple"><br>
-		</div>
-		<!--    	   ^([A-ZÑ\x26]{3,4}([0-9]{2})(0[1-9]|1[0-2])(0[1-9]|1[0-9]|2[0-9]|3[0-1]))([A-Z\d]{3})?$ -->
-		<div class="col-md-6">
-			Moneda: <select class="form-control" ng-model="pago.moneda"
-				ng-required="!multiple">
-				<option>MXN</option>
-				<option>USD</option>
-				<option>EUR</option>
-				<option>CAD</option>
-			</select><br>
-		</div>
+<!-- 		</div> -->
+<!-- 		<div class="col-md-6"> -->
+<!-- 			Monto: <input class="form-control" ng-model="pago.monto" type="text" -->
+<!-- 				ng-required="!multiple"><br> -->
+<!-- 		</div> -->
+<!-- 		<!--    	   ^([A-ZÑ\x26]{3,4}([0-9]{2})(0[1-9]|1[0-2])(0[1-9]|1[0-9]|2[0-9]|3[0-1]))([A-Z\d]{3})?$ --> -->
+<!-- 		<div class="col-md-6"> -->
+<!-- 			Moneda: <select class="form-control" ng-model="pago.moneda" -->
+<!-- 				ng-required="!multiple"> -->
+<!-- 				<option>MXN</option> -->
+<!-- 				<option>USD</option> -->
+<!-- 				<option>EUR</option> -->
+<!-- 				<option>CAD</option> -->
+<!-- 			</select><br> -->
+<!-- 		</div> -->
 
 
 
-		<div class="col-md-12">
-			<br>
-			<button value="Guardar" class="btn"
-				ng-click="myForm.$valid && guardaPago()">Guardar</button>
-			<button ng-click="clean()" class="btn">Limpiar</button>
-		</div>
-	</form>
-	<div id="snackbar">Alta de Pago Exitoso</div>
-</div>
+<!-- 		<div class="col-md-12"> -->
+<!-- 			<br> -->
+<!-- 			<button value="Guardar" class="btn" -->
+<!-- 				ng-click="myForm.$valid && guardaPago()">Guardar</button> -->
+<!-- 			<button ng-click="clean()" class="btn">Limpiar</button> -->
+<!-- 		</div> -->
+<!-- 	</form> -->
+<!-- 	<div id="snackbar">Alta de Pago Exitoso</div> -->
+<!-- </div> -->
 
