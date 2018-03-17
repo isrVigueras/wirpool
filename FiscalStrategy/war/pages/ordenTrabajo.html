@@ -189,7 +189,7 @@
 				</tr>
 			</tbody>	
 		</table>
-		<label>Saldo Movimientos: $</label>{{otvo.ot.saldoMov}}
+		<label>Saldo Movimientos: $</label>{{otvo.ot.saldoMov | currency}}
 	</div>
 	<br>
 	<div class="infComisiones" ng-hide="tipoOT=='ca'">
@@ -232,7 +232,7 @@
 					</td>
 					<td class="ng-binding"  align="right">
 						<a class="btn btn-info" data-toggle="tooltip" title="Descarga cheque" 
-							ng-show="mov.tipo == 'Cheque' && mov.estatus!='CANCELADO'&& mov.banco!=null && mov.cuenta != null"
+							ng-if="mov.tipo == 'Cheque' && mov.estatus!='CANCELADO'&& mov.banco!=null && mov.cuenta != null"
 							href="ots/imprimirCheque/{{mov.id}}" download="chequePDF.pdf">
 							<i class="glyphicon glyphicon-download-alt"></i>
 						</a>

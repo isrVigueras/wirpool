@@ -161,10 +161,11 @@
 					</tr>
 					<tr>
 						<td>Retorno</td>
-						<td>{{datos.retorno}}</td>
+						<td>{{datos.retorno}} {{retorn}}</td>
 						<td></td>
 						<td>{{montoRetorno}}</td>
 					</tr>	
+					
 					<tr>
 						<td></td>
 						<td></td>
@@ -172,7 +173,9 @@
 						<td>{{datos.totalComisiones}}</td>
 					</tr>
 				</tbody>	
+				
 			</table>
+			<div id="rerror">{{retorn}}</div>
 		</div>
 		<div align="right"><button  class="btn" ng-click="addBroker()"> Agregar Broker</button></div>
 		<br>

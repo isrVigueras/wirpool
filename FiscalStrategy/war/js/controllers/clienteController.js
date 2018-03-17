@@ -98,12 +98,13 @@ app.controller("clientcuentacontroller",['$rootScope', '$scope','$window', '$loc
 }]);
 
 app.controller("clientController",['$rootScope','usuarioservice','brockerservice','$scope','$window', '$location', '$cookieStore','clientservice','clientcuentaservice', 'userFactory', function($rootScope,usuarioservice,brockerservice, $scope, $window, $location, $cookieStore, clientservice,clientcuentaservice, userFactory){
+	$scope.client={tipo: null,monto: null,descripcion: null,banco: null,cuenta: null,numTransaccion:null,fecha:new Date(),estatus: null,montoLetra: null,pagarA: null,fEmision: new Date()}
 	$rootScope.perfilUsuario = userFactory.getUsuarioPerfil();  //obtener perfl de usuario para pintar el menú al qe tiene acceso
 	clientservice.consultarClientesTodos().then(function(data) {
 			$scope.clienteLista = data;
 	
 	});
-	
+
 	usuarioservice.consultarUsuariosAll().then(function(data){
 		$scope.usuariosLista=data;
 	});
@@ -162,6 +163,34 @@ app.controller("clientController",['$rootScope','usuarioservice','brockerservice
 		});
 		
 	};
+	
+	$scope.editarCliente= function(){
+//		$scope.getcliente=data
+		
+		$scope.client.enabled=true;
+		$scope.client.id=$scope.getcliente.id;
+		clientservice.guardarCliente($scope.client).then(function(data){
+			var x = document.getElementById("snackbar")
+		    x.className = "show";
+			setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
+		    setTimeout(function(){ if($scope.client){$window.location.reload(1);} }, 3000);
+//			alert("Cliente Guardado Con Exito");
+//			$location.path("/clientes");
+//			$window.location.reload(1);
+//			setTimeout(window.location.reload.bind(window.location), 1000);
+
+		});
+		
+	};
+	$scope.editar = function(data){
+		$scope.getcliente=data;
+		$scope.client.id=$scope.getcliente.id;
+		$scope.client.nickname=$scope.getcliente.nickname;
+//		$scope.client.tipo=$scope.getcliente.tipo;
+//		$scope.client.responsable=$scope.getcliente.responsable;
+		
+		
+	}
 	$scope.eliminar = function(cliente){
 		$('#mdsino').modal('show');
 		$("#btnsi").on("click", function(){
@@ -234,6 +263,17 @@ $scope.reload = function(){
 $scope.ver = function(data) {
 	$scope.cliente=data;
     var length = $scope.cliente.length;
+   	var stop=true;
+   	var i=0;
+while ( stop ) { 
+	if($scope.usuariosLista[i].id==$scope.cliente.responsable){
+		$scope.cliente.responsable=$scope.usuariosLista[i].usuario;
+		console.log($scope.cliente.responsable);
+		stop=false;
+		
+	}else{
+		i++}
+}
     clientcuentaservice.getcc($scope.cliente.id).then(function(data) {
   		$scope.ccuenta = data;
   });

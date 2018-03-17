@@ -73,124 +73,124 @@
 <!-- 	</table> -->
 	<br>
 	</div>
-	<div ng-show="ca">
-           <h4>Cuentas Asosiadas</h4>
-           <table class="table table-stripped">
-				<thead>
-					<tr>
-						<th style="width: 20%;">Titular</th>
-						<th style="width: 25%;">Banco</th>
-						<th style="width: 15%;">Cuenta</th>
-						<th style="width: 20%;">Clabe</th>
-						<th style="width: 20%;">Acciones</th>
-					</tr>
-				</thead>
-				<tbody>
+<!-- 	<div ng-show="ca"> -->
+<!--            <h4>Cuentas Asosiadas</h4> -->
+<!--            <table class="table table-stripped"> -->
+<!-- 				<thead> -->
+<!-- 					<tr> -->
+<!-- 						<th style="width: 20%;">Titular</th> -->
+<!-- 						<th style="width: 25%;">Banco</th> -->
+<!-- 						<th style="width: 15%;">Cuenta</th> -->
+<!-- 						<th style="width: 20%;">Clabe</th> -->
+<!-- 						<th style="width: 20%;">Acciones</th> -->
+<!-- 					</tr> -->
+<!-- 				</thead> -->
+<!-- 				<tbody> -->
 			
-					<tr ng-repeat="bcuenta in ccuenta">
-						<td>{{bcuenta.nombre}}</td>
-						<td>{{bcuenta.banco}}</td>
-						<td>{{bcuenta.cuenta}}</td>
-						<td>{{bcuenta.clabe}}</td>
-						<td>
+<!-- 					<tr ng-repeat="bcuenta in ccuenta"> -->
+<!-- 						<td>{{bcuenta.nombre}}</td> -->
+<!-- 						<td>{{bcuenta.banco}}</td> -->
+<!-- 						<td>{{bcuenta.cuenta}}</td> -->
+<!-- 						<td>{{bcuenta.clabe}}</td> -->
+<!-- 						<td> -->
 						
-									<button title="Eliminar Cuenta" class="btn btn-small" ng-click="eliminarcc(bcuenta)">
-										<i class="glyphicon glyphicon-remove"></i>
-									</button>
-									</td>
-					</tr>
-			</tbody>
+<!-- 									<button title="Eliminar Cuenta" class="btn btn-small" ng-click="eliminarcc(bcuenta)"> -->
+<!-- 										<i class="glyphicon glyphicon-remove"></i> -->
+<!-- 									</button> -->
+<!-- 									</td> -->
+<!-- 					</tr> -->
+<!-- 			</tbody> -->
 
-	</table>
-	</div>
+<!-- 	</table> -->
+<!-- 	</div> -->
 	<br>
-	<div ng-show="rc">
-<!-- 	Formulario oculto cuando se precione el boton de Nueva cuenta abrirlo -->
-	<form id="forma" name="myForm">
-	<h4>Registro de Cuenta</h4><br>
-		<div class="col-md-6">
-			Banco: 
-<!-- 			<input class="form-control" -->
-<!-- 				ng-model="cuenta.banco" type="text" ng-required="true"><br> -->
+<!-- 	<div ng-show="rc"> -->
+<!-- <!-- 	Formulario oculto cuando se precione el boton de Nueva cuenta abrirlo -->
+<!-- 	<form id="forma" name="myForm"> -->
+<!-- 	<h4>Registro de Cuenta</h4><br> -->
+<!-- 		<div class="col-md-6"> -->
+<!-- 			Banco:  -->
+<!-- <!-- 			<input class="form-control" --> 
+<!-- <!-- 				ng-model="cuenta.banco" type="text" ng-required="true"><br> --> 
 				
-				<select name="bankList" ng-model="cuenta.banco" class="form-control" id="bankList" ng-required="true">
-			<option value=""></option>
-<option value="Banco Nacional de M&eacutexico (Banamex)">Banco Nacional de M&eacutexico (Banamex)</option>
-<option value="Banco Santander (M&eacutexico)">Banco Santander (M&eacutexico)</option>
-<option value="HSBC Mexico.">HSBC M&eacutexico.</option>
-<option value="Scotiabank Inverlat.">Scotiabank Inverlat.</option>
-<option value="BBVA Bancomer.">BBVA Bancomer.</option>
-<option value="Banco Mercantil del Norte (Banorte).">Banco Mercantil del Norte (Banorte).</option>
-<option value="Banco Interacciones.">Banco Interacciones.</option>
-<option value="Banco Inbursa.">Banco Inbursa.</option>
-<option value="banca Mifel.">banca Mifel.</option>
-<option value="Banco Regional de Monterrey.">Banco Regional de Monterrey.</option>
-<option value="Banco Invex.">Banco Invex.</option>
-<option value="Banco del Bajio.">Banco del Bajio.</option>
-<option value="Bansi.">Bansi.</option>
-<option value="Banca Afirme.">Banca Afirme.</option>
-<option value="Bank of America Mexico.">Bank of America M&eacutexico.</option>
-<option value="Banco J.P. Morgan.">Banco J.P. Morgan.</option>
-<option value="Banco Ve Por Mas.">Banco Ve Por Mas.</option>
-<option value="American Express Bank (Mexico).">American Express Bank (M&eacutexico).</option>
-<option value="Investa Bank.">Investa Bank.</option>
-<option value="CiBanco.">CiBanco.</option>
-<option value="Bank of Tokyo-Mitsubishi UFJ (Mexico).">Bank of Tokyo-Mitsubishi UFJ (M&eacutexico).</option>
-<option value="Banco Monex.">Banco Monex.</option>
-<option value="Deutsche Bank Mexico.">Deutsche Bank M&eacutexico.</option>
-<option value="Banco Azteca.">Banco Azteca.</option>
-<option value="Banco Credit Suisse (Mexico).">Banco Credit Suisse (M&eacutexico).</option>
-<option value="Banco Autofin Mexico.">Banco Autofin M&eacutexico.</option>
-<option value="Barclays Bank Mexico.">Barclays Bank M&eacutexico.</option>
-<option value="Banco Ahorro Famsa.">Banco Ahorro Famsa.</option>
-<option value="Intercam Banco.">Intercam Banco.</option>
-<option value="ABC Capital. ">ABC Capital. </option>
-<option value="Banco Actinver.">Banco Actinver.</option>
-<option value="Banco Compartamos.">Banco Compartamos.</option>
-<option value="Banco Multiva.">Banco Multiva.</option>
-<option value="UBS Bank Mexico.">UBS Bank M&eacutexico.</option>
-<option value="Bancoppel.">Bancoppel.</option>
-<option value="ConsuBanco.">ConsuBanco.</option>
-<option value="Banco Wal-Mart de Mexico.">Banco Wal-Mart de M&eacutexico.</option>
-<option value="Volkswagen Bank.">Volkswagen Bank.</option>
-<option value="Banco Base.">Banco Base.</option>
-<option value="Banco Pagatodo.">Banco Pagatodo.</option>
-<option value="Banco Forjadores.">Banco Forjadores.</option>
-<option value="Bankaool.">Bankaool.</option>
-<option value="Banco Inmobiliario Mexicano.">Banco Inmobiliario Mexicano.</option>
-<option value="Fundacion Donde Banco.">Fundaci&oacuten Dond&eacute Banco.</option>
-<option value="Banco Bancrea.">Banco Bancrea.</option>
-</select><br>
+<!-- 				<select name="bankList" ng-model="cuenta.banco" class="form-control" id="bankList" ng-required="true"> -->
+<!-- 			<option value=""></option> -->
+<!-- <option value="Banco Nacional de M&eacutexico (Banamex)">Banco Nacional de M&eacutexico (Banamex)</option> -->
+<!-- <option value="Banco Santander (M&eacutexico)">Banco Santander (M&eacutexico)</option> -->
+<!-- <option value="HSBC Mexico.">HSBC M&eacutexico.</option> -->
+<!-- <option value="Scotiabank Inverlat.">Scotiabank Inverlat.</option> -->
+<!-- <option value="BBVA Bancomer.">BBVA Bancomer.</option> -->
+<!-- <option value="Banco Mercantil del Norte (Banorte).">Banco Mercantil del Norte (Banorte).</option> -->
+<!-- <option value="Banco Interacciones.">Banco Interacciones.</option> -->
+<!-- <option value="Banco Inbursa.">Banco Inbursa.</option> -->
+<!-- <option value="banca Mifel.">banca Mifel.</option> -->
+<!-- <option value="Banco Regional de Monterrey.">Banco Regional de Monterrey.</option> -->
+<!-- <option value="Banco Invex.">Banco Invex.</option> -->
+<!-- <option value="Banco del Bajio.">Banco del Bajio.</option> -->
+<!-- <option value="Bansi.">Bansi.</option> -->
+<!-- <option value="Banca Afirme.">Banca Afirme.</option> -->
+<!-- <option value="Bank of America Mexico.">Bank of America M&eacutexico.</option> -->
+<!-- <option value="Banco J.P. Morgan.">Banco J.P. Morgan.</option> -->
+<!-- <option value="Banco Ve Por Mas.">Banco Ve Por Mas.</option> -->
+<!-- <option value="American Express Bank (Mexico).">American Express Bank (M&eacutexico).</option> -->
+<!-- <option value="Investa Bank.">Investa Bank.</option> -->
+<!-- <option value="CiBanco.">CiBanco.</option> -->
+<!-- <option value="Bank of Tokyo-Mitsubishi UFJ (Mexico).">Bank of Tokyo-Mitsubishi UFJ (M&eacutexico).</option> -->
+<!-- <option value="Banco Monex.">Banco Monex.</option> -->
+<!-- <option value="Deutsche Bank Mexico.">Deutsche Bank M&eacutexico.</option> -->
+<!-- <option value="Banco Azteca.">Banco Azteca.</option> -->
+<!-- <option value="Banco Credit Suisse (Mexico).">Banco Credit Suisse (M&eacutexico).</option> -->
+<!-- <option value="Banco Autofin Mexico.">Banco Autofin M&eacutexico.</option> -->
+<!-- <option value="Barclays Bank Mexico.">Barclays Bank M&eacutexico.</option> -->
+<!-- <option value="Banco Ahorro Famsa.">Banco Ahorro Famsa.</option> -->
+<!-- <option value="Intercam Banco.">Intercam Banco.</option> -->
+<!-- <option value="ABC Capital. ">ABC Capital. </option> -->
+<!-- <option value="Banco Actinver.">Banco Actinver.</option> -->
+<!-- <option value="Banco Compartamos.">Banco Compartamos.</option> -->
+<!-- <option value="Banco Multiva.">Banco Multiva.</option> -->
+<!-- <option value="UBS Bank Mexico.">UBS Bank M&eacutexico.</option> -->
+<!-- <option value="Bancoppel.">Bancoppel.</option> -->
+<!-- <option value="ConsuBanco.">ConsuBanco.</option> -->
+<!-- <option value="Banco Wal-Mart de Mexico.">Banco Wal-Mart de M&eacutexico.</option> -->
+<!-- <option value="Volkswagen Bank.">Volkswagen Bank.</option> -->
+<!-- <option value="Banco Base.">Banco Base.</option> -->
+<!-- <option value="Banco Pagatodo.">Banco Pagatodo.</option> -->
+<!-- <option value="Banco Forjadores.">Banco Forjadores.</option> -->
+<!-- <option value="Bankaool.">Bankaool.</option> -->
+<!-- <option value="Banco Inmobiliario Mexicano.">Banco Inmobiliario Mexicano.</option> -->
+<!-- <option value="Fundacion Donde Banco.">Fundaci&oacuten Dond&eacute Banco.</option> -->
+<!-- <option value="Banco Bancrea.">Banco Bancrea.</option> -->
+<!-- </select><br> -->
 				
-		</div>
-		<div class="col-md-6">
-			Cuenta: <input class="form-control"
-				ng-model="cuenta.cuenta" type="text" ng-required="true"><br>
-		</div>
+<!-- 		</div> -->
+<!-- 		<div class="col-md-6"> -->
+<!-- 			Cuenta: <input class="form-control" -->
+<!-- 				ng-model="cuenta.cuenta" type="text" ng-required="true"><br> -->
+<!-- 		</div> -->
 		
-		<div class="col-md-6">
-			Clabe: <input class="form-control"
-				ng-model="cuenta.clabe" type="text" ng-required="true"><br>
-		</div>
-		<div class="col-md-6">
-			Titular: <input class="form-control"
-				ng-model="cuenta.nombre" type="text" ng-required="true"><br>
-		</div>
+<!-- 		<div class="col-md-6"> -->
+<!-- 			Clabe: <input class="form-control" -->
+<!-- 				ng-model="cuenta.clabe" type="text" ng-required="true"><br> -->
+<!-- 		</div> -->
+<!-- 		<div class="col-md-6"> -->
+<!-- 			Titular: <input class="form-control" -->
+<!-- 				ng-model="cuenta.nombre" type="text" ng-required="true"><br> -->
+<!-- 		</div> -->
 		
-		<!--    	   ^([A-ZÑ\x26]{3,4}([0-9]{2})(0[1-9]|1[0-2])(0[1-9]|1[0-9]|2[0-9]|3[0-1]))([A-Z\d]{3})?$ -->
+<!-- 		<!--    	   ^([A-ZÑ\x26]{3,4}([0-9]{2})(0[1-9]|1[0-2])(0[1-9]|1[0-9]|2[0-9]|3[0-1]))([A-Z\d]{3})?$ -->
 		
 
 		
-			<button value="Guardar" class="btn" ng-controller="brockercuentacontroller" onClick="this.disabled=true"
-				ng-click="myForm.$valid && guardabrockerCuenta(bk.id)">Guardar</button>
-			<button ng-click="btnCancelar()" class="btn">Cancelar</button>
+<!-- 			<button value="Guardar" class="btn" ng-controller="brockercuentacontroller" onClick="this.disabled=true" -->
+<!-- 				ng-click="myForm.$valid && guardabrockerCuenta(bk.id)">Guardar</button> -->
+<!-- 			<button ng-click="btnCancelar()" class="btn">Cancelar</button> -->
 	
-	</form>
+<!-- 	</form> -->
 	
-	</div>
+<!-- 	</div> -->
           </div>
           <div class="modal-footer">
-          <button type="button" class="btn btn-default" ng-controller="brockercuentacontroller" ng-show="btn" ng-click="hide()">Nueva Cuenta</button>
+<!--           <button type="button" class="btn btn-default" ng-controller="brockercuentacontroller" ng-show="btn" ng-click="hide()">Nueva Cuenta</button> -->
 <!--           <button type="button" class="btn btn-default" ng-show="btn">Asosiar Cliente</button> -->
             <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="reload()">Cerrar</button>
           </div>

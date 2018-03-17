@@ -162,6 +162,17 @@ app.controller("brockersController",['$rootScope','usuarioservice','$scope','$wi
 	$scope.ver = function(data) {
 		$scope.bk=data;
 	    var length = $scope.bk.length;
+		var stop=true;
+	   	var i=0;
+	while ( stop ) { 
+		if($scope.usuariosLista[i].id==$scope.bk.responsable){
+			$scope.bk.responsable=$scope.usuariosLista[i].usuario;
+			console.log($scope.bk.responsable);
+			stop=false;
+			
+		}else{
+			i++}
+	}
 	    brockerservice.getcc($scope.bk.id).then(function(data) {
 	  		$scope.ccuenta = data;
 	  });

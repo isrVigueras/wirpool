@@ -480,6 +480,7 @@ app.controller("OTsAddController",['$rootScope', '$route','$scope','$cookieStore
 	
 	$scope.calcularRetorno= function(){
 		$scope.totalPor=0;
+		$scope.retorn="";
 		var sumaBrok =0;
 		$scope.sumaMontoBrok =0;
 		
@@ -497,6 +498,7 @@ app.controller("OTsAddController",['$rootScope', '$route','$scope','$cookieStore
 			$scope.totalPor=$scope.datos.porLic + $scope.datos.porDes + sumaBrok + $scope.datos.retorno;
 		}else{
 			$scope.datos.retorno= null; 
+			$scope.retorn="Valor de retorno no debe ser igual a 0";
 		}	
 	}	 
 	
