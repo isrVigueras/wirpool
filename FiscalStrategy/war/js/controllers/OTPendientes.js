@@ -119,7 +119,6 @@ app.controller("OTPendientes",['$rootScope', '$scope','$window', '$location', '$
 	
 		$scope.limpiarMov();
 	}
-	
 
-	$rootScope.perfilUsuario = userFactory.getUsuarioPerfil();  //obtener perfl de usuario para pintar el menú al qe tiene acceso
+//	$rootScope.perfilUsuario = userFactory.getUsuarioPerfil();  //obtener perfl de usuario para pintar el menú al qe tiene acceso
 }]);

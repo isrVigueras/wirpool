@@ -45,6 +45,14 @@ public class ClienteController {
 		res.getWriter().print(JsonConvertidor.toJson(lista));
 	}
 	
+	@RequestMapping(value={"/getTotalPaginas"},method= RequestMethod.GET, produces="application/json")
+	public void getPage(HttpServletResponse res, HttpServletRequest req) throws IOException{
+		AsignadorDeCharset.asignar(req, res);
+		
+		res.getWriter().print(clientedao.getPages("cliente"));
+	}
+	
+	
 	@RequestMapping(value={"/borrar"}, method= RequestMethod.POST, consumes="application/json")
 	public void delete(HttpServletResponse res, HttpServletRequest req, @RequestBody String json) throws UnsupportedEncodingException{
 		AsignadorDeCharset.asignar(req, res);

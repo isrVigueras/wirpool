@@ -21,5 +21,7 @@ public interface ClienteDAO {
 	public List<Cliente> getByBrocker(Long idbrocker);
 	
 	public List<Cliente> getTipo(String tipo);
+	
+	public int getPages(String tipo);
 }
  

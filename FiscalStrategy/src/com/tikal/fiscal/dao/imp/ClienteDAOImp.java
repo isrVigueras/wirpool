@@ -1,10 +1,12 @@
 package com.tikal.fiscal.dao.imp;
 
+import static com.googlecode.objectify.ObjectifyService.ofy;
+
+import java.util.ArrayList;
 import java.util.List;
 
 import com.tikal.fiscal.dao.ClienteDAO;
 import com.tikal.fiscal.model.Cliente;
-import static com.googlecode.objectify.ObjectifyService.ofy;
 
 public class ClienteDAOImp implements ClienteDAO{
 
@@ -20,13 +22,23 @@ public class ClienteDAOImp implements ClienteDAO{
 
 	@Override
 	public List<Cliente> buscar(String nombre) {
-		List<Cliente> lista= ofy().load().type(Cliente.class).filter("enabled",true).filter("nombre",nombre).list();
-		return lista;
+		List<Cliente> lista= ofy().load().type(Cliente.class).filter("enabled",true).order("nickname").list();
+		List<Cliente> result = new ArrayList<Cliente>();
+		for(int i =0; i< lista.size(); i++){
+			Cliente c= lista.get(i);
+			if(c.getNickname().toLowerCase().startsWith(nombre.toLowerCase())){
+				result.add(c);
+			}
+			if(c.getNickname().toLowerCase().compareTo(nombre.toLowerCase())>0){
+				break;
+			}
+		}
+		return result;
 	}
 
 	@Override
 	public List<Cliente> getClientes(int page, String tipo) {
-		List<Cliente> lista= ofy().load().type(Cliente.class).filter("enabled",true).filter("tipo",tipo).offset(25*(page-1)).limit(25).list();
+		List<Cliente> lista= ofy().load().type(Cliente.class).filter("enabled",true).filter("tipo",tipo).order("nickname").offset(25*(page-1)).limit(25).list();
 		return lista;
 	}
 
@@ -52,6 +64,13 @@ public class ClienteDAOImp implements ClienteDAO{
 	public List<Cliente> getAll() {
 		List<Cliente> lista= ofy().load().type(Cliente.class).filter("enabled",true).list();
 		return lista;
+	}
+
+	@Override
+	public int getPages(String tipo) {
+		int total = ofy().load().type(Cliente.class).filter("enabled",true).filter("tipo", tipo).count();
+		
+		return ((total-1)/25)+1;
 	}
 
 }

@@ -43,7 +43,7 @@ public class MovimientoDAOImp implements MovimientoDAO {
 	public int getPages(Long id) {
 		int pages = 0;
 		if (id != null) {
-			pages = ofy().load().type(Movimiento.class).filter("id", id).list().size();
+			pages = ofy().load().type(Movimiento.class).filter("id_cuenta", id).list().size();
 
 		} else {
 			pages = ofy().load().type(Movimiento.class).list().size();
