@@ -187,6 +187,38 @@ app.controller("brockersController",['$rootScope','usuarioservice','$scope','$wi
 //	      
 //	    }
 	};
+	$scope.editarBrocker= function(){
+//		$scope.getcliente=data
+		
+		$scope.bk.enabled=true;
+		$scope.bk.id=$scope.getbrocker.id;
+		brockerservice.guardarBrocker($scope.bk).then(function(data){
+			var x = document.getElementById("snackbar")
+		    x.className = "show";
+			setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
+		    setTimeout(function(){ if($scope.bk){$window.location.reload(1);} }, 3000);
+//			alert("Cliente Guardado Con Exito");
+//			$location.path("/clientes");
+//			$window.location.reload(1);
+//			setTimeout(window.location.reload.bind(window.location), 1000);
+
+		});
+		
+	};
+	$scope.bk={};
+	$scope.editar = function(data){
+		$scope.getbrocker=data;
+		console.log($scope.getbrocker);
+		$scope.bk=$scope.getbrocker;
+//		$scope.bk.id=$scope.getbrocker.id;
+//		$scope.bk.nickname=$scope.getbrocker.nickname;
+//		$scope.bk.saldo=$scope.getbrocker.saldo;
+//		$scope.bk.tipo=$scope.getbrocker.tipo;
+//		$scope.client.tipo=$scope.getcliente.tipo;
+//		$scope.client.responsable=$scope.getcliente.responsable;
+		
+		
+	}
 	
 	$scope.eliminar = function(bk){
 		$('#mdsino').modal('show');

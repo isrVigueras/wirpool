@@ -697,6 +697,8 @@ app.controller("OTsAddController",['$rootScope', '$route','$scope','$cookieStore
 app.controller("ordenTrabajoController",['$rootScope', '$scope','$window', '$location', '$cookieStore','ordenTrabajoservice','usuarioservice','operacionesMovimientosService','notificacionesService','userFactory',
                                          function($rootScope, $scope, $window, $location, $cookieStore, ordenTrabajoservice,usuarioservice,operacionesMovimientosService,notificacionesService,userFactory){
 	$rootScope.perfilUsuario = userFactory.getUsuarioPerfil();  //obtener perfl de usuario para pintar el menú al qe tiene acceso
+	$scope.perfil=$rootScope.perfilUsuario;
+	console.log("el perfil", $scope.perfil);
 	$scope.permiso=true; 
 	var indice = null;
 	var tipoOperacion= null;

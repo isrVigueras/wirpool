@@ -98,7 +98,7 @@ app.controller("clientcuentacontroller",['$rootScope', '$scope','$window', '$loc
 }]);
 
 app.controller("clientController",['$rootScope','usuarioservice','brockerservice','$scope','$window', '$location', '$cookieStore','clientservice','clientcuentaservice', 'userFactory', function($rootScope,usuarioservice,brockerservice, $scope, $window, $location, $cookieStore, clientservice,clientcuentaservice, userFactory){
-	$scope.client={tipo: null,monto: null,descripcion: null,banco: null,cuenta: null,numTransaccion:null,fecha:new Date(),estatus: null,montoLetra: null,pagarA: null,fEmision: new Date()}
+	$scope.client={};
 	$rootScope.perfilUsuario = userFactory.getUsuarioPerfil();  //obtener perfl de usuario para pintar el menú al qe tiene acceso
 	clientservice.consultarClientesTodos().then(function(data) {
 			$scope.clienteLista = data;
@@ -184,10 +184,7 @@ app.controller("clientController",['$rootScope','usuarioservice','brockerservice
 	};
 	$scope.editar = function(data){
 		$scope.getcliente=data;
-		$scope.client.id=$scope.getcliente.id;
-		$scope.client.nickname=$scope.getcliente.nickname;
-//		$scope.client.tipo=$scope.getcliente.tipo;
-//		$scope.client.responsable=$scope.getcliente.responsable;
+		$scope.client=$scope.getcliente;
 		
 		
 	}

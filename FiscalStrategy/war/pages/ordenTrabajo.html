@@ -1,4 +1,4 @@
-<section class="jumbotron">
+<section class="jumbotron">	
 	<div class="container">
 		<h2>Ordenes de trabajo</h2>
 		 <submenu perfil=perfilUsuario/>
@@ -167,19 +167,19 @@
 						</a>
 					</td>
 					<td class="ng-binding" align="right">
-						<button id="cancelOp" ng-hide="mov.estatus=='CANCELADO' || mov.estatus=='VALIDADO'" class="btn btn-small"  ng-click="cancelarOp($index, 'OPC')" title="Cancelar">
+						<button id="cancelOp" ng-hide="mov.estatus=='CANCELADO' || mov.estatus=='VALIDADO'" ng-if="perfil=='Administrador' || perfil=='Ejecutivo' || perfil=='AdministradorRoot'" class="btn btn-small"  ng-click="cancelarOp($index, 'OPC')" title="Cancelar">
 								<span class="glyphicon glyphicon-remove"></span>
 						</button>
 					 </td>
 					<td class="ng-binding" align="right">
-						<button class="btn btn-small" data-toggle="modal" 
+						<button class="btn btn-small" data-toggle="modal" ng-if="perfil=='Administrador' || perfil=='AdministradorRoot'"
 							ng-show="permiso== true && mov.tipo != 'Efectivo' && mov.estatus == 'ACTIVO'"  
 							ng-click="cargarMov($index,'OPC')" data-target="#modalEditar">
 							<span class="glyphicon glyphicon-edit"></span>
 						</button>
 					</td>
 					<td class="ng-binding" align="right">
-						<button class="btn btn-small"  data-toggle="modal" 
+						<button class="btn btn-small"  data-toggle="modal" ng-if="perfil=='AdministradorRoot' || perfil=='Caja' || perfil=='Ejecutivo'"
 						 ng-show="mov.tipo != 'Efectivo' &&  mov.estatus == 'ACTIVO'" 
 						 ng-disabled="mov.banco==null && mov.cuenta == null"  
 						 ng-click="cargarMov($index,'OPC')" data-target="#modalVerificar">
@@ -189,7 +189,7 @@
 				</tr>
 			</tbody>	
 		</table>
-		<label>Saldo Movimientos: $</label>{{otvo.ot.saldoMov | currency}}
+		<label>Saldo Movimientos:&nbsp </label>{{otvo.ot.saldoMov | currency}}
 	</div>
 	<br>
 	<div class="infComisiones" ng-hide="tipoOT=='ca'">
@@ -238,19 +238,19 @@
 						</a>
 					</td>
 					<td class="ng-binding" align="right">
-						<button id="cancelOp" ng-hide="mov.estatus=='CANCELADO' || mov.estatus=='VALIDADO'" class="btn btn-small"  ng-click="cancelarOp($index, 'OPA')" title="Cancelar">
+						<button id="cancelOp" ng-hide="mov.estatus=='CANCELADO' || mov.estatus=='VALIDADO'" class="btn btn-small" ng-if="perfil=='Administrador' || perfil=='Ejecutivo' || perfil=='AdministradorRoot'" ng-click="cancelarOp($index, 'OPA')" title="Cancelar">
 								<span class="glyphicon glyphicon-remove"></span>
 						</button>
 					 </td>
 					<td class="ng-binding" align="right">
-						<button class="btn btn-small" data-toggle="modal" 
+						<button class="btn btn-small" data-toggle="modal" ng-if="perfil=='Administrador' || perfil=='AdministradorRoot'"
 							ng-show="permiso== true && mov.tipo != 'Efectivo' && mov.estatus == 'ACTIVO'"  
 							ng-click="cargarMov($index,'OPA')" data-target="#modalEditar">
 							<span class="glyphicon glyphicon-edit"></span>
 						</button>
 					</td>
 					<td class="ng-binding" align="right">
-						<button class="btn btn-small"  data-toggle="modal" 
+						<button class="btn btn-small"  data-toggle="modal" ng-if="perfil=='AdministradorRoot' || perfil=='Caja'"
 						 ng-show="mov.tipo != 'Efectivo' &&  mov.estatus == 'ACTIVO'" 
 						 ng-disabled="mov.banco==null && mov.cuenta == null"  
 						 ng-click="cargarMov($index,'OPA')" data-target="#modalVerificar">
@@ -261,7 +261,7 @@
 			</tbody>
 		</table>
 		<div>
-			<label>Saldo Comisiones: $</label>{{otvo.ot.saldoCom}}
+			<label>Saldo Comisiones:&nbsp</label>{{otvo.ot.saldoCom | currency}}
 		</div>
 	</div>
 	
