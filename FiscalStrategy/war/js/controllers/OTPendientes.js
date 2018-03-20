@@ -1,14 +1,9 @@
 app.controller("OTPendientes",['$rootScope', '$scope','$window', '$location', '$cookieStore','ordenTrabajoservice','usuarioservice','brockerservice','otservice','cuentaservice','userFactory',function($rootScope,$scope, $window, $location, $cookieStore, ordenTrabajoservice,usuarioservice,brockerservice,otservice,cuentaservice,userFactory){
-	$rootScope.perfilUsuario = userFactory.getUsuarioPerfil();  //obtener perfl de usuario para pintar el menú al qe tiene acceso
+	
 	cuentaservice.load().then(function(data) {
 		$scope.banco = data;
 
 });
-//	ordenTrabajoservice.loadot($cookieStore.get("idOt")).then(function(data){
-//		$scope.otvo= data;
-//			$scope.perfil=true;
-//		
-//	})
 	var indice = null;
 	var tipoOperacion= null;
 	$scope.tiposOp = TiposOperacion();
@@ -126,5 +121,5 @@ app.controller("OTPendientes",['$rootScope', '$scope','$window', '$location', '$
 	}
 	
 
-	
+	$rootScope.perfilUsuario = userFactory.getUsuarioPerfil();  //obtener perfl de usuario para pintar el menú al qe tiene acceso
 }]);

@@ -81,7 +81,7 @@ public class OrdenDeTrabajoController {
 		OrdenDeTrabajo ot= otvo.getOt();
 		HttpSession sesion= req.getSession();
 		Usuario user=(Usuario) sesion.getAttribute("user");
-		if(user.getPerfil().compareTo("Ejecutivo")==0 || user.getPerfil().compareTo("AdministradorRoot")==0 || user.getPerfil().compareTo("AdministradorRoot")==0){
+		if(user.getPerfil().compareTo("Ejecutivo")==0 || user.getPerfil().compareTo("AdministradorRoot")==0 || user.getPerfil().compareTo("Administrador")==0){
 			ot.setIdResponsable(user.getId());
 			ot.setFolioImpresion(0);
 			FolioOT generaFolio = new FolioOT ();
