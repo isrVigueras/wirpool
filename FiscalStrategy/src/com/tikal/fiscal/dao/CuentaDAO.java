@@ -13,6 +13,8 @@ public interface CuentaDAO {
 	
 	public List<Cuenta> getPage(int page);
 	
+	public int getNumPages();
+	
 	public List<Cuenta> getByCliente(Long idCliente, int page);
 	
 	public List<Cuenta> getByEjecutivo(Long idEjecutivo, int page);

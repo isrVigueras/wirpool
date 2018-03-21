@@ -2,7 +2,7 @@ app.service("cuentaservice",['$http', '$q', function($http, $q){
 	this.load = function(page) {
 		var d = $q.defer();
 	
-		$http.get("/cuentas/getPagina/1").then(
+		$http.get("/cuentas/getPagina/"+page).then(
 			function(response) {
 				d.resolve(response.data);
 			});
@@ -40,15 +40,15 @@ app.service("cuentaservice",['$http', '$q', function($http, $q){
 			});
 		return d.promise;
 	}
-//	this.getPaginas = function(page) {
-//		var d = $q.defer();
-//	
-//		$http.get("/cuentas/getPagina/1").then(
-//			function(response) {
-//				d.resolve(response.data);
-//			});
-//		return d.promise;
-//	} 
+	this.getPaginas = function() {
+		var d = $q.defer();
+	
+		$http.get("/cuentas/getNumPages").then(
+			function(response) {
+				d.resolve(response.data);
+			});
+		return d.promise;
+	} 
 	
 }]);
 //app.service("xservice",['$http', '$q', function($http, $q){
@@ -58,43 +58,43 @@ app.service("cuentaservice",['$http', '$q', function($http, $q){
 app.controller("cuentaController",['$rootScope','$scope','$window', '$location', '$cookieStore','cuentaservice','userFactory','$rootScope', function($rootScope,$scope, $window, $location, $cookieStore, cuentaservice,userFactory,$rootScope){
 	$rootScope.perfilUsuario = userFactory.getUsuarioPerfil();  //obtener perfl de usuario para pintar el menú al qe tiene acceso
 	$scope.bancos = catalogoBancos();
-	cuentaservice.load().then(function(data) {
-		$scope.cuentas = data;
 
-})
 //	$scope.paginaActual=1;
-//	$scope.llenarPags=function(){
-//		var inicio=0;
-//		if($scope.paginaActual>5){
-//			inicio=$scope.paginaActual-5;
-//		}
-//		var fin = inicio+9;
-//		if(fin>$scope.maxPage){
-//			fin=$scope.maxPage;
-//		}
-//		$scope.paginas=[];
-//		for(var i = inicio; i< fin; i++){
-//			$scope.paginas.push(i+1);
-//		}
-//		for(var i = inicio; i<= fin; i++){
-//			$('#pagA'+i).removeClass("active");
-//			$('#pagB'+i).removeClass("active");
-//		}
-//		$('#pagA'+$scope.paginaActual).addClass("active");
-//		$('#pagB'+$scope.paginaActual).addClass("active");
-//	}
-//
-//	cuentaservice.getPaginas($cookieStore.get("rfcEmpresa")).then(function(data){
-//		$scope.maxPage=data;
-//		$scope.llenarPags();
-//	});
+	$scope.llenarPags=function(){
+		var inicio=0;
+		if($scope.paginaActual>5){
+			inicio=$scope.paginaActual-5;
+		}
+		var fin = inicio+9;
+		if(fin>$scope.maxPage){
+			fin=$scope.maxPage;
+		}
+		$scope.paginas=[];
+		for(var i = inicio; i< fin; i++){
+			$scope.paginas.push(i+1);
+		}
+		for(var i = inicio; i<= fin; i++){
+			$('#pagA'+i).removeClass("active");
+			$('#pagB'+i).removeClass("active");
+		}
+		$('#pagA'+$scope.paginaActual).addClass("active");
+		$('#pagB'+$scope.paginaActual).addClass("active");
+	}
+
+	cuentaservice.getPaginas().then(function(data){
+		$scope.maxPage=data;
+		$scope.llenarPags();
+	});
 //	
-//	$scope.cargarPagina=function(pag){
-//		if($scope.paginaActual!=pag){
-//			$scope.paginaActual=pag;
-//			$scope.cargarFacturas(pag);
-//		}
-//	}
+	$scope.cargarPagina=function(pag){
+		if($scope.paginaActual!=pag){
+			$scope.paginaActual=pag;
+			cuentaservice.load(pag).then(function(data) {
+				$scope.cuentas = data;
+				$scope.llenarPags();
+			})
+		}
+	}
 	$scope.guardarCuenta= function(){
 		cuentaservice.guardarCuenta($scope.cuenta).then(function(data){
 			var x = document.getElementById("snackbar")
@@ -135,6 +135,7 @@ app.controller("cuentaController",['$rootScope','$scope','$window', '$location',
 		  
 		
 	};
-//	$scope.cargarPagina(1);
+	
+	$scope.cargarPagina(1);
 	
 }]);

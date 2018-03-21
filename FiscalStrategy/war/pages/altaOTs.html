@@ -13,9 +13,10 @@
 				<div class="row">
 					<div class="col-md-4">
 						<label>Cliente:</label>
-						<select name="cliente" class="form-control form-control-sm" ng-required="true"  ng-model="datos.idCliente" ng-disabled="clienteSeleccionado">
-							<option ng-repeat="c in cliente" value="{{c.id}}" >{{c.nickname}}</option>
-						</select>
+<!-- 						<select name="cliente" class="form-control form-control-sm" ng-required="true"  ng-model="datos.idCliente" ng-disabled="clienteSeleccionado"> -->
+<!-- 							<option ng-repeat="c in cliente" value="{{c.id}}" >{{c.nickname}}</option> -->
+<!-- 						</select> -->
+						<input id="searchBox" class="form-control form-control-sm" type="text" ng-model="busca" data-provide="typehead" autocomplete="off"/>
 					</div>
 					<div class="col-md-4">
 						<label>Banco:</label> 

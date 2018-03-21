@@ -55,4 +55,11 @@ public class CuentaDAOImp implements CuentaDAO {
 		return new ArrayList<Cuenta>(); 
 	}
 
+	@Override
+	public int getNumPages() {
+		int total = ofy().load().type(Cuenta.class).filter("enabled",true).count();
+		
+		return ((total-1)/25)+1;
+	}
+
 }

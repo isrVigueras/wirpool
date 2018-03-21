@@ -114,7 +114,7 @@ app.controller("brockersController",['$rootScope','usuarioservice','$scope','$wi
 	$rootScope.perfilUsuario = userFactory.getUsuarioPerfil();  //obtener perfl de usuario para pintar el menú al qe tiene acceso
 	brockerservice.consultarBrockersTodos(1).then(function(data) {
 		$scope.brockerLista = data;
-
+		$scope.llenarPags();
 	});
 	$scope.paginaActual=1;
 	$scope.llenarPags=function(){
@@ -151,7 +151,7 @@ app.controller("brockersController",['$rootScope','usuarioservice','$scope','$wi
 	$scope.cargaBrockers=function(data){
 		brockerservice.consultarBrockersTodos(data).then(function(data) {
 			$scope.brockerLista = data;
-	
+			$scope.llenarPags();
 	});
 	}
 	

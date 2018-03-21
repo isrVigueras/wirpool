@@ -16,13 +16,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import com.tikal.fiscal.controllersRest.VO.OrdenDeTrabajoVO;
+import com.tikal.fiscal.controllersRest.VO.MovimientosVO;
 import com.tikal.fiscal.dao.MovimientoDAO;
-import com.tikal.fiscal.model.OrdenDeTrabajo;
-import com.tikal.fiscal.model.PagoRecibido;
-import com.tikal.fiscal.model.Usuario;
-import com.tikal.fiscal.model.Cliente;
+import com.tikal.fiscal.dao.OrdenDeTrabajoDAO;
 import com.tikal.fiscal.model.Movimiento;
+import com.tikal.fiscal.model.OrdenDeTrabajo;
+import com.tikal.fiscal.model.Usuario;
 import com.tikal.fiscal.util.AsignadorDeCharset;
 import com.tikal.fiscal.util.JsonConvertidor;
 
@@ -30,6 +29,9 @@ import com.tikal.fiscal.util.JsonConvertidor;
 @RequestMapping(value={"/movimientos"})
 public class MovimientosController {
 	     
+	@Autowired
+	OrdenDeTrabajoDAO otdao;	
+	
 	@Autowired 
 	MovimientoDAO movimientodao;
 	
@@ -69,7 +71,37 @@ public class MovimientosController {
 		movimientodao.save(mov);
 	}
 	
-	
+
+	@RequestMapping(value="/cancelar/", method=RequestMethod.POST, consumes="application/json")
+	private void cancelar(HttpServletRequest req, HttpServletResponse res, @RequestBody String json) throws IOException{
+		AsignadorDeCharset.asignar(req, res);
+		HttpSession sesion= req.getSession();
+		Usuario user=(Usuario) sesion.getAttribute("user");
+		MovimientosVO m= (MovimientosVO) JsonConvertidor.fromJson(json, MovimientosVO.class);
+	//	movimientodao.save(mov);
+		
+		if(user.getPerfil().compareTo("Ejecutivo")==0 || user.getPerfil().compareTo("AdministradorRoot")==0 || user.getPerfil().compareTo("Administrador")==0){
+			Movimiento mov= m.getMovimiento();
+			OrdenDeTrabajo ot = otdao.get(m.getIdOt());
+			
+			if(m.getBndMovimiento().compareTo("cliente")==0){
+					mov.setFechaCreacion(new Date());
+					movimientodao.save(mov);
+					ot.getMovimientos().add(mov.getId());
+					ot.setSaldoMov(m.getSaldo());
+			}
+			if(m.getBndMovimiento().compareTo("asesor")==0){
+				mov.setFechaCreacion(new Date());
+				movimientodao.save(mov);
+				ot.getComisiones().add(mov.getId());
+				ot.setSaldoCom(m.getSaldo());
+			}
+			otdao.save(ot);
+		}else{
+			String error = "Usuario sin permisos para realizar esta accion";
+			res.getWriter().print(JsonConvertidor.toJson(error));
+		}
+	}
 	private Long isCaja(HttpServletRequest req){
 		HttpSession sesion= req.getSession();
 		Usuario user=(Usuario) sesion.getAttribute("user");

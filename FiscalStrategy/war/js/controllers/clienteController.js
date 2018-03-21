@@ -124,7 +124,7 @@ app.controller("clientController",['$rootScope','usuarioservice','brockerservice
 	$scope.cargaClientes=function(data){
 		clientservice.consultarClientesTodos(data).then(function(data) {
 			$scope.clienteLista = data;
-	
+			$scope.llenarPags();
 	});
 	}
 	

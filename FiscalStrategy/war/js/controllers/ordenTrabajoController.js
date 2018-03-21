@@ -45,6 +45,19 @@ app.service("ordenTrabajoservice",['$http', '$q', function($http, $q){
 		return d.promise;
 	}
 	
+	this.buscarClientes = function(buscar) {
+		var d = $q.defer();
+		$http.get("/clientes/buscar/"+buscar).then(function(response) {
+			d.resolve(response.data);
+		}, function(response) {
+			if(response.status==403){
+				alert("No tiene permiso de realizar esta acción");
+				//$location.path("/login");
+			}
+		});
+		return d.promise;
+	}
+	
 	this.loadPendientes = function(page) {
 		var d = $q.defer();
 		$http.get("/movimientos/load/"+page).then(
@@ -113,6 +126,16 @@ app.service("ordenTrabajoservice",['$http', '$q', function($http, $q){
 	this.updateot=function(mov){
 		var d = $q.defer();
 		$http.post("movimientos/update/",mov).then(
+			function(response) {
+				console.log("update mov");
+				d.resolve(response.data);
+			});
+		return d.promise;
+	}
+	
+	this.cancelaMov= function(mov){
+		var d = $q.defer();
+		$http.post("movimientos/cancelar/",mov).then(
 			function(response) {
 				console.log("update mov");
 				d.resolve(response.data);
@@ -282,6 +305,38 @@ app.controller("OTsAddController",['$rootScope', '$route','$scope','$cookieStore
 	$scope.tiposOp = TiposOperacion();
 	$scope.clienteSeleccionado=false;
 	
+	$scope.$watch('busca',function(){
+		if($scope.busca.length>3){
+			$scope.buscar();
+		}
+	},true);
+	$scope.buscar=function(){
+		ordenTrabajoservice.buscarClientes($scope.busca).then(function(data){
+			
+			$scope.encontrados=[];
+			for(var i=0; i< data.length; i++){
+				$scope.encontrados.push(data[i].nickname);
+				
+			}
+			$scope.cliente=data;
+//			$scope.tipos=data.tipos;
+			
+			$('#searchBox').typeahead({
+
+			    source: $scope.encontrados,
+
+			    updater:function (item) {
+			    	var ind=$scope.encontrados.indexOf(item);
+			    	$scope.clienteSeleccionado=true;
+			    	$scope.datos.idCliente= $scope.cliente[ind].id;
+			        return item;
+			    }
+			});
+			$('#searchBox').data('typeahead').source=$scope.encontrados;
+		});
+	}
+	
+	
 	$scope.pago={
 			fecha: new Date(),
 			moneda:"MXN",
@@ -374,6 +429,7 @@ app.controller("OTsAddController",['$rootScope', '$route','$scope','$cookieStore
 		for(var i in $scope.cliente){
 			if($scope.cliente[i].id == $scope.datos.idCliente){
 				$scope.datosCliente = $scope.cliente[i];
+				break;
 			}
 		}
 
@@ -747,13 +803,18 @@ app.controller("ordenTrabajoController",['$rootScope', '$scope','$window', '$loc
 		};
 		
 		$scope.cancelarOp = function(index,	operacion){
+			var movVO={idOt:$scope.otvo.ot.id}
 			if(operacion=="OPC"){
 				$scope.otvo.movimientos[index].estatus="CANCELADO";
-				$scope.otvo.ot.saldoMov=$scope.otvo.ot.saldoMov - $scope.otvo.movimientos[index].monto;
+				$scope.otvo.ot.saldoMov=$scope.otvo.ot.saldoMov + $scope.otvo.movimientos[index].monto;
+				movVO.movimiento=$scope.otvo.movimientos[index];
+				movVO.saldo=$scope.otvo.ot.saldoMov;
 			}
 			if(operacion=="OPA"){
 				$scope.otvo.comisiones[index].estatus="CANCELADO";
-				$scope.otvo.ot.saldoCom=$scope.otvo.ot.saldoCom -$scope.otvo.comisiones[index].monto; 
+				$scope.otvo.ot.saldoCom=$scope.otvo.ot.saldoCom + $scope.otvo.comisiones[index].monto; 
+				movVO.movimiento=$scope.otvo.comisiones[index];
+				movVO.saldo=$scope.otvo.ot.saldoCom;
 			}
 			if(cerrarOrden()){
 				ordenTrabajoservice.addot($scope.otvo).then(function(data){
@@ -768,12 +829,14 @@ app.controller("ordenTrabajoController",['$rootScope', '$scope','$window', '$loc
 					}
 				});
 			}else{
-				if(tipoOperacion=='OPC'){
-					ordenTrabajoservice.updateot($scope.otvo.movimientos[index]).then(function(data){
+				if(operacion=='OPC'){
+					movVO.bndMovimiento="cliente";
+					ordenTrabajoservice.cancelaMov(movVO).then(function(data){
 						$window.location.reload();
 					});
 				}else{
-					ordenTrabajoservice.updateot($scope.otvo.comisiones[index]).then(function(data){
+					movVO.bndMovimiento="asesor";
+					ordenTrabajoservice.cancelaMov(movVO).then(function(data){
 						$window.location.reload();
 					});
 				}
@@ -784,12 +847,12 @@ app.controller("ordenTrabajoController",['$rootScope', '$scope','$window', '$loc
 	function cerrarOrden(){
 		var contM=0, contC=0;
 		for(var i in $scope.otvo.movimientos){
-			if($scope.otvo.movimientos[i].estatus=='AUTORIZADO' || $scope.otvo.movimientos[i].estatus=='CANCELADO'){
+			if($scope.otvo.movimientos[i].estatus=='VALIDADO' || $scope.otvo.movimientos[i].estatus=='CANCELADO'){
 				contM++;
 			}
 		}
 		for(var i in $scope.otvo.comisiones){
-			if($scope.otvo.comisiones[i].estatus=='AUTORIZADO' || $scope.otvo.comisiones[i].estatus=='CANCELADO'){
+			if($scope.otvo.comisiones[i].estatus=='VALIDADO' || $scope.otvo.comisiones[i].estatus=='CANCELADO'){
 				contC++;
 			}
 		}

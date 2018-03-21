@@ -118,6 +118,6 @@ app.controller('notificacionesController',['$rootScope', 'notificacionesService'
 		notificacionesService.eliminar(index);
 		$cookieStore.put("idOt",data);
 		$location.path("/ordenTrabajo");
-		 window.location.reload();
+//		 window.location.reload();
 	}
 }])

@@ -5,6 +5,15 @@
 	</div>
 </section>
 <div class="container">
+
+		<div class="col-md-12">
+			<ul class="pagination .pagination-sm" style="margin:0;">
+				<li ng-repeat="abc in paginas" id="{{'pagA'+abc}}"
+					ng-click="cargarPagina(abc)"><a>{{abc}}</a></li>
+
+			</ul>
+			
+		</div>
 		<table class="table table-stripped">
 		<thead>
 			<tr>
@@ -35,7 +44,14 @@
 		</tbody>
 
 	</table>
-	
+	<div class="col-md-12">
+			<ul class="pagination .pagination-sm" style="margin:0;">
+				<li ng-repeat="abc in paginas" id="{{'pagA'+abc}}"
+					ng-click="cargarPagina(abc)"><a>{{abc}}</a></li>
+
+			</ul>
+			
+		</div>
 </div>
 
   <div id="mdsino" class="modal fade">
