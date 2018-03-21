@@ -1,7 +1,7 @@
 app.service("clientservice",['$http', '$q', function($http, $q){
-	this.consultarClientesTodos = function() {
+	this.consultarClientesTodos = function(page) {
 		var d = $q.defer();
-		$http.get("/clientes/getPagina/1").then(function(response) {
+		$http.get("/clientes/getPagina/"+page).then(function(response) {
 			d.resolve(response.data);
 		}, function(response) {
 			if(response.status==403){
@@ -9,6 +9,15 @@ app.service("clientservice",['$http', '$q', function($http, $q){
 				$location.path("/login");
 			}
 		});
+		return d.promise;
+	}
+	this.getPaginas = function(page) {
+		var d = $q.defer();
+	
+		$http.get("/clientes/getTotalPaginas/").then(
+			function(response) {
+				d.resolve(response.data);
+			});
 		return d.promise;
 	}
 	this.guardarCliente=function(send){
@@ -100,7 +109,7 @@ app.controller("clientcuentacontroller",['$rootScope', '$scope','$window', '$loc
 app.controller("clientController",['$rootScope','usuarioservice','brockerservice','$scope','$window', '$location', '$cookieStore','clientservice','clientcuentaservice', 'userFactory', function($rootScope,usuarioservice,brockerservice, $scope, $window, $location, $cookieStore, clientservice,clientcuentaservice, userFactory){
 	$scope.client={};
 	$rootScope.perfilUsuario = userFactory.getUsuarioPerfil();  //obtener perfl de usuario para pintar el menú al qe tiene acceso
-	clientservice.consultarClientesTodos().then(function(data) {
+	clientservice.consultarClientesTodos(1).then(function(data) {
 			$scope.clienteLista = data;
 	
 	});
@@ -112,40 +121,46 @@ app.controller("clientController",['$rootScope','usuarioservice','brockerservice
 		$scope.brockerLista = data;
 
 });
+	$scope.cargaClientes=function(data){
+		clientservice.consultarClientesTodos(data).then(function(data) {
+			$scope.clienteLista = data;
 	
-//	$scope.paginaActual=1;
-//	$scope.llenarPags=function(){
-//		var inicio=0;
-//		if($scope.paginaActual>5){
-//			inicio=$scope.paginaActual-5;
-//		}
-//		var fin = inicio+9;
-//		if(fin>$scope.maxPage){
-//			fin=$scope.maxPage;
-//		}
-//		$scope.paginas=[];
-//		for(var i = inicio; i< fin; i++){
-//			$scope.paginas.push(i+1);
-//		}
-//		for(var i = inicio; i<= fin; i++){
-//			$('#pagA'+i).removeClass("active");
-//			$('#pagB'+i).removeClass("active");
-//		}
-//		$('#pagA'+$scope.paginaActual).addClass("active");
-//		$('#pagB'+$scope.paginaActual).addClass("active");
-//	}
-//
-//	clientservice.getPaginas($cookieStore.get("rfcEmpresa")).then(function(data){
-//		$scope.maxPage=data;
-//		$scope.llenarPags();
-//	});
-//	
-//	$scope.cargarPagina=function(pag){
-//		if($scope.paginaActual!=pag){
-//			$scope.paginaActual=pag;
-//			$scope.cargarFacturas(pag);
-//		}
-//	}
+	});
+	}
+	
+	$scope.paginaActual=1;
+	$scope.llenarPags=function(){
+		var inicio=0;
+		if($scope.paginaActual>5){
+			inicio=$scope.paginaActual-5;
+		}
+		var fin = inicio+9;
+		if(fin>$scope.maxPage){
+			fin=$scope.maxPage;
+		}
+		$scope.paginas=[];
+		for(var i = inicio; i< fin; i++){
+			$scope.paginas.push(i+1);
+		}
+		for(var i = inicio; i<= fin; i++){
+			$('#pagA'+i).removeClass("active");
+			$('#pagB'+i).removeClass("active");
+		}
+		$('#pagA'+$scope.paginaActual).addClass("active");
+		$('#pagB'+$scope.paginaActual).addClass("active");
+	}
+
+	clientservice.getPaginas($cookieStore.get("rfcEmpresa")).then(function(data){
+		$scope.maxPage=data;
+		$scope.llenarPags();
+	});
+	
+	$scope.cargarPagina=function(pag){
+		if($scope.paginaActual!=pag){
+			$scope.paginaActual=pag;
+			$scope.cargaClientes(pag);
+		}
+	}
 
 	$scope.guardaCliente= function(){
 		

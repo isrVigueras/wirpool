@@ -5,7 +5,14 @@
 	</div>
 </section>
 <div class="container">
- 
+ 		<div class="col-md-6">
+			<ul class="pagination .pagination-sm" style="margin:0;">
+				<li ng-repeat="abc in paginas" id="{{'pagA'+abc}}"
+					ng-click="cargarPagina(abc)"><a>{{abc}}</a></li>
+
+			</ul>
+			
+		</div>
 	<table class="table table-stripped">
 		<thead>
 			<tr>
@@ -28,6 +35,11 @@
 		</tbody>
 
 	</table>
+	<div class="col-md-6">
+	 		<ul class="pagination .pagination-sm">
+				<li ng-repeat="abc in paginas" id="{{'pagB'+abc}}"
+					ng-click="cargarPagina(abc)"><a>{{abc}}</a></li>
+			</ul>
  <!-- Modal Ver BROCKER	-->
   <div class="modal fade" id="myModalVista" tabindex="-1" data-backdrop="static" role="dialog" aria-labelledby="myModalVista" aria-hidden="true">
                            

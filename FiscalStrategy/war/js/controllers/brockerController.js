@@ -13,9 +13,9 @@ app.service("brockerservice",['$http', '$q', function($http, $q){
 			});
 		return d.promise;
 	}
-	this.consultarBrockersTodos = function() {
+	this.consultarBrockersTodos = function(page) {
 		var d = $q.defer();
-		$http.get("/brockers/getPagina/1").then(function(response) {
+		$http.get("/brockers/getPagina/"+page).then(function(response) {
 			d.resolve(response.data);
 		}, function(response) {
 			if(response.status==403){
@@ -49,6 +49,15 @@ app.service("brockerservice",['$http', '$q', function($http, $q){
 		});
 		return d.promise;
 	};
+	this.getPaginas = function() {
+		var d = $q.defer();
+	
+		$http.get("/brockers/getTotalPaginas/").then(
+			function(response) {
+				d.resolve(response.data);
+			});
+		return d.promise;
+	}
 	this.getcc = function(id) {
 		var d = $q.defer();
 		$http.get("/cuentasCliente/todas/"+id).then(
@@ -103,11 +112,48 @@ app.controller("brockercuentacontroller",['$rootScope','clientservice','$scope',
 }]);
 app.controller("brockersController",['$rootScope','usuarioservice','$scope','$window', '$location', '$cookieStore','brockerservice', 'userFactory', function($rootScope,usuarioservice,$scope, $window, $location, $cookieStore, brockerservice, userFactory){
 	$rootScope.perfilUsuario = userFactory.getUsuarioPerfil();  //obtener perfl de usuario para pintar el menú al qe tiene acceso
-	brockerservice.consultarBrockersTodos().then(function(data) {
+	brockerservice.consultarBrockersTodos(1).then(function(data) {
 		$scope.brockerLista = data;
 
 	});
+	$scope.paginaActual=1;
+	$scope.llenarPags=function(){
+		var inicio=0;
+		if($scope.paginaActual>5){
+			inicio=$scope.paginaActual-5;
+		}
+		var fin = inicio+9;
+		if(fin>$scope.maxPage){
+			fin=$scope.maxPage;
+		}
+		$scope.paginas=[];
+		for(var i = inicio; i< fin; i++){
+			$scope.paginas.push(i+1);
+		}
+		for(var i = inicio; i<= fin; i++){
+			$('#pagA'+i).removeClass("active");
+			$('#pagB'+i).removeClass("active");
+		}
+		$('#pagA'+$scope.paginaActual).addClass("active");
+		$('#pagB'+$scope.paginaActual).addClass("active");
+	}
+
+	brockerservice.getPaginas($scope.paginaActual).then(function(data){
+		$scope.maxPage=data;
+		$scope.llenarPags();
+	});
+	$scope.cargarPagina=function(pag){
+		if($scope.paginaActual!=pag){
+			$scope.paginaActual=pag;
+			$scope.cargaBrockers(pag);
+		}
+	}
+	$scope.cargaBrockers=function(data){
+		brockerservice.consultarBrockersTodos(data).then(function(data) {
+			$scope.brockerLista = data;
 	
+	});
+	}
 	
 	usuarioservice.consultarUsuariosTodos().then(function(data){
 		$scope.usuariosLista=data;
