@@ -42,11 +42,43 @@ public class ParseadorDePagos {
 			lista = ParseadorDePagos.parseaSantander(info, cuenta);
 			break;
 		}
+		case "Banco Nacional de México":{
+			lista = ParseadorDePagos.parseaBanamex(info, cuenta);
+			break;
+		}
+		
 		}
 		
 		return lista;
 	}
 	
+	private static List<RegistroPago> parseaBanamex(String info, String cuenta){
+		List<RegistroPago> lista= new ArrayList<RegistroPago>();
+		String[] rengs= info.split("\n");
+		for(String reng:rengs){
+			reng= reng.replace("\"\t", "");
+			String[] values= reng.split("\t");
+			RegistroPago p= new RegistroPago();
+			if(values[2].compareTo("-")!=0){
+				float monto= Float.parseFloat(values[2].trim());
+				p.setBanco("Banco Nacional de México");
+				p.setCuenta(cuenta);
+				p.setDescripcion(values[1].trim());
+				p.setMoneda("MXN");
+				p.setMonto(monto);
+				DateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+				Date d;
+				try {
+					d = format.parse(values[0].trim());
+					p.setFecha(d);
+				} catch (ParseException e) {
+				}
+				lista.add(p);
+			}
+		}
+		
+		return lista;
+	}
 	
 	private static List<RegistroPago> parseaSantander(String info, String cuenta){
 		List<RegistroPago> lista= new ArrayList<RegistroPago>();
@@ -90,6 +122,7 @@ public class ParseadorDePagos {
 					p.setCuenta(cuenta);
 					p.setMonto(montof);
 					p.setReferencia(values[1]);
+					p.setDescripcion(values[2]);
 					String fecha= values[0].substring(0,4)+"/"+values[0].substring(4, 6)+"/"+values[0].substring(6);
 					DateFormat format = new SimpleDateFormat("yyyy/MM/dd");
 					Date d;
@@ -125,6 +158,7 @@ public class ParseadorDePagos {
 					p.setReferencia(referencia);
 				}
 				p.setBanco("BBVA Bancomer");
+				p.setDescripcion(values[1]);
 				DateFormat format = new SimpleDateFormat("dd/MM/yyyy");
 				Date d;
 				try {
@@ -159,6 +193,7 @@ public class ParseadorDePagos {
 				}
 				p.setBanco("HSBC México");
 				p.setCuenta(cuenta);
+				p.setDescripcion(values[8]);
 				lista.add(p);
 			}
 			
@@ -177,11 +212,12 @@ public class ParseadorDePagos {
 				RegistroPago p= new RegistroPago();
 				p.setCuenta(cuenta);
 				p.setMoneda(values[1].trim());
-				p.setMonto(Float.parseFloat(values[5]));
+				p.setMonto(Float.parseFloat(values[6]));
 				String referencia="";
 				String pals[]= values[13].split("/");
 				referencia= pals[2];
 				p.setReferencia(referencia);
+				p.setDescripcion(values[13]);
 				p.setBanco("Scotiabank Inverlat");
 				p.setCuenta(cuenta);
 				lista.add(p);
@@ -202,6 +238,7 @@ public class ParseadorDePagos {
 				p.setMoneda("MXN");
 				p.setMonto(Float.parseFloat(vu));
 				p.setReferencia(values[1]);
+				p.setDescripcion(values[3]);
 				String det= values[3];
 				String[] ds= det.split(" ");
 				for(String a:ds){
@@ -252,6 +289,7 @@ public class ParseadorDePagos {
 				if(detalle.contains("clabe")){
 					int index=detalle.indexOf("clabe")+6;
 					String aux= detalle.substring(index,index +18);
+					pago.setDescripcion(detalle.replaceAll("\t", " "));
 					pago.setClabe(aux);
 				}
 				lista.add(pago);

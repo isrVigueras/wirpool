@@ -29,6 +29,7 @@ public class PagoRecibido {
 	private Long ot;
 	@Index
 	private boolean validado= false;
+	private String descripcion;
 	
 	public Long getId() {
 		return id;
@@ -101,6 +102,12 @@ public class PagoRecibido {
 	}
 	public void setValidado(boolean validado) {
 		this.validado = validado;
+	}
+	public String getDescripcion() {
+		return descripcion;
+	}
+	public void setDescripcion(String descripcion) {
+		this.descripcion = descripcion;
 	}
 	
 }
