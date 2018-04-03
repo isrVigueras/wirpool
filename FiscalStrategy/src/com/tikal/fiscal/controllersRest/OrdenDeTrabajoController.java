@@ -163,19 +163,23 @@ public class OrdenDeTrabajoController {
 		HttpSession sesion= req.getSession();
 		Usuario user=(Usuario) sesion.getAttribute("user");
 		List<OrdenDeTrabajo> lista=null;
-		if(user.getPerfil().compareTo("Ejecutivo")==0){
-			lista=otdao.getByResponsable(user.getId(), page);
-			res.getWriter().print(JsonConvertidor.toJson(lista));
-		}else{
-			if(user.getPerfil().compareTo("Administrador")==0 ){	
-				lista=otdao.getFull(page);
+		if(user!=null){
+			if(user.getPerfil().compareTo("Ejecutivo")==0){
+				lista=otdao.getByResponsable(user.getId(), page);
 				res.getWriter().print(JsonConvertidor.toJson(lista));
 			}else{
-				if(user.getPerfil().compareTo("AdministradorRoot")==0 ){
+				if(user.getPerfil().compareTo("Administrador")==0 ){	
 					lista=otdao.getFull(page);
 					res.getWriter().print(JsonConvertidor.toJson(lista));
+				}else{
+					if(user.getPerfil().compareTo("AdministradorRoot")==0 ){
+						lista=otdao.getFull(page);
+						res.getWriter().print(JsonConvertidor.toJson(lista));
+					}
 				}
 			}
+		}else{
+			res.sendError(500);
 		}
 		
 	}

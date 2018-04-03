@@ -4,6 +4,7 @@ import com.googlecode.objectify.ObjectifyService;
 import com.tikal.fiscal.model.Cliente;
 import com.tikal.fiscal.model.Cuenta;
 import com.tikal.fiscal.model.CuentaCliente;
+import com.tikal.fiscal.model.Empresa;
 import com.tikal.fiscal.model.FolioOT;
 import com.tikal.fiscal.model.Movimiento;
 import com.tikal.fiscal.model.Notificacion;
@@ -24,6 +25,7 @@ public class EntityRegister {
 		this.registrar(FolioOT.class);
 		this.registrar(Notificacion.class);
 		this.registrar(RegistroPago.class);
+		this.registrar(Empresa.class);
 	}
 	
 	private <T> void registrar(Class<T> clase) {

@@ -39,6 +39,10 @@
 								ng-click="editar(cliente)">
 								<i class="glyphicon glyphicon-edit"></i>
 							</button>
+							<button title="Eliminar Cliente" class="btn btn-small" data-toggle="modal"
+								ng-click="eliminar(cliente)">
+								<i class="glyphicon glyphicon-remove"></i>
+							</button>
 							</td>
 			</tr>
 		</tbody>
@@ -215,8 +219,8 @@
 	 
 	<form id="forma" name="myForm">
 		<div class="col-md-5">
-			Nombre del Cliente: <input class="form-control"
-				ng-model="client.nickname" type="text" ng-required="true"><br>
+			Nombre del Cliente: <input class="form-control" onkeyup="javascript:this.value=this.value.toUpperCase();"
+				ng-model="client.nickname" type="text" ng-required="true" ><br>
 		</div>
 		<div class="col-md-5">
 			Tipo de Cliente: 
@@ -259,6 +263,28 @@
 
   </div>
 </div>
+
+<!-- MODAL MENSAJE DE ELIMINACION -->
+
+<div class="modal fade" id="mdsino" tabindex="-1" data-backdrop="static" role="dialog" aria-labelledby="mdsinor" aria-hidden="true">
+ <div class="modal-dialog modal-sm"> 
+
+    <!-- Modal content-->
+    <div class="modal-content">
+     
+      <div class="modal-body">
+          <p><H4>&iquest;Desea eliminar el cliente?.</H4></p>
+        </div>
+      <div class="modal-footer">
+      <button type="button" class="btn btn-default" id="btnsi" data-dismiss="modal">Aceptar</button>
+        <button type="button" class="btn btn-default" id="btnno">Cancelar</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
 </div>
 	<div id="snackbar">Cliente Editado Correctamente.</div>
 </div>

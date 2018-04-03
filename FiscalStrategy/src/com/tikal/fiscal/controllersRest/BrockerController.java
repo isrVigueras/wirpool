@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.tikal.fiscal.dao.ClienteDAO;
+import com.tikal.fiscal.dao.OrdenDeTrabajoDAO;
 import com.tikal.fiscal.model.Cliente;
 import com.tikal.fiscal.util.AsignadorDeCharset;
 import com.tikal.fiscal.util.JsonConvertidor;
@@ -25,6 +26,9 @@ public class BrockerController {
 	
 	@Autowired
 	ClienteDAO clientedao;
+	
+	@Autowired
+	OrdenDeTrabajoDAO otdao;	
 	
 	@RequestMapping(value={"/guardar"},method= RequestMethod.POST, consumes="application/json")
 	public void guardar(HttpServletResponse res, HttpServletRequest req, @RequestBody String json) throws UnsupportedEncodingException{
@@ -56,10 +60,15 @@ public class BrockerController {
 	}
 	
 	@RequestMapping(value={"/borrar"}, method= RequestMethod.POST, consumes="application/json")
-	public void delete(HttpServletResponse res, HttpServletRequest req, @RequestBody String json) throws UnsupportedEncodingException{
+	public void delete(HttpServletResponse res, HttpServletRequest req, @RequestBody String json) throws IOException{
 		AsignadorDeCharset.asignar(req, res);
 		Cliente cliente= (Cliente) JsonConvertidor.fromJson(json, Cliente.class);
-		clientedao.eliminar(cliente);
+		if(!(otdao.getByCliente(cliente.getId()).size()>0)){
+			clientedao.eliminar(cliente);
+			res.getWriter().print("Eliminado con éxito");
+		}else{
+			res.getWriter().print("El cliente tiene Ordenes de trabajo asociadas");
+		}
 	}
 
 	@RequestMapping(value={"/todos"},method= RequestMethod.GET, produces="application/json")
@@ -74,6 +83,7 @@ public class BrockerController {
 		AsignadorDeCharset.asignar(req, res);
 		
 		res.getWriter().print(clientedao.getPages("brocker"));
+		
 	}
 	
 }

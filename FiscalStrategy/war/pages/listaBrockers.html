@@ -31,6 +31,11 @@
 						>
 						<i class="glyphicon glyphicon-edit"></i>
 					</button>
+					
+					<button title="Eliminar"class="btn btn-small"  ng-click="eliminar(bk)" data-toggle="modal" 
+						>
+						<i class="glyphicon glyphicon-remove"></i>
+					</button>
 			</tr>
 		</tbody>
 
@@ -248,7 +253,7 @@
 	<form id="forma" name="myForm">
 		<div class="col-md-5">
 			Nombre del Brocker: <input class="form-control"
-				ng-model="bk.nickname" type="text" ng-required="true"><br>
+				ng-model="bk.nickname" type="text" ng-required="true" onkeyup="javascript:this.value=this.value.toUpperCase();"><br>
 		</div>
 <!-- 		<div class="col-md-5"> -->
 <!-- 			Tipo de Cliente:  -->

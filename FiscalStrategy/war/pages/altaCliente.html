@@ -8,7 +8,7 @@
 	<div class="container" ng-hide="multiple">
 	<form id="forma" name="myForm">
 		<div class="col-md-6">
-			Nombre del Cliente: <input class="form-control"
+			Nombre del Cliente: <input class="form-control" onkeyup="javascript:this.value=this.value.toUpperCase();"
 				ng-model="client.nickname" type="text" ng-required="true"><br>
 		</div>
 		<div class="col-md-6">

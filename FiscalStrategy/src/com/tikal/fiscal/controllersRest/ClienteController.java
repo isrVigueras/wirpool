@@ -54,10 +54,16 @@ public class ClienteController {
 	
 	
 	@RequestMapping(value={"/borrar"}, method= RequestMethod.POST, consumes="application/json")
-	public void delete(HttpServletResponse res, HttpServletRequest req, @RequestBody String json) throws UnsupportedEncodingException{
+	public void delete(HttpServletResponse res, HttpServletRequest req, @RequestBody String json) throws IOException{
 		AsignadorDeCharset.asignar(req, res);
 		Cliente cliente= (Cliente) JsonConvertidor.fromJson(json, Cliente.class);
-		clientedao.eliminar(cliente);
+		if(!(otdao.getByCliente(cliente.getId()).size()>0)){
+			clientedao.eliminar(cliente);
+			res.getWriter().print("Eliminado con éxito");
+		}else{
+			res.getWriter().print("El cliente tiene Ordenes de trabajo asociadas");
+		}
+		
 	}
 	
 	 
