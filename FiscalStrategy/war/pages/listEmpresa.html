@@ -1,0 +1,70 @@
+<section class="jumbotron">
+	<div class="container">
+	 <h2>Empresas</h2>
+		<submenu perfil="perfilUsuario"/>
+	</div>
+</section>
+<div class="container">
+
+		<div class="col-md-12">
+			<ul class="pagination .pagination-sm" style="margin:0;">
+				<li ng-repeat="abc in paginas" id="{{'pagA'+abc}}"
+					ng-click="cargarPagina(abc)"><a>{{abc}}</a></li>
+
+			</ul>
+			
+		</div>
+		<table class="table table-stripped">
+		<thead>
+			<tr>
+				<th>Nombre</th>
+			
+			</tr>
+		</thead>
+		<tbody>
+			
+			<tr ng-repeat="e in empresa">
+				<td style="width: 20%;">{{e.nombre}}</td>
+			
+				
+				<td style="width: 20%;">
+				
+							<button title="Eliminar Empresa" class="btn btn-small"
+								ng-click="eliminar(e)">
+								<i class="glyphicon glyphicon-remove"></i>
+							</button>
+							</td>
+			</tr>
+		</tbody>
+
+	</table>
+	<div class="col-md-12">
+			<ul class="pagination .pagination-sm" style="margin:0;">
+				<li ng-repeat="abc in paginas" id="{{'pagB'+abc}}"
+					ng-click="cargarPagina(abc)"><a>{{abc}}</a></li>
+
+			</ul>
+			
+		</div>
+</div>
+
+  <div id="mdsino" class="modal fade">
+    
+    <div class="modal-dialog mdlconfirmacion">
+        <div class="modal-content modal-content-sm">
+            
+            <div class="modal-body">
+                <p id="pmdl">Desea Continuar con la Eliminacion?</p>
+                
+            </div>
+            <div class="modal-footer">
+                <button id="btnsi" 
+
+                type="button" class="btn btn-primary btnsi">Aceptar</button>
+                <button id="btnno" 
+
+                type="button" class="btn btn-default">Cancelar</button>
+            </div>
+        </div>
+    </div>
+</div>
