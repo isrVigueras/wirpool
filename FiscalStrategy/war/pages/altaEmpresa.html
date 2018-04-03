@@ -1,0 +1,23 @@
+<section class="jumbotron">
+	<div class="container">
+	 <h2>Registro de Pagos</h2>
+		<submenu perfil="perfilUsuario" ></submenu>
+	</div>
+</section>
+<div class="container">
+	<form id="forma" name="myForm">
+		<div class="col-md-6">
+			Nombre de la Empresa: <input class="form-control" ng-model="empresa.nombre" 
+				type="text" onkeyup="javascript:this.value=this.value.toUpperCase();" ng-required="true"><br>
+		</div>
+
+
+		<div class="col-md-12">
+			<button value="Guardar" class="btn"
+				ng-click="myForm.$valid && guardarEmpresa()">Guardar</button>
+			<button ng-click="clean()" class="btn">Limpiar</button>
+		</div>
+	</form>
+	<div id="snackbar">Alta de Cuenta Exitoso.</div>
+</div>
+
