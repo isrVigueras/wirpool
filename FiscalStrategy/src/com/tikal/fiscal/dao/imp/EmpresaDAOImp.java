@@ -47,7 +47,7 @@ public class EmpresaDAOImp implements EmpresaDAO{
 	@Override
 	public int numPages() {
 		int total= ofy().load().type(Empresa.class).count();
-		return (total-1/25)+1;
+		return ((total-1)/25)+1;
 	}
 
 }

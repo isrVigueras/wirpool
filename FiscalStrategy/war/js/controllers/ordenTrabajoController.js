@@ -287,6 +287,8 @@ app.service("operacionesMovimientosService",['$http', '$q', function($http, $q){
 		return objetos;
 	}
 	
+	
+	
 }]);
 
 app.controller("OTsAddController",['$rootScope', '$route','$scope','$cookieStore', '$window', '$location', 'ordenTrabajoservice','cuentaservice','operacionesMovimientosService','userFactory', function($rootScope,$route, $scope, $cookieStore, $window, $location, ordenTrabajoservice,cuentaservice,operacionesMovimientosService, userFactory){
@@ -461,6 +463,10 @@ app.controller("OTsAddController",['$rootScope', '$route','$scope','$cookieStore
 			
 		}else{
 			$scope.datos.saldoCom = objs.saldo;
+		}
+		if($scope.operaciones.tipo=="Cheque"){
+			$scope.operaciones.montoLetra= NumeroALetras($scope.operaciones.monto);
+			$scope.operaciones.montoLetra= $scope.operaciones.montoLetra.toUpperCase();
 		}
 		
 	}
@@ -1034,6 +1040,10 @@ app.controller("ordenTrabajoController",['$rootScope', '$scope','$window', '$loc
 			
 		}else{
 			$scope.otvo.ot.saldoCom= objs.saldo;
+		}
+		if($scope.operaciones.tipo=="Cheque"){
+			$scope.operaciones.montoLetra= NumeroALetras($scope.operaciones.monto);
+			$scope.operaciones.montoLetra= $scope.operaciones.montoLetra.toUpperCase();
 		}
 	}
 
