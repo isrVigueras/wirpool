@@ -24,11 +24,14 @@
 		<tbody>
 			
 			<tr ng-repeat="e in empresa">
-				<td style="width: 20%;">{{e.nombre}}</td>
+				<td style="width: 80%;">{{e.nombre}}</td>
 			
 				
 				<td style="width: 20%;">
-				
+							<button title="Ver" class="btn btn-small"  ng-click="ver(e)" 
+								ng-click="">
+								<i class="glyphicon glyphicon-eye-open"></i>
+							</button>
 							<button title="Eliminar Empresa" class="btn btn-small"
 								ng-click="eliminar(e)">
 								<i class="glyphicon glyphicon-remove"></i>
@@ -68,3 +71,97 @@
         </div>
     </div>
 </div>
+ <!-- Modal Ver Clientes	-->
+  <div class="modal fade" id="myModalVista" tabindex="-1" data-backdrop="static" role="dialog" aria-labelledby="myModalVista" aria-hidden="true">
+                           
+      <div class="modal-dialog" id="mdialTamanio">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+             <p class="modal-title" id="myModalLabel">Detalles de la Empresa </p>
+            
+          </div>
+          <div class="modal-body">
+<!--            <h4>Datos Generales</h4> -->
+           <div>
+
+          <div class="Dlabel"> <h4><b>Nombre:</b><br></div>
+           <label><h4>{{getempresa.nombre}}</label></h4><br>                    
+           </div>
+  <br>
+           <div ng-show="ca">
+        <div class="Dlabel">   <h4><b>Cuentas Asosiadas</b></h4> </div>
+           <table class="table table-stripped">
+				<thead>
+					<tr>
+						<th style="width: 20%;">Banco</th>
+						<th style="width: 20%;">Cuenta</th>
+						<th style="width: 20%;">Clabe</th>
+						<th style="width: 20%;">Titular</th>
+					</tr>
+				</thead>
+				<tbody>
+			
+					<tr ng-repeat="cuenta in cempresa.cuentas">
+						<td>{{cuenta.banco}}</td>
+						<td>{{cuenta.cuenta}}</td>
+						<td>{{cuenta.clabe}}</td>
+						<td>{{cuenta.nombre}}</td>
+<!-- 						<td> -->
+						
+<!-- 									<button title="Eliminar Cuenta" class="btn btn-small"  -->
+<!-- 										ng-click="eliminarcc(cuenta)"> -->
+<!-- 										<i class="glyphicon glyphicon-remove"></i> -->
+<!-- 									</button> -->
+<!-- 									</td> -->
+					</tr>
+			</tbody>
+
+	</table>
+	</div>
+	
+	<div ng-show="rc">
+	
+	<form id="forma" name="myForm">
+		<div class="col-md-6">
+			Banco: <select name="bankList" ng-model="cuenta.banco" class="form-control" id="bankList" ng-required="true">
+						<option value=""></option>
+						<option ng-repeat="b in bancos" value="{{b.nombre}}" >{{b.nombre}}</option>
+ 					</select><br>
+		</div>
+		<div class="col-md-6">
+			Cuenta: <input class="form-control" ng-model="cuenta.cuenta" 
+				type="number" ng-required="true"><br>
+		</div>
+
+		<div class="col-md-6">
+			Clabe: <input class="form-control" ng-model="cuenta.clabe"
+				type="number" ng-required="true"><br>
+		</div>
+		<div class="col-md-6">
+			Nombre: <input class="form-control" ng-model="cuenta.nombre" onkeyup="javascript:this.value=this.value.toUpperCase();"
+				type="text" ng-required="true"><br>
+		</div>
+
+		<!--    	   ^([A-ZÑ\x26]{3,4}([0-9]{2})(0[1-9]|1[0-2])(0[1-9]|1[0-9]|2[0-9]|3[0-1]))([A-Z\d]{3})?$ -->
+
+
+		<div class="col-md-12">
+			<button value="Guardar" class="btn"
+				ng-click="myForm.$valid && guardarCuenta()">Guardar</button>
+			<button ng-click="show() || clean()" class="btn">Cancelar</button>
+		</div>
+	</form>
+	<div id="snackbar">Alta de Cuenta Exitoso.</div>
+	
+	
+	</div>
+         
+          <div class="modal-footer">
+          <button type="button" class="btn btn-default" ng-controller="clientcuentacontroller"ng-show="btn" ng-click="hide() || clean()">Nueva Cuenta</button>
+            <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="cerrar()">Cerrar</button>
+          </div>
+          </div>
+        </div>
+      </div>
+ </div>

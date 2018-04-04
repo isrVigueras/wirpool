@@ -42,10 +42,19 @@ app.service("empresaservice",['$http', '$q', function($http, $q){
 			});
 		return d.promise;
 	} 
+	this.getce = function(id) {
+		var d = $q.defer();
+		$http.get("/empresa/getEmpresa/"+id).then(
+			function(response) {
+				d.resolve(response.data);
+			});
+		return d.promise;
+	}
 	
 }]);
 
-app.controller("empresacontroller",['$rootScope','$scope','$window', '$location', '$cookieStore','empresaservice','userFactory','$rootScope', function($rootScope,$scope, $window, $location, $cookieStore, empresaservice,userFactory,$rootScope){
+app.controller("empresacontroller",['$rootScope','$scope','$window', '$location', '$cookieStore','empresaservice','userFactory','$rootScope','cuentaservice', function($rootScope,$scope, $window, $location, $cookieStore, empresaservice,userFactory,$rootScope,cuentaservice){
+	$scope.bancos = catalogoBancos();
 	$scope.llenarPags=function(){
 		var inicio=0;
 		if($scope.paginaActual>5){
@@ -109,6 +118,59 @@ app.controller("empresacontroller",['$rootScope','$scope','$window', '$location'
 		  
 		
 	};
+	$scope.ver = function(data) {
+		$scope.getempresa=data;
+		console.log($scope.getempresa);
+	    var length = $scope.empresa.length;
+
+	    empresaservice.getce($scope.getempresa.id).then(function(data) {
+	  		$scope.cempresa = data;
+	  });
+	    $("#myModalVista").modal("show");
+	}
+	$scope.rc=false;
+	$scope.ca=true;
+	$scope.btn=true;
+	
+	 $scope.hide=function () {
+		 $scope.btn=false;   
+     	$scope.rc=true;
+     	$scope.ca=false;
+	
+ };
+ $scope.cerrar=function (){
+		$scope.rc=false;
+		$scope.ca=true;
+		$scope.btn=true;
+		$("#myModalVista").modal('dispose');
+ }
+ $scope.show=function (){
+		$scope.rc=false;
+		$scope.ca=true;
+		$scope.btn=true;
+		$("#myModalVista").modal('dispose');
+}
+ $scope.clean=function(){
+	 
+	$scope.cuenta.banco="";
+	$scope.cuenta.cuenta="";
+	$scope.cuenta.clabe="";
+	$scope.cuenta.nombre="";
+ }
+
+	$scope.guardarCuenta= function(){
+		$scope.cuenta.idEmpresa=$scope.getempresa.id;
+		cuentaservice.guardarCuenta($scope.cuenta).then(function(data){
+			var x = document.getElementById("snackbar")
+		    x.className = "show";
+			setTimeout(function(){ x.className = x.className.replace("show", "");  $("#myModalVista").modal('dispose'); }, 3000);
+			
+		    setTimeout(function(){ $scope.ver($scope.getempresa); $scope.show();}, 3000);
+		    
+		});
+		
+	}
+	
 	
 	$scope.cargarPagina(1);
 	

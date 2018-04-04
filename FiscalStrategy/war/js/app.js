@@ -84,6 +84,14 @@ app.config([ '$routeProvider', function($routeProvider) {
 		templateUrl : "pages/ordenTrabajo.html",
 		controller : "ordenTrabajoController"
 	});
+	$routeProvider.when('/altaempresa',{
+		templateUrl : "pages/altaEmpresa.html",
+		controller : "altaempresacontroller"
+	});
+	$routeProvider.when('/listempresa',{
+		templateUrl : "pages/listEmpresa.html",
+		controller : "empresacontroller"
+	});
 	$routeProvider.otherwise({
 		redirectTo : '/listOTs',
 		templateUrl : "pages/listOTs.html",

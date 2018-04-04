@@ -160,7 +160,7 @@ tr:nth-child(even) {
       width: 10% !important;
     }
     .modal-header {
-	background-color: #0C009B;
+	background-color: #4c60ce;
 	color: white;
 	width: 98% !important;
 	margin: 1% auto;
@@ -379,7 +379,7 @@ infPago infComisiones infCliente{
 }
 .Dlabel{
   font-size:16px;
-  background-color: rgba(128, 128, 128, 0.78);
+  background-color: #e6e6e6;
   padding: 4px;
 	
 }
