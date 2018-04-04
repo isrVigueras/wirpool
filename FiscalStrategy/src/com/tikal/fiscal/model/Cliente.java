@@ -16,6 +16,10 @@ public class Cliente {
 	@Index private boolean enabled;
 	private double saldo;
 	
+	private String nombre;
+	private String apeMaterno;
+	private String apePaterno;
+	
 	public Long getResponsable() {
 		return responsable;
 	}
@@ -57,6 +61,24 @@ public class Cliente {
 	}
 	public void setSaldo(double saldo) {
 		this.saldo = saldo;
+	}
+	public String getNombre() {
+		return nombre;
+	}
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
+	}
+	public String getApeMaterno() {
+		return apeMaterno;
+	}
+	public void setApeMaterno(String apeMaterno) {
+		this.apeMaterno = apeMaterno;
+	}
+	public String getApePaterno() {
+		return apePaterno;
+	}
+	public void setApePaterno(String apePaterno) {
+		this.apePaterno = apePaterno;
 	}
 	
 }

@@ -2,6 +2,7 @@ package com.tikal.fiscal.controllersRest;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -31,11 +32,34 @@ public class ClienteController {
 	OrdenDeTrabajoDAO otdao;	
 	
 	@RequestMapping(value={"/guardar"},method= RequestMethod.POST, consumes="application/json")
-	public void guardar(HttpServletResponse res, HttpServletRequest req, @RequestBody String json) throws UnsupportedEncodingException{
+	public void guardar(HttpServletResponse res, HttpServletRequest req, @RequestBody String json) throws IOException{
 		AsignadorDeCharset.asignar(req, res);
 		Cliente cliente= (Cliente) JsonConvertidor.fromJson(json, Cliente.class);
-		clientedao.save(cliente);
+		cliente.setNickname(cliente.getNombre()+" "+cliente.getApePaterno()+ " "+ cliente.getApeMaterno());
+		List<Cliente> lista=clientedao.buscar(cliente.getNombre());
+		List<Cliente> repetidos= new ArrayList<Cliente>();
+		if(lista.size()>0){
+			for(Cliente c: lista){
+				if(c.getNombre().compareTo(cliente.getNombre())==0 && c.getApePaterno().compareTo(cliente.getApePaterno())==0){
+					repetidos.add(c);
+				}
+			}
+		}
+		if(repetidos.size()>0){
+			res.getWriter().print(JsonConvertidor.toJson(repetidos));
+		}else{
+			clientedao.save(cliente);
+			res.getWriter().print("OK");
+		}
 		
+	}
+	
+	@RequestMapping(value={"/confirmar"},method= RequestMethod.POST, consumes="application/json")
+	public void confirmar(HttpServletResponse res, HttpServletRequest req, @RequestBody String json) throws IOException{
+		AsignadorDeCharset.asignar(req, res);
+		Cliente cliente= (Cliente) JsonConvertidor.fromJson(json, Cliente.class);
+		cliente.setNickname(cliente.getNombre()+" "+cliente.getApePaterno()+ " "+ cliente.getApeMaterno());
+		clientedao.save(cliente);
 	}
 	
 	@RequestMapping(value={"/getPagina/{page}"},method= RequestMethod.GET, produces="application/json")

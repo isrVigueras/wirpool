@@ -35,6 +35,21 @@ app.service("clientservice",['$http', '$q', function($http, $q){
 		return d.promise;
 	}
 	
+	this.confirmar=function(send){
+		var d = $q.defer();
+		$http.post("/clientes/confirmar/",send).then(
+			function(response) {
+				console.log(response);
+				d.resolve(response.data);
+			}, function(response) {
+				if(response.status==403){
+					alert("No está autorizado para realizar esta acción");
+					$location.path("/");
+				}
+			});
+		return d.promise;
+	}
+	
 	this.eliminaCliente = function(send) {
 		var d = $q.defer();
 		$http.post("/clientes/borrar/",send).then(function(response) {
@@ -97,8 +112,7 @@ app.controller("clientcuentacontroller",['$rootScope', '$scope','$window', '$loc
 		});
 		
 	};
-	
-//	$scope.VerCC=function(id){
+	//	$scope.VerCC=function(id){
 //	clientcuentaservice.getcc(id).then(function(data) {
 //		$scope.ccuenta = data;
 //
@@ -108,6 +122,39 @@ app.controller("clientcuentacontroller",['$rootScope', '$scope','$window', '$loc
 
 app.controller("clientController",['$rootScope','usuarioservice','brockerservice','$scope','$window', '$location', '$cookieStore','clientservice','clientcuentaservice', 'userFactory', function($rootScope,usuarioservice,brockerservice, $scope, $window, $location, $cookieStore, clientservice,clientcuentaservice, userFactory){
 	$scope.client={};
+	$scope.client={tipo:"cliente"};
+	
+	$scope.$watch('busca',function(){
+		if($scope.busca.length>3){
+			$scope.buscar();
+		}
+	},true);
+	$scope.buscar=function(){
+		brockerservice.buscarBrockers($scope.busca).then(function(data){
+			
+			$scope.encontrados=[];
+			for(var i=0; i< data.length; i++){
+				$scope.encontrados.push(data[i].nickname);
+				
+			}
+			$scope.cliente=data;
+//			$scope.tipos=data.tipos;
+			
+			$('#searchBox').typeahead({
+
+			    source: $scope.encontrados,
+
+			    updater:function (item) {
+			    	var ind=$scope.encontrados.indexOf(item);
+			    	$scope.clienteSeleccionado=true;
+			    	$scope.client.idBrocker= $scope.cliente[ind].id;
+			        return item;
+			    }
+			});
+			$('#searchBox').data('typeahead').source=$scope.encontrados;
+		});
+	}
+
 	$rootScope.perfilUsuario = userFactory.getUsuarioPerfil();  //obtener perfl de usuario para pintar el menú al qe tiene acceso
 	clientservice.consultarClientesTodos(1).then(function(data) {
 			$scope.clienteLista = data;
@@ -166,18 +213,36 @@ app.controller("clientController",['$rootScope','usuarioservice','brockerservice
 		
 		$scope.client.enabled=true;
 		clientservice.guardarCliente($scope.client).then(function(data){
+			if(data=="OK"){
+				var x = document.getElementById("snackbar")
+			    x.className = "show";
+				setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
+			    setTimeout(function(){ if($scope.client){window.location="#/clientes";} }, 3000);
+	//			alert("Cliente Guardado Con Exito");
+	//			$location.path("/clientes");
+				$window.location.reload();
+	//			setTimeout(window.location.reload.bind(window.location), 1000);
+			}else{
+				$scope.repetidos=data;
+				$("#myModalRepetidos").modal('show');
+			}
+
+		});
+		
+	};
+	
+	$scope.confirmar=function(){
+		clientservice.confirmar($scope.client).then(function(data){
 			var x = document.getElementById("snackbar")
 		    x.className = "show";
 			setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
 		    setTimeout(function(){ if($scope.client){window.location="#/clientes";} }, 3000);
 //			alert("Cliente Guardado Con Exito");
-//			$location.path("/clientes");
-//			$window.location.reload(1);
+			$location.path("/clientes");
+			$window.location.reload();
 //			setTimeout(window.location.reload.bind(window.location), 1000);
-
-		});
-		
-	};
+		})
+	}
 	
 	$scope.editarCliente= function(){
 //		$scope.getcliente=data

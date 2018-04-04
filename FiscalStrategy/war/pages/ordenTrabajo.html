@@ -161,7 +161,7 @@
 					</td>
 					<td class="ng-binding"  align="right">
 						<a class="btn btn-info" data-toggle="tooltip" title="Descarga cheque" 
-							ng-show="mov.tipo == 'Cheque' && mov.estatus!='CANCELADO'&& mov.banco!=null && mov.cuenta != null"
+							ng-show="mov.tipo == 'Cheque' && mov.estatus!='CANCELADO'&& mov.banco!=null && mov.cuenta != null &&(perfil=='Ejecutivo' || perfil=='AdministradorRoot')"
 							href="ots/imprimirCheque/{{mov.id}}" download="chequePDF.pdf">
 							<i class="glyphicon glyphicon-download-alt"></i>
 						</a>
@@ -173,7 +173,7 @@
 					 </td>
 					<td class="ng-binding" align="right">
 						<button class="btn btn-small" data-toggle="modal" ng-if="perfil=='Administrador' || perfil=='AdministradorRoot'"
-							ng-show="permiso== true && mov.tipo != 'Efectivo' && mov.estatus == 'ACTIVO'"  
+							ng-show="permiso== true && mov.tipo != 'Efectivo' && mov.estatus == 'ACTIVO' && (perfil=='Administrador' || perfil=='AdministradorRoot')"  
 							ng-click="cargarMov($index,'OPC')" data-target="#modalEditar">
 							<span class="glyphicon glyphicon-edit"></span>
 						</button>
@@ -232,7 +232,7 @@
 					</td>
 					<td class="ng-binding"  align="right">
 						<a class="btn btn-info" data-toggle="tooltip" title="Descarga cheque" 
-							ng-if="mov.tipo == 'Cheque' && mov.estatus!='CANCELADO'&& mov.banco!=null && mov.cuenta != null"
+							ng-if="mov.tipo == 'Cheque' && mov.estatus!='CANCELADO'&& mov.banco!=null && mov.cuenta != null &&(perfil=='Ejecutivo' || perfil=='AdministradorRoot')"
 							href="ots/imprimirCheque/{{mov.id}}" download="chequePDF.pdf">
 							<i class="glyphicon glyphicon-download-alt"></i>
 						</a>
@@ -244,7 +244,7 @@
 					 </td>
 					<td class="ng-binding" align="right">
 						<button class="btn btn-small" data-toggle="modal" ng-if="perfil=='Administrador' || perfil=='AdministradorRoot'"
-							ng-show="permiso== true && mov.tipo != 'Efectivo' && mov.estatus == 'ACTIVO'"  
+							ng-show="permiso== true && mov.tipo != 'Efectivo' && mov.estatus == 'ACTIVO' && (perfil=='Administrador' || perfil=='AdministradorRoot')"  
 							ng-click="cargarMov($index,'OPA')" data-target="#modalEditar">
 							<span class="glyphicon glyphicon-edit"></span>
 						</button>

@@ -9,14 +9,22 @@
 	<form id="forma" name="myForm">
 		<div class="col-md-6">
 			Nombre del Cliente: <input class="form-control" onkeyup="javascript:this.value=this.value.toUpperCase();"
-				ng-model="client.nickname" type="text" ng-required="true"><br>
+				ng-model="client.nombre" type="text" ng-required="true"><br>
 		</div>
 		<div class="col-md-6">
-			Tipo de Cliente: 
-			<select ng-model="client.tipo" class="form-control" ng-required="true">
-			  <option value="cliente">Cliente</option>
-			</select><br>
+			Apellido Paterno: <input class="form-control" onkeyup="javascript:this.value=this.value.toUpperCase();"
+				ng-model="client.apePaterno" type="text" ng-required="true"><br>
 		</div>
+		<div class="col-md-6">
+			Apellido Materno: <input class="form-control" onkeyup="javascript:this.value=this.value.toUpperCase();"
+				ng-model="client.apeMaterno" type="text" ng-required="true"><br>
+		</div>
+<!-- 		<div class="col-md-6"> -->
+<!-- 			Tipo de Cliente:  -->
+<!-- 			<select ng-model="client.tipo" class="form-control" ng-required="true"> -->
+<!-- 			  <option value="cliente">Cliente</option> -->
+<!-- 			</select><br> -->
+<!-- 		</div> -->
 		<div class="col-md-6">
 			Responsable: <select class="form-control"
 				ng-model="client.responsable" type="text" ng-required="true">
@@ -24,10 +32,12 @@
 				</select><br>
 		</div>
 		<div class="col-md-6">
-			Brocker: <select class="form-control"
-				ng-model="client.idBrocker" type="text" ng-required="true">
-					<option ng-repeat="bk in brockerLista" value="{{bk.id}}">{{bk.nickname}}</option>
-				</select><br>
+			Brocker: 
+<!-- 			<select class="form-control" -->
+<!-- 				ng-model="client.idBrocker" type="text" ng-required="true"> -->
+<!-- 					<option ng-repeat="bk in brockerLista" value="{{bk.id}}">{{bk.nickname}}</option> -->
+<!-- 				</select><br> -->
+			<input id="searchBox" class="form-control form-control-sm" type="text" ng-model="busca" data-provide="typehead" autocomplete="off" onkeyup="javascript:this.value=this.value.toUpperCase();">
 		</div>
 <!-- 		<div class="col-md-1"> -->
 <!-- 			Activo: <select class="form-control" ng-model="client.enabled"> -->
@@ -43,4 +53,40 @@
 	</form>
 </div>
 	<div id="snackbar">Alta de Cliente Exitoso.</div>
+</div>
+
+<div id="myModalRepetidos" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Alerta</h4>
+      </div>
+      <div class="modal-body">
+			<div class="row" >
+				<h4>Hay al menos un cliente registrado con un nombre similar</h4>
+			</div>
+			<br>
+			<div class="row">
+			<table class="table table-stripped">
+				<thead>
+					<tr><th>Cliente Registrado</th></tr>
+				</thead>
+				<tbody>
+					<tr ng-repeat="r in repetidos">
+						<td>{{r.nickname}}</td>
+					</tr>
+				</tbody>
+			</table>
+			</div>
+			<br>
+	 </div>
+      <div class="modal-footer">
+      	<button class="btn btn-danger" ng-click="confirmar()" data-dismiss="modal">Guardar Cliente</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+      </div>
+    </div>
+
+  </div>
 </div>

@@ -22,6 +22,8 @@ public class Cuenta {
 	@Index
 	private Long idEmpresa;
 	
+	private String moneda;
+	
 	public Long getId() {
 		return id;
 	}
@@ -63,6 +65,12 @@ public class Cuenta {
 	}
 	public void setIdEmpresa(Long idEmpresa) {
 		this.idEmpresa = idEmpresa;
+	}
+	public String getMoneda() {
+		return moneda;
+	}
+	public void setMoneda(String moneda) {
+		this.moneda = moneda;
 	}
 	
 }

@@ -67,6 +67,15 @@ app.service("brockerservice",['$http', '$q', function($http, $q){
 		return d.promise;
 	};
 	
+	this.buscarBrockers = function(nombre) {
+		var d = $q.defer();
+		$http.get("/brockers/buscar/"+nombre).then(
+			function(response) {
+				d.resolve(response.data);
+			});
+		return d.promise;
+	};
+	
 	this.eliminaBrocker = function(send) {
 		var d = $q.defer();
 		$http.post("/brockers/borrar/",send).then(function(response) {
