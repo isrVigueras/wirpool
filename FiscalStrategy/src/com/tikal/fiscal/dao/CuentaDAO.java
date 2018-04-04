@@ -23,4 +23,6 @@ public interface CuentaDAO {
 	
 	public List<Cuenta> getByCuenta(String cuenta);
 	
+	public List<Cuenta> getByEmpresa(Long idEmpresa);
+	
 }

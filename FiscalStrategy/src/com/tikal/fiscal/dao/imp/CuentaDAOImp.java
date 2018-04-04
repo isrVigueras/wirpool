@@ -62,4 +62,9 @@ public class CuentaDAOImp implements CuentaDAO {
 		return ((total-1)/25)+1;
 	}
 
+	@Override
+	public List<Cuenta> getByEmpresa(Long idEmpresa) {
+		return ofy().load().type(Cuenta.class).filter("enabled",true).filter("idEmpresa", idEmpresa).list();
+	}
+
 }

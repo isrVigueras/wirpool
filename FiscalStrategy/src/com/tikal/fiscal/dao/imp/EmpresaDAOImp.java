@@ -50,4 +50,9 @@ public class EmpresaDAOImp implements EmpresaDAO{
 		return ((total-1)/25)+1;
 	}
 
+	@Override
+	public Empresa find(Long id) {
+		return ofy().load().type(Empresa.class).id(id).now();
+	}
+
 }

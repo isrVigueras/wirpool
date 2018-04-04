@@ -14,7 +14,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import com.tikal.fiscal.controllersRest.VO.EmpresaCuentasVO;
+import com.tikal.fiscal.dao.CuentaDAO;
 import com.tikal.fiscal.dao.EmpresaDAO;
+import com.tikal.fiscal.model.Cuenta;
 import com.tikal.fiscal.model.Empresa;
 import com.tikal.fiscal.util.AsignadorDeCharset;
 import com.tikal.fiscal.util.JsonConvertidor;
@@ -25,6 +28,9 @@ public class EmpresaController {
 	
 	@Autowired
 	EmpresaDAO empresadao;
+	
+	@Autowired
+	CuentaDAO cuentadao;
 	
 	@RequestMapping(value={"/guardar"},method= RequestMethod.POST, consumes="application/json")
 	public void guardar(HttpServletResponse res, HttpServletRequest req, @RequestBody String json) throws UnsupportedEncodingException{
@@ -63,4 +69,14 @@ public class EmpresaController {
 		res.getWriter().print(JsonConvertidor.toJson(lista));
 	}
 	
+	@RequestMapping(value={"/getEmpresa/{id}"},method= RequestMethod.GET, produces="application/json")
+	public void get(HttpServletResponse res, HttpServletRequest req, @PathVariable Long id) throws IOException{
+		AsignadorDeCharset.asignar(req, res);
+		Empresa e= empresadao.find(id); 
+		List<Cuenta> cuentas = cuentadao.getByEmpresa(id);
+		EmpresaCuentasVO vo= new EmpresaCuentasVO();
+		vo.setEmpresa(e);
+		vo.setCuentas(cuentas);
+		res.getWriter().println(JsonConvertidor.toJson(vo));
+	}
 }
