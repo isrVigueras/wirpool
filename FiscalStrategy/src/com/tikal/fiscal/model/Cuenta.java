@@ -19,6 +19,8 @@ public class Cuenta {
 	private String nombre;
 	@Index
 	private boolean enabled;
+	@Index
+	private Long idEmpresa;
 	
 	public Long getId() {
 		return id;
@@ -56,5 +58,11 @@ public class Cuenta {
 	public void setEnabled(boolean enabled) {
 		this.enabled = enabled;
 	}
-
+	public Long getIdEmpresa() {
+		return idEmpresa;
+	}
+	public void setIdEmpresa(Long idEmpresa) {
+		this.idEmpresa = idEmpresa;
+	}
+	
 }

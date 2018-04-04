@@ -14,8 +14,6 @@ public class Empresa {
 	
 	@Index private String nombre;
 	
-	private List<Long> cuentas;
-
 	public Long getId() {
 		return id;
 	}
@@ -32,22 +30,22 @@ public class Empresa {
 		this.nombre = nombre;
 	}
 
-	public List<Long> getCuentas() {
-		return cuentas;
-	}
-
-	public void setCuentas(List<Long> cuentas) {
-		if(this.cuentas==null){
-			this.cuentas= new ArrayList<Long>();
-		}
-		this.cuentas = cuentas;
-	}
-	
-	public void addCuenta(Long idCuenta){
-		if(this.cuentas==null){
-			this.cuentas= new ArrayList<Long>();
-		}
-		this.cuentas.add(idCuenta);
-	}
+//	public List<Long> getCuentas() {
+//		return cuentas;
+//	}
+//
+//	public void setCuentas(List<Long> cuentas) {
+//		if(this.cuentas==null){
+//			this.cuentas= new ArrayList<Long>();
+//		}
+//		this.cuentas = cuentas;
+//	}
+//	
+//	public void addCuenta(Long idCuenta){
+//		if(this.cuentas==null){
+//			this.cuentas= new ArrayList<Long>();
+//		}
+//		this.cuentas.add(idCuenta);
+//	}
 	
 }

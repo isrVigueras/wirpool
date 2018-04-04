@@ -20,7 +20,7 @@ import com.tikal.fiscal.util.AsignadorDeCharset;
 import com.tikal.fiscal.util.JsonConvertidor;
 
 @Controller
-@RequestMapping(value={"empresa"})
+@RequestMapping(value={"/empresa"})
 public class EmpresaController {
 	
 	@Autowired
