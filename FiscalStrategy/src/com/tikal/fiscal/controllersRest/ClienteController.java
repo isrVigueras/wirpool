@@ -35,7 +35,11 @@ public class ClienteController {
 	public void guardar(HttpServletResponse res, HttpServletRequest req, @RequestBody String json) throws IOException{
 		AsignadorDeCharset.asignar(req, res);
 		Cliente cliente= (Cliente) JsonConvertidor.fromJson(json, Cliente.class);
-		cliente.setNickname(cliente.getNombre()+" "+cliente.getApePaterno()+ " "+ cliente.getApeMaterno());
+		if(cliente.getApeMaterno()!=null){
+			cliente.setNickname(cliente.getNombre()+" "+cliente.getApePaterno()+ " "+ cliente.getApeMaterno());
+		}else{
+			cliente.setNickname(cliente.getNombre()+" "+cliente.getApePaterno());
+		}
 		List<Cliente> lista=clientedao.buscar(cliente.getNombre());
 		List<Cliente> repetidos= new ArrayList<Cliente>();
 		if(lista.size()>0){
