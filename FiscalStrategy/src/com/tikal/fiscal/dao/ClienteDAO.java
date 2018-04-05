@@ -12,6 +12,8 @@ public interface ClienteDAO {
 	
 	public List<Cliente> buscar(String nombre);
 	
+	public List<Cliente> buscarb(String nombre);
+	
 	public List<Cliente> getClientes(int page, String tipo);
 	
 	public List<Cliente> getAll();

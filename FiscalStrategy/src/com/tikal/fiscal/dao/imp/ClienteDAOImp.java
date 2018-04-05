@@ -76,4 +76,23 @@ public class ClienteDAOImp implements ClienteDAO{
 		return ((total-1)/25)+1;
 	}
 
+	@Override
+	public List<Cliente> buscarb(String nombre) {
+		List<Cliente> lista= ofy().load().type(Cliente.class).filter("enabled",true).filter("tipo","brocker").order("nickname").list();
+		List<Cliente> result = new ArrayList<Cliente>();
+		String c2 = nombre.substring(0, 1);
+		for(int i =0; i< lista.size(); i++){
+			Cliente c= lista.get(i);
+			if(c.getNickname().toLowerCase().startsWith(nombre.toLowerCase())){
+				result.add(c);
+			}
+			String c1= c.getNickname().substring(0, 1);
+			
+			if(c1.toLowerCase().compareTo(c2.toLowerCase())>0){
+				break;
+			}
+		}
+		return result;
+	}
+
 }
