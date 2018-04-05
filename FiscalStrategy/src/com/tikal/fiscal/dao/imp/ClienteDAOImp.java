@@ -22,7 +22,7 @@ public class ClienteDAOImp implements ClienteDAO{
 
 	@Override
 	public List<Cliente> buscar(String nombre) {
-		List<Cliente> lista= ofy().load().type(Cliente.class).filter("enabled",true).order("nickname").list();
+		List<Cliente> lista= ofy().load().type(Cliente.class).filter("enabled",true).filter("tipo","cliente").order("nickname").list();
 		List<Cliente> result = new ArrayList<Cliente>();
 		String c2 = nombre.substring(0, 1);
 		for(int i =0; i< lista.size(); i++){
