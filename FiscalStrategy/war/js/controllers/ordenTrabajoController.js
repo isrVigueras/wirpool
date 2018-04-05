@@ -769,9 +769,6 @@ app.controller("OTsAddController",['$rootScope', '$route','$scope','$cookieStore
 
 app.controller("ordenTrabajoController",['$rootScope', '$scope','$window', '$location', '$cookieStore','ordenTrabajoservice','usuarioservice','operacionesMovimientosService','notificacionesService','userFactory','empresaservice',
                                          function($rootScope, $scope, $window, $location, $cookieStore, ordenTrabajoservice,usuarioservice,operacionesMovimientosService,notificacionesService,userFactory,empresaservice){
-	$rootScope.perfilUsuario = userFactory.getUsuarioPerfil();  //obtener perfl de usuario para pintar el menú al qe tiene acceso
-	$scope.perfil=$rootScope.perfilUsuario;
-	console.log("el perfil", $scope.perfil);
 	$scope.permiso=true; 
 	var indice = null;
 	var tipoOperacion= null;
@@ -861,10 +858,13 @@ app.controller("ordenTrabajoController",['$rootScope', '$scope','$window', '$loc
 				}
 			}
 		}
+		$rootScope.perfilUsuario = userFactory.getUsuarioPerfil();  //obtener perfl de usuario para pintar el menú al qe tiene acceso
+		$scope.perfil=$rootScope.perfilUsuario;
+		console.log("el perfil", $scope.perfil);
 	});	
 	
 	$scope.Cuentasban = function() {
-		 empresaservice.getce($scope.mov.empresa).then(function(data) {
+		 empresaservice.getce($scope.mov.empresa.id).then(function(data) {
 		  		$scope.cempresa = data;
 		  		$scope.banco=$scope.cempresa.cuentas[0].banco;
 		  		 console.log($scope.cempresa);
@@ -952,6 +952,8 @@ app.controller("ordenTrabajoController",['$rootScope', '$scope','$window', '$loc
 		if(tipoOperacion=='OPC'){
 			$scope.otvo.movimientos[indice].banco=$scope.mov.banco;
 			$scope.otvo.movimientos[indice].cuenta=$scope.mov.cuenta;
+			$scope.otvo.movimientos[indice].empresa=$scope.mov.empresa.nombre;
+			$scope.otvo.movimientos[indice].estatus="AUTORIZADO";
 			ordenTrabajoservice.updateot($scope.otvo.movimientos[indice]).then(function(data){
 				notificacionesService.notificaMovEditado($scope.otvo);
 				$window.location.reload();
@@ -959,6 +961,8 @@ app.controller("ordenTrabajoController",['$rootScope', '$scope','$window', '$loc
 		}else{
 			$scope.otvo.comisiones[indice].banco=$scope.mov.banco;
 			$scope.otvo.comisiones[indice].cuenta=$scope.mov.cuenta;
+			$scope.otvo.comisiones[indice].empresa=$scope.mov.empresa.nombre;
+			$scope.otvo.comisiones[indice].estatus="AUTORIZADO";
 			ordenTrabajoservice.updateot($scope.otvo.comisiones[indice]).then(function(data){
 				notificacionesService.notificaMovEditado($scope.otvo);
 				$window.location.reload();
@@ -972,11 +976,11 @@ app.controller("ordenTrabajoController",['$rootScope', '$scope','$window', '$loc
 		if(tipoOperacion=='OPC'){
 			$scope.otvo.movimientos[indice].numTransaccion=$scope.mov.numTransaccion;
 			$scope.otvo.movimientos[indice].fecha=$scope.mov.fecha;
-			$scope.otvo.movimientos[indice].estatus="AUTORIZADO"
+			$scope.otvo.movimientos[indice].estatus="VALIDADO";
 		}else{
 			$scope.otvo.comisiones[indice].numTransaccion=$scope.mov.numTransaccion;
 			$scope.otvo.comisiones[indice].fecha=$scope.mov.fecha;
-			$scope.otvo.comisiones[indice].estatus="AUTORIZADO"
+			$scope.otvo.comisiones[indice].estatus="VALIDADO";
 		}
 		if(cerrarOrden()){
 			ordenTrabajoservice.addot($scope.otvo).then(function(data){

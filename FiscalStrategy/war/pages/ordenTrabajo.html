@@ -179,8 +179,8 @@
 						</button>
 					</td>
 					<td class="ng-binding" align="right">
-						<button class="btn btn-small"  data-toggle="modal" ng-if="perfil=='AdministradorRoot' || perfil=='Caja' || perfil=='Ejecutivo'"
-						 ng-show="mov.tipo != 'Efectivo' &&  mov.estatus == 'ACTIVO'" 
+						<button class="btn btn-small"  data-toggle="modal" ng-if="perfil=='AdministradorRoot' || perfil=='Ejecutivo'"
+						 ng-show="mov.tipo != 'Efectivo' &&  mov.estatus == 'AUTORIZADO'" 
 						 ng-disabled="mov.banco==null && mov.cuenta == null"  
 						 ng-click="cargarMov($index,'OPC')" data-target="#modalVerificar">
 							<span class="glyphicon glyphicon-ok"></span>
@@ -250,8 +250,8 @@
 						</button>
 					</td>
 					<td class="ng-binding" align="right">
-						<button class="btn btn-small"  data-toggle="modal" ng-if="perfil=='AdministradorRoot' || perfil=='Caja'"
-						 ng-show="mov.tipo != 'Efectivo' &&  mov.estatus == 'ACTIVO'" 
+						<button class="btn btn-small"  data-toggle="modal" ng-if="perfil=='AdministradorRoot' || perfil=='Ejecutivo'"
+						 ng-show="mov.tipo != 'Efectivo' &&  mov.estatus == 'AUTORIZADO' " 
 						 ng-disabled="mov.banco==null && mov.cuenta == null"  
 						 ng-click="cargarMov($index,'OPA')" data-target="#modalVerificar">
 							<span class="glyphicon glyphicon-ok"></span>
@@ -303,8 +303,8 @@
 				
 				<div class="col-md-4">
 						<label>Empresas:</label> 
-						<select name="empresa" ng-model="mov.empresa" class="form-control form-control-sm" ng-required="true" ng-change="Cuentasban($index)" >
-							<option ng-repeat="e in empresa" value="{{e.id}}" >{{e.nombre}}</option> 
+						<select name="empresa" ng-model="mov.empresa" class="form-control form-control-sm" ng-required="true" ng-change="Cuentasban($index)" ng-options="e.nombre for e in empresa" >
+<!-- 							<option ng-repeat="e in empresa" value="{{e.id}}" >{{e.nombre}}</option>  -->
 						</select>	
 					</div>
 					<div class="col-md-4">

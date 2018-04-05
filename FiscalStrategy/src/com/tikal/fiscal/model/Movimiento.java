@@ -22,6 +22,7 @@ public class Movimiento {
 	private String numTransaccion; //proporcionado por el banco
 	@Index
 	private Date fecha;
+	private String empresa;
 	private String banco;
 	private String cuenta;
 	private String estatus;
@@ -138,6 +139,12 @@ public class Movimiento {
 	}
 	public void setPagarA(String pagarA) {
 		this.pagarA = pagarA;
+	}
+	public String getEmpresa() {
+		return empresa;
+	}
+	public void setEmpresa(String empresa) {
+		this.empresa = empresa;
 	}
 	
 	
