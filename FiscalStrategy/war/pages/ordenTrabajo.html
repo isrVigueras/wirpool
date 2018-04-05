@@ -300,13 +300,27 @@
 				</div>
 				<br><br>
 				<div class="row">
-					<div class="col-md-6">
-						<label class="control-label">Banco:</label>		 
-						<select name="banco" ng-model="mov.banco" class="form-control form-control-sm" ng-required="true" ng-change="Cuentas()" >
-							<option ng-repeat="b in bancos" value="{{b.nombre}}" >{{b.nombre}}</option> 
+				
+				<div class="col-md-4">
+						<label>Empresas:</label> 
+						<select name="empresa" ng-model="mov.empresa" class="form-control form-control-sm" ng-required="true" ng-change="Cuentasban($index)" >
+							<option ng-repeat="e in empresa" value="{{e.id}}" >{{e.nombre}}</option> 
 						</select>	
 					</div>
-					<div class="col-md-6">
+					<div class="col-md-4">
+						<label>Banco:</label> 
+						<select name="banco" ng-model="mov.banco" class="form-control form-control-sm" ng-required="true" ng-change="Cuentas($index)" >
+							<option ng-repeat="b in cempresa.cuentas" value="{{b.banco}}" >{{b.banco}}</option> 
+						</select>	
+					</div>
+				
+<!-- 					<div class="col-md-6"> -->
+<!-- 						<label class="control-label">Banco:</label>		  -->
+<!-- 						<select name="banco" ng-model="mov.banco" class="form-control form-control-sm" ng-required="true" ng-change="Cuentas()" > -->
+<!-- 							<option ng-repeat="b in bancos" value="{{b.nombre}}" >{{b.nombre}}</option>  -->
+<!-- 						</select>	 -->
+<!-- 					</div> -->
+					<div class="col-md-4">
 						<label class="control-label">Cuentas:</label>
 						<select name="cuentas" class="form-control form-control-sm" ng-required="true" ng-model="mov.cuenta" value="{{mov.cuenta}}">
 					 		<option ng-repeat=" c in cuentas">{{c.cuenta}}</option> 

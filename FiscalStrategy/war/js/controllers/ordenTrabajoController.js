@@ -291,9 +291,11 @@ app.service("operacionesMovimientosService",['$http', '$q', function($http, $q){
 	
 }]);
 
-app.controller("OTsAddController",['$rootScope', '$route','$scope','$cookieStore', '$window', '$location', 'ordenTrabajoservice','cuentaservice','operacionesMovimientosService','userFactory', function($rootScope,$route, $scope, $cookieStore, $window, $location, ordenTrabajoservice,cuentaservice,operacionesMovimientosService, userFactory){
+app.controller("OTsAddController",['$rootScope', '$route','$scope','$cookieStore', '$window', '$location', 'ordenTrabajoservice','cuentaservice','operacionesMovimientosService','userFactory','empresaservice', function($rootScope,$route, $scope, $cookieStore, $window, $location, ordenTrabajoservice,cuentaservice,operacionesMovimientosService, userFactory,empresaservice){
 	$rootScope.perfilUsuario = userFactory.getUsuarioPerfil();  //obtener perfl de usuario para pintar el menú al qe tiene acceso
-	
+	empresaservice.load(1).then(function(data) {
+		$scope.empresa = data;
+	})
 	$scope.bancos = catalogoBancos();
 	$scope.tablaPagos= false;
 	$scope.tablaOper= false;
@@ -403,10 +405,19 @@ app.controller("OTsAddController",['$rootScope', '$route','$scope','$cookieStore
 		$scope.cliente = data;
 	});
 	
+	$scope.Cuentasban = function() {
+		 empresaservice.getce($scope.pago.empresa).then(function(data) {
+		  		$scope.cempresa = data;
+		  		$scope.banco=$scope.cempresa.cuentas[0].banco;
+		  		 console.log($scope.cempresa);
+		  });
+			
+	};
+	
 	$scope.Cuentas = function() {
 		 ordenTrabajoservice.consultarCuentasPorBanco($scope.pago.banco).then(function(data){
 			 $scope.cuentas= data;
-			 console.log(data);
+			 console.log(cuentas);
 		 }); 
 	};
 	
@@ -756,8 +767,8 @@ app.controller("OTsAddController",['$rootScope', '$route','$scope','$cookieStore
 }]);
 
 
-app.controller("ordenTrabajoController",['$rootScope', '$scope','$window', '$location', '$cookieStore','ordenTrabajoservice','usuarioservice','operacionesMovimientosService','notificacionesService','userFactory',
-                                         function($rootScope, $scope, $window, $location, $cookieStore, ordenTrabajoservice,usuarioservice,operacionesMovimientosService,notificacionesService,userFactory){
+app.controller("ordenTrabajoController",['$rootScope', '$scope','$window', '$location', '$cookieStore','ordenTrabajoservice','usuarioservice','operacionesMovimientosService','notificacionesService','userFactory','empresaservice',
+                                         function($rootScope, $scope, $window, $location, $cookieStore, ordenTrabajoservice,usuarioservice,operacionesMovimientosService,notificacionesService,userFactory,empresaservice){
 	$rootScope.perfilUsuario = userFactory.getUsuarioPerfil();  //obtener perfl de usuario para pintar el menú al qe tiene acceso
 	$scope.perfil=$rootScope.perfilUsuario;
 	console.log("el perfil", $scope.perfil);
@@ -772,7 +783,9 @@ app.controller("ordenTrabajoController",['$rootScope', '$scope','$window', '$loc
 	$scope.operaciones={tipo: null, descripcion: null, monto: null, estatus: "ACTIVO", cuenta: null, banco:null,fecha: new Date(),montoLetra: null,pagarA: null,fEmision: new Date()}
 	$scope.mov={tipo: null,monto: null,descripcion: null,banco: null,cuenta: null,numTransaccion:null,fecha:new Date(),estatus: null,montoLetra: null,pagarA: null,fEmision: new Date()}
 	$scope.movimientosVO={movimiento:null,idOt:null,bndMovimiento:null,saldo:null}
-	
+	empresaservice.load(1).then(function(data) {
+		$scope.empresa = data;
+	})
 	ordenTrabajoservice.loadot($cookieStore.get("idOt")).then(function(data){
 		$scope.otvo= data;
 		$scope.mont=$scope.otvo.pagos.monto;
@@ -850,6 +863,14 @@ app.controller("ordenTrabajoController",['$rootScope', '$scope','$window', '$loc
 		}
 	});	
 	
+	$scope.Cuentasban = function() {
+		 empresaservice.getce($scope.mov.empresa).then(function(data) {
+		  		$scope.cempresa = data;
+		  		$scope.banco=$scope.cempresa.cuentas[0].banco;
+		  		 console.log($scope.cempresa);
+		  });
+			
+	};
 	function cerrarOrden(){
 		var contM=0, contC=0;
 		for(var i in $scope.otvo.movimientos){
