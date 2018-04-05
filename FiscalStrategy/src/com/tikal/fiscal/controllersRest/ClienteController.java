@@ -44,8 +44,10 @@ public class ClienteController {
 		List<Cliente> repetidos= new ArrayList<Cliente>();
 		if(lista.size()>0){
 			for(Cliente c: lista){
-				if(c.getNombre().compareTo(cliente.getNombre())==0 && c.getApePaterno().compareTo(cliente.getApePaterno())==0){
-					repetidos.add(c);
+				if(c.getNombre()!=null){
+					if(c.getNombre().compareTo(cliente.getNombre())==0 && c.getApePaterno().compareTo(cliente.getApePaterno())==0){
+						repetidos.add(c);
+					}
 				}
 			}
 		}
