@@ -1,7 +1,6 @@
 package com.tikal.fiscal.controllersRest;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,9 +14,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import com.tikal.fiscal.controllersRest.VO.ClienteVO;
 import com.tikal.fiscal.dao.ClienteDAO;
 import com.tikal.fiscal.dao.OrdenDeTrabajoDAO;
 import com.tikal.fiscal.model.Cliente;
+import com.tikal.fiscal.model.Usuario;
+import com.tikal.fiscal.security.UsuarioDAO;
 import com.tikal.fiscal.util.AsignadorDeCharset;
 import com.tikal.fiscal.util.JsonConvertidor;
 
@@ -30,6 +32,9 @@ public class ClienteController {
 	
 	@Autowired
 	OrdenDeTrabajoDAO otdao;	
+	
+	@Autowired
+	UsuarioDAO usuariodao;
 	
 	@RequestMapping(value={"/guardar"},method= RequestMethod.POST, consumes="application/json")
 	public void guardar(HttpServletResponse res, HttpServletRequest req, @RequestBody String json) throws IOException{
@@ -114,8 +119,20 @@ public class ClienteController {
 	@RequestMapping(value={"/find/{id}"},method= RequestMethod.GET, produces="application/json")
 	public void getById(HttpServletResponse res, HttpServletRequest req, @PathVariable Long id) throws IOException{
 		AsignadorDeCharset.asignar(req, res);
+		ClienteVO vo= new ClienteVO();
 		Cliente  c= clientedao.get(id);
-		res.getWriter().print(JsonConvertidor.toJson(c));
+		if(c.getIdBrocker()!=null){
+			Cliente b= clientedao.get(c.getIdBrocker());
+			vo.brocker=b;
+		}
+		if(c.getResponsable()!=null){
+			Usuario r = usuariodao.consultarId(c.getResponsable());
+			vo.responsable=r;
+		}
+		
+		vo.cliente=c;
+
+		res.getWriter().print(JsonConvertidor.toJson(vo));
 	}
 	
 }

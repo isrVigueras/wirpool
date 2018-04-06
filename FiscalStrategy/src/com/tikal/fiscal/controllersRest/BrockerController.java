@@ -48,7 +48,7 @@ public class BrockerController {
 	@RequestMapping(value={"/buscar/{nombre}"},method= RequestMethod.GET, produces="application/json")
 	public void buscar(HttpServletResponse res, HttpServletRequest req, @PathVariable String nombre) throws IOException{
 		AsignadorDeCharset.asignar(req, res);
-		List<Cliente> lista= clientedao.buscar(nombre);
+		List<Cliente> lista= clientedao.buscarb(nombre);
 		res.getWriter().print(JsonConvertidor.toJson(lista));
 	}
 	

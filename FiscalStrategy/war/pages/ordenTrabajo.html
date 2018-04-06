@@ -179,9 +179,9 @@
 						</button>
 					</td>
 					<td class="ng-binding" align="right">
-						<button class="btn btn-small"  data-toggle="modal" ng-if="perfil=='AdministradorRoot' || perfil=='Ejecutivo'"
-						 ng-show="mov.tipo != 'Efectivo' &&  mov.estatus == 'AUTORIZADO'" 
-						 ng-disabled="mov.banco==null && mov.cuenta == null"  
+						<button class="btn btn-small"  data-toggle="modal" ng-if="perfil=='AdministradorRoot' || perfil=='Ejecutivo' || perfil=='Administrador'"
+						 ng-show="(mov.tipo != 'Efectivo' &&  mov.estatus == 'AUTORIZADO') || (mov.tipo == 'Efectivo' && perfil=='Administrador')" 
+						 ng-disabled="mov.tipo != 'Efectivo' && mov.banco==null && mov.cuenta == null"  
 						 ng-click="cargarMov($index,'OPC')" data-target="#modalVerificar">
 							<span class="glyphicon glyphicon-ok"></span>
 						</button>
@@ -194,6 +194,7 @@
 	<br>
 	<div class="infComisiones" ng-hide="tipoOT=='ca'">
 		<div class="Dlabel">
+		
 			<div class="row">
 				<div class="col-md-6" >
 					<label>Operaci&oacute;n Asesor</label>
@@ -202,6 +203,7 @@
 					<button class="btn btn-small" data-toggle="modal" data-target="#myModalOperAsesor" ng-disabled="otvo.ot.saldoCom==0"> Agregar</button>
 				</div>
 			</div>
+			
 		</div>
 		<table style="width: 100%" class="table table-stripped">
 			<thead>
@@ -251,8 +253,8 @@
 					</td>
 					<td class="ng-binding" align="right">
 						<button class="btn btn-small"  data-toggle="modal" ng-if="perfil=='AdministradorRoot' || perfil=='Ejecutivo'"
-						 ng-show="mov.tipo != 'Efectivo' &&  mov.estatus == 'AUTORIZADO' " 
-						 ng-disabled="mov.banco==null && mov.cuenta == null"  
+						 ng-show="(mov.tipo != 'Efectivo' &&  mov.estatus == 'AUTORIZADO') || (mov.tipo == 'Efectivo' && perfil=='Administrador') " 
+						 ng-disabled="mov.tipo != 'Efectivo' && mov.banco==null && mov.cuenta == null"  
 						 ng-click="cargarMov($index,'OPA')" data-target="#modalVerificar">
 							<span class="glyphicon glyphicon-ok"></span>
 						</button>
@@ -260,9 +262,11 @@
 				</tr>
 			</tbody>
 		</table>
+		
 		<div>
 			<label>Saldo Comisiones:&nbsp</label>{{otvo.ot.saldoCom | currency}}
 		</div>
+		
 	</div>
 	
  	<div class="row" >

@@ -20,6 +20,17 @@ app.service("clientservice",['$http', '$q', function($http, $q){
 			});
 		return d.promise;
 	}
+	
+	this.getCliente = function(id) {
+		var d = $q.defer();
+	
+		$http.get("/clientes/find/"+id).then(
+			function(response) {
+				d.resolve(response.data);
+			});
+		return d.promise;
+	}
+	
 	this.guardarCliente=function(send){
 		var d = $q.defer();
 		$http.post("/clientes/guardar/",send).then(
@@ -263,8 +274,11 @@ app.controller("clientController",['$rootScope','usuarioservice','brockerservice
 		
 	};
 	$scope.editar = function(data){
-		$scope.getcliente=data;
-		$scope.client=$scope.getcliente;
+		clientservice.getCliente(data.id).then(function(data){
+			$scope.client=data.cliente;
+			$scope.brocker= data.brocker.nickname;
+			$scope.responsable= data.responsable.usuario;
+		});
 		
 		
 	}
