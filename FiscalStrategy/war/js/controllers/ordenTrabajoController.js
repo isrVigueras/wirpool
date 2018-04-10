@@ -339,7 +339,15 @@ app.controller("OTsAddController",['$rootScope', '$route','$scope','$cookieStore
 			$('#searchBox').data('typeahead').source=$scope.encontrados;
 		});
 	}
+
 	
+	$scope.comis = function() {
+	
+		$scope.datos.comipor= $scope.redondea(($scope.datos.porciento/100)*$scope.datos.basecomisiones);
+		 $scope.calcularComisiones('Todos');
+	};
+
+
 	
 	$scope.pago={
 			fecha: new Date(),
@@ -369,7 +377,8 @@ app.controller("OTsAddController",['$rootScope', '$route','$scope','$cookieStore
 			saldoCom: null,
 			totalComisiones: null,
 			tipo: "normal",
-			porciento: 16
+			porciento: 16,
+			basecomisiones:0.0
 	}
 	
 	$scope.operaciones={
@@ -417,7 +426,7 @@ app.controller("OTsAddController",['$rootScope', '$route','$scope','$cookieStore
 	$scope.Cuentas = function() {
 		 ordenTrabajoservice.consultarCuentasPorBanco($scope.pago.banco).then(function(data){
 			 $scope.cuentas= data;
-			 console.log(cuentas);
+//			 console.log(cuentas);
 		 }); 
 	};
 	
@@ -496,10 +505,22 @@ app.controller("OTsAddController",['$rootScope', '$route','$scope','$cookieStore
 		$scope.datos.total= sumaMontoPagos
 		var div= ("1." + $scope.datos.porciento)*1;
 		$scope.datos.importe = $scope.redondea(sumaMontoPagos / div);
+		$scope.datos.basecomisiones= $scope.redondea(sumaMontoPagos / div);
+		$scope.datos.basecomisiones=$scope.datos.basecomisiones*1;
+		$scope.datos.comipor= $scope.redondea(($scope.datos.porciento/100)*$scope.datos.basecomisiones);
 		$scope.datos.iva= $scope.redondea(sumaMontoPagos - $scope.datos.importe);
 		$scope.calcularComisiones('Todos');
 	}
-	
+	$scope.cImporte=function(){
+		var sumaMontoPagos = 0;
+		for(var i in $scope.otVO.pagos){
+			sumaMontoPagos= sumaMontoPagos + $scope.otVO.pagos[i].monto;
+		}
+		$scope.datos.total= sumaMontoPagos
+		var div= ("1." + $scope.datos.porciento)*1;
+		$scope.datos.comipor= $scope.redondea(($scope.datos.porciento/100)*$scope.datos.basecomisiones);
+		$scope.calcularComisiones('Todos');
+	}
 	$scope.calcularComisiones=function(param){
 		if($scope.tablaPagos== true){
 			$scope.calcularMontos(param);
@@ -523,27 +544,30 @@ app.controller("OTsAddController",['$rootScope', '$route','$scope','$cookieStore
 	$scope.calcularMontos=function(modelo){
 			switch(modelo) {
 		    case 'Lic' :
-		    	$scope.datos.montoLic = $scope.redondea(($scope.datos.porLic/100)*$scope.datos.importe);
+		    	$scope.datos.montoLic = $scope.redondea(($scope.datos.porLic/100)*$scope.datos.basecomisiones);
 		    	$scope.datos.montoLic=$scope.datos.montoLic*1;
 
 		        break;
 		    case 'Des':
-		    	$scope.datos.montoDes = $scope.redondea(($scope.datos.porDes/100)*$scope.datos.importe);
+		    	$scope.datos.montoDes = $scope.redondea(($scope.datos.porDes/100)*$scope.datos.basecomisiones);
 		    	$scope.datos.montoDes= $scope.datos.montoDes*1;
 
 		        break;
 		    case 'Broke':
 		    	for( var i in $scope.brokers){
-	    			$scope.brokers[i].montoBrok = $scope.redondea(($scope.brokers[i].porBrok/100)*$scope.datos.importe);
+	    			$scope.brokers[i].montoBrok = $scope.redondea(($scope.brokers[i].porBrok/100)*$scope.datos.basecomisiones);
 	    			$scope.brokers[i].montoBrok= $scope.brokers[i].montoBrok*1;
 
 	    		}
 		        break;
 		    case 'Todos':
-		    	$scope.datos.montoLic = $scope.redondea(($scope.datos.porLic/100)*$scope.datos.importe);
-		    	$scope.datos.montoDes = $scope.redondea(($scope.datos.porDes/100)*$scope.datos.importe);
+		    	$scope.datos.montoLic = $scope.redondea(($scope.datos.porLic/100)*$scope.datos.basecomisiones);
+		    	$scope.datos.montoLic=$scope.datos.montoLic*1;
+		    	$scope.datos.montoDes = $scope.redondea(($scope.datos.porDes/100)*$scope.datos.basecomisiones);
+		    	$scope.datos.montoDes=$scope.datos.montoDes*1;
 		    	for( var i in $scope.brokers){
-	    			$scope.brokers[i].montoBrok = $scope.redondea(($scope.brokers[i].porBrok/100)*$scope.datos.importe);
+	    			$scope.brokers[i].montoBrok = $scope.redondea(($scope.brokers[i].porBrok/100)*$scope.datos.basecomisiones);
+	    			$scope.brokers[i].montoBrok=$scope.brokers[i].montoBrok*1;
 	    		}	       
 		    	break;
 		     default:
@@ -565,7 +589,7 @@ app.controller("OTsAddController",['$rootScope', '$route','$scope','$cookieStore
 		var retorno = $scope.datos.porciento-$scope.datos.porLic- $scope.datos.porDes- sumaBrok;
 		if(retorno > 0 ){
 			$scope.datos.retorno= $scope.redondea(retorno);
-			$scope.montoRetorno=$scope.redondea(($scope.datos.retorno/100)*$scope.datos.importe);
+			$scope.montoRetorno=$scope.redondea(($scope.datos.retorno/100)*$scope.datos.basecomisiones);
 			 var montosTotal = ($scope.datos.montoLic * 1)+ ($scope.datos.montoDes * 1) + ($scope.sumaMontoBrok * 1) + ($scope.montoRetorno * 1);
 			$scope.datos.totalComisiones=$scope.redondea(montosTotal);
 			$scope.totalPor=$scope.datos.porLic + $scope.datos.porDes + sumaBrok + $scope.datos.retorno;
@@ -598,28 +622,33 @@ app.controller("OTsAddController",['$rootScope', '$route','$scope','$cookieStore
 	$scope.calcularMontosM=function(modelo){
 			switch(modelo) {
 		    case 'Lic' :
-		    	$scope.datos.porLic=$scope.redondea(($scope.datos.montoLic * 100)/$scope.datos.importe);
+		    	$scope.datos.porLic=$scope.redondea(($scope.datos.montoLic * 100)/$scope.datos.basecomisiones);
+		    	$scope.datos.porLic=$scope.datos.porLic*1
 //		    	$scope.datos.montoLic = $scope.redondea(($scope.datos.porLic/100)*$scope.datos.importe);
 		    	$("#porLic").val($scope.datos.porLic);
 		        break;
 		    case 'Des':
-		    	$scope.datos.porDes=$scope.redondea(($scope.datos.montoDes * 100)/$scope.datos.importe);
+		    	$scope.datos.porDes=$scope.redondea(($scope.datos.montoDes * 100)/$scope.datos.basecomisiones);
+		    	$scope.datos.porDes=$scope.datos.porDes*1;
 //		    	$scope.datos.montoDes = $scope.redondea(($scope.datos.porDes/100)*$scope.datos.importe);
 		    	$("#porDes").val($scope.datos.porDes);
 		        break;
 		    case 'Broke':
 		    	for( var i in $scope.brokers){
-		    		$scope.brokers[i].porBrok=$scope.redondea(($scope.brokers[i].montoBrok * 100)/ $scope.datos.importe);
+		    		$scope.brokers[i].porBrok=$scope.redondea(($scope.brokers[i].montoBrok * 100)/ $scope.datos.basecomisiones);
+		    		$scope.brokers[i].porBrok=$scope.brokers[i].porBrok*1;
 //	    			$scope.brokers[i].montoBrok = $scope.redondea(($scope.brokers[i].porBrok/100)*$scope.datos.importe);
 	    			$("#porbroke").val($scope.brokers[i].porBrok);
 	    		}
 		        break;
 		    case 'Todos':
-		    	$scope.datos.montoLic = $scope.redondea(($scope.datos.porLic/100)*$scope.datos.importe);
-		    	$scope.datos.montoDes = $scope.redondea(($scope.datos.porDes/100)*$scope.datos.importe);
+		    	$scope.datos.montoLic = $scope.redondea(($scope.datos.porLic/100)*$scope.datos.basecomisiones);
+		    	$scope.datos.montoLic=$scope.datos.montoLic*1;
+		    	$scope.datos.montoDes = $scope.redondea(($scope.datos.porDes/100)*$scope.datos.basecomisiones);
+		    	$scope.datos.montoDes=$scope.datos.montoDes*1;
 		    	for( var i in $scope.brokers){
-	    			$scope.brokers[i].montoBrok = $scope.redondea(($scope.brokers[i].porBrok/100)*$scope.datos.importe);
-	    		}	       
+	    			$scope.brokers[i].montoBrok = $scope.redondea(($scope.brokers[i].porBrok/100)*$scope.datos.basecomisiones);
+	    		}	       $scope.brokers[i].montoBrok=$scope.brokers[i].montoBrok*1;
 		    	break;
 		     default:
 		    	 return;

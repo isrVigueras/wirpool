@@ -233,11 +233,11 @@ app.service("OPMS",['$http', '$q', function($http, $q){
 				cantidad= (parseFloat(ot.total) - operaciones.monto).toFixed(2);
 			}
 		
-		if(cantidad > 0 ){
+		if(cantidad >= 0 ){
 			objetos.saldo= cantidad;
 			objetos.error= " ";
 		}else{
-			objetos.error="";
+			objetos.error="* ERROR: EL monto sobrepasa el saldo establecido *"; 
 		}
 		
 		return objetos;
@@ -360,12 +360,37 @@ app.controller("CAController",['$rootScope', '$scope','$cookieStore', '$window',
 		$scope.brokers.push(renglon);
 	}
 	
+//	$scope.verificarSaldo=function(operacion){
+//		var objs= OPMS.verificarSaldo( $scope.otVO, $scope.datos, $scope.operaciones);
+//		var btndisble="false";
+//		$scope.errorSaldo= objs.error;
+//		$scope.datos.saldoMov = objs.saldo;
+//		if($scope.operaciones.tipo=="Cheque"){
+//			$scope.operaciones.montoLetra= NumeroALetras($scope.operaciones.monto);
+//			$scope.operaciones.montoLetra= $scope.operaciones.montoLetra.toUpperCase();
+//		}
+//
+//	}
 	$scope.verificarSaldo=function(operacion){
 		var objs= OPMS.verificarSaldo( $scope.otVO, $scope.datos, $scope.operaciones);
 		$scope.errorSaldo= objs.error;
-		$scope.datos.saldoMov = objs.saldo;
 		
-		
+		if($scope.errorSaldo==" "){
+			$scope.dis=false;
+		}else{
+			$scope.dis=true;
+			objetos.error="* ERROR: EL monto sobrepasa el saldo establecido *"; 
+		}
+		if(operacion == 'OPC'){
+			$scope.otvo.ot.saldoMov = objs.saldo;
+			
+		}else{
+			$scope.otvo.ot.saldoCom= objs.saldo;
+		}
+		if($scope.operaciones.tipo=="Cheque"){
+			$scope.operaciones.montoLetra= NumeroALetras($scope.operaciones.monto);
+			$scope.operaciones.montoLetra= $scope.operaciones.montoLetra.toUpperCase();
+		}
 	}
 	$scope.getIndex=function(){
 		var x = document.getElementById("bc").selectedIndex;
@@ -433,7 +458,13 @@ app.controller("CAController",['$rootScope', '$scope','$cookieStore', '$window',
 		$scope.cheque =OPMS.detalleCheque(index, operacion, $scope.otVO, $scope.cheque);
 	}
 
-	
+	$scope.eliminarRenglonICliente=function(renglon){
+		$scope.otVO.movimientos.splice(renglon, 1);
+		$scope.verificarSaldo('OPC');
+		if($scope.otVO.movimientos.length == 0){
+			$scope.tablaOper=false;
+		}
+	}
 	$scope.guardarOT=function(){
 		if($scope.tablaPagos == true){
 

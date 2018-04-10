@@ -132,13 +132,16 @@
 		<div class="infComisiones">
 			<div class="Dlabel">
 				<label>Comisiones</label>
+				<span style="padding-left:4em">Base Comisiones: &nbsp;</span>
+				<input style="width: 10%" type="number"  ng-change="comis();" min="0" ng-model="datos.basecomisiones" step="0.01" max="{{datos.total}}" id="comisiones" value="{{datos.basecomisiones}}">
+				<span style="padding-left:4em">IVA: {{datos.comipor | currency}} &nbsp;</span>
 			</div>
 			<br>
 			<table style="width: 100%" class="table table-stripped">
 				<thead>
 					<tr>
 						<th>Comisi&oacute;n</th>
-						<th> % <input style="width: 15%" type="number" min="1" ng-model="datos.porciento"  ng-change="calcularImporte()"></th>
+						<th> % <input style="width: 15%" type="number" min="1" max="100" ng-model="datos.porciento"  ng-change="cImporte()"></th>
 						<th></th>
 						<th>Monto</th>
 					</tr>
@@ -146,23 +149,23 @@
 				<tbody>	
 					<tr>
 						<td>AJD</td>
-						<td><input style="width: 20%" type="number" min="0" ng-model="datos.porLic"   ng-change="calcularComisiones('Lic')" id="porLic"></td>
+						<td><input style="width: 20%" type="number" min="0" ng-model="datos.porLic"   ng-change="calcularComisiones('Lic')" step="0.01" id="porLic"></td>
 						<td></td>
-						<td><input style="width: 30%" type="number" min="0" ng-model="datos.montoLic" ng-change="calcularComisionesM('Lic')" id="AJC"></td>
+						<td><input style="width: 30%" type="number" min="0" ng-model="datos.montoLic" ng-change="calcularComisionesM('Lic')" step="0.01"  id="AJC"></td>
 <!-- 						<td>{{datos.montoLic}}</td> -->
 					</tr>
 					<tr>
 						<td>J&A</td>
-						<td><input style="width: 20%" type="number" min="0" ng-model="datos.porDes"  ng-change="calcularComisiones('Des')" id="porDes"></td>
+						<td><input style="width: 20%" type="number" min="0" ng-model="datos.porDes"  ng-change="calcularComisiones('Des')" step="0.01" id="porDes"></td>
 						<td></td>
-						<td><input style="width: 30%" type="number" min="0" ng-model="datos.montoDes"ng-change="calcularComisionesM('Des')" id="Des"></td>
+						<td><input style="width: 30%" type="number" min="0" ng-model="datos.montoDes"ng-change="calcularComisionesM('Des') "step="0.01" id="Des"></td>
 <!-- 						<td>{{datos.montoDes}}</td> -->
 					</tr>
 					<tr ng-repeat="brok in brokers">
 						<td>{{brok.nombre}}</td>
-						<td><input style="width: 20%" type="number" min="0" ng-model="brok.porBrok"  ng-change="calcularComisiones('Broke')" id="porbroke"></td>
+						<td><input style="width: 20%" type="number" min="0" ng-model="brok.porBrok"  ng-change="calcularComisiones('Broke')" step="0.01" id="porbroke"></td>
 						<td></td>
-						<td><input style="width: 30%" type="number" min="0" ng-model="brok.montoBrok"ng-change="calcularComisionesM('Broke')" id="broke"></td>
+						<td><input style="width: 30%" type="number" min="0" ng-model="brok.montoBrok"ng-change="calcularComisionesM('Broke')" step="0.01" id="broke"></td>
 <!-- 						<td>{{brok.montoBrok}}</td> -->
 
 					</tr>
@@ -215,7 +218,7 @@
 						<td>{{op.monto | currency}}</td>
 						<td>{{op.estatus}}</td>
 						<td><button class="btn btn-small btn-info"  ng-click="eliminarRenglonICliente($index)" title="Eliminar Instruccion">
-								<span class="glyphicon glyphicon-remove"></span></button>
+								<span class="glyphicon glyphicon-remove"></span></button></td>
 						<td> <a ng-show="op.tipo=='Cheque'" data-toggle="modal" data-target="#myModalCheque" ng-click="detalleCheque($index, 'OPC')"><b>Detalle</b></a></td>
 					</tr>
 					<tr>
