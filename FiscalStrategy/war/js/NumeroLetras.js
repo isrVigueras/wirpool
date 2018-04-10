@@ -160,26 +160,28 @@ function NumeroALetras(num) {
         enteros: Math.floor(num),
         centavos: (((Math.round(num * 100)) - (Math.floor(num) * 100))),
         letrasCentavos: "",
-        letrasMonedaPlural: 'PESOS M.N.',//"PESOS", 'Dólares', 'Bolívares', 'etcs'
-        letrasMonedaSingular: 'PESO M.N.', //"PESO", 'Dólar', 'Bolivar', 'etc'
+        letrasMonedaPlural: 'PESOS 00/100 M.N.',//"PESOS", 'Dólares', 'Bolívares', 'etcs'
+        letrasMonedaSingular: 'PESO 00/100 M.N.', //"PESO", 'Dólar', 'Bolivar', 'etc'
 
         letrasMonedaCentavoPlural: "CENTAVOS",
         letrasMonedaCentavoSingular: "CENTAVO"
     };
 
     if (data.centavos > 0) {
-        data.letrasCentavos = "CON " + (function (){
-            if (data.centavos == 1)
-                return Millones(data.centavos) + " " + data.letrasMonedaCentavoSingular;
-            else
-                return Millones(data.centavos) + " " + data.letrasMonedaCentavoPlural;
-            })();
+//        data.letrasCentavos = "CON " + (function (){
+//            if (data.centavos == 1)
+//                return Millones(data.centavos) + " " + data.letrasMonedaCentavoSingular;
+//            else
+//                return Millones(data.centavos) + " " + data.letrasMonedaCentavoPlural;
+//            })();
+    	data.letrasMonedaPlural: 'PESOS' +data.centavos+'/100 M.N.';//"PESOS", 'Dólares', 'Bolívares', 'etcs'
+        data.letrasMonedaSingular: 'PESO' +data.centavos+'/100 M.N.'; //"PESO", 'Dólar', 'Bolivar', 'etc'
     };
 
     if(data.enteros == 0)
-        return "CERO " + data.letrasMonedaPlural + " " + data.letrasCentavos;
+        return "CERO " + data.letrasMonedaPlural;// + " " + data.letrasCentavos;
     if (data.enteros == 1)
-        return Millones(data.enteros) + " " + data.letrasMonedaSingular + " " + data.letrasCentavos;
+        return Millones(data.enteros) + " " + data.letrasMonedaSingular;// + " " + data.letrasCentavos;
     else
-        return Millones(data.enteros) + " " + data.letrasMonedaPlural + " " + data.letrasCentavos;
+        return Millones(data.enteros) + " " + data.letrasMonedaPlural;// + " " + data.letrasCentavos;
 }//NumeroALetras()

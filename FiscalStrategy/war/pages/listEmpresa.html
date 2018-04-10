@@ -98,6 +98,8 @@
 						<th style="width: 20%;">Cuenta</th>
 						<th style="width: 20%;">Clabe</th>
 						<th style="width: 20%;">Titular</th>
+						<th style="width: 20%;">Moneda</th>
+						
 					</tr>
 				</thead>
 				<tbody>
@@ -107,6 +109,7 @@
 						<td>{{cuenta.cuenta}}</td>
 						<td>{{cuenta.clabe}}</td>
 						<td>{{cuenta.nombre}}</td>
+						<td>{{cuenta.moneda}}</td>
 <!-- 						<td> -->
 						
 <!-- 									<button title="Eliminar Cuenta" class="btn btn-small"  -->
@@ -141,6 +144,12 @@
 		<div class="col-md-6">
 			Nombre: <input class="form-control" ng-model="cuenta.nombre" onkeyup="javascript:this.value=this.value.toUpperCase();"
 				type="text" ng-required="true"><br>
+		</div>
+		<div class="col-md-6">
+			Moneda: <select class="form-control" ng-model="cuenta.moneda"  ng-required="true">
+				<option>MXN</option>
+				<option>USD</option>
+			</select><br>
 		</div>
 
 		<!--    	   ^([A-ZÑ\x26]{3,4}([0-9]{2})(0[1-9]|1[0-2])(0[1-9]|1[0-9]|2[0-9]|3[0-1]))([A-Z\d]{3})?$ -->
