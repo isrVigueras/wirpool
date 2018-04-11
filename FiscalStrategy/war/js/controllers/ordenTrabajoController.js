@@ -286,7 +286,7 @@ app.service("operacionesMovimientosService",['$http', '$q', function($http, $q){
 			}
 			
 		}
-		if(cantidad > 0 ){
+		if(cantidad >= 0 ){
 			objetos.saldo= cantidad;
 			objetos.error= " ";
 			btndisble=false;
@@ -357,7 +357,16 @@ app.controller("OTsAddController",['$rootScope', '$route','$scope','$cookieStore
 			$('#searchBox').data('typeahead').source=$scope.encontrados;
 		});
 	}
-	
+	   function enterNumber(){
+
+		   var e = document.getElementById('valinumber');
+
+		   if (!/^[0-9]+$/.test(e.value)) 
+		 { 
+		 alert("Introdusca Solo Numeros");
+		 e.value = e.value.substring(0,e.value.length-1);
+		 }
+		 } 
 	$scope.zEmpresa=function(){
 		ordenTrabajoservice.searchEmpresa($scope.pago.empresa).then(function(data){
 			
@@ -756,7 +765,8 @@ app.controller("OTsAddController",['$rootScope', '$route','$scope','$cookieStore
 	$scope.guardarOT=function(){
 		if($scope.tablaPagos == true){
 			if($scope.datos.porLic != null || $scope.datos.porDes != null || $scope.datos.porBrok.length != 0){
-				if($scope.tablaOper == true && $scope.tablaOperAsesor == true){
+				if($scope.tablaOper == true ){
+//					&& $scope.tablaOperAsesor == true
 					for(var i in $scope.brokers){
 						$scope.datos.porBrok.push($scope.brokers[i].porBrok);
 						$scope.datos.montoBrok.push($scope.brokers[i].montoBrok);

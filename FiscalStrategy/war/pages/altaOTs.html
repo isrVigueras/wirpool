@@ -37,10 +37,16 @@
 					
 				</div>
 				<br>
-				<div class="row">				
+				<div class="row">	
+					<div class="col-md-2">
+						<label>No. de Cuenta:</label> 
+						<select name="cuentas" class="form-control form-control-sm" ng-required="true" ng-model="pago.cuenta" >
+					 		<option ng-repeat=" c in cempresa.cuentas | filter: { banco: pago.banco}" value="{{c.cuenta}}">{{c.cuenta}}</option> 
+						</select>	
+					</div>			
 					<div class="col-md-2">
 						<label>Monto:</label> 
-						<input name="monto" class="form-control form-control-sm" ng-model="pago.monto" type="number" min="0" ><br>
+						<input name="monto" class="form-control form-control-sm" ng-model="pago.monto" type="number" min="0" step="0.01"><br>
 					</div>
 					<!--    	   ^([A-ZÑ\x26]{3,4}([0-9]{2})(0[1-9]|1[0-2])(0[1-9]|1[0-9]|2[0-9]|3[0-1]))([A-Z\d]{3})?$ -->
 					<div class="col-md-2">
@@ -64,12 +70,8 @@
 <!-- 					 		<option ng-repeat=" c in cuentas" value="{{c.id}}">{{c.nombre}}</option>  -->
 <!-- 						</select> -->
 <!--  					</div>  -->
- 					<div class="col-md-2">
-						<label>No. de Cuenta:</label> 
-						<select name="cuentas" class="form-control form-control-sm" ng-required="true" ng-model="pago.cuenta" >
-					 		<option ng-repeat=" c in cempresa.cuentas | filter: { banco: pago.banco}" value="{{c.cuenta}}">{{c.cuenta}}</option> 
-						</select>	
-					</div>
+			
+ 					
 				</div>
 				<div class="row">
 				<div class="col-md-6">
@@ -322,7 +324,7 @@
 				  			<label class="control-label">Descripci&oacute;n:</label>
 				  		</div>
 				  		<div class="col-md-8">
-							<input class="form-control  mb-2" type="text" ng-required="true"  ng-model="operaciones.descripcion"  placeholder="Detalle de Operacion.." ng-disabled="tipoResguardo">			
+							<input class="form-control  mb-2" type="text" ng-required="true"  ng-model="operaciones.descripcion"  placeholder="Detalle de Operacion.." ng-disabled="tipoResguardo" onkeyup="javascript:this.value=this.value.toUpperCase();">			
 				  		</div>				
 				  		<div class="col-md-1"></div>	
 					</div>
@@ -371,7 +373,7 @@
 		  </div>
 			<br>
       	   <div class="modal-footer">
-        		<button type="button" class="btn btn-default" data-dismiss="modal"  ng-click="limpiaOperaciones()">Cerrar</button>
+        		<button type="button" class="btn btn-default" data-dismiss="modal"  ng-click="limpiaOperaciones(); verificarSaldo('OPC')">Cerrar</button>
       		</div>
         </div>
       </div>
