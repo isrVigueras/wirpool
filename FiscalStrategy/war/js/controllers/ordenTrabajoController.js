@@ -58,6 +58,19 @@ app.service("ordenTrabajoservice",['$http', '$q', function($http, $q){
 		return d.promise;
 	}
 	
+	this.searchEmpresa = function(buscar) {
+		var d = $q.defer();
+		$http.get("/empresa/buscar/"+buscar).then(function(response) {
+			d.resolve(response.data);
+		}, function(response) {
+			if(response.status==403){
+				alert("No tiene permiso de realizar esta acción");
+				//$location.path("/login");
+			}
+		});
+		return d.promise;
+	}
+	
 	this.loadPendientes = function(page) {
 		var d = $q.defer();
 		$http.get("/movimientos/load/"+page).then(
@@ -314,6 +327,11 @@ app.controller("OTsAddController",['$rootScope', '$route','$scope','$cookieStore
 			$scope.buscar();
 		}
 	},true);
+	$scope.$watch('pago.empresa',function(){
+		if($scope.pago.empresa.length>3){
+			$scope.zEmpresa();
+		}
+	},true);
 	$scope.buscar=function(){
 		ordenTrabajoservice.buscarClientes($scope.busca).then(function(data){
 			
@@ -337,6 +355,33 @@ app.controller("OTsAddController",['$rootScope', '$route','$scope','$cookieStore
 			    }
 			});
 			$('#searchBox').data('typeahead').source=$scope.encontrados;
+		});
+	}
+	
+	$scope.zEmpresa=function(){
+		ordenTrabajoservice.searchEmpresa($scope.pago.empresa).then(function(data){
+			
+			$scope.found=[];
+			for(var i=0; i< data.length; i++){
+				$scope.found.push(data[i].nombre);
+				
+			}
+			$scope.Empresa=data;
+//			$scope.tipos=data.tipos;
+			
+			$('#buscaEmpresa').typeahead({
+
+			    source: $scope.found,
+
+			    updater:function (item) {
+			    	var em=$scope.found.indexOf(item);
+			    	$scope.datos.idEmpresa= $scope.Empresa[em].id;
+			    	$scope.Cuentasban($scope.datos.idEmpresa);
+			        return item;
+			    }
+			
+			});
+			$('#buscaEmpresa').data('typeahead').source=$scope.found;
 		});
 	}
 
@@ -414,8 +459,8 @@ app.controller("OTsAddController",['$rootScope', '$route','$scope','$cookieStore
 		$scope.cliente = data;
 	});
 	
-	$scope.Cuentasban = function() {
-		 empresaservice.getce($scope.pago.empresa).then(function(data) {
+	$scope.Cuentasban = function(data) {
+		 empresaservice.getce(data).then(function(data) {
 		  		$scope.cempresa = data;
 		  		$scope.banco=$scope.cempresa.cuentas[0].banco;
 		  		 console.log($scope.cempresa);
@@ -423,12 +468,7 @@ app.controller("OTsAddController",['$rootScope', '$route','$scope','$cookieStore
 			
 	};
 	
-	$scope.Cuentas = function() {
-		 ordenTrabajoservice.consultarCuentasPorBanco($scope.pago.banco).then(function(data){
-			 $scope.cuentas= data;
-//			 console.log(cuentas);
-		 }); 
-	};
+
 	
 	$scope.addPago=function(){
 		if($scope.datos.nombreCliente == null){

@@ -19,14 +19,18 @@
 						<input id="searchBox" class="form-control form-control-sm" type="text" ng-model="busca" data-provide="typehead" autocomplete="off" onkeyup="javascript:this.value=this.value.toUpperCase();">
 					</div>
 					<div class="col-md-4">
-						<label>Empresas:</label> 
-						<select name="empresa" ng-model="pago.empresa" class="form-control form-control-sm" ng-required="true" ng-change="Cuentasban($index)" >
-							<option ng-repeat="e in empresa" value="{{e.id}}" >{{e.nombre}}</option> 
-						</select>	
+						<label>Empresa:</label>
+						<input id="buscaEmpresa" class="form-control form-control-sm" type="text" ng-model="pago.empresa" data-provide="typehead" autocomplete="off" onkeyup="javascript:this.value=this.value.toUpperCase();">
 					</div>
+<!-- 					<div class="col-md-4"> -->
+<!-- 						<label>Empresas:</label>  -->
+<!-- 						<select name="empresa" ng-model="pago.empresa" class="form-control form-control-sm" ng-required="true" ng-change="Cuentasban($index)" > -->
+<!-- 							<option ng-repeat="e in empresa" value="{{e.id}}" >{{e.nombre}}</option>  -->
+<!-- 						</select>	 -->
+<!-- 					</div> -->
 					<div class="col-md-4">
 						<label>Banco:</label> 
-						<select name="banco" ng-model="pago.banco" class="form-control form-control-sm" ng-required="true" ng-change="Cuentas($index)" >
+						<select name="banco" ng-model="pago.banco" class="form-control form-control-sm" ng-required="true">
 							<option ng-repeat="b in cempresa.cuentas" value="{{b.banco}}" >{{b.banco}}</option> 
 						</select>	
 					</div>
@@ -54,16 +58,16 @@
 							ng-model="pago.fecha" type="date" ng-required="true" /> 
 					</div>
 					
- 					<div class="col-md-4">
- 						<label>Nombre de la Cuenta:</label> 
-						<select name="cuentas" class="form-control form-control-sm" ng-required="true" ng-model="pago.cuenta" >
-					 		<option ng-repeat=" c in cuentas" value="{{c.id}}">{{c.nombre}}</option> 
-						</select>
- 					</div> 
+<!--  					<div class="col-md-4"> -->
+<!--  						<label>Nombre de la Cuenta:</label>  -->
+<!-- 						<select name="cuentas" class="form-control form-control-sm" ng-required="true" ng-model="pago.cuenta" > -->
+<!-- 					 		<option ng-repeat=" c in cuentas" value="{{c.id}}">{{c.nombre}}</option>  -->
+<!-- 						</select> -->
+<!--  					</div>  -->
  					<div class="col-md-2">
 						<label>No. de Cuenta:</label> 
 						<select name="cuentas" class="form-control form-control-sm" ng-required="true" ng-model="pago.cuenta" >
-					 		<option ng-repeat=" c in cuentas" value="{{c.id}}">{{c.cuenta}}</option> 
+					 		<option ng-repeat=" c in cempresa.cuentas | filter: { banco: pago.banco}" value="{{c.cuenta}}">{{c.cuenta}}</option> 
 						</select>	
 					</div>
 				</div>
