@@ -826,6 +826,8 @@ app.controller("OTsAddController",['$rootScope', '$route','$scope','$cookieStore
 		$scope.pago.cuenta="";
 		$scope.pago.banco="";
 		$scope.pago.monto= null;
+		$scope.pago.empresa=[];
+		$scope.pago.referencia="";
 	}
 	
 	$scope.LimpiarTodo=function(){
