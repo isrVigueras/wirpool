@@ -469,7 +469,7 @@ app.controller("OTsAddController",['$rootScope', '$route','$scope','$cookieStore
 	};
 	
 
-	
+
 	$scope.addPago=function(){
 		if($scope.datos.nombreCliente == null){
 			datosCliente();
