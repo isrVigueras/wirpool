@@ -313,7 +313,7 @@
 				  			<label class="control-label">Monto: </label>
 				  		</div>
 				  		<div class="col-md-3">
-	 						<input  class="form-control  mb-2" type="number" min="1" ng-required="true" ng-model="operaciones.monto"  ng-change="verificarSaldo('OPC')" ng-disabled="tipoResguardo">		
+	 						<input  class="form-control  mb-2" type="number" min="1" ng-required="true" ng-model="operaciones.monto"  ng-change="verificarSaldo('OPC')" ng-disabled="tipoResguardo" step="0.01">		
 				  		</div>
 				  		<div class="col-md-1"></div>
 				  	</div> 
@@ -402,7 +402,7 @@
 				  			<label class="control-label">Monto: </label>
 				  		</div>
 				  		<div class="col-md-3">
-	 						<input  class="form-control  mb-2" type="number" min="1" ng-required="true" ng-model="operaciones.monto"  ng-change="verificarSaldo('OPA')" ng-disabled="tipoResguardo">		
+	 						<input  class="form-control  mb-2" type="number" min="1" ng-required="true" ng-model="operaciones.monto"  ng-change="verificarSaldo('OPA')" step="0.01"ng-disabled="tipoResguardo">		
 				  		</div>
 				  		<div class="col-md-1"></div>
 				  	</div> 

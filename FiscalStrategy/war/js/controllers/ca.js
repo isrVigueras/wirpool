@@ -31,7 +31,18 @@ app.service("CBService",['$http', '$q', function($http, $q){
 		});
 		return d.promise;
 	}
-	
+	this.buscarClientes = function(buscar) {
+		var d = $q.defer();
+		$http.get("/clientes/buscar/"+buscar).then(function(response) {
+			d.resolve(response.data);
+		}, function(response) {
+			if(response.status==403){
+				alert("No tiene permiso de realizar esta acción");
+				//$location.path("/login");
+			}
+		});
+		return d.promise;
+	}
 	this.consultarClientesTodos = function() {
 		var d = $q.defer();
 		$http.get("/ots/getClientesBrokers/").then(function(response) {
@@ -261,7 +272,37 @@ app.controller("CAController",['$rootScope', '$scope','$cookieStore', '$window',
 	$scope.tipoResguardo = false;
 	$scope.tiposOp = TiposOperacion();
 	$scope.clienteSeleccionado=false;
-	
+	$scope.$watch('busca',function(){
+		if($scope.busca.length>3){
+			$scope.buscar();
+		}
+	},true);
+	$scope.buscar=function(){
+		CBService.buscarClientes($scope.busca).then(function(data){
+			
+			$scope.encontrados=[];
+			for(var i=0; i< data.length; i++){
+				$scope.encontrados.push(data[i].nickname);
+				
+			}
+			$scope.cliente=data;
+//			$scope.tipos=data.tipos;
+			
+			$('#searchBox').typeahead({
+
+			    source: $scope.encontrados,
+
+			    updater:function (item) {
+			    	var ind=$scope.encontrados.indexOf(item);
+			    	$scope.clienteSeleccionado=true;
+			    	$scope.datos.idCliente= $scope.cliente[ind].id;
+			    	$scope.getIndex($scope.datos.idCliente);
+			        return item;
+			    }
+			});
+			$('#searchBox').data('typeahead').source=$scope.encontrados;
+		});
+	}
 	$scope.pago={
 			fecha: new Date(),
 			moneda:"MXN",
@@ -372,7 +413,7 @@ app.controller("CAController",['$rootScope', '$scope','$cookieStore', '$window',
 //
 //	}
 	$scope.verificarSaldo=function(operacion){
-		var objs= OPMS.verificarSaldo( $scope.otVO, $scope.datos, $scope.operaciones);
+		var objs= OPMS.verificarSaldo( $scope.otVO,$scope.otvo.ot, $scope.datos, $scope.operaciones);
 		$scope.errorSaldo= objs.error;
 		
 		if($scope.errorSaldo==" "){
@@ -392,12 +433,21 @@ app.controller("CAController",['$rootScope', '$scope','$cookieStore', '$window',
 			$scope.operaciones.montoLetra= $scope.operaciones.montoLetra.toUpperCase();
 		}
 	}
-	$scope.getIndex=function(){
-		var x = document.getElementById("bc").selectedIndex;
-		$scope.cb=$scope.cliente[x];
-		$scope.cb.fecha=new Date();
-		$scope.cb.moneda="MXN";
-		console.log($scope.cb);
+	$scope.getIndex=function(data){
+		for (i=0; i < $scope.cliente.length; i++) {
+	        if($scope.cliente[i].id == data ){
+	        	$scope.cb=$scope.cliente[i];
+	    		$scope.cb.fecha=new Date();
+	    		$scope.cb.moneda="MXN";
+	    		console.log($scope.cb);
+	        }
+	    }
+		
+//		var x = document.getElementById("bc").selectedIndex;
+//		$scope.cb=$scope.cliente[x];
+//		$scope.cb.fecha=new Date();
+//		$scope.cb.moneda="MXN";
+//		console.log($scope.cb);
 		}
 	CBService.consultarClientesTodos().then(function(data) {
 		$scope.cliente = data;
