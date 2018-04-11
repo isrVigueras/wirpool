@@ -1,4 +1,4 @@
-<div class="row">
+<div class="row" ng-controller="notificacionesController">
 		<div class="col-md-8">
 			<div class="btn-group" role="group" aria-label="">
 					<button type="button" class="btn btn-default dropdown-toggle" ng-show="perfil=='Ejecutivo' || perfil=='Administrador' || perfil=='AdministradorRoot'"
@@ -90,8 +90,9 @@
 				</div>
 		</div>
 		<div class="col-md-4">
+			
 				<div class="btn-group" role="group" align="right" ng-show="perfil=='Ejecutivo' || perfil=='Caja' || perfil=='Administrador' || perfil=='AdministradorRoot'">
-					<a  href="#/notificaciones" style="color:#FFFFFF">Notificaciones</a> 
+					<a  href="#/notificaciones" style="color:#FFFFFF">Notificaciones </a> 
 					<i class="glyphicon glyphicon-comment"></i>
 					<span class="label label-warning" >{{numNotificaciones}}</span>
 				</div>

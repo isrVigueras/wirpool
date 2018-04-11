@@ -111,7 +111,7 @@ app.controller('notificacionesController',['$rootScope', 'notificacionesService'
 	$rootScope.perfilUsuario = userFactory.getUsuarioPerfil();  //obtener perfl de usuario para pintar el menú al qe tiene acceso
 	var us= userFactory.getUsuarioFirmado();
 	notificacionesService.consultar(us.id).then(function(data){
-		$scope.notificaciones=data;
+		$scope.numNotificaciones=data.length;
 	})
 	
 	$scope.ver = function(data, index) {
