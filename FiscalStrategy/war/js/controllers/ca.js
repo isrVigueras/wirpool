@@ -413,7 +413,7 @@ app.controller("CAController",['$rootScope', '$scope','$cookieStore', '$window',
 //
 //	}
 	$scope.verificarSaldo=function(operacion){
-		var objs= OPMS.verificarSaldo( $scope.otVO,$scope.otvo.ot, $scope.datos, $scope.operaciones);
+		var objs= OPMS.verificarSaldo( $scope.otVO, $scope.datos, $scope.operaciones);
 		$scope.errorSaldo= objs.error;
 		
 		if($scope.errorSaldo==" "){
@@ -423,7 +423,7 @@ app.controller("CAController",['$rootScope', '$scope','$cookieStore', '$window',
 			objetos.error="* ERROR: EL monto sobrepasa el saldo establecido *"; 
 		}
 		if(operacion == 'OPC'){
-			$scope.otvo.ot.saldoMov = objs.saldo;
+			$scope.datos.saldoMov = objs.saldo;
 			
 		}else{
 			$scope.otvo.ot.saldoCom= objs.saldo;
@@ -439,7 +439,7 @@ app.controller("CAController",['$rootScope', '$scope','$cookieStore', '$window',
 	        	$scope.cb=$scope.cliente[i];
 	    		$scope.cb.fecha=new Date();
 	    		$scope.cb.moneda="MXN";
-	    		console.log($scope.cb);
+//	    		console.log($scope.cb);
 	        }
 	    }
 		
@@ -530,7 +530,7 @@ app.controller("CAController",['$rootScope', '$scope','$cookieStore', '$window',
 //						$scope.otVO.broker = $scope.brockerCliente;
 //					}
 					$scope.otVO.ot = $scope.datos;
-					console.log($scope.otVO);
+//					console.log($scope.otVO);
 					
 					CBService.addot($scope.otVO).then(function(data){
 						showAlert("Alta de Orden de trabajo Exitosa");
