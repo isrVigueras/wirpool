@@ -19,11 +19,38 @@
 							<button type="submit" value="Guardar" class="btn">Ingresar</button>
 						</div>
 						<div  class="botones">
-							<a href="#/resetPass">Restablecer Contrase&ntilde;a</a>
+							<a data-toggle="modal" data-target="#restpsw">Restablecer Contrase&ntilde;a</a>
 						</div>
 					</article>
 				</form>
 			</section>
 
 		</div>
+		
+		
+		  <div class="modal fade" id="restpsw" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Restablecer Contrase&ntilde;a</h4>
+        </div>
+        <div class="modal-body">
+        <form role="form" ng-submit="restablecer(email)">
+          <p>Correo.</p><input type="email" class="form-control"
+							id="email" name="usuario" ng-model="email">
+							
+							<div  class="botones">
+          <button type="submit" value="Enviar" class="btn">Enviar</button>
+          
+          </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+		
 	</section>

@@ -308,6 +308,7 @@ app.controller("OTsAddController",['$rootScope', '$route','$scope','$cookieStore
 	$rootScope.perfilUsuario = userFactory.getUsuarioPerfil();  //obtener perfl de usuario para pintar el menú al qe tiene acceso
 	empresaservice.load(1).then(function(data) {
 		$scope.empresa = data;
+		$scope.operaciones.monto=0;
 	})
 	$scope.bancos = catalogoBancos();
 	$scope.tablaPagos= false;
@@ -571,6 +572,7 @@ app.controller("OTsAddController",['$rootScope', '$route','$scope','$cookieStore
 		$scope.calcularComisiones('Todos');
 	}
 	$scope.calcularComisiones=function(param){
+		
 		if($scope.tablaPagos== true){
 			$scope.calcularMontos(param);
 			if($scope.datos.porLic != null && $scope.datos.porDes != null){
@@ -588,6 +590,9 @@ app.controller("OTsAddController",['$rootScope', '$route','$scope','$cookieStore
 			alert("No se han registrado pagos.")
 			$scope.limpiaComisiones()
 		}
+		$scope.verificarSaldo('OPA');
+		$scope.verificarSaldo('OPC');
+		
 	}
 	
 	$scope.calcularMontos=function(modelo){
@@ -649,6 +654,7 @@ app.controller("OTsAddController",['$rootScope', '$route','$scope','$cookieStore
 	}	 
 	
 	$scope.calcularComisionesM=function(param){
+		
 		if($scope.tablaPagos== true){
 			$scope.calcularMontosM(param);
 			if($scope.datos.porLic != null && $scope.datos.porDes != null){
@@ -666,6 +672,8 @@ app.controller("OTsAddController",['$rootScope', '$route','$scope','$cookieStore
 			alert("No se han registrado pagos.")
 			$scope.limpiaComisiones()
 		}
+		$scope.verificarSaldo('OPC');
+		$scope.verificarSaldo('OPA');
 	}
 	
 	$scope.calcularMontosM=function(modelo){
