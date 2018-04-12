@@ -149,7 +149,14 @@ app.service('sessionService', [
 				$location.path("/login");
 			});
 		}
-		
+		this.reset=function(data){
+			var d = $q.defer();
+			$http.post("/usuario/reset/",data).then(
+				function(response) {
+					d.resolve(response.data);
+				});
+			return d.promise;
+		}
 		this.isAuthenticated = function() {
 			var d = $q.defer();
 			$http.get("currentSession").success(function(data) {
@@ -162,7 +169,7 @@ app.service('sessionService', [
 		}
 } ]);
 
-app.controller('navigation', [ 'sessionService', '$rootScope', '$scope','$http', '$location','userFactory',
+app.controller('navigation', [ 'sessionService','$window', '$rootScope', '$scope','$http', '$location','userFactory',
 	function(sessionService, $rootScope, $scope, $http, $location,userFactory) {
 		$scope.credentials = {};
 		$scope.login = function() {
@@ -176,6 +183,17 @@ app.controller('navigation', [ 'sessionService', '$rootScope', '$scope','$http',
 				}
 			});
 		};
+	
+		$scope.restablecer=function(email){
+			sessionService.reset(email).then(function(data){
+			
+					alert("Correo enviado correctamenta para restablecer su contrase\u00f1a");
+					location.reload();
+					
+		//			setTimeout(window.location.reload.bind(window.location), 1000);
+				
+			
+		});}
 } ]);
 
 app.run(['$rootScope','$http','sessionService','userFactory',function ($rootScope,$http,sessionService,userFactory) {

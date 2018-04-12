@@ -227,15 +227,12 @@
 								<span class="glyphicon glyphicon-remove"></span></button></td>
 						<td> <a ng-show="op.tipo=='Cheque'" data-toggle="modal" data-target="#myModalCheque" ng-click="detalleCheque($index, 'OPC')"><b>Detalle</b></a></td>
 					</tr>
-					<tr>
-						<td></td>
-						<td align="right">Saldo Movimientos: </td>
-						<td>{{datos.saldoMov | currency}}</td>
-						<td></td>
-						<td></td>
-					</tr>
+					
 				</tbody>
 			</table>
+			<div>
+			<p>Saldo Movimientos: {{datos.saldoMov | currency}}  </p>
+			</div>
 		</div>
 		<!-- Operacion Asesor -->
 		<div>
@@ -267,15 +264,12 @@
 						<td>{{op.estatus}}</td>
 						<td> <a ng-show="op.tipo=='Cheque'" data-toggle="modal" data-target="#myModalCheque" ng-click="detalleCheque($index, 'OPA')"><b>Detalle</b></a></td>
 					</tr>
-					<tr>
-						<td></td>
-						<td align="right">Saldo Comisiones: </td>
-						<td>{{datos.saldoCom | currency}}</td>
-						<td></td>
-						<td></td>
-					</tr>
+				
 				</tbody>
 			</table>
+			<div>
+			<p>Saldo Comisiones: {{datos.saldoCom | currency}}  </p>
+			</div>
 		</div>
 	<!-- Botones de pie de pantalla -->	
 		<hr>
@@ -313,7 +307,8 @@
 				  			<label class="control-label">Monto: </label>
 				  		</div>
 				  		<div class="col-md-3">
-	 						<input  class="form-control  mb-2" type="number" min="1" ng-required="true" ng-model="operaciones.monto"  ng-change="verificarSaldo('OPC')" ng-disabled="tipoResguardo" step="0.01">		
+	 						<input  class="form-control  mb-2" type="number" min="1" ng-required="true" ng-model="operaciones.monto"  ng-change="verificarSaldo('OPC')" ng-disabled="tipoResguardo" step="0.01">	
+	 		
 				  		</div>
 				  		<div class="col-md-1"></div>
 				  	</div> 
@@ -462,9 +457,7 @@
 		  </div>
 			<br>
       	   <div class="modal-footer">
-      	   
         		<button type="button" class="btn btn-default" data-dismiss="modal"  ng-click="limpiaOperaciones(); verificarSaldo('OPA')">Cerrar</button>
-        		
       		</div>
         </div>
       </div>
