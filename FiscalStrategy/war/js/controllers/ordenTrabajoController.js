@@ -323,9 +323,9 @@ app.controller("OTsAddController",['$rootScope', '$route','$scope','$cookieStore
 	$scope.clienteSeleccionado=false;
 	
 	$scope.$watch('busca',function(){
-		if($scope.busca.length>3){
+//		if($scope.busca.length>3){
 			$scope.buscar();
-		}
+//		}
 	},true);
 	$scope.$watch('pago.empresa',function(){
 		if($scope.pago.empresa.length>3){
