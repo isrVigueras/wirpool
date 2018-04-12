@@ -137,3 +137,12 @@ function catalogoBancos(){
 //
 //	return catBancos;
 //}
+
+
+function formatoFecha(fecha){
+	if(fecha){
+		var date = new Date(fecha);
+		var result= date.getDate()+"-"+(date.getMonth()+1)+"-"+date.getFullYear();
+		return result;
+	}
+}
