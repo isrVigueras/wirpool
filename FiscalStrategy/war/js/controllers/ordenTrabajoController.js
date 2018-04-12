@@ -892,11 +892,11 @@ app.controller("ordenTrabajoController",['$rootScope', '$scope','$window', '$loc
 				var nombre =  'Broker' + cont ;
 				var renglon= {nombre:nombre, porBrok:$scope.otvo.ot.porBrok[i], montoBrok: $scope.otvo.ot.montoBrok[i]};
 				$scope.brokers.push(renglon);
-				$scope.sumaMontoBrok= parseInt($scope.sumaMontoBrok) + parseInt($scope.otvo.ot.montoBrok[i]);
+				$scope.sumaMontoBrok= parseFloat($scope.sumaMontoBrok) + parseFloat($scope.otvo.ot.montoBrok[i]);
 			}
 			
 			$scope.montoRetorno=(($scope.otvo.ot.retorno/100)*$scope.otvo.ot.importe).toFixed(2);
-			$scope.montosTotal = parseInt($scope.otvo.ot.montoLic)+ parseInt($scope.otvo.ot.montoDes) + parseInt($scope.sumaMontoBrok) + parseInt($scope.montoRetorno);
+			$scope.montosTotal = parseFloat($scope.otvo.ot.montoLic)+ parseFloat($scope.otvo.ot.montoDes) + parseFloat($scope.sumaMontoBrok) + parseFloat($scope.montoRetorno);
 		}else{
 			$scope.tipoOT="ca";
 		}
