@@ -15,6 +15,7 @@ public class Cliente {
 	@Index private Long idBrocker; 
 	@Index private boolean enabled;
 	private double saldo;
+	private double saldoUSD;
 	
 	private String nombre;
 	private String apeMaterno;
@@ -79,6 +80,12 @@ public class Cliente {
 	}
 	public void setApePaterno(String apePaterno) {
 		this.apePaterno = apePaterno;
+	}
+	public double getSaldoUSD() {
+		return saldoUSD;
+	}
+	public void setSaldoUSD(double saldoUSD) {
+		this.saldoUSD = saldoUSD;
 	}
 	
 }

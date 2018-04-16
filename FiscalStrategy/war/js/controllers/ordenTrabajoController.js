@@ -167,7 +167,7 @@ app.service("ordenTrabajoservice",['$http', '$q', function($http, $q){
 	
 	this.guardaCliente=function(clientes){
 		var d = $q.defer();
-		$http.post("clientes/guardar/",clientes).then(
+		$http.post("clientes/confirmar/",clientes).then(
 			function(response) {
 				d.resolve(response.data);
 			});
@@ -179,6 +179,7 @@ app.service("ordenTrabajoservice",['$http', '$q', function($http, $q){
 app.service("operacionesMovimientosService",['$http', '$q', function($http, $q){
 	objetos= {otvo:null, c:null, b:null};
 	this.addOper= function(operacion, operaciones, otVO, bndResguardo,cliente, brockerCliente){
+		var moneda= otVO.pagos[0].moneda;
 		if(operaciones.tipo == 'Cheque'){
 			if(operaciones.montoLetra != null && operaciones.fEmision && operaciones.pagarA && operaciones.tipo != null && operaciones.descripcion != null && operaciones.monto != null){
 				var renglon= {tipo: operaciones.tipo, descripcion: operaciones.descripcion , monto: operaciones.monto, estatus:operaciones.estatus, 
@@ -199,7 +200,14 @@ app.service("operacionesMovimientosService",['$http', '$q', function($http, $q){
 		}
 		
 		if(operacion=='OPC'){
-			cliente.saldo = cliente.saldo + operaciones.monto;
+			if(moneda=='MXN'){
+				cliente.saldo = cliente.saldo + operaciones.monto;
+			}else{
+				if(!cliente.saldoUSD){
+					cliente.saldoUSD=0;
+				}
+				cliente.saldoUSD= cliente.saldoUSD + operaciones.monto;
+			}
 			otVO.movimientos.push(renglon);
 		}else{
 			brockerCliente.saldo = brockerCliente.saldo + operaciones.monto;
@@ -1104,6 +1112,7 @@ app.controller("ordenTrabajoController",['$rootScope', '$scope','$window', '$loc
 		$scope.otvo = objs.otvo;
 		$scope.movimientosVO.movimiento=$scope.operaciones;
 		$scope.movimientosVO.idOt=$scope.otvo.ot.id;
+		var moneda= $scope.otvo.pagos[0].moneda;
 		if(operacion=="OPC"){
 			if($scope.tipoResguardo){
 				ordenTrabajoservice.guardaCliente(objs.c);

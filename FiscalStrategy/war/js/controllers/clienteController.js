@@ -124,15 +124,12 @@ app.controller("clientcuentacontroller",['$rootScope', '$scope','$window', '$loc
 		
 	};
 	//	$scope.VerCC=function(id){
-//	clientcuentaservice.getcc(id).then(function(data) {
-//		$scope.ccuenta = data;
-//
-//});
-//	}
 }]);
 
-app.controller("clientController",['$rootScope','usuarioservice','brockerservice','$scope','$window', '$location', '$cookieStore','clientservice','clientcuentaservice', 'userFactory', function($rootScope,usuarioservice,brockerservice, $scope, $window, $location, $cookieStore, clientservice,clientcuentaservice, userFactory){
+app.controller("clientController",['$http','$interval','$rootScope','usuarioservice','brockerservice','$scope','$window', '$location', '$cookieStore','clientservice','clientcuentaservice', 'userFactory', function($http,$interval,$rootScope,usuarioservice,brockerservice, $scope, $window, $location, $cookieStore, clientservice,clientcuentaservice, userFactory){
+	
 	$scope.client={};
+	
 	$scope.client={tipo:"cliente"};
 	
 	$scope.$watch('busca',function(){
@@ -149,8 +146,6 @@ app.controller("clientController",['$rootScope','usuarioservice','brockerservice
 				
 			}
 			$scope.cliente=data;
-//			$scope.tipos=data.tipos;
-			
 			$('#searchBox').typeahead({
 
 			    source: $scope.encontrados,
@@ -207,10 +202,26 @@ app.controller("clientController",['$rootScope','usuarioservice','brockerservice
 		$('#pagA'+$scope.paginaActual).addClass("active");
 		$('#pagB'+$scope.paginaActual).addClass("active");
 	}
-
+	
+	$scope.contador=0;
+	
 	clientservice.getPaginas($cookieStore.get("rfcEmpresa")).then(function(data){
 		$scope.maxPage=data;
 		$scope.llenarPags();
+		
+		var promise = $interval(function(){
+			if($scope.contador<$scope.maxPage){
+				$http.get("/clientes/rehacer/"+$scope.contador).then(function(data){
+					console.log(data);
+				})
+				$scope.contador++;
+			}
+		}, 10000);
+	
+		$scope.$on('$destroy', function (){ 
+			 $interval.cancel(promise); 
+		});
+		
 	});
 	
 	$scope.cargarPagina=function(pag){
@@ -229,10 +240,8 @@ app.controller("clientController",['$rootScope','usuarioservice','brockerservice
 			    x.className = "show";
 				setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
 			    setTimeout(function(){ if($scope.client){window.location="#/clientes";} }, 3000);
-	//			alert("Cliente Guardado Con Exito");
 	//			$location.path("/clientes");
 				$window.location.reload();
-	//			setTimeout(window.location.reload.bind(window.location), 1000);
 			}else{
 				$scope.repetidos=data;
 				$("#myModalRepetidos").modal('show');
@@ -248,7 +257,6 @@ app.controller("clientController",['$rootScope','usuarioservice','brockerservice
 		    x.className = "show";
 			setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
 		    setTimeout(function(){ if($scope.client){window.location="#/clientes";} }, 3000);
-//			alert("Cliente Guardado Con Exito");
 			$location.path("/clientes");
 			$window.location.reload();
 //			setTimeout(window.location.reload.bind(window.location), 1000);
@@ -256,8 +264,6 @@ app.controller("clientController",['$rootScope','usuarioservice','brockerservice
 	}
 	
 	$scope.editarCliente= function(){
-//		$scope.getcliente=data
-		
 		$scope.client.enabled=true;
 		$scope.client.id=$scope.getcliente.id;
 		clientservice.guardarCliente($scope.client).then(function(data){
@@ -265,10 +271,7 @@ app.controller("clientController",['$rootScope','usuarioservice','brockerservice
 		    x.className = "show";
 			setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
 		    setTimeout(function(){ if($scope.client){$window.location.reload(1);} }, 3000);
-//			alert("Cliente Guardado Con Exito");
-//			$location.path("/clientes");
 //			$window.location.reload(1);
-//			setTimeout(window.location.reload.bind(window.location), 1000);
 
 		});
 		

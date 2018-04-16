@@ -112,7 +112,9 @@ app.controller('notificacionesController',['$rootScope', 'notificacionesService'
 	var us= userFactory.getUsuarioFirmado();
 	notificacionesService.consultar(us.id).then(function(data){
 		$scope.numNotificaciones=data.length;
+		$scope.notificaciones=data;
 	})
+	
 	
 	$scope.ver = function(data, index) {
 		notificacionesService.eliminar(index);
