@@ -120,9 +120,9 @@
 			<table style="width: 100%" class="table table-stripped">
 				<thead>
 					<tr>
-						<th>Importe</th>
+						<th>Importe <input type="radio" name="optradio" ng-click="Operacion('base')" ng-checked="true""></th>
 						<th>IVA</th>
-						<th>Total</th>
+						<th>Total <input type="radio" name="optradio" ng-click="Operacion('total')"></th>
 					</tr>
 				</thead>
 				<tbody>
@@ -137,17 +137,21 @@
 		<br>
 		<div class="infComisiones">
 			<div class="Dlabel">
+			
 				<label>Comisiones</label>
 				<span style="padding-left:4em">Base Comisiones: &nbsp;</span>
-				<input style="width: 10%" type="number"  ng-change="comis();" min="0" ng-model="datos.basecomisiones" step="0.01" max="{{datos.total}}" id="comisiones" value="{{datos.basecomisiones}}">
-				<span style="padding-left:4em">IVA: {{datos.comipor | currency}} &nbsp;</span>
+				<input style="width: 20%" type="number"  ng-change="comis();" min="0" ng-model="datos.basecomisiones" step="0.01" max="{{datos.total}}" id="comisiones" value="{{datos.basecomisiones}}" ng-disabled="disablecomi">
+				<span style="padding-left:4em">Comision Base: {{datos.comipor | currency}} &nbsp;</span> 
+				
+				
 			</div>
 			<br>
+			
 			<table style="width: 100%" class="table table-stripped">
 				<thead>
 					<tr>
 						<th>Comisi&oacute;n</th>
-						<th> % <input style="width: 15%" type="number" min="1" max="100" ng-model="datos.porciento"  ng-change="cImporte()"></th>
+						<th> % <input style="width: 25%" type="number" min="1" max="100" ng-model="datos.porciento"  ng-change="cImporte()"></th>
 						<th></th>
 						<th>Monto</th>
 					</tr>
@@ -191,6 +195,7 @@
 				</tbody>	
 				
 			</table>
+	
 			<div id="rerror">{{retorn}}</div>
 		</div>
 		<div align="right"><button  class="btn" ng-click="addBroker()"> Agregar Broker</button></div>
@@ -317,8 +322,7 @@
 				  			<label class="control-label">Monto: </label>
 				  		</div>
 				  		<div class="col-md-3">
-	 						<input  class="form-control  mb-2" type="text"  ng-required="true" ng-model="montOPC"  
-	 						ng-change="verificarSaldo('OPC')"  onfocusout="this.value=formatOPC(this.value)"  ng-disabled="tipoResguardo" >	
+	 						<input  class="form-control  mb-2" type="number" min="1" ng-required="true" ng-model="operaciones.monto"  ng-change="verificarSaldo('OPC')" ng-disabled="tipoResguardo" step="0.01">
 	 		
 				  		</div>
 				  		<div class="col-md-1"></div>

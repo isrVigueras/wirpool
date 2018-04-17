@@ -1,4 +1,4 @@
-var app=angular.module("app",['ngRoute', 'ngCookies' ]);
+var app=angular.module("app",['ngRoute', 'ngCookies',]);
 app.config([ '$routeProvider', function($routeProvider) {
 	$routeProvider.when('/notificaciones', {
 		templateUrl : "pages/Notificaciones.html",
@@ -91,6 +91,10 @@ app.config([ '$routeProvider', function($routeProvider) {
 	$routeProvider.when('/listempresa',{
 		templateUrl : "pages/listEmpresa.html",
 		controller : "empresacontroller"
+	});
+	$routeProvider.when('/ot',{
+		templateUrl : "pages/OT.html",
+		controller : "otcontrol"
 	});
 	$routeProvider.otherwise({
 		redirectTo : '/listOTs',

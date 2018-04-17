@@ -1,4 +1,4 @@
-function calcularSaldo(prox, arrMov, total,importe){
+function calcularSaldo(prox,tipoOP, arrMov, total,importe){
 	var sumatoria= 0;
 	var arreglo = null;
 	var monto=null;
@@ -11,6 +11,21 @@ function calcularSaldo(prox, arrMov, total,importe){
 	}
 	sumatoria =  sumatoria + prox;
 	saldo= ((parseFloat(total) + parseFloat(importe)) - sumatoria).toFixed(2);
+	return saldo;
+}
+function calcularSaldoOP(prox, arrMov, total,importe){
+	var sumatoria= 0;
+	var arreglo = null;
+	var monto=null;
+	var saldo=0;
+
+	for(var i in arrMov){
+		if(arrMov[i].estatus== 'ACTIVO'){
+			sumatoria= sumatoria + arrMov[i].monto;
+		};
+	}
+	sumatoria =  sumatoria + prox;
+	saldo= (parseFloat(total) - sumatoria).toFixed(2);
 	return saldo;
 }
 function calcularSaldoCA(prox, arrMov, total){
@@ -146,3 +161,10 @@ function formatoFecha(fecha){
 		return result;
 	}
 }
+function blurFunction(mont) {
+
+	var Num = numeral(mont).format('0,0.00');
+	console.log(Num);
+	return Num;
+}
+
