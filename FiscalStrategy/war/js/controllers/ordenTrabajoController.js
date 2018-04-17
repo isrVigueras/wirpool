@@ -275,20 +275,25 @@ app.service("operacionesMovimientosService",['$http', '$q', function($http, $q){
 		return cheque;
 	}
 	
-	this.verificarSaldo=function(operacion, otvo, ot,operaciones,monto,suma){
+	this.verificarSaldo=function(operacion,otvo, ot,operaciones,monto,suma,tipoOP){
 		objetos={ error: null, saldo:null};
 		var cantidad = 0;
 		var btndisble="false";
 		
 		if(operacion== 'OPC'){
 			if(otvo.movimientos.length != 0){
-				cantidad= calcularSaldo(operaciones.monto,otvo.movimientos,monto,ot.importe);
+				cantidad= calcularSaldo(operaciones.monto,tipoOP,otvo.movimientos,monto,ot.importe);
 			}else{
+				
+				if(tipoOP=="base"){
 				cantidad= ((parseFloat(monto) + parseFloat(ot.importe)) - operaciones.monto).toFixed(2);
+				}else{
+					cantidad= (parseFloat(ot.total) - parseFloat(ot.totalComisiones)).toFixed(2);
+				}
 			}
 		}else{
 			if(otvo.comisiones.length != 0){
-				cantidad=calcularSaldo(operaciones.monto,otvo.comisiones,suma,0);
+				cantidad=calcularSaldo(operaciones.monto,tipoOP,otvo.comisiones,suma,0);
 			}else{
 				cantidad= (parseFloat(suma) - parseFloat(operaciones.monto)).toFixed(2);
 			}
@@ -341,6 +346,43 @@ app.controller("OTsAddController",['$rootScope', '$route','$scope','$cookieStore
 			$scope.zEmpresa();
 		}
 	},true);
+	
+	$scope.tipoOP="base";
+	$scope.disablecomi=false;
+	$scope.Operacion=function(op){
+		if(op=='base'){
+			$scope.tipoOP="base";
+			$scope.datos.basecomisiones=$scope.datos.importe;
+			$scope.datos.basecomisiones=$scope.datos.basecomisiones*1;
+			$scope.disablecomi=false;
+			$scope.cImporte();
+			console.log("ES Base");
+			$scope.tipoad="base";
+			$scope.porcentaje("base");
+			
+		}else{
+			$scope.tipoOP="total";
+			$scope.datos.basecomisiones=$scope.datos.total;
+			console.log("ES Total");
+			$scope.disablecomi=true;
+			$scope.cImporte();
+			$scope.tipoad="total";
+			$scope.porcentaje("total");
+		}
+		
+	};
+	$scope.porcentaje=function(data){
+//		if(data=="base"){
+//			$scope.datos.porciento=(100/$scope.datos.importe)*$scope.datos.basecomisiones;
+//		}else{
+//			$scope.datos.porcenta=(100/$scope.datos.basecomisiones)*$scope.datos.total;
+//		}
+	}
+	$scope.tipoad="base";
+	$( "#comisiones" ).change(function() {
+		$scope.comis();
+		$scope.porcentaje($scope.tipoad);
+		});
 	$scope.buscar=function(){
 		ordenTrabajoservice.buscarClientes($scope.busca).then(function(data){
 			
@@ -366,16 +408,23 @@ app.controller("OTsAddController",['$rootScope', '$route','$scope','$cookieStore
 			$('#searchBox').data('typeahead').source=$scope.encontrados;
 		});
 	}
-	   function enterNumber(){
-
-		   var e = document.getElementById('valinumber');
-
-		   if (!/^[0-9]+$/.test(e.value)) 
-		 { 
-		 alert("Introdusca Solo Numeros");
-		 e.value = e.value.substring(0,e.value.length-1);
-		 }
-		 } 
+	$scope.datapass=function(operacion){
+		if(operacion=='OPC'){
+			$scope.OPCSaldo=$scope.datos.saldoMov;
+		}else{
+			$scope.OPASaldo=$scope.datos.saldoCom
+		}
+	}
+	$scope.montOPC=0.0;
+	
+	$scope.formatOPC=function(mont){
+			$scope.operaciones.monto=mont;
+			$scope.montOPC = numeral(mont).format('0,0.00');
+			console.log(Num);
+			
+		
+		}
+	  
 	$scope.zEmpresa=function(){
 		ordenTrabajoservice.searchEmpresa($scope.pago.empresa).then(function(data){
 			
@@ -405,8 +454,11 @@ app.controller("OTsAddController",['$rootScope', '$route','$scope','$cookieStore
 
 	
 	$scope.comis = function() {
-	
+		if($scope.tipoOP=="base"){
 		$scope.datos.comipor= $scope.redondea(($scope.datos.porciento/100)*$scope.datos.basecomisiones);
+		}else{
+		$scope.datos.comipor= $scope.redondea(($scope.datos.porciento/100)*$scope.datos.total);
+		}
 		 $scope.calcularComisiones('Todos');
 	};
 
@@ -432,8 +484,8 @@ app.controller("OTsAddController",['$rootScope', '$route','$scope','$cookieStore
 			porLic : 2,
 			porDes : 2,
 			porBrok: [],
-			montoLic : 2,
-			montoDes : 2,
+			montoLic : null,
+			montoDes : null,
 			montoBrok:[],
 			retorno: null,
 			saldoMov: null,
@@ -529,7 +581,9 @@ app.controller("OTsAddController",['$rootScope', '$route','$scope','$cookieStore
 	}
 	
 	$scope.verificarSaldo=function(operacion){
-		var objs= operacionesMovimientosService.verificarSaldo(operacion, $scope.otVO, $scope.datos, $scope.operaciones,$scope.montoRetorno,$scope.sumaMontoBrok);
+		
+			var objs= operacionesMovimientosService.verificarSaldo(operacion, $scope.otVO, $scope.datos, $scope.operaciones,$scope.montoRetorno,$scope.sumaMontoBrok,$scope.tipoOP);
+		
 		$scope.errorSaldo= objs.error;
 		if($scope.errorSaldo==" "){
 			$scope.dis=false;
@@ -649,7 +703,7 @@ app.controller("OTsAddController",['$rootScope', '$route','$scope','$cookieStore
 		}
 
 		var retorno = $scope.datos.porciento-$scope.datos.porLic- $scope.datos.porDes- sumaBrok;
-		if(retorno > 0 ){
+		if(retorno >= 0 ){
 			$scope.datos.retorno= $scope.redondea(retorno);
 			$scope.montoRetorno=$scope.redondea(($scope.datos.retorno/100)*$scope.datos.basecomisiones);
 			 var montosTotal = ($scope.datos.montoLic * 1)+ ($scope.datos.montoDes * 1) + ($scope.sumaMontoBrok * 1) + ($scope.montoRetorno * 1);
@@ -657,7 +711,7 @@ app.controller("OTsAddController",['$rootScope', '$route','$scope','$cookieStore
 			$scope.totalPor=$scope.datos.porLic + $scope.datos.porDes + sumaBrok + $scope.datos.retorno;
 		}else{
 			$scope.datos.retorno= null; 
-			$scope.retorn="Valor de retorno no debe ser igual a 0";
+			$scope.retorn="Valor de retorno debe ser igual o mayor a 0";
 		}	
 	}	 
 	
