@@ -304,38 +304,6 @@ app.service("oPMService",['$http', '$q', function($http, $q){
 		
 		return objetos;
 	}
-	this.verificarSaldoOP=function(operacion, otvo, ot,operaciones,monto,suma){
-		objetos={ error: null, saldo:null};
-		var cantidad = 0;
-		var btndisble="false";
-		
-		if(operacion== 'OPC'){
-			if(otvo.movimientos.length != 0){
-				cantidad= calcularSaldoOP(operaciones.monto,otvo.movimientos,monto,ot.importe);
-			}else{
-				cantidad= ((parseFloat(monto) + parseFloat(ot.importe)) - operaciones.monto).toFixed(2);
-			}
-		}else{
-			if(otvo.comisiones.length != 0){
-				cantidad=calcularSaldoOP(operaciones.monto,otvo.comisiones,suma,0);
-			}else{
-				cantidad= (parseFloat(suma) - parseFloat(operaciones.monto)).toFixed(2);
-			}
-			
-		}
-		if(cantidad >= 0 ){
-			objetos.saldo= cantidad;
-			objetos.error= " ";
-			btndisble=false;
-			
-		}else{
-			objetos.error="* ERROR: EL monto sobrepasa el saldo establecido *"; 
-			btndisble=true;
-			console.log(btndisble);
-		}
-		
-		return objetos;
-	}
 	
 	
 	

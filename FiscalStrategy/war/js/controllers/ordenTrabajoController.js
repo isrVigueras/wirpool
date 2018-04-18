@@ -275,25 +275,25 @@ app.service("operacionesMovimientosService",['$http', '$q', function($http, $q){
 		return cheque;
 	}
 	
-	this.verificarSaldo=function(operacion,otvo, ot,operaciones,monto,suma,tipoOP){
+	this.verificarSaldo=function(operacion,otvo, ot,operaciones,monto,suma,tipoOP,totalOP){
 		objetos={ error: null, saldo:null};
 		var cantidad = 0;
 		var btndisble="false";
 		
 		if(operacion== 'OPC'){
 			if(otvo.movimientos.length != 0){
-				cantidad= calcularSaldo(operaciones.monto,tipoOP,otvo.movimientos,monto,ot.importe);
+				cantidad= calcularSaldo(operaciones.monto,tipoOP,otvo.movimientos,monto,ot.importe,totalOP);
 			}else{
 				
 				if(tipoOP=="base"){
 				cantidad= ((parseFloat(monto) + parseFloat(ot.importe)) - operaciones.monto).toFixed(2);
 				}else{
-					cantidad= (parseFloat(ot.total) - parseFloat(ot.totalComisiones)).toFixed(2);
+					cantidad= (parseFloat(totalOP) - operaciones.monto).toFixed(2);
 				}
 			}
 		}else{
 			if(otvo.comisiones.length != 0){
-				cantidad=calcularSaldo(operaciones.monto,tipoOP,otvo.comisiones,suma,0);
+				cantidad=calcularSaldo(operaciones.monto,tipoOP,otvo.comisiones,suma,0,totalOP);
 			}else{
 				cantidad= (parseFloat(suma) - parseFloat(operaciones.monto)).toFixed(2);
 			}
@@ -348,13 +348,13 @@ app.controller("OTsAddController",['$rootScope', '$route','$scope','$cookieStore
 	},true);
 	
 	$scope.tipoOP="base";
-	$scope.disablecomi=false;
+	$scope.disablecomi=true;
 	$scope.Operacion=function(op){
 		if(op=='base'){
 			$scope.tipoOP="base";
 			$scope.datos.basecomisiones=$scope.datos.importe;
 			$scope.datos.basecomisiones=$scope.datos.basecomisiones*1;
-			$scope.disablecomi=false;
+			$scope.disablecomi=true;
 			$scope.cImporte();
 			console.log("ES Base");
 			$scope.tipoad="base";
@@ -364,7 +364,7 @@ app.controller("OTsAddController",['$rootScope', '$route','$scope','$cookieStore
 			$scope.tipoOP="total";
 			$scope.datos.basecomisiones=$scope.datos.total;
 			console.log("ES Total");
-			$scope.disablecomi=true;
+			$scope.disablecomi=false;
 			$scope.cImporte();
 			$scope.tipoad="total";
 			$scope.porcentaje("total");
@@ -582,7 +582,7 @@ app.controller("OTsAddController",['$rootScope', '$route','$scope','$cookieStore
 	
 	$scope.verificarSaldo=function(operacion){
 		
-			var objs= operacionesMovimientosService.verificarSaldo(operacion, $scope.otVO, $scope.datos, $scope.operaciones,$scope.montoRetorno,$scope.sumaMontoBrok,$scope.tipoOP);
+			var objs= operacionesMovimientosService.verificarSaldo(operacion, $scope.otVO, $scope.datos, $scope.operaciones,$scope.montoRetorno,$scope.sumaMontoBrok,$scope.tipoOP,$scope.datos.total);
 		
 		$scope.errorSaldo= objs.error;
 		if($scope.errorSaldo==" "){

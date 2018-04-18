@@ -1,4 +1,4 @@
-function calcularSaldo(prox,tipoOP, arrMov, total,importe){
+function calcularSaldo(prox,tipoOP, arrMov, total,importe,totalOP){
 	var sumatoria= 0;
 	var arreglo = null;
 	var monto=null;
@@ -10,7 +10,12 @@ function calcularSaldo(prox,tipoOP, arrMov, total,importe){
 		};
 	}
 	sumatoria =  sumatoria + prox;
-	saldo= ((parseFloat(total) + parseFloat(importe)) - sumatoria).toFixed(2);
+	if(tipoOP=="base"){
+		saldo= ((parseFloat(total) + parseFloat(importe)) - sumatoria).toFixed(2);
+	}else{
+		saldo= (parseFloat(totalOP) - sumatoria).toFixed(2);
+	}
+	
 	return saldo;
 }
 function calcularSaldoOP(prox, arrMov, total,importe){
