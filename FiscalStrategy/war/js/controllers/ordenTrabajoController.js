@@ -319,7 +319,7 @@ app.service("operacionesMovimientosService",['$http', '$q', function($http, $q){
 		
 		if(operacion== 'OPC'){
 			if(otvo.movimientos.length != 0){
-				cantidad= calcularSaldoOP(operacion,operaciones.monto,otvo.movimientos,monto,ot.importe);
+				cantidad= calcularSaldoOP(operacion,operaciones.monto,otvo.movimientos,monto,ot.importe,ot.total);
 			}else{
 				cantidad= ((parseFloat(monto) + parseFloat(ot.importe)) - operaciones.monto).toFixed(2);
 				
@@ -822,6 +822,14 @@ app.controller("OTsAddController",['$rootScope', '$route','$scope','$cookieStore
 		$scope.verificarSaldo('OPC');
 		if($scope.otVO.movimientos.length == 0){
 			$scope.tablaOper=false;
+		}
+	}
+	$scope.eliminarRenglonAsesor=function(renglon){
+		$scope.otVO.comisiones.splice(renglon, 1);
+		$scope.verificarSaldo('OPA');
+		if($scope.otVO.comisiones.length == 0){
+			$scope.tablaOperAsesor=false;
+			
 		}
 	}
 	$scope.verificaPorcentajes=function(operacion){

@@ -18,7 +18,7 @@ function calcularSaldo(prox,tipoOP, arrMov, total,importe,totalOP){
 	
 	return saldo;
 }
-function calcularSaldoOP(operacion,prox, arrMov, total,importe){
+function calcularSaldoOP(operacion,prox, arrMov, total,importe,totalOP){
 	var sumatoria= 0;
 	var arreglo = null;
 	var monto=null;
@@ -31,7 +31,7 @@ function calcularSaldoOP(operacion,prox, arrMov, total,importe){
 	}
 	sumatoria =  sumatoria + prox;
 	if(operacion=="OPC"){
-	saldo= (parseFloat(importe) - sumatoria).toFixed(2);
+	saldo= (parseFloat(totalOP) - sumatoria).toFixed(2);
 	}else{
 	saldo= ((parseFloat(total) + parseFloat(importe)) - sumatoria).toFixed(2);
 	}
