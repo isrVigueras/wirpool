@@ -307,7 +307,40 @@ app.service("operacionesMovimientosService",['$http', '$q', function($http, $q){
 		}else{
 			objetos.error="* ERROR: EL monto sobrepasa el saldo establecido *"; 
 			btndisble=true;
-			console.log(btndisble);
+//			console.log(btndisble);
+		}
+		
+		return objetos;
+	}
+	this.verificarSaldoOP=function(operacion,otvo, ot,operaciones,monto,suma){
+		objetos={ error: null, saldo:null};
+		var cantidad = 0;
+		var btndisble="false";
+		
+		if(operacion== 'OPC'){
+			if(otvo.movimientos.length != 0){
+				cantidad= calcularSaldoOP(operacion,operaciones.monto,otvo.movimientos,monto,ot.importe);
+			}else{
+				cantidad= ((parseFloat(monto) + parseFloat(ot.importe)) - operaciones.monto).toFixed(2);
+				
+			}
+		}else{
+			if(otvo.comisiones.length != 0){
+				cantidad=calcularSaldoOP(operacion,operaciones.monto,otvo.comisiones,suma,0);
+			}else{
+				cantidad= (parseFloat(suma) - parseFloat(operaciones.monto)).toFixed(2);
+			}
+			
+		}
+		if(cantidad >= 0 ){
+			objetos.saldo= cantidad;
+			objetos.error= " ";
+			btndisble=false;
+			
+		}else{
+			objetos.error="* ERROR: EL monto sobrepasa el saldo establecido *"; 
+			btndisble=true;
+//			console.log(btndisble);
 		}
 		
 		return objetos;
@@ -356,14 +389,14 @@ app.controller("OTsAddController",['$rootScope', '$route','$scope','$cookieStore
 			$scope.datos.basecomisiones=$scope.datos.basecomisiones*1;
 			$scope.disablecomi=true;
 			$scope.cImporte();
-			console.log("ES Base");
+//			console.log("ES Base");
 			$scope.tipoad="base";
 			$scope.porcentaje("base");
 			
 		}else{
 			$scope.tipoOP="total";
 			$scope.datos.basecomisiones=$scope.datos.total;
-			console.log("ES Total");
+//			console.log("ES Total");
 			$scope.disablecomi=false;
 			$scope.cImporte();
 			$scope.tipoad="total";
@@ -533,7 +566,7 @@ app.controller("OTsAddController",['$rootScope', '$route','$scope','$cookieStore
 		 empresaservice.getce(data).then(function(data) {
 		  		$scope.cempresa = data;
 		  		$scope.banco=$scope.cempresa.cuentas[0].banco;
-		  		 console.log($scope.cempresa);
+//		  		 console.log($scope.cempresa);
 		  });
 			
 	};
@@ -848,7 +881,7 @@ app.controller("OTsAddController",['$rootScope', '$route','$scope','$cookieStore
 						$scope.otVO.broker = $scope.brockerCliente;
 					}
 					$scope.otVO.ot = $scope.datos;
-					console.log($scope.otVO);
+//					console.log($scope.otVO);
 					
 					ordenTrabajoservice.addot($scope.otVO).then(function(data){
 						showAlert("Alta de Orden de trabajo Exitosa");
@@ -937,7 +970,7 @@ app.controller("ordenTrabajoController",['$rootScope', '$scope','$window', '$loc
 	ordenTrabajoservice.loadot($cookieStore.get("idOt")).then(function(data){
 		$scope.otvo= data;
 		$scope.mont=$scope.otvo.pagos.monto;
-		console.log(data);	
+//		console.log(data);	
 		crearListaDeCheques();
 		
 		var sumaMontoPagos =0;
@@ -968,7 +1001,15 @@ app.controller("ordenTrabajoController",['$rootScope', '$scope','$window', '$loc
 		}else{
 			$scope.ordenCerrada=false;
 		};
-		
+		$scope.limpiaOperaciones= function(){
+			$scope.operaciones.tipo= null;
+			$scope.operaciones.descripcion= null;
+			$scope.operaciones.monto= null;
+			$scope.operaciones.montoLetra= null;
+			$scope.operaciones.pagarA= null;
+			$scope.operaciones.fEmision= null;
+			$scope.errorSaldo=" ";
+		}
 		$scope.cancelarOp = function(index,	operacion){
 			var movVO={idOt:$scope.otvo.ot.id}
 			if(operacion=="OPC"){
@@ -1011,14 +1052,14 @@ app.controller("ordenTrabajoController",['$rootScope', '$scope','$window', '$loc
 		}
 		$rootScope.perfilUsuario = userFactory.getUsuarioPerfil();  //obtener perfl de usuario para pintar el menú al qe tiene acceso
 		$scope.perfil=$rootScope.perfilUsuario;
-		console.log("el perfil", $scope.perfil);
+//		console.log("el perfil", $scope.perfil);
 	});	
 	
 	$scope.Cuentasban = function() {
 		 empresaservice.getce($scope.mov.empresa.id).then(function(data) {
 		  		$scope.cempresa = data;
 		  		$scope.banco=$scope.cempresa.cuentas[0].banco;
-		  		 console.log($scope.cempresa);
+//		  		 console.log($scope.cempresa);
 		  });
 			
 	};
@@ -1069,8 +1110,8 @@ app.controller("ordenTrabajoController",['$rootScope', '$scope','$window', '$loc
 				}
 			}
 		}
-		console.log($scope.listaChequesCliente);
-		console.log($scope.listaChequesAsesor);
+//		console.log($scope.listaChequesCliente);
+//		console.log($scope.listaChequesAsesor);
 	}
 	
 	//icon editar
@@ -1204,7 +1245,7 @@ app.controller("ordenTrabajoController",['$rootScope', '$scope','$window', '$loc
 	}
 	
 	$scope.verificarSaldo=function(operacion){
-		var objs= operacionesMovimientosService.verificarSaldo(operacion, $scope.otvo,$scope.otvo.ot, $scope.operaciones,$scope.montoRetorno,$scope.sumaMontoBrok);
+		var objs= operacionesMovimientosService.verificarSaldoOP(operacion, $scope.otvo,$scope.otvo.ot, $scope.operaciones,$scope.montoRetorno,$scope.sumaMontoBrok);
 		$scope.errorSaldo= objs.error;
 		
 		if($scope.errorSaldo==" "){
