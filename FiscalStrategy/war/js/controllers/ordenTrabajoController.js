@@ -275,7 +275,7 @@ app.service("operacionesMovimientosService",['$http', '$q', function($http, $q){
 		return cheque;
 	}
 	
-	this.verificarSaldo=function(operacion,otvo, ot,operaciones,monto,suma,tipoOP,totalOP){
+	this.verificarSaldo=function(operacion,otvo, ot,operaciones,monto,suma,tipoOP,totalOP,montorest,OPCSaldo){
 		objetos={ error: null, saldo:null};
 		var cantidad = 0;
 		var btndisble="false";
@@ -287,8 +287,10 @@ app.service("operacionesMovimientosService",['$http', '$q', function($http, $q){
 				
 				if(tipoOP=="base"){
 				cantidad= ((parseFloat(monto) + parseFloat(ot.importe)) - operaciones.monto).toFixed(2);
+				}else if(tipoOP=="total"){
+					cantidad= (parseFloat(totalOP) - montorest).toFixed(2);
 				}else{
-					cantidad= (parseFloat(totalOP) - operaciones.monto).toFixed(2);
+					cantidad= (parseFloat(OPCSaldo) - montorest).toFixed(2);
 				}
 			}
 		}else{
@@ -489,8 +491,11 @@ app.controller("OTsAddController",['$rootScope', '$route','$scope','$cookieStore
 	$scope.comis = function() {
 		if($scope.tipoOP=="base"){
 		$scope.datos.comipor= $scope.redondea(($scope.datos.porciento/100)*$scope.datos.basecomisiones);
+		$scope.cImporte();
 		}else{
+			
 		$scope.datos.comipor= $scope.redondea(($scope.datos.porciento/100)*$scope.datos.total);
+		$scope.cImporte();
 		}
 		 $scope.calcularComisiones('Todos');
 	};
@@ -615,7 +620,7 @@ app.controller("OTsAddController",['$rootScope', '$route','$scope','$cookieStore
 	
 	$scope.verificarSaldo=function(operacion){
 		
-			var objs= operacionesMovimientosService.verificarSaldo(operacion, $scope.otVO, $scope.datos, $scope.operaciones,$scope.montoRetorno,$scope.sumaMontoBrok,$scope.tipoOP,$scope.datos.total);
+			var objs= operacionesMovimientosService.verificarSaldo(operacion, $scope.otVO, $scope.datos, $scope.operaciones,$scope.montoRetorno,$scope.sumaMontoBrok,$scope.tipoOP,$scope.datos.total,$scope.montorest,$scope.OPCSaldo);
 		
 		$scope.errorSaldo= objs.error;
 		if($scope.errorSaldo==" "){
@@ -742,11 +747,13 @@ app.controller("OTsAddController",['$rootScope', '$route','$scope','$cookieStore
 			 var montosTotal = ($scope.datos.montoLic * 1)+ ($scope.datos.montoDes * 1) + ($scope.sumaMontoBrok * 1) + ($scope.montoRetorno * 1);
 			$scope.datos.totalComisiones=$scope.redondea(montosTotal);
 			$scope.totalPor=$scope.datos.porLic + $scope.datos.porDes + sumaBrok + $scope.datos.retorno;
+			$scope.montorest=($scope.datos.montoLic * 1)+ ($scope.datos.montoDes * 1) + ($scope.sumaMontoBrok * 1)
 		}else{
 			$scope.datos.retorno= null; 
 			$scope.retorn="Valor de retorno debe ser igual o mayor a 0";
 		}	
 	}	 
+
 	
 	$scope.calcularComisionesM=function(param){
 		

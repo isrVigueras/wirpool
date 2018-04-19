@@ -13,7 +13,7 @@ function calcularSaldo(prox,tipoOP, arrMov, total,importe,totalOP){
 	if(tipoOP=="base"){
 		saldo= ((parseFloat(total) + parseFloat(importe)) - sumatoria).toFixed(2);
 	}else{
-		saldo= (parseFloat(totalOP) - sumatoria).toFixed(2);
+		saldo= (totalOP - sumatoria).toFixed(2);
 	}
 	
 	return saldo;
