@@ -320,21 +320,33 @@ app.service("operacionesMovimientosService",['$http', '$q', function($http, $q){
 		
 		return objetos;
 	}
-	this.verificarSaldoOP=function(operacion,otvo, ot,operaciones,monto,suma){
+	this.verificarSaldoOP=function(operacion,tipoOP,otvo, ot,operaciones,monto,suma){
 		objetos={ error: null, saldo:null};
 		var cantidad = 0;
 		var btndisble="false";
 		
 		if(operacion== 'OPC'){
 			if(otvo.movimientos.length != 0){
-				cantidad= calcularSaldoOP(operacion,operaciones.monto,otvo.movimientos,monto,ot.importe,ot.total);
+				if(tipoOP=="total"){
+					cantidad= calcularSaldoOP(operacion,operaciones.monto,otvo.movimientos,monto,ot.importe,ot.total,tipoOP);
+				}else{
+					cantidad= calcularSaldoOP(operacion,operaciones.monto,otvo.movimientos,monto,ot.importe,ot.total,tipoOP);
+				}
 			}else{
-				cantidad= ((parseFloat(monto) + parseFloat(ot.importe)) - operaciones.monto).toFixed(2);
 				
+				if(tipoOP=="base"){
+				cantidad= ((parseFloat(monto) + parseFloat(ot.importe)) - operaciones.monto).toFixed(2);
+				}else 
+					if( !operaciones.monto!=0){
+					cantidad= (parseFloat(totalOP) - montorest).toFixed(2);
+				}else
+				{
+					cantidad= (parseFloat(OPCSaldo) - operaciones.monto).toFixed(2);
+				}
 			}
 		}else{
 			if(otvo.comisiones.length != 0){
-				cantidad=calcularSaldoOP(operacion,operaciones.monto,otvo.comisiones,suma,0);
+				cantidad=calcularSaldoOP(operacion,operaciones.monto,otvo.movimientos,monto,ot.importe,ot.total,tipoOP,otvo.comisiones,ot.montoBrok);
 			}else{
 				cantidad= (parseFloat(suma) - parseFloat(operaciones.monto)).toFixed(2);
 			}
@@ -902,6 +914,7 @@ app.controller("OTsAddController",['$rootScope', '$route','$scope','$cookieStore
 						$scope.otVO.broker = $scope.brockerCliente;
 					}
 					$scope.otVO.ot = $scope.datos;
+					$scope.otVO.ot.tipoOP=$scope.tipoOP
 //					console.log($scope.otVO);
 					
 					ordenTrabajoservice.addot($scope.otVO).then(function(data){
@@ -991,6 +1004,7 @@ app.controller("ordenTrabajoController",['$rootScope', '$scope','$window', '$loc
 	ordenTrabajoservice.loadot($cookieStore.get("idOt")).then(function(data){
 		$scope.otvo= data;
 		$scope.mont=$scope.otvo.pagos.monto;
+		$scope.tipoOP=$scope.otvo.ot.tipoOP;
 //		console.log(data);	
 		crearListaDeCheques();
 		
@@ -1266,7 +1280,7 @@ app.controller("ordenTrabajoController",['$rootScope', '$scope','$window', '$loc
 	}
 	
 	$scope.verificarSaldo=function(operacion){
-		var objs= operacionesMovimientosService.verificarSaldoOP(operacion, $scope.otvo,$scope.otvo.ot, $scope.operaciones,$scope.montoRetorno,$scope.sumaMontoBrok);
+		var objs= operacionesMovimientosService.verificarSaldoOP(operacion,$scope.tipoOP, $scope.otvo,$scope.otvo.ot, $scope.operaciones,$scope.montoRetorno,$scope.sumaMontoBrok);
 		$scope.errorSaldo= objs.error;
 		
 		if($scope.errorSaldo==" "){
