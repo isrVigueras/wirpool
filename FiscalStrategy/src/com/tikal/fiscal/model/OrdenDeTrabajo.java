@@ -55,6 +55,8 @@ public class OrdenDeTrabajo {
 	
 	private int folioImpresion;
 	
+	private String tipoOP;
+	
 	public float getSaldoMov() {
 		return saldoMov;
 	}
@@ -231,6 +233,12 @@ public class OrdenDeTrabajo {
 	}
 	public void setPorciento(float porciento) {
 		this.porciento = porciento;
+	}
+	public String getTipoOP() {
+		return tipoOP;
+	}
+	public void setTipoOP(String tipoOP) {
+		this.tipoOP = tipoOP;
 	}
 	
 }
