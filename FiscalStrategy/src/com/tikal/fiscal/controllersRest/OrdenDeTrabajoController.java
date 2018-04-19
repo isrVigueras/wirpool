@@ -74,6 +74,19 @@ public class OrdenDeTrabajoController {
 	@Autowired
 	NotificacionDAO notificaciondao;
 	
+	@RequestMapping(value="/update/", method=RequestMethod.POST, consumes="application/json")
+	private void update(HttpServletRequest req, HttpServletResponse res, @RequestBody String json) throws IOException{
+		OrdenDeTrabajoVO otvo= (OrdenDeTrabajoVO) JsonConvertidor.fromJson(json, OrdenDeTrabajoVO.class);
+		OrdenDeTrabajo ot= otvo.getOt();
+		HttpSession sesion= req.getSession();
+		Usuario user=(Usuario) sesion.getAttribute("user");
+		if(user.getPerfil().compareTo("Ejecutivo")==0 || user.getPerfil().compareTo("AdministradorRoot")==0 || user.getPerfil().compareTo("Administrador")==0){
+			if(ot.getEstatus().compareTo("Cerrada")==0){
+				otdao.save(ot);
+			}
+		}
+	}
+	
 	@RequestMapping(value="/add/", method=RequestMethod.POST, consumes="application/json")
 	private void crear(HttpServletRequest req, HttpServletResponse res, @RequestBody String json) throws IOException{
 		AsignadorDeCharset.asignar(req, res);

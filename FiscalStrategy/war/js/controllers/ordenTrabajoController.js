@@ -146,6 +146,16 @@ app.service("ordenTrabajoservice",['$http', '$q', function($http, $q){
 		return d.promise;
 	}
 	
+	this.cerrarOt=function(ot){
+		var d = $q.defer();
+		$http.post("ots/update/",ot).then(
+			function(response) {
+//				console.log("update mov");
+				d.resolve(response.data);
+			});
+		return d.promise;
+	}
+	
 	this.cancelaMov= function(mov){
 		var d = $q.defer();
 		$http.post("movimientos/cancelar/",mov).then(
@@ -1060,7 +1070,7 @@ app.controller("ordenTrabajoController",['$rootScope', '$scope','$window', '$loc
 				movVO.saldo=$scope.otvo.ot.saldoCom;
 			}
 			if(cerrarOrden()){
-				ordenTrabajoservice.addot($scope.otvo).then(function(data){
+				ordenTrabajoservice.cerrarOt($scope.otvo).then(function(data){
 					if(tipoOperacion=='OPC'){
 						ordenTrabajoservice.updateot($scope.otvo.movimientos[index]).then(function(data){
 							$window.location.reload();
