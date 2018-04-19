@@ -1220,7 +1220,7 @@ app.controller("ordenTrabajoController",['$rootScope', '$scope','$window', '$loc
 			$scope.otvo.comisiones[indice].estatus="VALIDADO";
 		}
 		if(cerrarOrden()){
-			ordenTrabajoservice.addot($scope.otvo).then(function(data){
+			ordenTrabajoservice.cerrarOt($scope.otvo).then(function(data){
 				if(tipoOperacion=='OPC'){
 					ordenTrabajoservice.updateot($scope.otvo.movimientos[indice]).then(function(data){
 						$window.location.reload();
