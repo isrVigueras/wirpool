@@ -282,15 +282,21 @@ app.service("operacionesMovimientosService",['$http', '$q', function($http, $q){
 		
 		if(operacion== 'OPC'){
 			if(otvo.movimientos.length != 0){
-				cantidad= calcularSaldo(operaciones.monto,tipoOP,otvo.movimientos,monto,ot.importe,totalOP);
+				if(tipoOP=="total"){
+					cantidad= calcularSaldo(operaciones.monto,tipoOP,otvo.movimientos,monto,ot.importe,totalOP-montorest);
+				}else{
+					cantidad= calcularSaldo(operaciones.monto,tipoOP,otvo.movimientos,monto,ot.importe,totalOP);
+				}
 			}else{
 				
 				if(tipoOP=="base"){
 				cantidad= ((parseFloat(monto) + parseFloat(ot.importe)) - operaciones.monto).toFixed(2);
-				}else if(tipoOP=="total"){
+				}else 
+					if( !operaciones.monto!=0){
 					cantidad= (parseFloat(totalOP) - montorest).toFixed(2);
-				}else{
-					cantidad= (parseFloat(OPCSaldo) - montorest).toFixed(2);
+				}else
+				{
+					cantidad= (parseFloat(OPCSaldo) - operaciones.monto).toFixed(2);
 				}
 			}
 		}else{
