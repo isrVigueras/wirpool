@@ -73,6 +73,14 @@ public class ClienteController {
 		clientedao.save(cliente);
 	}
 	
+	@RequestMapping(value={"/update"},method= RequestMethod.POST, consumes="application/json")
+	public void update(HttpServletResponse res, HttpServletRequest req, @RequestBody String json) throws IOException{
+		AsignadorDeCharset.asignar(req, res);
+		Cliente cliente= (Cliente) JsonConvertidor.fromJson(json, Cliente.class);
+		cliente.setNickname(cliente.getNombre()+" "+cliente.getApePaterno()+ " "+ cliente.getApeMaterno());
+		clientedao.save(cliente);
+	}
+	
 	@RequestMapping(value={"/rehacer/{page}"},method= RequestMethod.GET, produces="application/json")
 	public void rehacer(HttpServletResponse res, HttpServletRequest req, @PathVariable int page) throws IOException{
 		AsignadorDeCharset.asignar(req, res);
