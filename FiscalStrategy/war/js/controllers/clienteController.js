@@ -45,6 +45,20 @@ app.service("clientservice",['$http', '$q', function($http, $q){
 			});
 		return d.promise;
 	}
+	this.actualizar=function(send){
+		var d = $q.defer();
+		$http.post("/clientes/update/",send).then(
+			function(response) {
+				console.log(response);
+				d.resolve(response.data);
+			}, function(response) {
+				if(response.status==403){
+					alert("No está autorizado para realizar esta acción");
+					$location.path("/");
+				}
+			});
+		return d.promise;
+	}
 	
 	this.confirmar=function(send){
 		var d = $q.defer();
@@ -265,8 +279,17 @@ app.controller("clientController",['$http','$interval','$rootScope','usuarioserv
 	
 	$scope.editarCliente= function(){
 		$scope.client.enabled=true;
-		$scope.client.id=$scope.getcliente.id;
-		clientservice.guardarCliente($scope.client).then(function(data){
+		$scope.client.id=$scope.clientdata.id;
+		$scope.client.nombre=$scope.clientdata.nombre;
+		$scope.client.apePaterno=$scope.clientdata.apePaterno;
+		$scope.client.apeMaterno=$scope.clientdata.apeMaterno;
+		if($scope.client.responsable==""){
+			$scope.client.responsable=$scope.clientdata.responsable;
+		}
+		if($scope.client.idBrocke==""){
+			$scope.client.idBrocke=$scope.clientdata.idBrocker;
+		}	
+		clientservice.actualizar($scope.client).then(function(data){
 			var x = document.getElementById("snackbar")
 		    x.className = "show";
 			setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
@@ -278,7 +301,7 @@ app.controller("clientController",['$http','$interval','$rootScope','usuarioserv
 	};
 	$scope.editar = function(data){
 		clientservice.getCliente(data.id).then(function(data){
-			$scope.client=data.cliente;
+			$scope.clientdata=data.cliente;
 			$scope.brocker= data.brocker.nickname;
 			$scope.responsable= data.responsable.usuario;
 		});

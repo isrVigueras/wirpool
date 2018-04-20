@@ -54,7 +54,7 @@
 					<td>{{p.moneda}}</td>
 					<td>{{p.banco}}</td>
 					<td>{{p.cuenta}}</td>
-					<td>{{formatoFecha(p.fecha)}}</td>
+					<td>{{p.fecha | date}}</td>
 				</tr>
 			</tbody>
 		</table>
@@ -295,7 +295,8 @@
 				  	</div>
 				  	<div class="col-md-2">
 				  		<label class="control-label">Monto: </label>
-	 					<input class="form-control  mb-2" type="text"  ng-disabled="true" value="{{mov.monto}}">		
+	 					<input class="form-control  mb-2" type="text"  ng-disabled="true" value="{{mov.monto}}">
+	 					{{mov.monto | currency}}		
 				  	</div>
 			  		<div class="col-md-6">
 			  			<label class="control-label">Descripci&oacute;n:</label>
@@ -430,6 +431,7 @@
 				  		</div>
 				  		<div class="col-md-3">
 	 						<input  class="form-control  mb-2" type="number" min="1" ng-required="true" ng-model="operaciones.monto"  ng-change="verificarSaldo('OPC')" ng-disabled="tipoResguardo">		
+				  		{{operaciones.monto | currency}}
 				  		</div>
 				  		<div class="col-md-1"></div>
 				  	</div> 
@@ -519,7 +521,8 @@
 				  			<label class="control-label">Monto: </label>
 				  		</div>
 				  		<div class="col-md-3">
-	 						<input  class="form-control  mb-2" type="number" min="1" ng-required="true" ng-model="operaciones.monto"  ng-change="verificarSaldo('OPA')" ng-disabled="tipoResguardo">		
+	 						<input  class="form-control  mb-2" type="number" min="1" ng-required="true" ng-model="operaciones.monto"  ng-change="verificarSaldo('OPA')" ng-disabled="tipoResguardo">
+	 						{{operaciones.monto | currency}}		
 				  		</div>
 				  		<div class="col-md-1"></div>
 				  	</div> 

@@ -33,7 +33,7 @@
 				<div class="row">				
 					<div class="col-md-2">
 						<label>Monto:</label> 
-						<input name="monto" class="form-control form-control-sm" ng-model="pago.monto" type="number" min="0" step="0.01"><br>
+						<input name="monto" class="form-control form-control-sm" ng-model="pago.monto" type="number" min="0" step="0.01">{{pago.monto | currency}}<br>
 					</div>
 					<!--    	   ^([A-ZÑ\x26]{3,4}([0-9]{2})(0[1-9]|1[0-2])(0[1-9]|1[0-9]|2[0-9]|3[0-1]))([A-Z\d]{3})?$ -->
 					<div class="col-md-2">
@@ -163,7 +163,7 @@
 				  			<label class="control-label">Monto: </label>
 				  		</div>
 				  		<div class="col-md-3">
-	 						<input  class="form-control  mb-2" type="number" min="1" ng-required="true" ng-model="operaciones.monto"  step="0.01" ng-change="verificarSaldo('OPC')" ng-disabled="tipoResguardo">		
+	 						<input  class="form-control  mb-2" type="number" min="1" ng-required="true" ng-model="operaciones.monto"  step="0.01" ng-change="verificarSaldo('OPC')" ng-disabled="tipoResguardo">{{operaciones.monto | currency}}		
 				  		</div>
 				  		<div class="col-md-1"></div>
 				  	</div> 
@@ -242,7 +242,7 @@
       <div class="modal-body">
 			<div class="row" >
 				<div class="col-sm-1" ><label class="control-label">Monto: </label></div>
-				<div class="col-sm-3" >$ {{cheque.monto}}</div>
+				<div class="col-sm-3" > {{cheque.monto | currency}}</div>
 				<div class="col-sm-3" align="right"><label class="control-label">Fecha de Emisi&oacute;n:  </label></div>
 				<div class="col-sm-5">{{cheque.fEmision}}</div>
 			</div>

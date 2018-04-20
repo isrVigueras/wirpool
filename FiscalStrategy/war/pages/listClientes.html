@@ -220,12 +220,20 @@
 	 
 	<form id="forma" name="myForm">
 		<div class="col-md-5">
-			Nombre del Cliente: <input class="form-control" onkeyup="javascript:this.value=this.value.toUpperCase();"
-				ng-model="client.nickname" type="text" ng-required="true" ><br>
+			Nombre: <input class="form-control" onkeyup="javascript:this.value=this.value.toUpperCase();"
+				ng-model="clientdata.nombre" type="text" ng-required="true" ><br>
+		</div>
+		<div class="col-md-5">
+			Apellido Paterno: <input class="form-control" onkeyup="javascript:this.value=this.value.toUpperCase();"
+				ng-model="clientdata.apePaterno" type="text" ng-required="true" ><br>
+		</div>
+		<div class="col-md-5">
+			Apellido Materno: <input class="form-control" onkeyup="javascript:this.value=this.value.toUpperCase();"
+				ng-model="clientdata.apeMaterno" type="text" ng-required="true" ><br>
 		</div>
 		<div class="col-md-5">
 			Tipo de Cliente: 
-			<select ng-model="client.tipo" class="form-control" ng-required="true">
+			<select ng-model="clientdata.tipo" class="form-control" ng-required="true">
 			  <option value="cliente">Cliente</option>
 			</select><br>
 		</div>
@@ -240,8 +248,9 @@
 		
 		<div class="col-md-5">
 			Nuevo Responsable: <select class="form-control"
-				ng-model="client.responsable" type="text" ng-required="true">
-					<option ng-repeat="usuario in usuariosLista" ng-if="usuario.usuario!='root'" value="{{usuario.id}}">{{usuario.usuario}}</option>
+				ng-model="client.responsable" type="text" required>
+					<option value=""></option>
+					<option ng-repeat="usuario in usuariosLista" ng-if="usuario.usuario!='root'" value="{{usuario.id}}" >{{usuario.usuario}}</option>
 				</select><br>
 		</div>
 		<div class="col-md-5">
@@ -250,7 +259,7 @@
 <!-- 				ng-model="client.brocker.nickname" type="text" ng-required="true"> -->
 <!-- 					<option ng-repeat="bk in brockerLista" value="{{bk.id}}">{{bk.nickname}}</option> -->
 <!-- 				</select> -->
-				<input id="searchBox" class="form-control form-control-sm" type="text" ng-model="busca" data-provide="typehead" autocomplete="off" onkeyup="javascript:this.value=this.value.toUpperCase();">
+				<input id="searchBox" class="form-control form-control-sm" type="text"  ng-required="true" ng-model="busca" data-provide="typehead" autocomplete="off" onkeyup="javascript:this.value=this.value.toUpperCase();">
 			<br>
 		</div>
 <!-- 		<div class="col-md-1"> -->
