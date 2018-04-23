@@ -1114,11 +1114,19 @@ app.controller("ordenTrabajoController",['$rootScope', '$scope','$window', '$loc
 	$scope.Cuentasban = function() {
 		 empresaservice.getce($scope.mov.empresa.id).then(function(data) {
 		  		$scope.cempresa = data;
+		  		$scope.listaBancos=[];
+		  		for(var i = 0; i< $scope.cempresa.cuentas.length;i++){
+		  			var indice= $scope.listaBancos.indexOf($scope.cempresa.cuentas[i].banco);
+		  			if(indice<0){
+		  				$scope.listaBancos.push($scope.cempresa.cuentas[i].banco);
+		  			}
+		  		}
 		  		$scope.banco=$scope.cempresa.cuentas[0].banco;
 //		  		 console.log($scope.cempresa);
 		  });
 			
 	};
+	
 	function cerrarOrden(){
 		var contM=0, contC=0;
 		for(var i in $scope.otvo.movimientos){

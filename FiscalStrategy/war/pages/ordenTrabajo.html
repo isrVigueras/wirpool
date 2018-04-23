@@ -314,8 +314,8 @@
 					</div>
 					<div class="col-md-4">
 						<label>Banco:</label> 
-						<select name="banco" ng-model="mov.banco" class="form-control form-control-sm" ng-required="true" ng-change="Cuentas($index)" >
-							<option ng-repeat="b in cempresa.cuentas" value="{{b.banco}}" >{{b.banco}}</option> 
+						<select name="banco" ng-model="mov.banco" class="form-control form-control-sm" ng-required="true">
+							<option ng-repeat="b in listaBancos" value="{{b}}" >{{b}}</option> 
 						</select>	
 					</div>
 				
@@ -327,8 +327,8 @@
 <!-- 					</div> -->
 					<div class="col-md-4">
 						<label class="control-label">Cuentas:</label>
-						<select name="cuentas" class="form-control form-control-sm" ng-required="true" ng-model="mov.cuenta" value="{{mov.cuenta}}">
-					 		<option ng-repeat=" c in cuentas">{{c.cuenta}}</option> 
+						<select name="cuentas" class="form-control form-control-sm" ng-required="true" ng-model="mov.cuenta">
+					 		<option ng-repeat=" c in cempresa.cuentas | filter: {'banco' : mov.banco}">{{c.cuenta}}</option> 
 						</select>	
 					</div>
 				</div>
