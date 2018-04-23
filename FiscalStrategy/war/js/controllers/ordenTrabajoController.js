@@ -404,8 +404,8 @@ app.controller("OTsAddController",['$rootScope', '$route','$scope','$cookieStore
 			$scope.buscar();
 //		}
 	},true);
-	$scope.$watch('pago.empresa',function(){
-		if($scope.pago.empresa.length>3){
+	$scope.$watch('empresaSearch',function(){
+		if($scope.empresaSearch.length>3){
 			$scope.zEmpresa();
 		}
 	},true);
@@ -499,7 +499,7 @@ app.controller("OTsAddController",['$rootScope', '$route','$scope','$cookieStore
 		}
 	  
 	$scope.zEmpresa=function(){
-		ordenTrabajoservice.searchEmpresa($scope.pago.empresa).then(function(data){
+		ordenTrabajoservice.searchEmpresa($scope.empresaSearch).then(function(data){
 			
 			$scope.found=[];
 			for(var i=0; i< data.length; i++){
@@ -621,7 +621,7 @@ app.controller("OTsAddController",['$rootScope', '$route','$scope','$cookieStore
 		if($scope.datos.nombreCliente == null){
 			datosCliente();
 		}
-		var renglon= {cliente:$scope.datos.nombreCliente, fecha:$scope.pago.fecha, banco:$scope.pago.banco, cuenta:$scope.pago.cuenta, monto:$scope.pago.monto, moneda:$scope.pago.moneda, referencia: $scope.pago.referencia}
+		var renglon= {empresa:$scope.pago.empresa,cliente:$scope.datos.nombreCliente, fecha:$scope.pago.fecha, banco:$scope.pago.banco, cuenta:$scope.pago.cuenta, monto:$scope.pago.monto, moneda:$scope.pago.moneda, referencia: $scope.pago.referencia}
 		$scope.otVO.pagos.push(renglon);
 		$scope.tablaPagos=true;
 		$scope.limpiaPago();
