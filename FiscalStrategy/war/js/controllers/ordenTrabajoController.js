@@ -455,6 +455,7 @@ app.controller("OTsAddController",['$rootScope', '$route','$scope','$cookieStore
 				
 			}
 			$scope.cliente=data;
+			
 //			$scope.tipos=data.tipos;
 			
 			$('#searchBox').typeahead({
@@ -464,6 +465,15 @@ app.controller("OTsAddController",['$rootScope', '$route','$scope','$cookieStore
 			    updater:function (item) {
 			    	var ind=$scope.encontrados.indexOf(item);
 			    	$scope.clienteSeleccionado=true;
+			    	if($scope.clienteSeleccionado==true){
+			    		console.log("El cliente se selecciono",$scope.cliente);
+			    		if($scope.cliente[ind].idBrocker==null){
+			    			alert("El cliente no tiene Brocker asignado");
+			    		}
+			    		if($scope.cliente[ind].responsable==null){
+			    			alert("El cliente no tiene Responsable asignado");
+			    		}
+			    	}
 			    	$scope.datos.idCliente= $scope.cliente[ind].id;
 			        return item;
 			    }

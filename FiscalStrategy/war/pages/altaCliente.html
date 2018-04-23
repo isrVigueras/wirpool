@@ -28,6 +28,7 @@
 		<div class="col-md-6">
 			Responsable: <select class="form-control"
 				ng-model="client.responsable" type="text" ng-required="true">
+					<option></option>
 					<option ng-repeat="usuario in usuariosLista" ng-if="usuario.usuario!='root'" value="{{usuario.id}}">{{usuario.usuario}}</option>
 				</select><br>
 		</div>
@@ -37,7 +38,7 @@
 <!-- 				ng-model="client.idBrocker" type="text" ng-required="true"> -->
 <!-- 					<option ng-repeat="bk in brockerLista" value="{{bk.id}}">{{bk.nickname}}</option> -->
 <!-- 				</select><br> -->
-			<input id="searchBox" class="form-control form-control-sm" type="text" ng-model="busca" data-provide="typehead" autocomplete="off" onkeyup="javascript:this.value=this.value.toUpperCase();">
+			<input id="searchBox" class="form-control form-control-sm" type="text" ng-model="busca" data-provide="typehead" autocomplete="off" onkeyup="javascript:this.value=this.value.toUpperCase();"ng-required="true">
 		</div>
 <!-- 		<div class="col-md-1"> -->
 <!-- 			Activo: <select class="form-control" ng-model="client.enabled"> -->
