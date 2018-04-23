@@ -13,6 +13,7 @@ public class PagoRecibido {
 	private Long id;
 	@Index
 	private String cuenta;
+	private String empresa;
 	private String banco;
 	private String clabe;
 	@Index
@@ -108,6 +109,12 @@ public class PagoRecibido {
 	}
 	public void setDescripcion(String descripcion) {
 		this.descripcion = descripcion;
+	}
+	public String getEmpresa() {
+		return empresa;
+	}
+	public void setEmpresa(String empresa) {
+		this.empresa = empresa;
 	}
 	
 }

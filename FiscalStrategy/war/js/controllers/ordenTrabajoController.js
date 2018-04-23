@@ -516,6 +516,7 @@ app.controller("OTsAddController",['$rootScope', '$route','$scope','$cookieStore
 			    updater:function (item) {
 			    	var em=$scope.found.indexOf(item);
 			    	$scope.datos.idEmpresa= $scope.Empresa[em].id;
+			    	$scope.pago.empresa=$scope.Empresa[em].nombre;
 			    	$scope.Cuentasban($scope.datos.idEmpresa);
 			        return item;
 			    }

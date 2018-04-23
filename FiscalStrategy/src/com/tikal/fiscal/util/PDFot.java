@@ -1,7 +1,9 @@
 package com.tikal.fiscal.util;
 
 import java.text.NumberFormat;
+import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.Locale;
 
 import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Chunk;
@@ -25,10 +27,11 @@ public class PDFot {
 	private Document document;
 	//private MyFooter pieDePagina = new MyFooter(null);
 
-	private Font font1 = new Font(Font.FontFamily.HELVETICA, 7F, Font.BOLD);
-	private Font font2 = new Font(Font.FontFamily.HELVETICA, 6.5F, Font.BOLD);
-	private Font font3 = new Font(Font.FontFamily.HELVETICA, 6.5F, Font.NORMAL);
-	private Font fontHead = new Font(Font.FontFamily.HELVETICA, 7.5F, Font.NORMAL);
+	private Font font1 = new Font(Font.FontFamily.HELVETICA, 10F, Font.BOLD);
+	private Font font2 = new Font(Font.FontFamily.HELVETICA, 9.5F, Font.BOLD);
+	private Font font3 = new Font(Font.FontFamily.HELVETICA, 9.5F, Font.NORMAL);
+	private Font fontHead = new Font(Font.FontFamily.HELVETICA, 9.5F, Font.NORMAL);
+	private NumberFormat nf = NumberFormat.getCurrencyInstance(Locale.getDefault());
 	
 	private PdfPCell emptyCell = new PdfPCell();
 	// emptyCell.setBorderWidth(0);
@@ -134,7 +137,7 @@ public class PDFot {
 		//Tabla1
 		PdfPTable tablaEncabezado = new PdfPTable(2);
 		tablaEncabezado.setWidthPercentage(100);
-		tablaEncabezado.setWidths(new float[] { 50, 50 });
+		tablaEncabezado.setWidths(new float[] { 60, 40 });
 		
 	  	//Datos del cliente
 		PdfPCell celdaDatos = new PdfPCell();
@@ -155,13 +158,14 @@ public class PDFot {
 		cliente.addCell(celdaCliente);
 		PdfPCell celdaClienteDos = new PdfPCell();
 		Phrase fraseDatosResp = new Phrase();
+		SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
 		if(otvo.getCliente().getNickname() != null || otvo.getCliente().getNickname()!= ""){
 			agregarChunkYNuevaLinea(otvo.getCliente().getNickname(), font1, fraseDatosResp);
-			agregarChunkYNuevaLinea(otvo.getOt().getFechaInicio().toString(), font1, fraseDatosResp);
+			agregarChunkYNuevaLinea(formatter.format(otvo.getOt().getFechaInicio()), font1, fraseDatosResp);
 			agregarChunkYNuevaLinea(String.valueOf(otvo.getCliente().getSaldo()), font1, fraseDatosResp);
 		}else{
 			agregarChunkYNuevaLinea(otvo.getBroker().getNickname(), font1, fraseDatosResp);
-			agregarChunkYNuevaLinea(otvo.getOt().getFechaInicio().toString(), font1, fraseDatosResp);
+			agregarChunkYNuevaLinea(formatter.format(otvo.getOt().getFechaInicio()), font1, fraseDatosResp);
 			agregarChunkYNuevaLinea(String.valueOf(otvo.getBroker().getSaldo()), font1, fraseDatosResp);
 		}
 		celdaClienteDos.setPhrase(fraseDatosResp);
@@ -209,12 +213,14 @@ public class PDFot {
 		for(int i=0; i<movimientos.size();i++){
 			agregarCeldaSinBorde(movimientos.get(i).getTipo(), font3, tablaOPCliente, true);
 			agregarCeldaSinBorde(movimientos.get(i).getDescripcion(), font3, tablaOPCliente, true);
-			agregarCeldaSinBorde("$ " + String.valueOf(movimientos.get(i).getMonto()), font3, tablaOPCliente, true);
+//			agregarCeldaSinBorde("$ " + String.valueOf(movimientos.get(i).getMonto()), font3, tablaOPCliente, true);
+			agregarCeldaSinBorde(nf.format(movimientos.get(i).getMonto()), font3, tablaOPCliente, true);
 		}
 		String saldoMov = calcularSaldoCA(movimientos, otvo.getOt().getTotal());
 		agregarCeldaSinBorde(" ",font3, tablaOPCliente,false);
 		agregarCeldaSinBorde(" ",font1, tablaOPCliente,false);
-		agregarCeldaSinBorde(" Total: $ " + saldoMov,font1, tablaOPCliente,true);
+//		agregarCeldaSinBorde(" Total: $ " + saldoMov,font1, tablaOPCliente,true);
+		agregarCeldaSinBorde(" Total: " + nf.format(saldoMov),font1, tablaOPCliente,true);
 		
 		tablaOPCliente.setSpacingBefore(4);
 		tablaOPCliente.setSpacingAfter(3);
@@ -230,11 +236,12 @@ public class PDFot {
 		List<PagoRecibido> pagos = otvo.getPagos();
 			for(int i=0; i<pagos.size();i++){
 				agregarCeldaConBorde(pagos.get(i).getFecha().toString(), font3, tablaPagos, "centro");
-				agregarCeldaConBorde("$ " + String.valueOf(pagos.get(i).getMonto()), font3, tablaPagos, "centro");
+//				agregarCeldaConBorde("$ " + String.valueOf(pagos.get(i).getMonto()), font3, tablaPagos, "centro");
+				agregarCeldaConBorde(nf.format(pagos.get(i).getMonto()), font3, tablaPagos, "centro");
 			}
 		agregarCeldaSinBorde("  ",font1, tablaPagos,false);
-		agregarCeldaSinBorde("Total: $ " + String.valueOf(otvo.getOt().getTotal()),font1, tablaPagos,true);
-				
+//		agregarCeldaSinBorde("Total: $ " + String.valueOf(otvo.getOt().getTotal()),font1, tablaPagos,true);
+		agregarCeldaSinBorde("Total: " + nf.format(otvo.getOt().getTotal()),font1, tablaPagos,true);
 		tablaPagos.setSpacingBefore(4);
 		tablaPagos.setSpacingAfter(3);
 		document.add(tablaPagos);
@@ -314,16 +321,21 @@ public class PDFot {
 		PdfPCell celdaSigno = new PdfPCell();
 		celdaSigno.setBorder(PdfPCell.NO_BORDER);
 		Phrase fraseSigno = new Phrase();
-		agregarChunkYNuevaLinea("$", font1, fraseSigno);
-		agregarChunkYNuevaLinea("$", font1, fraseSigno);
-		agregarChunkYNuevaLinea("$", font1, fraseSigno);
+		agregarChunkYNuevaLinea("", font1, fraseSigno);
+		agregarChunkYNuevaLinea("", font1, fraseSigno);
+		agregarChunkYNuevaLinea("", font1, fraseSigno);
 		celdaSigno.setPhrase(fraseSigno);
 		PdfPCell celdaCantidad = new PdfPCell();
 		celdaCantidad.setBorder(PdfPCell.NO_BORDER);
 		Phrase fraseCantidad = new Phrase();
-		agregarChunkYNuevaLinea(String.valueOf(otvo.getOt().getTotal()), font1, fraseCantidad);
-		agregarChunkYNuevaLinea(String.valueOf(otvo.getOt().getImporte()), font1, fraseCantidad);
-		agregarChunkYNuevaLinea(String.valueOf(otvo.getOt().getIva()), font1, fraseCantidad);
+//		agregarChunkYNuevaLinea(String.valueOf(otvo.getOt().getTotal()), font1, fraseCantidad);
+//		agregarChunkYNuevaLinea(String.valueOf(otvo.getOt().getImporte()), font1, fraseCantidad);
+//		agregarChunkYNuevaLinea(String.valueOf(otvo.getOt().getIva()), font1, fraseCantidad);
+		
+		agregarChunkYNuevaLinea(nf.format(otvo.getOt().getTotal()), font1, fraseCantidad);
+		agregarChunkYNuevaLinea(nf.format(otvo.getOt().getImporte()), font1, fraseCantidad);
+		agregarChunkYNuevaLinea(nf.format(otvo.getOt().getIva()), font1, fraseCantidad);
+		
 		celdaCantidad.setPhrase(fraseCantidad);
 		calculos.addCell(celdaDescripcion);
 		calculos.addCell(celdaSigno);
@@ -336,7 +348,9 @@ public class PDFot {
 		PdfPCell celdaLeyendaEncabezado = new PdfPCell();
 		celdaLeyendaEncabezado.setBorder(PdfPCell.NO_BORDER);
 		Phrase fraseLeyendaEncabezado = new Phrase();
-		agregarChunkYNuevaLinea("Base para comisiones " + "$" + String.valueOf(otvo.getOt().getIva()), font3, fraseLeyendaEncabezado);
+//		agregarChunkYNuevaLinea("Base para comisiones " + "$" + String.valueOf(otvo.getOt().getIva()), font3, fraseLeyendaEncabezado);
+//		agregarChunkYNuevaLinea("% para comisiones " + String.valueOf(otvo.getOt().getPorciento()), font3, fraseLeyendaEncabezado);
+		agregarChunkYNuevaLinea("Base para comisiones " + String.valueOf(otvo.getOt().getIva()), font3, fraseLeyendaEncabezado);
 		agregarChunkYNuevaLinea("% para comisiones " + String.valueOf(otvo.getOt().getPorciento()), font3, fraseLeyendaEncabezado);
 		celdaLeyendaEncabezado.setPhrase(fraseLeyendaEncabezado);
 		
@@ -362,13 +376,16 @@ public class PDFot {
 		agregarCeldaSinBorde("DEV", font3, tablaComisiones, true);
 		agregarCeldaSinBorde(String.valueOf(otvo.getOt().getRetorno()), font3, tablaComisiones, true);
 		Float montoRetorno= (otvo.getOt().getRetorno()/100)*otvo.getOt().getImporte();
-		agregarCeldaSinBorde("$" + String.valueOf(montoRetorno), font3, tablaComisiones, true);
+//		agregarCeldaSinBorde("$" + String.valueOf(montoRetorno), font3, tablaComisiones, true);(nf.format
+		agregarCeldaSinBorde(nf.format(montoRetorno), font3, tablaComisiones, true);
 		agregarCeldaSinBorde("AJD", font3, tablaComisiones, true);
 		agregarCeldaSinBorde(String.valueOf(otvo.getOt().getPorLic()), font3, tablaComisiones, true);
-		agregarCeldaSinBorde("$" + String.valueOf(otvo.getOt().getMontoLic()), font3, tablaComisiones, true);
+//		agregarCeldaSinBorde("$" + String.valueOf(otvo.getOt().getMontoLic()), font3, tablaComisiones, true);
+		agregarCeldaSinBorde(nf.format(otvo.getOt().getMontoLic()), font3, tablaComisiones, true);
 		agregarCeldaSinBorde("J&A", font3, tablaComisiones, true);
 		agregarCeldaSinBorde(String.valueOf(otvo.getOt().getPorDes()), font3, tablaComisiones, true);
-		agregarCeldaSinBorde("$" + String.valueOf(otvo.getOt().getMontoDes()), font3, tablaComisiones, true);
+//		agregarCeldaSinBorde("$" + String.valueOf(otvo.getOt().getMontoDes()), font3, tablaComisiones, true);
+		agregarCeldaSinBorde(nf.format(otvo.getOt().getMontoDes()), font3, tablaComisiones, true);
 		
 		int cont = 0;
 		float [] porBrokers= otvo.getOt().getPorBrok();
@@ -380,7 +397,8 @@ public class PDFot {
 				nombre = nombre + cont;
 				agregarCeldaSinBorde(nombre, font3, tablaComisiones, true);
 				agregarCeldaSinBorde(String.valueOf(porBrokers[i]), font3, tablaComisiones, true);
-				agregarCeldaSinBorde("$" + String.valueOf(montoBrokers[i]), font3, tablaComisiones, true);
+//				agregarCeldaSinBorde("$" + String.valueOf(montoBrokers[i]), font3, tablaComisiones, true);
+				agregarCeldaSinBorde( nf.format(montoBrokers[i]), font3, tablaComisiones, true);
 			}
 		}
 		celdaComisionesContenedor.addElement(tablaComisiones);
@@ -398,7 +416,7 @@ public class PDFot {
 		celdaTotal.setBorder(PdfPCell.NO_BORDER);
 		celdaTotal.setHorizontalAlignment(Element.ALIGN_CENTER);
 		Phrase fraseTotal = new Phrase();
-		agregarChunkYNuevaLinea("Total: "+ "$" + String.valueOf(otvo.getOt().getTotalComisiones()), font3, fraseTotal);
+		agregarChunkYNuevaLinea("Total: "+nf.format(otvo.getOt().getTotalComisiones()), font3, fraseTotal);
 		celdaTotal.setPhrase(fraseTotal);
 		tablaComisionesTotal.addCell(celdaTotal);
 
@@ -420,12 +438,12 @@ public class PDFot {
 		for(int i=0; i<movimientos.size();i++){
 			agregarCeldaSinBorde(movimientos.get(i).getTipo(), font3, tablaOPCliente, true);
 			agregarCeldaSinBorde(movimientos.get(i).getDescripcion(), font3, tablaOPCliente, true);
-			agregarCeldaSinBorde("$ " + String.valueOf(movimientos.get(i).getMonto()), font3, tablaOPCliente, true);
+			agregarCeldaSinBorde(nf.format(movimientos.get(i).getMonto()), font3, tablaOPCliente, true);
 		}
 		String saldoMov = calcularSaldo(movimientos ,montoRetorno, otvo.getOt().getImporte());
 		agregarCeldaSinBorde(" ",font3, tablaOPCliente,false);
 		agregarCeldaSinBorde(" ",font1, tablaOPCliente,false);
-		agregarCeldaSinBorde(" Total: $ " + saldoMov,font1, tablaOPCliente,true);
+		agregarCeldaSinBorde(" Total: " + nf.format(Float.parseFloat(saldoMov)),font1, tablaOPCliente,true);
 		
 		tablaOPCliente.setSpacingBefore(4);
 		tablaOPCliente.setSpacingAfter(3);
@@ -442,7 +460,7 @@ public class PDFot {
 		for(int i=0; i<comisiones.size();i++){
 			agregarCeldaSinBorde(comisiones.get(i).getTipo(), font3, tablaOPAsesor, true);
 			agregarCeldaSinBorde(comisiones.get(i).getDescripcion(), font3, tablaOPAsesor, true);
-			agregarCeldaSinBorde("$ " + String.valueOf(comisiones.get(i).getMonto()), font3, tablaOPAsesor, true);
+			agregarCeldaSinBorde(nf.format(comisiones.get(i).getMonto()), font3, tablaOPAsesor, true);
 		}
 		float sumaMontoBrok = 0;
 		float [] montosBrokers = otvo.getOt().getMontoBrok();
@@ -452,7 +470,7 @@ public class PDFot {
 		String saldoCom = calcularSaldo(movimientos ,sumaMontoBrok, otvo.getOt().getImporte());
 		agregarCeldaSinBorde("  ",font3, tablaOPAsesor,false);
 		agregarCeldaSinBorde(" ",font1, tablaOPAsesor,false);
-		agregarCeldaSinBorde("Total: $" + saldoCom,font1, tablaOPAsesor,true);
+		agregarCeldaSinBorde("Total: " + nf.format(Float.parseFloat(saldoCom)),font1, tablaOPAsesor,true);
 		
 		tablaOPAsesor.setSpacingBefore(4);
 		tablaOPAsesor.setSpacingAfter(3);
@@ -473,12 +491,12 @@ public class PDFot {
 				agregarCeldaConBorde(pagos.get(i).getCuenta(), font3, tablaPagos, "centro");
 				agregarCeldaConBorde(pagos.get(i).getBanco(), font3, tablaPagos, "centro");
 				agregarCeldaConBorde(pagos.get(i).getFecha().toString(), font3, tablaPagos, "centro");
-				agregarCeldaConBorde("$ " + String.valueOf(pagos.get(i).getMonto()), font3, tablaPagos, "centro");
+				agregarCeldaConBorde(nf.format(pagos.get(i).getMonto()), font3, tablaPagos, "centro");
 			}
 		agregarCeldaSinBorde("  ",font1, tablaPagos,false);
 		agregarCeldaSinBorde("  ",font1, tablaPagos,false);
 		agregarCeldaSinBorde("Total: ",font1, tablaPagos,true);
-		agregarCeldaSinBorde("$ " + String.valueOf(otvo.getOt().getTotal()),font1, tablaPagos,true);
+		agregarCeldaSinBorde(nf.format(otvo.getOt().getTotal()),font1, tablaPagos,true);
 		
 		
 		tablaPagos.setSpacingBefore(4);

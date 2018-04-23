@@ -2,6 +2,7 @@ package com.tikal.fiscal.dao.imp;
 
 import static com.googlecode.objectify.ObjectifyService.ofy;
 
+import java.util.Date;
 import java.util.List;
 
 import com.tikal.fiscal.dao.OrdenDeTrabajoDAO;
@@ -57,6 +58,17 @@ public class OrdenDeTrabajoDAOImp implements OrdenDeTrabajoDAO {
 	@Override
 	public List<OrdenDeTrabajo> getFull(int page) {
 		return ofy().load().type(OrdenDeTrabajo.class).offset(25 * (page - 1)).order("- fechaInicio").limit(25).list();
+	}
+
+	@Override
+	public List<OrdenDeTrabajo> getFecha(Date fechaInicio, Date fechaFin) {
+		return ofy().load().type(OrdenDeTrabajo.class).order("- fechaInicio").filter("fechaInicio >=", fechaInicio).filter("fechaInicio <=", fechaInicio).list();
+	}
+
+	@Override
+	public List<OrdenDeTrabajo> getFechaCliente(Date fechaInicio, Date fechaFin, Long id) {
+		
+		return ofy().load().type(OrdenDeTrabajo.class).filter("idCliente", id).order("- fechaInicio").filter("fechaInicio >=", fechaInicio).filter("fechaInicio <=", fechaInicio).list();
 	}
 
 }
