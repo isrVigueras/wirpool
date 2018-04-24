@@ -173,7 +173,7 @@
 					 </td>
 					<td class="ng-binding" align="right">
 						<button class="btn btn-small" data-toggle="modal" ng-if="perfil=='Administrador' || perfil=='AdministradorRoot'"
-							ng-show="permiso== true && mov.tipo != 'Efectivo' && mov.estatus == 'ACTIVO' && (perfil=='Administrador' || perfil=='AdministradorRoot')"  
+							ng-show="permiso== true && mov.tipo != 'Efectivo' && mov.estatus != 'CANCELADO' && mov.estatus != 'VALIDADO' && (perfil=='Administrador' || perfil=='AdministradorRoot')"  
 							ng-click="cargarMov($index,'OPC')" data-target="#modalEditar">
 							<span class="glyphicon glyphicon-edit"></span>
 						</button>
@@ -246,7 +246,7 @@
 					 </td>
 					<td class="ng-binding" align="right">
 						<button class="btn btn-small" data-toggle="modal" ng-if="perfil=='Administrador' || perfil=='AdministradorRoot'"
-							ng-show="permiso== true && mov.tipo != 'Efectivo' && mov.estatus == 'ACTIVO' && (perfil=='Administrador' || perfil=='AdministradorRoot')"  
+							ng-show="permiso== true && mov.tipo != 'Efectivo' && mov.estatus != 'CANCELADO' && mov.estatus != 'VALIDADO' && (perfil=='Administrador' || perfil=='AdministradorRoot')"  
 							ng-click="cargarMov($index,'OPA')" data-target="#modalEditar">
 							<span class="glyphicon glyphicon-edit"></span>
 						</button>
