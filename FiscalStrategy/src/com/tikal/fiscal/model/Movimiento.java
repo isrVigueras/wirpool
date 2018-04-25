@@ -33,6 +33,8 @@ public class Movimiento {
 	private String pagarA;
 	@Index
 	private String tipo;
+	@Index
+	private Long idCliente;
 	private String descripcion;
 	private Long idresponsable;
 	
@@ -145,6 +147,12 @@ public class Movimiento {
 	}
 	public void setEmpresa(String empresa) {
 		this.empresa = empresa;
+	}
+	public Long getIdCliente() {
+		return idCliente;
+	}
+	public void setIdCliente(Long idCliente) {
+		this.idCliente = idCliente;
 	}
 	
 	

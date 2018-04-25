@@ -53,6 +53,24 @@ public class MovimientoDAOImp implements MovimientoDAO {
 		return pages;
 	}
 
+	@Override
+	public int numPages() {
+		int pages=ofy().load().type(Movimiento.class).list().size();
+		pages = pages / 25;
+		pages++;
+		return pages;
+	}
+
+	@Override
+	public List<Movimiento> getPage(int page) {
+		return ofy().load().type(Movimiento.class).order("- fechaCreacion").offset(25 * (page - 1)).limit(25).list();
+	}
+
+	@Override
+	public List<Movimiento> getResguardos(Long id) {
+		return ofy().load().type(Movimiento.class).filter("idCliente", id).order("- fechaCreacion").list();
+	}
+
 	
 }
  

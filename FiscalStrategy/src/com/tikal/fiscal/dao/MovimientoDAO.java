@@ -18,4 +18,10 @@ public interface MovimientoDAO {
 	
 	public int getPages(Long id);
 	
+	public int numPages();
+	
+	public List<Movimiento> getPage(int page);
+	
+	public List<Movimiento> getResguardos(Long id);
+	
 }

@@ -57,6 +57,42 @@ public class MovimientosController {
 		res.getWriter().print(movimientodao.getPages(id));
 	}
 	
+	@RequestMapping(value={"/getPages"},method= RequestMethod.GET, produces="application/json")
+	private void getpages(HttpServletRequest req, HttpServletResponse res) throws IOException{
+		AsignadorDeCharset.asignar(req, res);
+		HttpSession sesion= req.getSession();
+		Usuario user=(Usuario) sesion.getAttribute("user");
+		if(user.getPerfil().compareTo("Administrador")==0 || user.getPerfil().compareTo("AdministradorRoot")==0){	
+			res.getWriter().print(movimientodao.numPages());
+		}else{
+			res.sendError(403);
+		}
+	}
+	
+	@RequestMapping(value={"/loadPage/{page}"},method= RequestMethod.GET, produces="application/json")
+	private void loadPage(HttpServletRequest req, HttpServletResponse res, @PathVariable int page) throws IOException{
+		AsignadorDeCharset.asignar(req, res);
+		HttpSession sesion= req.getSession();
+		Usuario user=(Usuario) sesion.getAttribute("user");
+		if(user.getPerfil().compareTo("Administrador")==0 || user.getPerfil().compareTo("AdministradorRoot")==0){	
+			res.getWriter().print(JsonConvertidor.toJson(movimientodao.getPage(page)));
+		}else{
+			res.sendError(403);
+		}
+	}
+	
+	@RequestMapping(value={"/loadResguardos/{idCliente}"},method= RequestMethod.GET, produces="application/json")
+	private void loadResguardos(HttpServletRequest req, HttpServletResponse res, @PathVariable Long page) throws IOException{
+		AsignadorDeCharset.asignar(req, res);
+		HttpSession sesion= req.getSession();
+		Usuario user=(Usuario) sesion.getAttribute("user");
+		if(user.getPerfil().compareTo("Administrador")==0 || user.getPerfil().compareTo("AdministradorRoot")==0){	
+			res.getWriter().print(JsonConvertidor.toJson(movimientodao.getPage(page)));
+		}else{
+			res.sendError(403);
+		}
+	}
+	
 	@RequestMapping(value={"/find/{id}"},method= RequestMethod.GET, produces="application/json")
 	private void find(HttpServletRequest req, HttpServletResponse res, @PathVariable Long id) throws IOException{
 		AsignadorDeCharset.asignar(req, res);

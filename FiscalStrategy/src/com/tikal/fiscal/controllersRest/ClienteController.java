@@ -128,6 +128,14 @@ public class ClienteController {
 		res.getWriter().print(JsonConvertidor.toJson(lista));
 	}
 	
+	@RequestMapping(value={"/buscarFull/{nombre}"},method= RequestMethod.GET, produces="application/json")
+	public void buscarFull(HttpServletResponse res, HttpServletRequest req, @PathVariable String nombre) throws IOException{
+		AsignadorDeCharset.asignar(req, res);
+		List<Cliente> lista = clientedao.buscar(nombre);
+		lista.addAll(clientedao.buscarb(nombre));
+		res.getWriter().print(JsonConvertidor.toJson(lista));
+	}
+	
 	@RequestMapping(value={"/getByBrocker/{id}"},method= RequestMethod.GET, produces="application/json")
 	public void getByBrocker(HttpServletResponse res, HttpServletRequest req, @PathVariable Long id) throws IOException{
 		AsignadorDeCharset.asignar(req, res);
