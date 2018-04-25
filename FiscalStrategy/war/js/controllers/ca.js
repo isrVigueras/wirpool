@@ -156,6 +156,15 @@ app.service("CBService",['$http', '$q', function($http, $q){
 		return d.promise;
 	}
 	
+	this.updateCliente=function(clientes){
+	    var d = $q.defer();
+	    $http.post("clientes/u/",clientes).then(
+	      function(response) {
+	        d.resolve(response.data);
+	      });
+	    return d.promise;
+	}
+	
 }]);
 
 app.service("OPMS",['$http', '$q', function($http, $q){
@@ -533,6 +542,17 @@ app.controller("CAController",['$rootScope', '$scope','$cookieStore', '$window',
 //					console.log($scope.otVO);
 					
 					CBService.addot($scope.otVO).then(function(data){
+						var cliente= $scope.otVO.cliente;
+			            var total= 0;
+			            for(var i = 0; i<$scope.otVO.pagos.length; i++){
+			              total= total+ $scope.otVO.pagos[i].monto;
+			            }
+			            if($scope.otVO.pagos[0].moneda=="MXN"){
+			              cliente.saldo= cliente.saldo - total;
+			            }else{
+			              cliente.saldoUSD= cliente.saldoUSD - total;
+			            }
+			            CBService.updateCliente(cliente);
 						showAlert("Alta de Orden de trabajo Exitosa");
 						$location.path("/listaOTs");
 						$window.location.reload();

@@ -134,14 +134,16 @@ public class OrdenDeTrabajoController {
 			for(int i=0; i<pagos.size(); i++){
 				pago= pagos.get(i);
 				pago.setOt(ot.getId());
-				RegistroPago reg= regPagodao.buscar(pago.getReferencia());
-				if(reg!=null){
-					if(reg.getBanco().compareToIgnoreCase(pago.getBanco())==0 && reg.getEstatus()==null && pago.getMonto()== reg.getMonto() && reg.getCuenta().compareTo(pago.getCuenta())==0){
-						reg.setEstatus("ASIGNADO");
-						reg.setOt(ot.getId());
-						reg.setValidado(true);
-						pago.setValidado(true);
-						regPagodao.save(reg);
+				if(pago.getReferencia()!=null){
+					RegistroPago reg= regPagodao.buscar(pago.getReferencia());
+					if(reg!=null){
+						if(reg.getBanco().compareToIgnoreCase(pago.getBanco())==0 && reg.getEstatus()==null && pago.getMonto()== reg.getMonto() && reg.getCuenta().compareTo(pago.getCuenta())==0){
+							reg.setEstatus("ASIGNADO");
+							reg.setOt(ot.getId());
+							reg.setValidado(true);
+							pago.setValidado(true);
+							regPagodao.save(reg);
+						}
 					}
 				}
 			}
