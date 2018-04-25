@@ -82,12 +82,12 @@ public class MovimientosController {
 	}
 	
 	@RequestMapping(value={"/loadResguardos/{idCliente}"},method= RequestMethod.GET, produces="application/json")
-	private void loadResguardos(HttpServletRequest req, HttpServletResponse res, @PathVariable Long page) throws IOException{
+	private void loadResguardos(HttpServletRequest req, HttpServletResponse res, @PathVariable Long idCliente) throws IOException{
 		AsignadorDeCharset.asignar(req, res);
 		HttpSession sesion= req.getSession();
 		Usuario user=(Usuario) sesion.getAttribute("user");
 		if(user.getPerfil().compareTo("Administrador")==0 || user.getPerfil().compareTo("AdministradorRoot")==0){	
-			res.getWriter().print(JsonConvertidor.toJson(movimientodao.getPage(page)));
+			res.getWriter().print(JsonConvertidor.toJson(movimientodao.getResguardos(idCliente)));
 		}else{
 			res.sendError(403);
 		}
