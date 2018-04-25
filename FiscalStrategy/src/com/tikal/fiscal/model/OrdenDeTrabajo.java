@@ -54,6 +54,7 @@ public class OrdenDeTrabajo {
 	private float totalComisiones;
 	
 	private int folioImpresion;
+	private float baseComisiones;
 	
 	private String tipoOP;
 	
@@ -239,6 +240,12 @@ public class OrdenDeTrabajo {
 	}
 	public void setTipoOP(String tipoOP) {
 		this.tipoOP = tipoOP;
+	}
+	public float getBaseComisiones() {
+		return baseComisiones;
+	}
+	public void setBaseComisiones(float baseComisiones) {
+		this.baseComisiones = baseComisiones;
 	}
 	
 }

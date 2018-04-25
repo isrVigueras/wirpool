@@ -350,7 +350,7 @@ public class PDFot {
 		Phrase fraseLeyendaEncabezado = new Phrase();
 //		agregarChunkYNuevaLinea("Base para comisiones " + "$" + String.valueOf(otvo.getOt().getIva()), font3, fraseLeyendaEncabezado);
 //		agregarChunkYNuevaLinea("% para comisiones " + String.valueOf(otvo.getOt().getPorciento()), font3, fraseLeyendaEncabezado);
-		agregarChunkYNuevaLinea("Base para comisiones " + String.valueOf(otvo.getOt().getIva()), font3, fraseLeyendaEncabezado);
+		agregarChunkYNuevaLinea("Base para comisiones " + nf.format(otvo.getOt().getBaseComisiones()), font3, fraseLeyendaEncabezado);
 		agregarChunkYNuevaLinea("% para comisiones " + String.valueOf(otvo.getOt().getPorciento()), font3, fraseLeyendaEncabezado);
 		celdaLeyendaEncabezado.setPhrase(fraseLeyendaEncabezado);
 		
@@ -443,7 +443,7 @@ public class PDFot {
 		String saldoMov = calcularSaldo(movimientos ,montoRetorno, otvo.getOt().getImporte());
 		agregarCeldaSinBorde(" ",font3, tablaOPCliente,false);
 		agregarCeldaSinBorde(" ",font1, tablaOPCliente,false);
-		agregarCeldaSinBorde(" Total: " + nf.format(Float.parseFloat(saldoMov)),font1, tablaOPCliente,true);
+		agregarCeldaSinBorde(" Total: " + nf.format(otvo.getOt().getSaldoMov()),font1, tablaOPCliente,true);
 		
 		tablaOPCliente.setSpacingBefore(4);
 		tablaOPCliente.setSpacingAfter(3);
@@ -454,7 +454,7 @@ public class PDFot {
 		tablaOPAsesor.setWidthPercentage(100);
 		tablaOPAsesor.setWidths(new float[] {30,50,20});
 		agregarCeldaConFondo(" ", fontHead, tablaOPAsesor, true);
-		agregarCeldaConFondo("Instrucciones Operación Cliente", fontHead, tablaOPAsesor, true);
+		agregarCeldaConFondo("Instrucciones Operación Asesor", fontHead, tablaOPAsesor, true);
 		agregarCeldaConFondo(" ", fontHead, tablaOPAsesor, true);
 		List<Movimiento> comisiones = otvo.getComisiones();
 		for(int i=0; i<comisiones.size();i++){
@@ -467,10 +467,11 @@ public class PDFot {
 		for(int i=0; i< montosBrokers.length; i++){
 			sumaMontoBrok= sumaMontoBrok + montosBrokers[i];
 		}
-		String saldoCom = calcularSaldo(movimientos ,sumaMontoBrok, otvo.getOt().getImporte());
+		String saldoCom = calcularSaldo(comisiones ,sumaMontoBrok, otvo.getOt().getSaldoCom());
 		agregarCeldaSinBorde("  ",font3, tablaOPAsesor,false);
 		agregarCeldaSinBorde(" ",font1, tablaOPAsesor,false);
-		agregarCeldaSinBorde("Total: " + nf.format(Float.parseFloat(saldoCom)),font1, tablaOPAsesor,true);
+//		agregarCeldaSinBorde("Total: " + nf.format(Float.parseFloat(saldoCom)),font1, tablaOPAsesor,true);
+		agregarCeldaSinBorde("Total: " + nf.format(otvo.getOt().getSaldoCom()),font1, tablaOPAsesor,true);
 		
 		tablaOPAsesor.setSpacingBefore(4);
 		tablaOPAsesor.setSpacingAfter(3);
