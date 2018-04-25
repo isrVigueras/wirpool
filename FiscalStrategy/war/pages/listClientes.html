@@ -17,9 +17,9 @@
 		<thead>
 			<tr>
 				<th style="width: 40%;">Cliente</th>
-				<th style="width: 40%;">Saldo</th>
-				
-				<th style="width: 40%;">Acciones</th>
+				<th style="width: 20%;">Saldo MXN</th>
+				<th style="width: 20%;">Saldo USD</th>
+				<th style="width: 20%;">Acciones</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -27,7 +27,7 @@
 			<tr ng-repeat="cliente in clienteLista">
 				<td>{{cliente.nickname}}</td>
 				<td>{{cliente.saldo}}</td>
-				
+				<td>{{cliente.saldoUSD}}</td>
 				<td>
 <!-- 				Boton para ver el detalle de los clientes -->
 				<button title="Ver Cliente"class="btn btn-small" data-toggle="modal" ng-click="ver(cliente)" data-target="#myModalVista"
@@ -241,7 +241,7 @@
 			Actual Responsable: <b>{{responsable}}</b><br>
 		</div>
 		<div class="col-md-5">
-			Actual Brocker: <b>{{brocker}}</b>
+			Actual Broker: <b>{{brocker}}</b>
 		</div>
 		
 		<hr>
@@ -254,7 +254,7 @@
 				</select><br>
 		</div>
 		<div class="col-md-5">
-			Nuevo Brocker: 
+			Nuevo Broker: 
 <!-- 			<select class="form-control" -->
 <!-- 				ng-model="client.brocker.nickname" type="text" ng-required="true"> -->
 <!-- 					<option ng-repeat="bk in brockerLista" value="{{bk.id}}">{{bk.nickname}}</option> -->

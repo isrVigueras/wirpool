@@ -19,7 +19,7 @@
 				<tr>
 					<th>Cliente</th>
 					<th>Responsable</th>
-					<th>Brocker</th>
+					<th>Broker</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -54,7 +54,7 @@
 					<td>{{p.moneda}}</td>
 					<td>{{p.banco}}</td>
 					<td>{{p.cuenta}}</td>
-					<td>{{p.fecha | date}}</td>
+					<td>{{p.fecha | date: "dd MMMM yyyy hh:mm a"}}</td>
 				</tr>
 			</tbody>
 		</table>
@@ -138,6 +138,7 @@
 					<th>Tipo de Operaci&oacute;n</th>
 					<th align="center">Descripci&oacute;n</th>
 					<th align="center">Monto</th>
+					<th align="center">Empresa</th>
 					<th align="center">Banco</th>
 					<th align="center">Cuenta</th>
 					<th align="center" >Estatus</th>
@@ -153,6 +154,7 @@
 					<td class="ng-binding">{{mov.tipo}}</td>
 					<td class="ng-binding">{{mov.descripcion}}</td>
 					<td class="ng-binding">{{mov.monto | currency}}</td>
+					<td class="ng-binding">{{mov.empresa}}</td>
 					<td class="ng-binding">{{mov.banco}}</td>
 					<td class="ng-binding">{{mov.cuenta}}</td>
 					<td class="ng-binding">{{mov.estatus}}</td>
@@ -211,6 +213,7 @@
 					<th>Tipo de Operaci&oacute;n</th>
 					<th align="center">Descripci&oacute;n</th>
 					<th align="center">Monto</th>
+					<th align="center">Empresa</th>
 					<th align="center">Banco</th>
 					<th align="center">Cuenta</th>
 					<th align="center">Estatus</th>
@@ -226,6 +229,7 @@
 					<td class="ng-binding">{{mov.tipo}}</td>
 					<td class="ng-binding">{{mov.descripcion}}</td>
 					<td class="ng-binding">{{mov.monto | currency}}</td>
+					<td class="ng-binding">{{mov.empresa}}</td>
 					<td class="ng-binding">{{mov.banco}}</td>
 					<td class="ng-binding">{{mov.cuenta}}</td>
 					<td class="ng-binding">{{mov.estatus}}</td>
@@ -306,11 +310,15 @@
 				<br><br>
 				<div class="row">
 				
-				<div class="col-md-4">
-						<label>Empresas:</label> 
-						<select name="empresa" ng-model="mov.empresa" class="form-control form-control-sm" ng-required="true" ng-change="Cuentasban($index)" ng-options="e.nombre for e in empresa" >
-<!-- 							<option ng-repeat="e in empresa" value="{{e.id}}" >{{e.nombre}}</option>  -->
-						</select>	
+<!-- 				<div class="col-md-4"> -->
+<!-- 						<label>Empresas:</label>  -->
+<!-- 						<select name="empresa" ng-model="mov.empresa" class="form-control form-control-sm" ng-required="true" ng-change="Cuentasban($index)" ng-options="e.nombre for e in empresa" > -->
+<!-- <!-- 							<option ng-repeat="e in empresa" value="{{e.id}}" >{{e.nombre}}</option>  -->
+<!-- 						</select>	 -->
+<!-- 					</div> -->
+					<div class="col-md-4">
+						<label>Empresa:</label>
+						<input id="buscaEmpresa" class="form-control form-control-sm" type="text" ng-model="empresaSearch;" data-provide="typehead" autocomplete="off" onkeyup="javascript:this.value=this.value.toUpperCase();">
 					</div>
 					<div class="col-md-4">
 						<label>Banco:</label> 

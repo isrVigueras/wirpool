@@ -16,13 +16,17 @@
 	<table class="table table-stripped">
 		<thead>
 			<tr>
-				<th width="70%">Broker</th>
-				<th width="30%">Acciones</th>
+				<th width="40%">Broker</th>
+				<th style="width: 20%;">Saldo MXN</th>
+				<th style="width: 20%;">Saldo USD</th>
+				<th width="20%">Acciones</th>
 			</tr>
 		</thead>
 		<tbody>
 			<tr ng-repeat="bk in brockerLista">
 				<td>{{bk.nickname}}</td>
+				<td>{{bk.saldo}}</td>
+				<td>{{bk.saldoUSD}}</td>
 				<td><button title="Ver Brocker"class="btn btn-small" data-toggle="modal" ng-click="ver(bk)" data-target="#myModalVista"
 						>
 						<i class="glyphicon glyphicon-eye-open"></i>
@@ -67,7 +71,7 @@
            </div>
            <br>
            <div ng-show="ca">
-           <h4>Clientes Asosiados</h4>
+           <h4>Clientes Asociados</h4>
            
            <div class="list-type3">
            <ul ng-repeat="cliente in listaCliente"><li><b>{{cliente.nickname}}</b></li></ul>
@@ -245,7 +249,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal">&times;</button>
-        <h4 class="modal-title">Editar Brocker</h4>
+        <h4 class="modal-title">Editar Broker</h4>
       </div>
       <div class="modal-body">
 	<div class="container" ng-hide="multiple">
@@ -297,5 +301,5 @@
   </div>
 </div>
 </div>
-	<div id="snackbar">Brocker Editado Correctamente.</div>
+	<div id="snackbar">Broker Editado Correctamente.</div>
 </div>

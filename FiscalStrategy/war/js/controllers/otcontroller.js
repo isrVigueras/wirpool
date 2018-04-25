@@ -79,7 +79,7 @@ app.service("otservice",['$http', '$q', function($http, $q){
 	
 }]);
 
-app.controller("OTsListController",['$rootScope','$scope','$window', '$location', '$cookieStore','otservice','userFactory', function($rootScope, $scope, $window, $location, $cookieStore, otservice,userFactory){
+app.controller("OTsListController",['$rootScope','$scope','$window', '$location', '$cookieStore','otservice','userFactory','ordenTrabajoservice', function($rootScope, $scope, $window, $location, $cookieStore, otservice,userFactory,ordenTrabajoservice){
 	$rootScope.perfilUsuario = userFactory.getUsuarioPerfil();  //obtener perfl de usuario para pintar el menú al qe tiene acceso
 	otservice.consultarCB().then(function(data) {
 		$scope.cbtodos = data;
@@ -89,8 +89,94 @@ app.controller("OTsListController",['$rootScope','$scope','$window', '$location'
 		$scope.ots=data;
 	});
 	}
+	$scope.$watch('busca',function(){
+//		if($scope.busca.length>3){
+			$scope.buscar();
+//		}
+	},true);
+	$scope.$watch('empresaSearch',function(){
+		if($scope.empresaSearch.length>3){
+			$scope.zEmpresa();
+		}
+	},true);
+	$scope.datos={
+			idCliente: null,
+			idBrocker: null,
+			nombreCliente: null,
+			fechaInicio: new Date(),
+	}
+	
+	$scope.pago={
+			fecha: new Date(),
+			moneda:"MXN",
+			cuenta:"",
+			banco:"",
+			monto: null,
+	}
+	$scope.buscar=function(){
+		ordenTrabajoservice.buscarClientes($scope.busca).then(function(data){
+			
+			$scope.encontrados=[];
+			for(var i=0; i< data.length; i++){
+				$scope.encontrados.push(data[i].nickname);
+				
+			}
+			$scope.cliente=data;
+			
+//			$scope.tipos=data.tipos;
+			
+			$('#searchBox').typeahead({
+
+			    source: $scope.encontrados,
+
+			    updater:function (item) {
+			    	var ind=$scope.encontrados.indexOf(item);
+			    	$scope.clienteSeleccionado=true;
+			    	if($scope.clienteSeleccionado==true){
+			    		console.log("El cliente se selecciono",$scope.cliente);
+			    		if($scope.cliente[ind].idBrocker==null){
+			    			alert("El cliente no tiene Brocker asignado");
+			    		}
+			    		if($scope.cliente[ind].responsable==null){
+			    			alert("El cliente no tiene Responsable asignado");
+			    		}
+			    	}
+			    	$scope.datos.idCliente= $scope.cliente[ind].id;
+			        return item;
+			    }
+			});
+			$('#searchBox').data('typeahead').source=$scope.encontrados;
+		});
+	}
+	$scope.zEmpresa=function(){
+		ordenTrabajoservice.searchEmpresa($scope.empresaSearch).then(function(data){
+			
+			$scope.found=[];
+			for(var i=0; i< data.length; i++){
+				$scope.found.push(data[i].nombre);
+				
+			}
+			$scope.Empresa=data;
+//			$scope.tipos=data.tipos;
+			
+			$('#buscaEmpresa').typeahead({
+
+			    source: $scope.found,
+
+			    updater:function (item) {
+			    	var em=$scope.found.indexOf(item);
+			    	$scope.datos.idEmpresa= $scope.Empresa[em].id;
+			    	$scope.pago.empresa=$scope.Empresa[em].nombre;
+			    	$scope.Cuentasban($scope.datos.idEmpresa);
+			        return item;
+			    }
+			
+			});
+			$('#buscaEmpresa').data('typeahead').source=$scope.found;
+		});
+	}
 	$scope.filtroCliente=function(id){
-		otservice.FiltroCliente($scope.filtroCL).then(function(data){
+		otservice.FiltroCliente($scope.datos.idCliente).then(function(data){
 			$scope.ots=data;
 		});
 		}

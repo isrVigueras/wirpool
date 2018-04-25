@@ -71,7 +71,7 @@
 					<tbody>
 						<tr ng-repeat="p in otVO.pagos">
 							<td>{{p.cliente}}</td>
-							<td>{{p.fecha}}</td>
+							<td>{{p.fecha | date: "dd MMMM yyyy hh:mm a"}}</td>
 							<td>{{p.monto | currency}}</td>
 							<td>{{p.moneda}}</td>
 							<td><button class="btn btn-small btn-info"  ng-click="eliminarRenglon($index)" title="Eliminar Pago">

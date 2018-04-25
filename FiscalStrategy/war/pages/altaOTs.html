@@ -31,7 +31,7 @@
 					<div class="col-md-4">
 						<label>Banco:</label> 
 						<select name="banco" ng-model="pago.banco" class="form-control form-control-sm" ng-required="true">
-							<option ng-repeat="b in cempresa.cuentas" value="{{b.banco}}" >{{b.banco}}</option> 
+							<option ng-repeat="b in listaBancos" value="{{b}}" >{{b}}</option> 
 						</select>	
 					</div>
 					

@@ -609,6 +609,13 @@ app.controller("OTsAddController",['$rootScope', '$route','$scope','$cookieStore
 	$scope.Cuentasban = function(data) {
 		 empresaservice.getce(data).then(function(data) {
 		  		$scope.cempresa = data;
+		  		$scope.listaBancos=[];
+		  		for(var i = 0; i< $scope.cempresa.cuentas.length;i++){
+		  			var indice= $scope.listaBancos.indexOf($scope.cempresa.cuentas[i].banco);
+		  			if(indice<0){
+		  				$scope.listaBancos.push($scope.cempresa.cuentas[i].banco);
+		  			}
+		  		}
 		  		$scope.banco=$scope.cempresa.cuentas[0].banco;
 //		  		 console.log($scope.cempresa);
 		  });
@@ -652,7 +659,7 @@ app.controller("OTsAddController",['$rootScope', '$route','$scope','$cookieStore
 	$scope.addBroker = function(){
 		var cont = $scope.brokers.length;
 		cont = cont + 1;
-		var nombre =  'Brocker' + cont ;
+		var nombre =  'Broker' + cont ;
 		var renglon= {nombre:nombre, porBrok: null , montoBrok:null}
 		$scope.brokers.push(renglon);
 	}
@@ -936,6 +943,7 @@ app.controller("OTsAddController",['$rootScope', '$route','$scope','$cookieStore
 					}
 					$scope.otVO.ot = $scope.datos;
 					$scope.otVO.ot.tipoOP=$scope.tipoOP
+					$scope.otVO.ot.baseComisiones=$scope.datos.basecomisiones;
 //					console.log($scope.otVO);
 					
 					ordenTrabajoservice.addot($scope.otVO).then(function(data){
@@ -1017,7 +1025,7 @@ app.controller("ordenTrabajoController",['$rootScope', '$scope','$window', '$loc
 	$scope.tipoResguardo= false;
 	$scope.cheque={fEmision: new Date(),pagarA:null,monto:null,montoLetra:null}
 	$scope.operaciones={tipo: null, descripcion: null, monto: null, estatus: "ACTIVO", cuenta: null, banco:null,fecha: new Date(),montoLetra: null,pagarA: null,fEmision: new Date()}
-	$scope.mov={tipo: null,monto: null,descripcion: null,banco: null,cuenta: null,numTransaccion:null,fecha:new Date(),estatus: null,montoLetra: null,pagarA: null,fEmision: new Date()}
+	$scope.mov={tipo: null,monto: null,descripcion: null,banco: null,cuenta: null,empresa: null,numTransaccion:null,fecha:new Date(),estatus: null,montoLetra: null,pagarA: null,fEmision: new Date()}
 	$scope.movimientosVO={movimiento:null,idOt:null,bndMovimiento:null,saldo:null}
 	empresaservice.load(1).then(function(data) {
 		$scope.empresa = data;
@@ -1110,9 +1118,41 @@ app.controller("ordenTrabajoController",['$rootScope', '$scope','$window', '$loc
 		$scope.perfil=$rootScope.perfilUsuario;
 //		console.log("el perfil", $scope.perfil);
 	});	
+	$scope.$watch('empresaSearch',function(){
+		if($scope.empresaSearch.length>3){
+			$scope.zEmpresa();
+		}
+	},true);
 	
-	$scope.Cuentasban = function() {
-		 empresaservice.getce($scope.mov.empresa.id).then(function(data) {
+	$scope.zEmpresa=function(){
+		ordenTrabajoservice.searchEmpresa($scope.empresaSearch).then(function(data){
+			
+			$scope.found=[];
+			for(var i=0; i< data.length; i++){
+				$scope.found.push(data[i].nombre);
+				
+			}
+			$scope.Empresa=data;
+//			$scope.tipos=data.tipos;
+			
+			$('#buscaEmpresa').typeahead({
+
+			    source: $scope.found,
+
+			    updater:function (item) {
+			    	var em=$scope.found.indexOf(item);
+			    	$scope.empresa.id= $scope.Empresa[em].id;
+			    	$scope.mov.empresa=$scope.Empresa[em].nombre;
+			    	$scope.Cuentasban($scope.empresa.id);
+			        return item;
+			    }
+			
+			});
+			$('#buscaEmpresa').data('typeahead').source=$scope.found;
+		});
+	}
+	$scope.Cuentasban = function(data) {
+		 empresaservice.getce(data).then(function(data) {
 		  		$scope.cempresa = data;
 		  		$scope.listaBancos=[];
 		  		for(var i = 0; i< $scope.cempresa.cuentas.length;i++){
@@ -1186,12 +1226,14 @@ app.controller("ordenTrabajoController",['$rootScope', '$scope','$window', '$loc
 			$scope.mov.descripcion=$scope.otvo.movimientos[index].descripcion;
 			$scope.mov.banco=$scope.otvo.movimientos[index].banco;
 			$scope.mov.cuenta=$scope.otvo.movimientos[index].cuenta;
+			$scope.mov.empresa=$scope.otvo.movimientos[index].empresa;
 		}else{
 			$scope.mov.tipo=$scope.otvo.comisiones[index].tipo;
 			$scope.mov.monto=$scope.otvo.comisiones[index].monto;
 			$scope.mov.descripcion=$scope.otvo.comisiones[index].descripcion;
 			$scope.mov.banco=$scope.otvo.comisiones[index].banco;
 			$scope.mov.cuenta=$scope.otvo.comisiones[index].cuenta;
+			$scope.mov.empresa=$scope.otvo.comisiones[index].empresa;
 		}
 		indice=index;
 		tipoOperacion=operacion;
@@ -1208,7 +1250,7 @@ app.controller("ordenTrabajoController",['$rootScope', '$scope','$window', '$loc
 		if(tipoOperacion=='OPC'){
 			$scope.otvo.movimientos[indice].banco=$scope.mov.banco;
 			$scope.otvo.movimientos[indice].cuenta=$scope.mov.cuenta;
-			$scope.otvo.movimientos[indice].empresa=$scope.mov.empresa.nombre;
+			$scope.otvo.movimientos[indice].empresa=$scope.mov.empresa;
 			$scope.otvo.movimientos[indice].estatus="AUTORIZADO";
 			ordenTrabajoservice.updateot($scope.otvo.movimientos[indice]).then(function(data){
 				notificacionesService.notificaMovEditado($scope.otvo);
@@ -1217,7 +1259,7 @@ app.controller("ordenTrabajoController",['$rootScope', '$scope','$window', '$loc
 		}else{
 			$scope.otvo.comisiones[indice].banco=$scope.mov.banco;
 			$scope.otvo.comisiones[indice].cuenta=$scope.mov.cuenta;
-			$scope.otvo.comisiones[indice].empresa=$scope.mov.empresa.nombre;
+			$scope.otvo.comisiones[indice].empresa=$scope.mov.empresa;
 			$scope.otvo.comisiones[indice].estatus="AUTORIZADO";
 			ordenTrabajoservice.updateot($scope.otvo.comisiones[indice]).then(function(data){
 				notificacionesService.notificaMovEditado($scope.otvo);

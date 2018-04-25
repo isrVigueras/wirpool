@@ -33,7 +33,7 @@ app.service("CBService",['$http', '$q', function($http, $q){
 	}
 	this.buscarClientes = function(buscar) {
 		var d = $q.defer();
-		$http.get("/clientes/buscar/"+buscar).then(function(response) {
+		$http.get("/clientes/buscarFull/"+buscar).then(function(response) {
 			d.resolve(response.data);
 		}, function(response) {
 			if(response.status==403){
