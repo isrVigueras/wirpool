@@ -165,6 +165,22 @@ app.service("CBService",['$http', '$q', function($http, $q){
 	    return d.promise;
 	}
 	
+	this.loadResguardos = function(id) {
+		var d = $q.defer();
+		$http.get("/movimientos/getResguardos/"+id).then(function(response) {
+				d.resolve(response.data);
+			});
+		return d.promise;
+	}
+	
+	this.loadCA  = function(id) {
+		var d = $q.defer();
+		$http.get("/ots/loadCA/"+id).then(function(response) {
+				d.resolve(response.data);
+			});
+		return d.promise;
+	}
+	
 }]);
 
 app.service("OPMS",['$http', '$q', function($http, $q){
@@ -329,6 +345,26 @@ app.controller("CAController",['$rootScope', '$scope','$cookieStore', '$window',
 			$('#searchBox').data('typeahead').source=$scope.encontrados;
 		});
 	}
+	
+	$scope.cargaResguardos=function(id){
+		CBService.loadResguardos(id).then(function(data){
+			$scope.listaResguardos= data;
+			$scope.suma1=0;
+			for(var i = 0; i< $scope.listaResguardos.length; i++){
+				$scope.suma1+= $scope.listaResguardos[i].monto;
+			}
+		})
+		
+		CBService.loadCA(id).then(function(data){
+			$scope.listaCA= data;
+			
+			$scope.suma=0;
+			for(var i = 0; i< $scope.listaCA.length; i++){
+				$scope.suma+= $scope.listaCA[i].total;
+			}
+		})
+	}
+	
 	$scope.pago={
 			fecha: new Date(),
 			moneda:"MXN",

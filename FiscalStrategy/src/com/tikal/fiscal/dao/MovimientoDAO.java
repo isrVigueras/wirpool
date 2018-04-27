@@ -1,5 +1,6 @@
 package com.tikal.fiscal.dao;
 
+import java.util.Date;
 import java.util.List;
 
 import com.tikal.fiscal.model.Movimiento;
@@ -23,5 +24,7 @@ public interface MovimientoDAO {
 	public List<Movimiento> getPage(int page);
 	
 	public List<Movimiento> getResguardos(Long id);
+	
+	public List<Movimiento> getResguardosFechas(Date finicio, Date fFinal);
 	
 }

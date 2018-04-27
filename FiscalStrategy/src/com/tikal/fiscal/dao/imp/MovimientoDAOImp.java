@@ -3,6 +3,7 @@ package com.tikal.fiscal.dao.imp;
 import static com.googlecode.objectify.ObjectifyService.ofy;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import com.tikal.fiscal.dao.MovimientoDAO;
@@ -69,6 +70,11 @@ public class MovimientoDAOImp implements MovimientoDAO {
 	@Override
 	public List<Movimiento> getResguardos(Long id) {
 		return ofy().load().type(Movimiento.class).filter("resguardo", true).filter("idCliente", id).order("- fechaCreacion").list();
+	}
+
+	@Override
+	public List<Movimiento> getResguardosFechas(Date finicio, Date fFinal) {
+		return ofy().load().type(Movimiento.class).order("- fechaCreacion").filter("fechaCreacion <=", fFinal).filter("fechaCreacion >=", finicio).list();
 	}
 
 	

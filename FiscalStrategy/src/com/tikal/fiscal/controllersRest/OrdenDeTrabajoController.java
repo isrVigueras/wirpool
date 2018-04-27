@@ -114,6 +114,7 @@ public class OrdenDeTrabajoController {
 				List<Movimiento> mM = otvo.getMovimientos();
 				for(int i=0;i<mM.size();i++){
 					mM.get(i).setFechaCreacion(new Date());
+					mM.get(i).setIdOrden(generaFolio.getNoFolio());
 					movimientodao.save(mM.get(i));
 					ot.getMovimientos().add(mM.get(i).getId());
 				}
@@ -123,6 +124,7 @@ public class OrdenDeTrabajoController {
 				List<Movimiento> mC = otvo.getComisiones();
 				for(int i=0;i<mC.size();i++){
 					mC.get(i).setFechaCreacion(new Date());
+					mC.get(i).setIdOrden(generaFolio.getNoFolio());
 					movimientodao.save(mC.get(i));
 					ot.getComisiones().add(mC.get(i).getId());
 				}
@@ -176,7 +178,7 @@ public class OrdenDeTrabajoController {
 	private void loadCA(HttpServletRequest req, HttpServletResponse res, @PathVariable Long id) throws IOException{
 		AsignadorDeCharset.asignar(req, res);
 		List<OrdenDeTrabajo> lista= otdao.getClienteCA(id);
-		res.getWriter().print(lista);
+		res.getWriter().print(JsonConvertidor.toJson(lista));
 		
 	}
 	
@@ -264,6 +266,7 @@ public class OrdenDeTrabajoController {
 		Usuario user=(Usuario) sesion.getAttribute("user");
 		if(user.getPerfil().compareTo("Ejecutivo")==0 || user.getPerfil().compareTo("AdministradorRoot")==0 || user.getPerfil().compareTo("Administrador")==0){
 				Movimiento mov= m.getMovimiento();
+				mov.setIdOrden(m.getIdOt());
 				OrdenDeTrabajo ot = otdao.get(m.getIdOt());
 				
 				if(m.getBndMovimiento().compareTo("cliente")==0){

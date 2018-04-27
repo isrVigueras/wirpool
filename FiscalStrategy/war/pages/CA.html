@@ -39,7 +39,7 @@
 					</div>
 					<div class="col-md-3 ">
 					<br>
-					<a ng-click="filtroOT(cb.id)" data-target="#modalResguardo" data-toggle="modal">Historial de Resguardo.</a>
+					<a ng-click="cargaResguardos(cb.id)" data-target="#modalResguardo" data-toggle="modal" ng-show="clienteSeleccionado">Historial de Resguardo.</a>
 					</div>
 					
 				</div>
@@ -311,10 +311,10 @@
 					</tr>
 				</thead>
 				<tbody>
-					<tr ng-repeat="op in ots">
-					<td>{{op.id}}</td>
+					<tr ng-repeat="op in listaResguardos">
+					<td>{{op.idOrden}}</td>
 						<td>{{op.fechaInicio | date: "shortDate"}}</td> 
-						<td>{{op.baseComisiones| currency}}</td>
+						<td>{{op.monto| currency}}</td>
 					</tr>
 					<tr>
 					<td colspan="3">Total Entrada:&nbsp;{{suma1 | currency}}</td>
@@ -333,7 +333,7 @@
 					</tr>
 				</thead>
 				<tbody>
-					<tr ng-repeat="op in ots">
+					<tr ng-repeat="op in listaCA">
 						<td>{{op.id}}</td>
 						<td>{{op.fechaInicio}}</td>
 						<td>{{op.total | currency}}</td>

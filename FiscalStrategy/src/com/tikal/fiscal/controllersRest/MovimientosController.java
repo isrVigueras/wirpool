@@ -2,6 +2,9 @@ package com.tikal.fiscal.controllersRest;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -9,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -22,6 +26,7 @@ import com.tikal.fiscal.dao.OrdenDeTrabajoDAO;
 import com.tikal.fiscal.model.Movimiento;
 import com.tikal.fiscal.model.OrdenDeTrabajo;
 import com.tikal.fiscal.model.Usuario;
+import com.tikal.fiscal.reporting.ReporteMovimientos;
 import com.tikal.fiscal.util.AsignadorDeCharset;
 import com.tikal.fiscal.util.JsonConvertidor;
 
@@ -100,6 +105,36 @@ public class MovimientosController {
 		res.getWriter().print(JsonConvertidor.toJson(mov));	
 	}
 	
+	@RequestMapping(value = "/getReporte/{finicio}/{ffinal}", method = RequestMethod.GET, produces = "application/vnd.ms-excel")
+	public void getReporte(HttpServletRequest req, HttpServletResponse res,
+			@PathVariable String finicio, @PathVariable String ffinal) {
+		try {
+			AsignadorDeCharset.asignar(req, res);
+			SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
+			Date datei = formatter.parse(finicio);
+			Date datef = formatter.parse(ffinal);
+			Calendar c = Calendar.getInstance();
+			c.setTime(datef);
+			c.add(Calendar.DATE, 1);
+			datef = c.getTime();
+			
+//			List<Factura> lista = facturaDAO.buscar(datei, datef, rfc);
+//			Reporte rep = new Reporte(lista);
+			List<Movimiento> lista= movimientodao.getResguardosFechas(datei, datef);
+			
+			ReporteMovimientos rep= new ReporteMovimientos();
+			
+			HSSFWorkbook reporte = rep.llenarReporte(lista);
+			reporte.write(res.getOutputStream());
+
+			// res.getWriter().println(JsonConvertidor.toJson(listaVO));
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+	}
+	
 	@RequestMapping(value="/update/", method=RequestMethod.POST, consumes="application/json")
 	private void update(HttpServletRequest req, HttpServletResponse res, @RequestBody String json) throws UnsupportedEncodingException{
 		AsignadorDeCharset.asignar(req, res);
@@ -107,7 +142,7 @@ public class MovimientosController {
 		movimientodao.save(mov);
 	}
 	
-	@RequestMapping(value="/getResguardos/{idCliente}", method=RequestMethod.POST, produces="application/json")
+	@RequestMapping(value="/getResguardos/{idCliente}", method=RequestMethod.GET, produces="application/json")
 	private void getResguardos(HttpServletRequest req, HttpServletResponse res, @PathVariable Long idCliente) throws IOException{
 		AsignadorDeCharset.asignar(req, res);
 		List<Movimiento>lista =movimientodao.getResguardos(idCliente);

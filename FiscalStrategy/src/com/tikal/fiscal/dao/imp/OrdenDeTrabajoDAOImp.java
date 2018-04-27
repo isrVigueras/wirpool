@@ -73,7 +73,18 @@ public class OrdenDeTrabajoDAOImp implements OrdenDeTrabajoDAO {
 
 	@Override
 	public List<OrdenDeTrabajo> getClienteCA(Long id) {
-		return ofy().load().type(OrdenDeTrabajo.class).filter("idCliente", id).filter("tipo", "CA").order("- fechaInicio").list();
+//		List<OrdenDeTrabajo> lista=ofy().load().type(OrdenDeTrabajo.class).filter("idCliente", id).list();
+//		for(OrdenDeTrabajo ot:lista){
+//			System.out.println(ot.getImporte());
+//		}
+//		
+//		lista=ofy().load().type(OrdenDeTrabajo.class).filter("idCliente", id).filter("tipo", "CA").list();
+//		for(OrdenDeTrabajo ot:lista){
+//			System.out.println(ot.getImporte());
+//		}
+//		
+		
+		return ofy().load().type(OrdenDeTrabajo.class).filter("idCliente", id).filter("tipo", "ca").order("- fechaInicio").list();
 	}
 
 }

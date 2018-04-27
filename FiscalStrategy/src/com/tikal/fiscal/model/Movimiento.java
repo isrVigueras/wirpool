@@ -158,6 +158,18 @@ public class Movimiento {
 	public void setIdCliente(Long idCliente) {
 		this.idCliente = idCliente;
 	}
+	public boolean isResguardo() {
+		return resguardo;
+	}
+	public void setResguardo(boolean resguardo) {
+		this.resguardo = resguardo;
+	}
+	public Long getIdOrden() {
+		return idOrden;
+	}
+	public void setIdOrden(Long idOrden) {
+		this.idOrden = idOrden;
+	}
 	
 	
 }
