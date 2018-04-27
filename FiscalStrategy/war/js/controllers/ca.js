@@ -265,7 +265,7 @@ app.service("OPMS",['$http', '$q', function($http, $q){
 	
 }]);
 
-app.controller("CAController",['$rootScope', '$scope','$cookieStore', '$window', '$location', 'CBService','cuentaservice','OPMS','userFactory','notificacionesService',function($rootScope, $scope, $cookieStore, $window, $location, CBService,cuentaservice,OPMS,userFactory,notificacionesService){
+app.controller("CAController",['$rootScope', '$scope','$cookieStore', '$window', '$location', 'CBService','cuentaservice','OPMS','userFactory','notificacionesService','otservice',function($rootScope, $scope, $cookieStore, $window, $location, CBService,cuentaservice,OPMS,userFactory,notificacionesService,otservice){
 	
 	$rootScope.perfilUsuario = userFactory.getUsuarioPerfil();  //obtener perfl de usuario para pintar el menú al qe tiene acceso
 	$scope.bancos = catalogoBancos();
@@ -286,6 +286,22 @@ app.controller("CAController",['$rootScope', '$scope','$cookieStore', '$window',
 			$scope.buscar();
 		}
 	},true);
+	$scope.suma=0;
+	$scope.suma1=0;
+	$scope.filtroOT=function(id){
+		otservice.FiltroCliente($scope.datos.idCliente).then(function(data){
+			$scope.ots=data;
+			for(var i in $scope.ots){
+				$scope.suma1=$scope.suma1 + $scope.ots[i].baseComisiones;
+				
+			}
+			
+			for(var i in $scope.ots){
+				$scope.suma=$scope.suma + $scope.ots[i].total;
+				
+			}
+		});
+		}
 	$scope.buscar=function(){
 		CBService.buscarClientes($scope.busca).then(function(data){
 			
@@ -305,6 +321,7 @@ app.controller("CAController",['$rootScope', '$scope','$cookieStore', '$window',
 			    	var ind=$scope.encontrados.indexOf(item);
 			    	$scope.clienteSeleccionado=true;
 			    	$scope.datos.idCliente= $scope.cliente[ind].id;
+			    	$scope.nombre=$scope.cliente[ind].nickname;
 			    	$scope.getIndex($scope.datos.idCliente);
 			        return item;
 			    }

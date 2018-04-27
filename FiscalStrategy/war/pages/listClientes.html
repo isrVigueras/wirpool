@@ -26,8 +26,8 @@
 			
 			<tr ng-repeat="cliente in clienteLista">
 				<td>{{cliente.nickname}}</td>
-				<td>{{cliente.saldo}}</td>
-				<td>{{cliente.saldoUSD}}</td>
+				<td>{{cliente.saldo | currency}}</td>
+				<td>{{cliente.saldoUSD | currency}}</td>
 				<td>
 <!-- 				Boton para ver el detalle de los clientes -->
 				<button title="Ver Cliente"class="btn btn-small" data-toggle="modal" ng-click="ver(cliente)" data-target="#myModalVista"

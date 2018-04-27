@@ -96,11 +96,22 @@ app.config([ '$routeProvider', function($routeProvider) {
 		templateUrl : "pages/OT.html",
 		controller : "otcontrol"
 	});
+	
+	$routeProvider.when('/historial_movimientos',{
+		templateUrl : "pages/historymov.html",
+		controller : "movController"
+	});
+	$routeProvider.when('/reporte_movimientos',{
+		templateUrl : "pages/reportmov.html",
+		controller : "movController"
+	});
 	$routeProvider.otherwise({
 		redirectTo : '/listOTs',
 		templateUrl : "pages/listOTs.html",
 		controller : "OTsListController"
 	});
+	
+	
 }]);
 
 app.factory("userFactory", function(){
