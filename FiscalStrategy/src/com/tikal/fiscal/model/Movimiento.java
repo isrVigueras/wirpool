@@ -35,6 +35,10 @@ public class Movimiento {
 	private String tipo;
 	@Index
 	private Long idCliente;
+	@Index
+	private boolean resguardo;
+	@Index
+	private Long idOrden;
 	private String descripcion;
 	private Long idresponsable;
 	

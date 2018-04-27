@@ -107,7 +107,14 @@ public class MovimientosController {
 		movimientodao.save(mov);
 	}
 	
-
+	@RequestMapping(value="/getResguardos/{idCliente}", method=RequestMethod.POST, produces="application/json")
+	private void getResguardos(HttpServletRequest req, HttpServletResponse res, @PathVariable Long idCliente) throws IOException{
+		AsignadorDeCharset.asignar(req, res);
+		List<Movimiento>lista =movimientodao.getResguardos(idCliente);
+		res.getWriter().print(JsonConvertidor.toJson(lista));
+	}
+	
+	
 	@RequestMapping(value="/cancelar/", method=RequestMethod.POST, consumes="application/json")
 	private void cancelar(HttpServletRequest req, HttpServletResponse res, @RequestBody String json) throws IOException{
 		AsignadorDeCharset.asignar(req, res);

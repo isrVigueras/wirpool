@@ -170,7 +170,15 @@ public class OrdenDeTrabajoController {
 			res.getWriter().print(JsonConvertidor.toJson(error));
 		}
 	}
-	
+
+
+	@RequestMapping(value={"/loadCA/{id}"},method= RequestMethod.GET, produces="application/json")
+	private void loadCA(HttpServletRequest req, HttpServletResponse res, @PathVariable Long id) throws IOException{
+		AsignadorDeCharset.asignar(req, res);
+		List<OrdenDeTrabajo> lista= otdao.getClienteCA(id);
+		res.getWriter().print(lista);
+		
+	}
 	
 	@RequestMapping(value={"/load/{page}"},method= RequestMethod.GET, produces="application/json")
 	private void load(HttpServletRequest req, HttpServletResponse res, @PathVariable int page) throws IOException{

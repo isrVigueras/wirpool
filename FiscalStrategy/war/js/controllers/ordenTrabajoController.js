@@ -199,7 +199,7 @@ app.service("operacionesMovimientosService",['$http', '$q', function($http, $q){
 			}
 		}else{
 			if(bndResguardo){
-				var renglon= {tipo: operaciones.tipo, descripcion: operaciones.descripcion , monto: operaciones.monto, estatus:"AUTORIZADO"}
+				var renglon= {tipo: operaciones.tipo, descripcion: operaciones.descripcion , monto: operaciones.monto, estatus:"AUTORIZADO",resguardo:true,idOrden:otVO.ot.id, idCliente:cliente.id}
 			}else{
 				if(operaciones.tipo != null && operaciones.descripcion != null && operaciones.monto != null){
 					var renglon= {tipo: operaciones.tipo, descripcion: operaciones.descripcion , monto:operaciones.monto, estatus:operaciones.estatus}
@@ -1311,7 +1311,10 @@ app.controller("ordenTrabajoController",['$rootScope', '$scope','$window', '$loc
 	$scope.addOper= function(operacion){
 		var objs=operacionesMovimientosService.addOper(operacion,$scope.operaciones, $scope.otvo, $scope.tipoResguardo,$scope.otvo.cliente,$scope.otvo.broker);
 		$scope.otvo = objs.otvo;
-		$scope.movimientosVO.movimiento=$scope.operaciones;
+//		$scope.movimientosVO.movimiento=$scope.operaciones;
+		$scope.movimientosVO.movimiento=$scope.otvo.movimientos[$scope.otvo.movimientos.length-1];
+		$scope.movimientosVO.movimiento.fecha=$scope.operaciones.fecha;
+		$scope.movimientosVO.movimiento.fechaCreacion=$scope.operaciones.fechaCreacion;
 		$scope.movimientosVO.idOt=$scope.otvo.ot.id;
 		var moneda= $scope.otvo.pagos[0].moneda;
 		if(operacion=="OPC"){

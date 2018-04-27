@@ -28,7 +28,7 @@ public class OrdenDeTrabajo {
 	private Date fechaInicio;
 	@Index
 	private Date fechaCierre;
-	
+	@Index
 	private String tipo;
 	@Index
 	private Long idPago;

@@ -71,4 +71,9 @@ public class OrdenDeTrabajoDAOImp implements OrdenDeTrabajoDAO {
 		return ofy().load().type(OrdenDeTrabajo.class).filter("idCliente", id).order("- fechaInicio").filter("fechaInicio >=", fechaInicio).filter("fechaInicio <=", fechaInicio).list();
 	}
 
+	@Override
+	public List<OrdenDeTrabajo> getClienteCA(Long id) {
+		return ofy().load().type(OrdenDeTrabajo.class).filter("idCliente", id).filter("tipo", "CA").order("- fechaInicio").list();
+	}
+
 }

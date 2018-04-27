@@ -26,4 +26,6 @@ public interface OrdenDeTrabajoDAO {
 	
 	public List<OrdenDeTrabajo> getFechaCliente(Date fechaInicio, Date fechaFin, Long id);
 	
+	public List<OrdenDeTrabajo> getClienteCA(Long id);
+	
 }

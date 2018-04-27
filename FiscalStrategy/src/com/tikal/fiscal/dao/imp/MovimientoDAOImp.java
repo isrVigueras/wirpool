@@ -68,7 +68,7 @@ public class MovimientoDAOImp implements MovimientoDAO {
 
 	@Override
 	public List<Movimiento> getResguardos(Long id) {
-		return ofy().load().type(Movimiento.class).filter("idCliente", id).order("- fechaCreacion").list();
+		return ofy().load().type(Movimiento.class).filter("resguardo", true).filter("idCliente", id).order("- fechaCreacion").list();
 	}
 
 	
