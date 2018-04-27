@@ -158,7 +158,7 @@ app.service("CBService",['$http', '$q', function($http, $q){
 	
 	this.updateCliente=function(clientes){
 	    var d = $q.defer();
-	    $http.post("clientes/u/",clientes).then(
+	    $http.post("clientes/update/",clientes).then(
 	      function(response) {
 	        d.resolve(response.data);
 	      });
