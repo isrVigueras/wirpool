@@ -13,6 +13,9 @@
 			</ul>
 			
 		</div>
+		<div class="col-md-6">
+			<button class="btn btn-primary" ng-click="modalFechas()">Descargar Excel</button>
+		</div>
 	<table class="table table-stripped">
 		<thead>
 			<tr>
@@ -29,7 +32,7 @@
 		</thead>
 		<tbody>
 			<tr ng-repeat="m in mov">
-				<td>{{m.nickname}}</td>
+				<td>{{m.idOrden}}</td>
 <!-- 				<td>{{m.idCliente}}</td> -->
 				<td>{{m.empresa}}</td>
 				<td>{{m.banco}}</td>
@@ -47,6 +50,7 @@
 				<li ng-repeat="abc in paginas" id="{{'pagB'+abc}}"
 					ng-click="cargarPagina(abc)"><a>{{abc}}</a></li>
 			</ul>
+	</div>
  <!-- Modal Ver BROCKER	-->
   <div class="modal fade" id="myModalVista" tabindex="-1" data-backdrop="static" role="dialog" aria-labelledby="myModalVista" aria-hidden="true">
                            
@@ -239,7 +243,7 @@
 </div>
 <div class="modalgif"></div>
 <!--     MODAL PARA EDICION DEL BROCKER -->
-<div class="modal fade" id="MDEditar" tabindex="-1" data-backdrop="static" role="dialog" aria-labelledby="MDEditar" aria-hidden="true">
+<div class="modal fade" id="fechas" tabindex="-1" data-backdrop="static" role="dialog" aria-labelledby="MDEditar" aria-hidden="true">
   
     <div class="modal-dialog" id="mdialTamanio">
 
@@ -247,56 +251,33 @@
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal">&times;</button>
-        <h4 class="modal-title">Editar Broker</h4>
+        <h4 class="modal-title">Seleccionar Fechas</h4>
       </div>
       <div class="modal-body">
-	<div class="container" ng-hide="multiple">
 	 
 	<form id="forma" name="myForm">
-		<div class="col-md-5">
-			Nombre del Brocker: <input class="form-control"
-				ng-model="bk.nickname" type="text" ng-required="true" onkeyup="javascript:this.value=this.value.toUpperCase();"><br>
+		<div class="row">
+		<div class="col-md-6">
+			Fecha Inicio: <input class="form-control" type="date"
+				ng-model="fechaInicio" ng-required="true" ><br>
 		</div>
-<!-- 		<div class="col-md-5"> -->
-<!-- 			Tipo de Cliente:  -->
-<!-- 			<select ng-model="client.tipo" class="form-control" ng-required="true"> -->
-<!-- 			  <option value="cliente">Cliente</option> -->
-<!-- 			</select><br> -->
-<!-- 		</div> -->
-		<div class="col-md-5">
-			Responsable: <select class="form-control"
-				ng-model="bk.responsable" type="text" ng-required="true">
-					<option ng-repeat="usuario in usuariosLista" ng-if="usuario.usuario!='root'" value="{{usuario.id}}">{{usuario.usuario}}</option>
-				</select><br>
+		<div class="col-md-6">
+			Fecha Fin: <input class="form-control" type="date"
+				ng-model="fechaFin" ng-required="true" ><br>
 		</div>
-<!-- 		<div class="col-md-5"> -->
-<!-- 			Brocker: <select class="form-control" -->
-<!-- 				ng-model="client.idBrocker" type="text" ng-required="true"> -->
-<!-- 					<option ng-repeat="bk in brockerLista" value="{{bk.id}}">{{bk.nickname}}</option> -->
-<!-- 				</select><br> -->
-<!-- 		</div> -->
-<!-- 		<div class="col-md-1"> -->
-<!-- 			Activo: <select class="form-control" ng-model="client.enabled"> -->
-<!-- 				<option value="true">Si</option> -->
-<!-- 				<option value="false">No</option> -->
-<!-- 				</select><br> -->
-<!-- 		</div> -->
 		<div class="col-md-12">
-			<button value="Guardar" class="btn"
-				ng-click="myForm.$valid && editarBrocker()">Guardar</button>
+			<a value="Guardar" class="btn"
+				href="movimientos/getReporte/{{fi}}/{{ff}}" download="Movimientos.xls">Descargar</a>
 			
+		</div>
 		</div>
 	</form>
 </div>      
-</div>
-
-      
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
       </div>
+      </div>
     </div>
-
-  </div>
 </div>
 </div>
 	<div id="snackbar">Broker Editado Correctamente.</div>

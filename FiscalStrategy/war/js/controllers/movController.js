@@ -88,6 +88,22 @@ app.controller("movController",['$rootScope', '$scope','$cookieStore', '$window'
 	});
 	}
 	$scope.cargamov(1);
+	
+	$scope.modalFechas= function(){
+		$("#fechas").modal('show');
+	}
+	
+	$scope.$watch('fechaInicio',function(){
+		if($scope.fechaInicio){
+			$scope.fi= $scope.fechaInicio.getDate()+"-"+($scope.fechaInicio.getMonth()+ 1)+"-"+$scope.fechaInicio.getFullYear();
+		}
+	})
+	
+	$scope.$watch('fechaFin',function(){
+		if($scope.fechaFin){
+			$scope.ff= $scope.fechaFin.getDate()+"-"+($scope.fechaFin.getMonth()+1)+"-"+$scope.fechaFin.getFullYear();
+		}
+	})
 }]);
 
 
