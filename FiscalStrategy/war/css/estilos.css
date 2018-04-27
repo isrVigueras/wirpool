@@ -153,8 +153,11 @@ tr:nth-child(even) {
 
 /* MODAL CSS */
 
-#mdialTamanio{
+	#mdialTamanio{
       width: 60% !important;
+    }
+    #mdlDialog{
+      width: 22% !important;
     }
     #mdlconfirmacion{
       width: 10% !important;
@@ -169,6 +172,7 @@ tr:nth-child(even) {
 	box-shadow: 0px 6px 13px -4px rgba(167,190,235,1);
 	border-radius:10px 10px 10px 10px;
 }
+
 .pmdl {
 	text-align: center;
 	position: fixed;

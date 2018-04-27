@@ -1283,6 +1283,48 @@ app.controller("ordenTrabajoController",['$rootScope', '$scope','$window', '$loc
 		if(cerrarOrden()){
 			ordenTrabajoservice.cerrarOt($scope.otvo).then(function(data){
 				if(tipoOperacion=='OPC'){
+					$scope.resguardorest(tipoOperacion);
+					ordenTrabajoservice.updateot($scope.otvo.movimientos[indice]).then(function(data){
+						$window.location.reload();
+					});
+				}else{
+					ordenTrabajoservice.updateot($scope.otvo.comisiones[indice]).then(function(data){
+						$window.location.reload();
+					});
+				}
+			});
+		}else{
+			if(tipoOperacion=='OPC'){
+				$scope.resguardorest(tipoOperacion);
+				ordenTrabajoservice.updateot($scope.otvo.movimientos[indice]).then(function(data){
+					notificacionesService.notificaMovValidado($scope.otvo);
+						$window.location.reload();
+				});
+			}else{
+				ordenTrabajoservice.updateot($scope.otvo.comisiones[indice]).then(function(data){
+					notificacionesService.notificaMovValidado($scope.otvo);
+						$window.location.reload();
+				});
+			}
+		}
+	}
+	$scope.validaMov=function(){
+		if(tipoOperacion=='OPC'){
+			$scope.resguardorest(tipoOperacion);
+		}else{
+			$scope.resguardorest(tipoOperacion);}
+		if(tipoOperacion=='OPC'){
+			$scope.otvo.movimientos[indice].numTransaccion=0;
+			$scope.otvo.movimientos[indice].fecha=$scope.mov.fecha;
+			$scope.otvo.movimientos[indice].estatus="VALIDADO";
+		}else{
+			$scope.otvo.comisiones[indice].numTransaccion=0;
+			$scope.otvo.comisiones[indice].fecha=$scope.mov.fecha;
+			$scope.otvo.comisiones[indice].estatus="VALIDADO";
+		}
+		if(cerrarOrden()){
+			ordenTrabajoservice.cerrarOt($scope.otvo).then(function(data){
+				if(tipoOperacion=='OPC'){
 					ordenTrabajoservice.updateot($scope.otvo.movimientos[indice]).then(function(data){
 						$window.location.reload();
 					});
@@ -1306,7 +1348,22 @@ app.controller("ordenTrabajoController",['$rootScope', '$scope','$window', '$loc
 			}
 		}
 	}
-	
+	$scope.resguardorest=function(operacion){
+		$scope.operaciones.tipo=$scope.mov.tipo;
+		$scope.operaciones.monto=$scope.mov.monto;
+		$scope.operaciones.descripcion=$scope.mov.descripcion;
+		$scope.tipoResguardo=true;
+		var objs=operacionesMovimientosService.addOper(operacion,$scope.operaciones, $scope.otvo, $scope.tipoResguardo,$scope.otvo.cliente,$scope.otvo.broker);
+
+		if(operacion=="OPC"){
+				ordenTrabajoservice.guardaCliente(objs.c);
+
+		}else{
+			
+				ordenTrabajoservice.guardaCliente(objs.b);
+			
+		}
+	}
 	//Agregar movimientos
 	$scope.addOper= function(operacion){
 		var objs=operacionesMovimientosService.addOper(operacion,$scope.operaciones, $scope.otvo, $scope.tipoResguardo,$scope.otvo.cliente,$scope.otvo.broker);
@@ -1318,18 +1375,18 @@ app.controller("ordenTrabajoController",['$rootScope', '$scope','$window', '$loc
 		$scope.movimientosVO.idOt=$scope.otvo.ot.id;
 		var moneda= $scope.otvo.pagos[0].moneda;
 		if(operacion=="OPC"){
-			if($scope.tipoResguardo){
-				ordenTrabajoservice.guardaCliente(objs.c);
-			}
+//			if($scope.tipoResguardo){
+//				ordenTrabajoservice.guardaCliente(objs.c);
+//			}
 			$scope.movimientosVO.bndMovimiento="cliente";
 			$scope.movimientosVO.saldo=$scope.otvo.ot.saldoMov;
 			ordenTrabajoservice.addMov($scope.movimientosVO).then(function(data){
 				$window.location.reload();
 			});
 		}else{
-			if($scope.tipoResguardo){
-				ordenTrabajoservice.guardaCliente(objs.b);
-			}
+//			if($scope.tipoResguardo){
+//				ordenTrabajoservice.guardaCliente(objs.b);
+//			}
 			$scope.movimientosVO.bndMovimiento="asesor";
 			$scope.movimientosVO.saldo=$scope.otvo.ot.saldoCom;
 			ordenTrabajoservice.addMov($scope.movimientosVO).then(function(data){

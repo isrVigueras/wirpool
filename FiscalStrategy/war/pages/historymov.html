@@ -17,33 +17,27 @@
 		<thead>
 			<tr>
 				<th>No. OT</th>
-				<th>Cliente</th>
+<!-- 				<th>Cliente</th> -->
 				<th>Empresa</th>
 				<th>Banco</th>
 				<th>Cuenta</th>
 				<th>Tipo</th>
+				<th>Monto</th>
 				<th>Estatus</th>
-				<th>Acciones</th>
+				<th>Descripcion</th>
 			</tr>
 		</thead>
 		<tbody>
-			<tr ng-repeat="bk in brockerLista">
-				<td>{{bk.nickname}}</td>
-				<td>{{bk.saldo | currency}}</td>
-				<td>{{bk.saldoUSD | currency}}</td>
-				<td><button title="Ver Brocker"class="btn btn-small" data-toggle="modal" ng-click="ver(bk)" data-target="#myModalVista"
-						>
-						<i class="glyphicon glyphicon-eye-open"></i>
-					</button>
-					<button title="Editar"class="btn btn-small"  ng-click="editar(bk)" data-toggle="modal" data-target="#MDEditar"
-						>
-						<i class="glyphicon glyphicon-edit"></i>
-					</button>
-					
-					<button title="Eliminar"class="btn btn-small"  ng-click="eliminar(bk)" data-toggle="modal" 
-						>
-						<i class="glyphicon glyphicon-remove"></i>
-					</button>
+			<tr ng-repeat="m in mov">
+				<td>{{m.nickname}}</td>
+<!-- 				<td>{{m.idCliente}}</td> -->
+				<td>{{m.empresa}}</td>
+				<td>{{m.banco}}</td>
+				<td>{{m.cuenta}}</td>
+				<td>{{m.tipo}}</td>
+				<td>{{m.monto | currency}}</td>
+				<td>{{m.estatus}}</td>
+				<td>{{m.descripcion}}</td>
 			</tr>
 		</tbody>
 

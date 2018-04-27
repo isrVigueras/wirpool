@@ -182,9 +182,9 @@
 						</button>
 					</td>
 					<td class="ng-binding" align="right">
-						<button class="btn btn-small"  data-toggle="modal" ng-if="(perfil=='AdministradorRoot' || perfil=='Ejecutivo' || perfil=='Administrador')&& mov.estatus != 'CANCELADO'"
+						<button class="btn btn-small"  data-toggle="modal" ng-if="(perfil=='AdministradorRoot' || perfil=='Ejecutivo' || perfil=='Administrador')"
 						 ng-show="(mov.tipo != 'Efectivo' && mov.tipo != 'Resguardo' &&  mov.estatus == 'AUTORIZADO') || (mov.tipo == 'Efectivo' && perfil=='Administrador')" 
-						 ng-hide="(mov.tipo == 'Resguardo') || (mov.tipo == 'Resguardo' && mov.estatus == 'AUTORIZADO') || (mov.tipo != 'Resguardo' && mov.estatus == 'VALIDADO')"
+						 ng-hide="(mov.tipo == 'Resguardo' && mov.estatus == 'AUTORIZADO') || (mov.tipo != 'Resguardo' && mov.estatus == 'VALIDADO') || (mov.tipo != 'Resguardo' && mov.estatus == 'ACTIVO'"
 						 ng-disabled="mov.tipo != 'Efectivo' && mov.banco==null && mov.cuenta == null && mov.estatus == 'VALIDADO'"  
 						 ng-click="cargarMov($index,'OPC')" data-target="#modalVerificar">
 							<span class="glyphicon glyphicon-ok"></span>
@@ -193,10 +193,10 @@
 						<div ng-if="mov.tipo == 'Resguardo' && mov.estatus != 'CANCELADO'">
 						<button class="btn btn-small"  data-toggle="modal" ng-if="perfil=='AdministradorRoot' || perfil=='Ejecutivo' || perfil=='Administrador'"
 						 ng-show="(mov.tipo == 'Resguardo' )" 
-						 ng-hide="mov.estatus == 'VALIDADO'"
+						 ng-hide="mov.tipo == 'Resguardo' && mov.estatus == 'VALIDADO'"
 						 ng-disabled="mov.tipo != 'Efectivo' && mov.tipo != 'Resguardo'"  
 						  title="Validar Resguardo"
-						 ng-click="cargarMov($index,'OPC')" data-target="#modalVerificar">
+						 ng-click="cargarMov($index,'OPC')" data-target="#modalresguardo">
 						
 							<span class="glyphicon glyphicon-ok"></span>
 						</button>
@@ -642,6 +642,28 @@
 	 </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+<!-- Modal Confirmar validacion resguardo -->
+<div id="modalresguardo" class="modal fade" role="dialog">
+  <div class="modal-dialog" id="mdlDialog">
+
+    <div class="modal-content">
+     
+      <div class="modal-body">
+		<h3><code>Confirmacion de Validacion.</code></h3>
+		<div style="padding-left:20px;">
+		<p >Para continuar dar Click en Validar</p>
+		</div>
+	 </div>
+      <div class="modal-footer">
+      <div class ="row" align="center">
+      <button type="button" class="btn btn-default" ng-click="validaMov()">Validar</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+        </div>
       </div>
     </div>
 
