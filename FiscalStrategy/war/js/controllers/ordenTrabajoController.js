@@ -199,7 +199,7 @@ app.service("operacionesMovimientosService",['$http', '$q', function($http, $q){
 			}
 		}else{
 			if(bndResguardo){
-				var renglon= {tipo: operaciones.tipo, descripcion: operaciones.descripcion , monto: operaciones.monto, estatus:"AUTORIZADO",resguardo:true,idOrden:otVO.ot.id, idCliente:cliente.id}
+				var renglon= {tipo: operaciones.tipo, descripcion: operaciones.descripcion , monto: operaciones.monto, estatus:"AUTORIZADO",resguardo:true, idCliente:cliente.id}
 			}else{
 				if(operaciones.tipo != null && operaciones.descripcion != null && operaciones.monto != null){
 					var renglon= {tipo: operaciones.tipo, descripcion: operaciones.descripcion , monto:operaciones.monto, estatus:operaciones.estatus}
@@ -871,6 +871,20 @@ app.controller("OTsAddController",['$rootScope', '$route','$scope','$cookieStore
 		}
 	}
 	$scope.eliminarRenglonICliente=function(renglon){
+		var r= $scope.otVO.movimientos[renglon];
+		if(r.tipo=="Resguardo"){
+			var moneda= $scope.otVO.pagos[0].moneda;
+			if(moneda=="MXN"){
+				$scope.cliente[0].saldo = $scope.cliente[0].saldo*1 - r.monto;
+				$scope.cliente[0].saldo = $scope.cliente[0].saldo.toFixed(2)*1;
+			}else{
+				if(!$scope.cliente[0].saldoUSD){
+					$scope.cliente[0].saldoUSD=0;
+				}
+				$scope.cliente.saldoUSD= $scope.cliente.saldoUSD*1 - r.monto;
+				$scope.cliente.saldoUSD= $scope.cliente.saldoUSD.toFixed(2)*1;
+			}
+		}
 		$scope.otVO.movimientos.splice(renglon, 1);
 		$scope.verificarSaldo('OPC');
 		if($scope.otVO.movimientos.length == 0){
@@ -878,6 +892,20 @@ app.controller("OTsAddController",['$rootScope', '$route','$scope','$cookieStore
 		}
 	}
 	$scope.eliminarRenglonAsesor=function(renglon){
+		var r= $scope.otVO.movimientos[renglon];
+		if(r.tipo=="Resguardo"){
+			var moneda= $scope.otVO.pagos[0].moneda;
+			if(moneda=="MXN"){
+				$scope.brockerCliente.saldo = $scope.brockerCliente.saldo*1 - r.monto;
+				$scope.brockerCliente.saldo= $scope.brockerCliente.saldo.toFixed(2)*1
+			}else{
+				if(!$scope.brockerCliente.saldoUSD){
+					$scope.brockerCliente.saldoUSD=0;
+				}
+				$scope.brockerCliente.saldoUSD= $scope.brockerCliente.saldoUSD*1 - r.monto;
+				$scope.brockerCliente.saldoUSD=$scope.brockerCliente.saldoUSD.toFixed(2)*1
+			}
+		}
 		$scope.otVO.comisiones.splice(renglon, 1);
 		$scope.verificarSaldo('OPA');
 		if($scope.otVO.comisiones.length == 0){
@@ -1081,12 +1109,38 @@ app.controller("ordenTrabajoController",['$rootScope', '$scope','$window', '$loc
 				$scope.otvo.ot.saldoMov=$scope.otvo.ot.saldoMov + $scope.otvo.movimientos[index].monto;
 				movVO.movimiento=$scope.otvo.movimientos[index];
 				movVO.saldo=$scope.otvo.ot.saldoMov;
+				if($scope.otvo.movimientos[index].tipo=="Resguardo"){
+					var moneda= $scope.otvo.pagos[0].moneda;
+					var cliente= $scope.otvo.cliente;
+					if(moneda=="MXN"){
+						cliente.saldo = cliente.saldo - $scope.otvo.movimientos[index].monto;
+					}else{
+						if(!cliente.saldoUSD){
+							cliente.saldoUSD=0;
+						}
+						cliente.saldoUSD= cliente.saldoUSD - $scope.otvo.movimientos[index].monto;
+					}
+					ordenTrabajoservice.guardaCliente(cliente);
+				}
 			}
 			if(operacion=="OPA"){
 				$scope.otvo.comisiones[index].estatus="CANCELADO";
 				$scope.otvo.ot.saldoCom=$scope.otvo.ot.saldoCom + $scope.otvo.comisiones[index].monto; 
 				movVO.movimiento=$scope.otvo.comisiones[index];
 				movVO.saldo=$scope.otvo.ot.saldoCom;
+				if($scope.otvo.movimientos[index].tipo=="Resguardo"){
+					var moneda= $scope.otvo.pagos[0].moneda;
+					var cliente= $scope.otvo.broker;
+					if(moneda=="MXN"){
+						cliente.saldo = cliente.saldo - $scope.otvo.comisiones[index].monto;
+					}else{
+						if(!cliente.saldoUSD){
+							cliente.saldoUSD=0;
+						}
+						cliente.saldoUSD= cliente.saldoUSD - $scope.otvo.comisiones[index].monto;
+					}
+					ordenTrabajoservice.guardaCliente(cliente);
+				}
 			}
 			if(cerrarOrden()){
 				ordenTrabajoservice.cerrarOt($scope.otvo).then(function(data){
@@ -1359,9 +1413,7 @@ app.controller("ordenTrabajoController",['$rootScope', '$scope','$window', '$loc
 				ordenTrabajoservice.guardaCliente(objs.c);
 
 		}else{
-			
 				ordenTrabajoservice.guardaCliente(objs.b);
-			
 		}
 	}
 	//Agregar movimientos
