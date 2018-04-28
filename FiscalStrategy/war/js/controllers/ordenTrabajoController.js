@@ -1419,9 +1419,14 @@ app.controller("ordenTrabajoController",['$rootScope', '$scope','$window', '$loc
 	//Agregar movimientos
 	$scope.addOper= function(operacion){
 		var objs=operacionesMovimientosService.addOper(operacion,$scope.operaciones, $scope.otvo, $scope.tipoResguardo,$scope.otvo.cliente,$scope.otvo.broker);
+		
 		$scope.otvo = objs.otvo;
 //		$scope.movimientosVO.movimiento=$scope.operaciones;
-		$scope.movimientosVO.movimiento=$scope.otvo.movimientos[$scope.otvo.movimientos.length-1];
+		if(operacion=="OPC"){
+			$scope.movimientosVO.movimiento=$scope.otvo.movimientos[$scope.otvo.movimientos.length-1];
+		}else{
+			$scope.movimientosVO.movimiento=$scope.otvo.comisiones[$scope.otvo.comisiones.length-1];
+		}
 		$scope.movimientosVO.movimiento.fecha=$scope.operaciones.fecha;
 		$scope.movimientosVO.movimiento.fechaCreacion=$scope.operaciones.fechaCreacion;
 		$scope.movimientosVO.idOt=$scope.otvo.ot.id;
