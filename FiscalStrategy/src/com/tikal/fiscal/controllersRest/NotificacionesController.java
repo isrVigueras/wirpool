@@ -113,13 +113,13 @@ public class NotificacionesController {
 	}
 	
 	@RequestMapping(value="/lanza/{idOT}", method=RequestMethod.GET)
-	private void lanza(HttpServletRequest req, HttpServletResponse res, @PathVariable Long idOt) throws IOException{
+	private void lanza(HttpServletRequest req, HttpServletResponse res, @PathVariable Long idOT) throws IOException{
 		AsignadorDeCharset.asignar(req, res);
 		List<Usuario> lista= usuariodao.consultarPorPerfilAll("Administrador");
 		for(Usuario us:lista){
 			Notificacion notificacion = new Notificacion();
 			notificacion.setResponsabe(us.getId());
-			notificacion.setIdOt(idOt);
+			notificacion.setIdOt(idOT);
 			notificacion.setMensaje("Falta editar y validar movimientos");
 			notificaciondao.save(notificacion);
 		}
