@@ -88,6 +88,10 @@
 							href=" ots/descargaOt/{{ot.id}}" download="ordenDeTrabajo.pdf">
 							<i class="glyphicon glyphicon-print"></i>
 						</a>	
+						<button class="btn btn-small" ng-click="getidot(ot.id)" title="Enviar Notificaci&oacute;n"
+						data-toggle="modal" data-target="#mdlNoti">
+							<i class="glyphicon glyphicon-send"></i>
+						</button>
 					</td>
 				</tr>
 			</tbody>	
@@ -103,4 +107,27 @@
 		</div>
 	</div>
 </div>
+<!-- Modal Confirmar validacion resguardo -->
+<div id="mdlNoti" class="modal fade" role="dialog">
+  <div class="modal-dialog" id="mdlDialog">
+
+    <div class="modal-content">
+     
+      <div class="modal-body">
+		<h3><code>Confirmacion de Notificacion.</code></h3>
+		<div style="padding-left:20px;">
+		<p >Esta apunto enviar una notificacion</p>
+		</div>
+	 </div>
+      <div class="modal-footer">
+      <div class ="row" align="center">
+      <button type="button" class="btn btn-default" ng-click="enviarnoti()">Continuar</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
 

@@ -62,6 +62,14 @@ app.service("otservice",['$http', '$q', function($http, $q){
 			});
 		return d.promise;
 	}
+	this.getNoti = function(id) {
+		var d = $q.defer();
+		$http.get("/notificacion/lanza/"+id).then(
+			function(response) {
+				d.resolve(response.data);
+			});
+		return d.promise;
+	}
 	
 	this.consultarCB = function() {
  
@@ -113,6 +121,17 @@ app.controller("OTsListController",['$rootScope','$scope','$window', '$location'
 			banco:"",
 			monto: null,
 	}
+	$scope.idot=null;
+	$scope.getidot=function(data){
+		$scope.idot=data;
+	}
+	$scope.enviarnoti=function(){
+		
+		otservice.getNoti($scope.idot).then(function(){
+			alert("Se ha enviado la Notificaci\u00f3n");
+			$('#mdlNoti').modal('hide');
+		});
+	};
 	$scope.buscar=function(){
 		ordenTrabajoservice.buscarClientes($scope.busca).then(function(data){
 			

@@ -665,6 +665,9 @@ app.controller("CAController",['$rootScope', '$scope','$cookieStore', '$window',
 		$scope.limpiaPago();
 		$scope.limpiaComisiones();
 	}
+//	$( document ).ready(function() {
+//		console.clear();
+//	});
 	
 }]);
 

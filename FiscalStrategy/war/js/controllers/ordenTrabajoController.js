@@ -398,7 +398,17 @@ app.controller("OTsAddController",['$rootScope', '$route','$scope','$cookieStore
 	$scope.tipoResguardo = false;
 	$scope.tiposOp = TiposOperacion();
 	$scope.clienteSeleccionado=false;
-	
+	$scope.notificacion=true;
+
+	$('#alert').change(function () {
+		 if ($(this).prop('checked')){
+			 $scope.notificacion=true;
+			    console.log('Se enviara Notificacion',$scope.notificacion);
+			  }else{
+				  $scope.notificacion=false;
+				  console.log('no se enviara Notificacion',$scope.notificacion); 
+			  }
+	});
 	$scope.$watch('busca',function(){
 //		if($scope.busca.length>3){
 			$scope.buscar();
@@ -972,6 +982,7 @@ app.controller("OTsAddController",['$rootScope', '$route','$scope','$cookieStore
 					$scope.otVO.ot = $scope.datos;
 					$scope.otVO.ot.tipoOP=$scope.tipoOP
 					$scope.otVO.ot.baseComisiones=$scope.datos.basecomisiones;
+					$scope.otVO.notificar=$scope.notificacion;
 //					console.log($scope.otVO);
 					
 					ordenTrabajoservice.addot($scope.otVO).then(function(data){
