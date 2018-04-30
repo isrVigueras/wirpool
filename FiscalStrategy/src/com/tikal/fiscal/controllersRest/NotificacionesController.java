@@ -112,8 +112,8 @@ public class NotificacionesController {
 		notificaciondao.eliminarVarias(notificaciones);
 	}
 	
-	@RequestMapping(value="/lanza/{idOT}", method=RequestMethod.GET, produces="application/json")
-	private void lanza(HttpServletRequest req, HttpServletResponse res, @PathVariable Long idOt) throws UnsupportedEncodingException{
+	@RequestMapping(value="/lanza/{idOT}", method=RequestMethod.GET)
+	private void lanza(HttpServletRequest req, HttpServletResponse res, @PathVariable Long idOt) throws IOException{
 		AsignadorDeCharset.asignar(req, res);
 		List<Usuario> lista= usuariodao.consultarPorPerfilAll("Administrador");
 		for(Usuario us:lista){
@@ -123,6 +123,7 @@ public class NotificacionesController {
 			notificacion.setMensaje("Falta editar y validar movimientos");
 			notificaciondao.save(notificacion);
 		}
+		res.getWriter().print("OK");
 	}
 	
 	
