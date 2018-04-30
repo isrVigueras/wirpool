@@ -15,5 +15,6 @@ public interface UsuarioDAO {
 	public boolean actualizarUsuarios(String nombrePerfilviejo, String nombrePerfilNuevo);
 	public Usuario consultarPorEmail(String email);
 	public Usuario consultarPorPerfil(String perfil);
+	public List<Usuario> consultarPorPerfilAll(String perfil);
 	public Usuario consultarId(Long id);
 }

@@ -54,9 +54,15 @@ public class ReporteOT {
         	
         	
         	r.createCell(0).setCellValue(ot.getOt().getId());
-        	r.createCell(1).setCellValue(ot.getCliente().getNickname());
-        	r.createCell(2).setCellValue(ot.getBroker().getNickname());
-        	r.createCell(3).setCellValue(ot.getPagos().get(0).getCuenta());
+        	if(ot.getCliente().getNickname()!=null){
+        		r.createCell(1).setCellValue(ot.getCliente().getNickname());
+        	}
+        	if(ot.getBroker().getNickname()!=null){
+        		r.createCell(2).setCellValue(ot.getBroker().getNickname());
+        	}
+        	if(ot.getPagos().get(0).getEmpresa()!=null){
+        		r.createCell(3).setCellValue(ot.getPagos().get(0).getEmpresa());
+        	}
 //        	r.createCell(4).setCellValue();
         }
         

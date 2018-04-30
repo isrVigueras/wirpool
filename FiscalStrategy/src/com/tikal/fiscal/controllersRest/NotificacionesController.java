@@ -111,4 +111,19 @@ public class NotificacionesController {
 		List<Notificacion> notificaciones = notificaciondao.getByOT(idOt);
 		notificaciondao.eliminarVarias(notificaciones);
 	}
+	
+	@RequestMapping(value="/lanza/{idOT}", method=RequestMethod.GET, produces="application/json")
+	private void lanza(HttpServletRequest req, HttpServletResponse res, @PathVariable Long idOt) throws UnsupportedEncodingException{
+		AsignadorDeCharset.asignar(req, res);
+		List<Usuario> lista= usuariodao.consultarPorPerfilAll("Administrador");
+		for(Usuario us:lista){
+			Notificacion notificacion = new Notificacion();
+			notificacion.setResponsabe(us.getId());
+			notificacion.setIdOt(idOt);
+			notificacion.setMensaje("Falta editar y validar movimientos");
+			notificaciondao.save(notificacion);
+		}
+	}
+	
+	
 }

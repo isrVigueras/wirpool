@@ -161,12 +161,14 @@ public class OrdenDeTrabajoController {
 				clientedao.save(brocker);
 			}
 	
-			Usuario us= usuariodao.consultarPorPerfil("Administrador");
-			Notificacion notificacion = new Notificacion();
-			notificacion.setResponsabe(us.getId());
-			notificacion.setIdOt(ot.getId());
-			notificacion.setMensaje("Falta editar y validar movimientos");
-			notificaciondao.save(notificacion);
+			if(otvo.isNotificar()){
+				Usuario us= usuariodao.consultarPorPerfil("Administrador");
+				Notificacion notificacion = new Notificacion();
+				notificacion.setResponsabe(us.getId());
+				notificacion.setIdOt(ot.getId());
+				notificacion.setMensaje("Falta editar y validar movimientos");
+				notificaciondao.save(notificacion);
+			}
 		}else{
 			String error = "Usuario sin permisos para realizar esta accion";
 			res.getWriter().print(JsonConvertidor.toJson(error));

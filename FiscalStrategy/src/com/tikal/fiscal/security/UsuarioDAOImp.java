@@ -99,4 +99,11 @@ public class UsuarioDAOImp implements UsuarioDAO {
 		}
 		return usuario;	
 	}
+	
+	@Override
+	public List<Usuario> consultarPorPerfilAll(String perfil) {
+		List<Usuario> lista = ofy().load().type(Usuario.class).filter("perfil", perfil).list();	
+		
+		return lista;
+	}
 }

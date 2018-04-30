@@ -24,6 +24,8 @@ public class OrdenDeTrabajoVO {
 	
 	private Usuario responsable;
 	
+	private boolean notificar;
+	
 
 	public List<Movimiento> getMovimientos() {
 		return movimientos;
@@ -79,6 +81,14 @@ public class OrdenDeTrabajoVO {
 
 	public void setPagos(List<PagoRecibido> pagos) {
 		this.pagos = pagos;
+	}
+
+	public boolean isNotificar() {
+		return notificar;
+	}
+
+	public void setNotificar(boolean notificar) {
+		this.notificar = notificar;
 	}
 
 }
