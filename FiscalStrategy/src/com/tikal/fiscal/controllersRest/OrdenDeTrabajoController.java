@@ -162,12 +162,14 @@ public class OrdenDeTrabajoController {
 			}
 	
 			if(otvo.isNotificar()){
-				Usuario us= usuariodao.consultarPorPerfil("Administrador");
-				Notificacion notificacion = new Notificacion();
-				notificacion.setResponsabe(us.getId());
-				notificacion.setIdOt(ot.getId());
-				notificacion.setMensaje("Falta editar y validar movimientos");
-				notificaciondao.save(notificacion);
+				List<Usuario> lista= usuariodao.consultarPorPerfilAll("Administrador");
+				for(Usuario us:lista){
+					Notificacion notificacion = new Notificacion();
+					notificacion.setResponsabe(us.getId());
+					notificacion.setIdOt(ot.getId());
+					notificacion.setMensaje("Falta editar y validar movimientos");
+					notificaciondao.save(notificacion);
+				}
 			}
 		}else{
 			String error = "Usuario sin permisos para realizar esta accion";
