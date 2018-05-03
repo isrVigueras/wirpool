@@ -209,19 +209,21 @@ app.service("operacionesMovimientosService",['$http', '$q', function($http, $q){
 			}
 		}
 		
-		if(operacion=='OPC'){
-			if(moneda=='MXN'){
-				cliente.saldo = cliente.saldo + operaciones.monto;
-			}else{
-				if(!cliente.saldoUSD){
-					cliente.saldoUSD=0;
+		if(bndResguardo){
+			if(operacion=='OPC'){
+				if(moneda=='MXN'){
+					cliente.saldo = cliente.saldo + operaciones.monto;
+				}else{
+					if(!cliente.saldoUSD){
+						cliente.saldoUSD=0;
+					}
+					cliente.saldoUSD= cliente.saldoUSD + operaciones.monto;
 				}
-				cliente.saldoUSD= cliente.saldoUSD + operaciones.monto;
+				otVO.movimientos.push(renglon);
+			}else{
+				brockerCliente.saldo = brockerCliente.saldo + operaciones.monto;
+				otVO.comisiones.push(renglon);
 			}
-			otVO.movimientos.push(renglon);
-		}else{
-			brockerCliente.saldo = brockerCliente.saldo + operaciones.monto;
-			otVO.comisiones.push(renglon);
 		}
 		objetos.otvo=otVO;
 		objetos.c= cliente;
