@@ -151,15 +151,15 @@ public class OrdenDeTrabajoController {
 			}
 			pagodao.save(pagos);
 			  
-			if(otvo.getCliente() != null){
-				Cliente cliente= otvo.getCliente();
-				clientedao.save(cliente);
-			}
-			
-			if(otvo.getBroker() != null){
-				Cliente brocker= otvo.getBroker();
-				clientedao.save(brocker);
-			}
+//			if(otvo.getCliente() != null){
+//				Cliente cliente= otvo.getCliente();
+//				clientedao.save(cliente);
+//			}
+//			
+//			if(otvo.getBroker() != null){
+//				Cliente brocker= otvo.getBroker();
+//				clientedao.save(brocker);
+//			}
 	
 			if(otvo.isNotificar()){
 				List<Usuario> lista= usuariodao.consultarPorPerfilAll("Administrador");
