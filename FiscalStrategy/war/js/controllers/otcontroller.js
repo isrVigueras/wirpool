@@ -257,6 +257,21 @@ app.controller("OTsListController",['$rootScope','$scope','$window', '$location'
 		$scope.filtroCL=$scope.cbtodos[x];
 		$scope.filtroCL=$scope.filtroCL.id;
 		}) 
+	$scope.modalFechas= function(){
+		$("#fechas").modal('show');
+	}
+	
+	$scope.$watch('fechaInicio',function(){
+		if($scope.fechaInicio){
+			$scope.fi= $scope.fechaInicio.getDate()+"-"+($scope.fechaInicio.getMonth()+ 1)+"-"+$scope.fechaInicio.getFullYear();
+		}
+	})
+	
+	$scope.$watch('fechaFin',function(){
+		if($scope.fechaFin){
+			$scope.ff= $scope.fechaFin.getDate()+"-"+($scope.fechaFin.getMonth()+1)+"-"+$scope.fechaFin.getFullYear();
+		}
+	})
 }]);
 
 

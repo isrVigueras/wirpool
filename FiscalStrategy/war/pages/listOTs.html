@@ -50,7 +50,9 @@
 		<button class="btn btn-small" ng-click="verTodo()">Ver Todo
 						</button>
 		</div>
-
+		<div class="col-md-3">
+			<button class="btn btn-primary" ng-click="modalFechas()">Reporte</button>
+		</div>
 
 	</div>
 	<br>
@@ -130,4 +132,41 @@
   </div>
 </div>
 
+<div class="modal fade" id="fechas" tabindex="-1" data-backdrop="static" role="dialog" aria-labelledby="MDEditar" aria-hidden="true">
+  
+    <div class="modal-dialog" id="mdialTamanio">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Seleccionar Fechas</h4>
+      </div>
+      <div class="modal-body">
+	 
+	<form id="forma" name="myForm">
+		<div class="row">
+		<div class="col-md-6">
+			Fecha Inicio: <input class="form-control" type="date"
+				ng-model="fechaInicio" ng-required="true" ><br>
+		</div>
+		<div class="col-md-6">
+			Fecha Fin: <input class="form-control" type="date"
+				ng-model="fechaFin" ng-required="true"
+				 ><br>
+		</div>
+		<div class="col-md-12">
+			<a value="Guardar" class="btn"
+				href="reportes/reportes/{{fi}}/{{ff}}" download="ReporteOT.xls">Descargar</a>
+			
+		</div>
+		</div>
+	</form>
+</div>      
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+      </div>
+    </div>
+</div>
 
