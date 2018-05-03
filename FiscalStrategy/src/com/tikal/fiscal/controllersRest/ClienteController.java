@@ -77,7 +77,9 @@ public class ClienteController {
 	public void update(HttpServletResponse res, HttpServletRequest req, @RequestBody String json) throws IOException{
 		AsignadorDeCharset.asignar(req, res);
 		Cliente cliente= (Cliente) JsonConvertidor.fromJson(json, Cliente.class);
-//		cliente.setNickname(cliente.getNombre()+" "+cliente.getApePaterno()+ " "+ cliente.getApeMaterno());
+		if(cliente.getTipo().compareTo("cliente")==0){
+			cliente.setNickname(cliente.getNombre()+" "+cliente.getApePaterno()+ " "+ cliente.getApeMaterno());
+		}
 		clientedao.save(cliente);
 	}
 	

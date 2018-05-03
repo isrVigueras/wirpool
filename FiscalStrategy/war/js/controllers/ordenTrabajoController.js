@@ -168,7 +168,7 @@ app.service("ordenTrabajoservice",['$http', '$q', function($http, $q){
 	
 	this.guardaBrocker=function(brocker){
 		var d = $q.defer();
-		$http.post("brockers/guardar/",brocker).then(
+		$http.post("clientes/update/",brocker).then(
 			function(response) {
 				d.resolve(response.data);
 			});
@@ -177,7 +177,7 @@ app.service("ordenTrabajoservice",['$http', '$q', function($http, $q){
 	
 	this.guardaCliente=function(clientes){
 		var d = $q.defer();
-		$http.post("clientes/confirmar/",clientes).then(
+		$http.post("clientes/update/",clientes).then(
 			function(response) {
 				d.resolve(response.data);
 			});
@@ -211,21 +211,21 @@ app.service("operacionesMovimientosService",['$http', '$q', function($http, $q){
 		
 	
 		if(operacion=='OPC'){
-//			if(bndResguardo){
-//				if(moneda=='MXN'){
-//					cliente.saldo = cliente.saldo + operaciones.monto;
-//				}else{
-//					if(!cliente.saldoUSD){
-//						cliente.saldoUSD=0;
-//					}
-//					cliente.saldoUSD= cliente.saldoUSD + operaciones.monto;
-//				}
-//			}
+			if(bndResguardo && otVO.ot){
+				if(moneda=='MXN'){
+					cliente.saldo = cliente.saldo + operaciones.monto;
+				}else{
+					if(!cliente.saldoUSD){
+						cliente.saldoUSD=0;
+					}
+					cliente.saldoUSD= cliente.saldoUSD + operaciones.monto;
+				}
+			}
 			otVO.movimientos.push(renglon);
 		}else{
-//			if(bndResguardo){
-//				brockerCliente.saldo = brockerCliente.saldo + operaciones.monto;
-//			}
+			if(bndResguardo && otVO.ot){
+				brockerCliente.saldo = brockerCliente.saldo + operaciones.monto;
+			}
 			otVO.comisiones.push(renglon);
 		}
 		objetos.otvo=otVO;
