@@ -1125,38 +1125,38 @@ app.controller("ordenTrabajoController",['$rootScope', '$scope','$window', '$loc
 				$scope.otvo.ot.saldoMov=$scope.otvo.ot.saldoMov + $scope.otvo.movimientos[index].monto;
 				movVO.movimiento=$scope.otvo.movimientos[index];
 				movVO.saldo=$scope.otvo.ot.saldoMov;
-				if($scope.otvo.movimientos[index].tipo=="Resguardo"){
-					var moneda= $scope.otvo.pagos[0].moneda;
-					var cliente= $scope.otvo.cliente;
-					if(moneda=="MXN"){
-						cliente.saldo = cliente.saldo - $scope.otvo.movimientos[index].monto;
-					}else{
-						if(!cliente.saldoUSD){
-							cliente.saldoUSD=0;
-						}
-						cliente.saldoUSD= cliente.saldoUSD - $scope.otvo.movimientos[index].monto;
-					}
-					ordenTrabajoservice.guardaCliente(cliente);
-				}
+//				if($scope.otvo.movimientos[index].tipo=="Resguardo"){
+//					var moneda= $scope.otvo.pagos[0].moneda;
+//					var cliente= $scope.otvo.cliente;
+//					if(moneda=="MXN"){
+//						cliente.saldo = cliente.saldo - $scope.otvo.movimientos[index].monto;
+//					}else{
+//						if(!cliente.saldoUSD){
+//							cliente.saldoUSD=0;
+//						}
+//						cliente.saldoUSD= cliente.saldoUSD - $scope.otvo.movimientos[index].monto;
+//					}
+//					ordenTrabajoservice.guardaCliente(cliente);
+//				}
 			}
 			if(operacion=="OPA"){
 				$scope.otvo.comisiones[index].estatus="CANCELADO";
 				$scope.otvo.ot.saldoCom=$scope.otvo.ot.saldoCom + $scope.otvo.comisiones[index].monto; 
 				movVO.movimiento=$scope.otvo.comisiones[index];
 				movVO.saldo=$scope.otvo.ot.saldoCom;
-				if($scope.otvo.movimientos[index].tipo=="Resguardo"){
-					var moneda= $scope.otvo.pagos[0].moneda;
-					var cliente= $scope.otvo.broker;
-					if(moneda=="MXN"){
-						cliente.saldo = cliente.saldo - $scope.otvo.comisiones[index].monto;
-					}else{
-						if(!cliente.saldoUSD){
-							cliente.saldoUSD=0;
-						}
-						cliente.saldoUSD= cliente.saldoUSD - $scope.otvo.comisiones[index].monto;
-					}
-					ordenTrabajoservice.guardaCliente(cliente);
-				}
+//				if($scope.otvo.movimientos[index].tipo=="Resguardo"){
+//					var moneda= $scope.otvo.pagos[0].moneda;
+//					var cliente= $scope.otvo.broker;
+//					if(moneda=="MXN"){
+//						cliente.saldo = cliente.saldo - $scope.otvo.comisiones[index].monto;
+//					}else{
+//						if(!cliente.saldoUSD){
+//							cliente.saldoUSD=0;
+//						}
+//						cliente.saldoUSD= cliente.saldoUSD - $scope.otvo.comisiones[index].monto;
+//					}
+//					ordenTrabajoservice.guardaCliente(cliente);
+//				}
 			}
 			if(cerrarOrden()){
 				ordenTrabajoservice.cerrarOt($scope.otvo).then(function(data){
