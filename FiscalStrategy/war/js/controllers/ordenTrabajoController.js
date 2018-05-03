@@ -209,8 +209,9 @@ app.service("operacionesMovimientosService",['$http', '$q', function($http, $q){
 			}
 		}
 		
-		if(bndResguardo){
-			if(operacion=='OPC'){
+	
+		if(operacion=='OPC'){
+			if(bndResguardo){
 				if(moneda=='MXN'){
 					cliente.saldo = cliente.saldo + operaciones.monto;
 				}else{
@@ -219,11 +220,13 @@ app.service("operacionesMovimientosService",['$http', '$q', function($http, $q){
 					}
 					cliente.saldoUSD= cliente.saldoUSD + operaciones.monto;
 				}
-				otVO.movimientos.push(renglon);
-			}else{
-				brockerCliente.saldo = brockerCliente.saldo + operaciones.monto;
-				otVO.comisiones.push(renglon);
 			}
+			otVO.movimientos.push(renglon);
+		}else{
+			if(bndResguardo){
+				brockerCliente.saldo = brockerCliente.saldo + operaciones.monto;
+			}
+			otVO.comisiones.push(renglon);
 		}
 		objetos.otvo=otVO;
 		objetos.c= cliente;
