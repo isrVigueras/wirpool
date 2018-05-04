@@ -62,7 +62,7 @@ public class OrdenDeTrabajoDAOImp implements OrdenDeTrabajoDAO {
 
 	@Override
 	public List<OrdenDeTrabajo> getFecha(Date fechaInicio, Date fechaFin) {
-		return ofy().load().type(OrdenDeTrabajo.class).order("- fechaInicio").filter("fechaInicio >=", fechaInicio).filter("fechaInicio <=", fechaFin).list();
+		return ofy().load().type(OrdenDeTrabajo.class).filter("fechaInicio >", fechaInicio).filter("fechaInicio <", fechaFin).order("- fechaInicio").list();
 	}
 
 	@Override
