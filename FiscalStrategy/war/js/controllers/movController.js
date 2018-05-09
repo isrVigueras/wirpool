@@ -14,7 +14,14 @@ app.service("movService",['$http', '$q', function($http, $q){
 			});
 		return d.promise;
 	}
+	this.loadCliente = function(id) {
+		var d = $q.defer();
 	
+		$http.get("/ots/getClientesBrokers/").then(function(response) {
+				d.resolve(response.data);
+			});
+		return d.promise;
+	}
 	this.loadCA  = function(id) {
 		var d = $q.defer();
 		$http.get("/ots/loadCA/"+id).then(function(response) {
@@ -48,6 +55,31 @@ app.service("movService",['$http', '$q', function($http, $q){
 
 app.controller("movController",['$rootScope', '$scope','$cookieStore', '$window', '$location', 'movService',function($rootScope, $scope, $cookieStore, $window, $location, movService){
 	
+
+	$scope.loadcb=function(){
+		$scope.cbk=null;
+		var o=0;
+		movService.loadCliente().then(function(data){
+			$scope.cbk=data;
+//			console.log($scope.cbk);
+		for(var x = 0; x < $scope.mov.length; x++){
+			
+			for(var i = 0; i< $scope.cbk.length; i++){
+//				console.log($scope.mov[x].idCliente,"=",$scope.cbk[i].id)
+				
+				if($scope.mov[x].idCliente==$scope.cbk[i].id){
+					$scope.mov[x].idCliente=$scope.cbk[i].nickname;
+					o++;
+//					console.log("Conversion: ",$scope.mov[x].idCliente)
+					
+				}
+			
+			}
+			}
+		})
+		
+		
+	}
 	$scope.paginaActual=1;
 	$scope.llenarPags=function(){
 		var inicio=0;
@@ -84,10 +116,13 @@ app.controller("movController",['$rootScope', '$scope','$cookieStore', '$window'
 		movService.load(data).then(function(data) {
 			$scope.mov = data;
 			console.log($scope.mov);
+			$scope.loadcb();
 			$scope.llenarPags();
+			
 	});
 	}
 	$scope.cargamov(1);
+	
 	
 	$scope.modalFechas= function(){
 		$("#fechas").modal('show');

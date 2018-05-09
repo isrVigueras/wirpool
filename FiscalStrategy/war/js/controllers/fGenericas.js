@@ -79,6 +79,10 @@ function TiposOperacion (){
 	var tiposOp = [{id:1, nombre: "Transfer"},{id:2, nombre: "Resguardo"} ,{id:3, nombre: "Efectivo"},{id:3, nombre: "Cheque"}];
 	return tiposOp;
 }
+function TiposOperacionCA (){
+	var tiposOp = [{id:1, nombre: "Transfer"},{id:3, nombre: "Efectivo"},{id:3, nombre: "Cheque"}];
+	return tiposOp;
+}
 
 function catalogoBancos(){
 	var catBancos = [{ id:1, nombre: "ABC Capital"},

@@ -191,7 +191,7 @@
 						</button>
 						
 						<div ng-if="mov.tipo == 'Resguardo' && mov.estatus != 'CANCELADO'">
-						<button class="btn btn-small"  data-toggle="modal" ng-if="perfil=='AdministradorRoot' || perfil=='Ejecutivo' || perfil=='Administrador'"
+						<button class="btn btn-small"  data-toggle="modal" ng-if="perfil=='AdministradorRoot' || perfil=='Administrador'"
 						 ng-show="(mov.tipo == 'Resguardo' )" 
 						 ng-hide="mov.tipo == 'Resguardo' && mov.estatus == 'VALIDADO'"
 						 ng-disabled="mov.tipo != 'Efectivo' && mov.tipo != 'Resguardo'"  
@@ -282,7 +282,7 @@
 							<span class="glyphicon glyphicon-ok"></span>
 						</button>
 							<div ng-if="mov.tipo == 'Resguardo' && mov.estatus != 'CANCELADO'">
-						<button class="btn btn-small"  data-toggle="modal" ng-if="perfil=='AdministradorRoot' || perfil=='Ejecutivo' || perfil=='Administrador'"
+						<button class="btn btn-small"  data-toggle="modal" ng-if="perfil=='AdministradorRoot' || perfil=='Administrador'"
 						 ng-show="(mov.tipo == 'Resguardo' )" 
 						 ng-hide="mov.tipo == 'Resguardo' && mov.estatus == 'VALIDADO'"
 						 ng-disabled="mov.tipo != 'Efectivo' && mov.tipo != 'Resguardo'"  

@@ -13,6 +13,20 @@ app.service("brockerservice",['$http', '$q', function($http, $q){
 			});
 		return d.promise;
 	}
+	this.loadResguardos = function(id) {
+		var d = $q.defer();
+		$http.get("/movimientos/getResguardos/"+id).then(function(response) {
+				d.resolve(response.data);
+			});
+		return d.promise;
+	}
+	this.loadCA  = function(id) {
+		var d = $q.defer();
+		$http.get("/ots/loadCA/"+id).then(function(response) {
+				d.resolve(response.data);
+			});
+		return d.promise;
+	}
 	this.consultarBrockersTodos = function(page) {
 		var d = $q.defer();
 		$http.get("/brockers/getPagina/"+page).then(function(response) {
@@ -119,12 +133,32 @@ app.controller("brockercuentacontroller",['$rootScope','clientservice','$scope',
 //});
 //	}
 }]);
-app.controller("brockersController",['$rootScope','usuarioservice','$scope','$window', '$location', '$cookieStore','brockerservice', 'userFactory', function($rootScope,usuarioservice,$scope, $window, $location, $cookieStore, brockerservice, userFactory){
+app.controller("brockersController",['$rootScope','usuarioservice','$scope','$window', '$location', '$cookieStore','brockerservice', 'userFactory','CBService', function($rootScope,usuarioservice,$scope, $window, $location, $cookieStore, brockerservice, userFactory,CBService){
 	$rootScope.perfilUsuario = userFactory.getUsuarioPerfil();  //obtener perfl de usuario para pintar el menú al qe tiene acceso
 	brockerservice.consultarBrockersTodos(1).then(function(data) {
 		$scope.brockerLista = data;
 		$scope.llenarPags();
 	});
+	$scope.cargaResguardos=function(data){
+		$scope.broker=data;
+		console.log($scope.broker);
+		CBService.loadResguardos(data.id).then(function(data){
+			$scope.listaResguardos= data;
+			$scope.suma1=0;
+			for(var i = 0; i< $scope.listaResguardos.length; i++){
+				$scope.suma1+= $scope.listaResguardos[i].monto;
+			}
+		})
+		
+		CBService.loadCA(data.id).then(function(data){
+			$scope.listaCA= data;
+			
+			$scope.suma=0;
+			for(var i = 0; i< $scope.listaCA.length; i++){
+				$scope.suma+= $scope.listaCA[i].total;
+			}
+		})
+	}
 	$scope.paginaActual=1;
 	$scope.llenarPags=function(){
 		var inicio=0;
@@ -215,10 +249,13 @@ app.controller("brockersController",['$rootScope','usuarioservice','$scope','$wi
 		
 		
 	$scope.ver = function(data) {
+		var idbrocker=data.id;
+//		$scope.cargaResguardos(data.id);
 		$scope.bk=data;
 	    var length = $scope.bk.length;
 		var stop=true;
 	   	var i=0;
+	   
 	while ( stop ) { 
 		if($scope.usuariosLista[i].id==$scope.bk.responsable){
 			$scope.bk.responsable=$scope.usuariosLista[i].usuario;
@@ -233,14 +270,30 @@ app.controller("brockersController",['$rootScope','usuarioservice','$scope','$wi
 	  });
 	    brockerservice.consultarCB($scope.bk.id).then(function(data) {
 	  		$scope.listaCliente = data;
-	  		brockerservice.getcc($scope.cliente.id).then(function(data) {
-		  		$scope.cclient = data;
-	  		 });
+//	  		brockerservice.getcc($scope.cliente.id).then(function(data) {
+//		  		$scope.cclient = data;
+//	  		 });
 	  });
 //	    for ( i=0; i < length; i++) {  
 //	      alert($scope.datosComp[i].nom_coe);
 //	      
 //	    }
+		brockerservice.loadResguardos(idbrocker).then(function(data){
+			$scope.listaResguardos= data;
+			$scope.suma1=0;
+			for(var i = 0; i< $scope.listaResguardos.length; i++){
+				$scope.suma1+= $scope.listaResguardos[i].monto;
+			}
+		})
+		
+		brockerservice.loadCA(idbrocker).then(function(data){
+			$scope.listaCA= data;
+			
+			$scope.suma=0;
+			for(var i = 0; i< $scope.listaCA.length; i++){
+				$scope.suma+= $scope.listaCA[i].total;
+			}
+		}) 
 	};
 	$scope.editarBrocker= function(){
 //		$scope.getcliente=data

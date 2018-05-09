@@ -295,10 +295,10 @@ app.controller("CAController",['$rootScope', '$scope','$cookieStore', '$window',
 	$scope.operacion = {tipo: null, descripcion: null , monto: null, estatus:null};
 	$scope.errorSaldo=" ";
 	$scope.tipoResguardo = false;
-	$scope.tiposOp = TiposOperacion();
+	$scope.tiposOp = TiposOperacionCA();
 	$scope.clienteSeleccionado=false;
 	$scope.$watch('busca',function(){
-		if($scope.busca.length>3){
+		if($scope.busca.length>0){
 			$scope.buscar();
 		}
 	},true);

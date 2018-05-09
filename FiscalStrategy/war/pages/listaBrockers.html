@@ -31,6 +31,10 @@
 						>
 						<i class="glyphicon glyphicon-eye-open"></i>
 					</button>
+					<button title="Historial de Resguardo."class="btn btn-small"  ng-click="cargaResguardos(bk)" data-target="#modalResguardo" data-toggle="modal"
+						>
+						<i class="glyphicon glyphicon-list-alt"></i>
+					</button>
 					<button title="Editar"class="btn btn-small"  ng-click="editar(bk)" data-toggle="modal" data-target="#MDEditar"
 						>
 						<i class="glyphicon glyphicon-edit"></i>
@@ -40,6 +44,8 @@
 						>
 						<i class="glyphicon glyphicon-remove"></i>
 					</button>
+					
+					</td>
 			</tr>
 		</tbody>
 
@@ -302,4 +308,81 @@
 </div>
 </div>
 	<div id="snackbar">Broker Editado Correctamente.</div>
+</div>
+<div id="modalResguardo" class="modal fade" role="dialog">
+  <div class="modal-dialog" id="mdialTamanio">
+
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Modal Historial de Resguardo</h4>
+      </div>
+      <div class="modal-body">
+<div class="row">
+<div class="col-sm-1"></div>
+<div class="col-sm-6">
+<label>Nombre:&nbsp; </label>{{broker.nickname }}
+</div>
+<div class="col-sm-4">
+<label>Saldo:&nbsp; </label>{{broker.saldo |currency }} <br>
+<!-- <label>Saldo USD:&nbsp; </label>{{broker.saldoUSD |currency }} <br> -->
+</div>
+</div>
+<br>
+<br>
+<div class="row">
+<div id="box">
+<div class="col-sm-6">
+			<table style="width: 100%" class="table table-stripped" alingn="center">
+				<thead>
+					<tr>
+						<th style="width: 10">No. OT</th>
+						<th style="width: 45%" align="center"> Fecha </th>
+						<th style="width: 35%"> Entrada</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr ng-repeat="op in listaResguardos">
+						<td>{{op.idOrden}}</td>
+						<td>{{op.fechaInicio | date: "shortDate"}}</td> 
+						<td>{{op.monto| currency}}</td>
+					</tr>
+					<tr>
+					<td colspan="3">Total Entrada:&nbsp;{{suma1 | currency}}</td>
+					</tr>
+					
+				</tbody>
+			</table>
+			</div>
+			<div class="col-sm-6">
+			<table style="width: 100%" class="table table-stripped" alingn="center">
+				<thead>
+					<tr>
+						<th style="width: 10">No. OT</th>
+						<th style="width: 45%" align="center"> Fecha </th>
+						<th style="width: 35%"> Salida</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr ng-repeat="op in listaCA">
+						<td>{{op.id}}</td>
+						<td>{{op.fechaInicio}}</td>
+						<td>{{op.total | currency}}</td>
+						
+					</tr>
+					<tr>
+				
+					<td colspan="3">Total Salida:&nbsp;{{suma | currency}}</td>
+					</tr>
+				</tbody>
+			</table>
+			
+			</div>
+	 </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+</div>
+  </div>
 </div>

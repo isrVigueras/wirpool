@@ -387,4 +387,6 @@ infPago infComisiones infCliente{
   padding: 4px;
 	
 }
-
+.box{
+	overflow: scroll;
+}

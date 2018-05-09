@@ -4,7 +4,8 @@
 		<submenu perfil="perfilUsuario"/>
 	</div>
 </section>
-<div class="container">
+<!-- <div class="container"> -->
+<div>
  		<div class="col-md-6">
 			<ul class="pagination .pagination-sm" style="margin:0;">
 				<li ng-repeat="abc in paginas" id="{{'pagA'+abc}}"
@@ -21,6 +22,8 @@
 			<tr>
 				<th>No. OT</th>
 <!-- 				<th>Cliente</th> -->
+				<th>Fecha</th>
+				<th>Cliente</th>
 				<th>Empresa</th>
 				<th>Banco</th>
 				<th>Cuenta</th>
@@ -33,7 +36,8 @@
 		<tbody>
 			<tr ng-repeat="m in mov">
 				<td>{{m.idOrden}}</td>
-<!-- 				<td>{{m.idCliente}}</td> -->
+				<td>{{m.fechaCreacion}}</td>
+				<td>{{m.idCliente}}</td>
 				<td>{{m.empresa}}</td>
 				<td>{{m.banco}}</td>
 				<td>{{m.cuenta}}</td>

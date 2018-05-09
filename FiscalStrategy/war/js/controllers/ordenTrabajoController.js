@@ -385,7 +385,7 @@ app.service("operacionesMovimientosService",['$http', '$q', function($http, $q){
 	
 }]);
 
-app.controller("OTsAddController",['$rootScope', '$route','$scope','$cookieStore', '$window', '$location', 'ordenTrabajoservice','cuentaservice','operacionesMovimientosService','userFactory','empresaservice', function($rootScope,$route, $scope, $cookieStore, $window, $location, ordenTrabajoservice,cuentaservice,operacionesMovimientosService, userFactory,empresaservice){
+app.controller("OTsAddController",['$rootScope', '$route','$scope','$cookieStore', '$window', '$location', 'ordenTrabajoservice','cuentaservice','operacionesMovimientosService','userFactory','empresaservice','brockerservice', function($rootScope,$route, $scope, $cookieStore, $window, $location, ordenTrabajoservice,cuentaservice,operacionesMovimientosService, userFactory,empresaservice,brockerservice){
 	$rootScope.perfilUsuario = userFactory.getUsuarioPerfil();  //obtener perfl de usuario para pintar el menú al qe tiene acceso
 	empresaservice.load(1).then(function(data) {
 		$scope.empresa = data;
@@ -456,11 +456,27 @@ app.controller("OTsAddController",['$rootScope', '$route','$scope','$cookieStore
 //			$scope.datos.porcenta=(100/$scope.datos.basecomisiones)*$scope.datos.total;
 //		}
 	}
+	$scope.bk=[];
+	brockerservice.consultarBrockersAll().then(function(data){
+		$scope.bk=data;
+		var index=$scope.bk.length;
+		console.log("Lista de Brockers", data)
+	});
+	$scope.getAsesor=function(){
+		
+		for (var i = 0; i < $scope.bk.length; i+=1) {
+			  if($scope.cliente[0].idBrocker==$scope.bk[i].id){
+				  $scope.namebk=$scope.bk[i].nickname;
+				  console.log("Match",  $scope.namebk);
+			  }
+			}
+	}
 	$scope.tipoad="base";
 	$( "#comisiones" ).change(function() {
 		$scope.comis();
 		$scope.porcentaje($scope.tipoad);
 		});
+	
 	$scope.buscar=function(){
 		ordenTrabajoservice.buscarClientes($scope.busca).then(function(data){
 			
@@ -653,7 +669,8 @@ app.controller("OTsAddController",['$rootScope', '$route','$scope','$cookieStore
 		if($scope.otVO.pagos.length == 0){
 			$scope.calcularRetorno();
 		}
-		
+		$scope.getAsesor();
+//		console.log("El id del Brocker es.....",$scope.cliente[0].idBrocker);
 	}
 	
 	function datosCliente(){
@@ -1521,6 +1538,6 @@ app.controller("ordenTrabajoController",['$rootScope', '$scope','$window', '$loc
 	
 	$scope.regresar=function(){
 			$location.path("/listaOTs");
-			$window.location.reload();
+//			$window.location.reload();
 	}
 }]);	

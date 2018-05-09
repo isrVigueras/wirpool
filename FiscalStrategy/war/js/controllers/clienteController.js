@@ -178,6 +178,7 @@ app.controller("clientController",['$http','$interval','$rootScope','usuarioserv
 	$rootScope.perfilUsuario = userFactory.getUsuarioPerfil();  //obtener perfl de usuario para pintar el menú al qe tiene acceso
 	clientservice.consultarClientesTodos(1).then(function(data) {
 			$scope.clienteLista = data;
+			console.log($scope.clienteLista);
 	
 	});
 
