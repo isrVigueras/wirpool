@@ -98,7 +98,7 @@ public class MovimientosController {
 		}
 	}
 	
-	@RequestMapping(value={"/loadPage/{page}/{idCliente}"},method= RequestMethod.GET, produces="application/json")
+	@RequestMapping(value={"/loadPageCliente/{page}/{idCliente}"},method= RequestMethod.GET, produces="application/json")
 	private void loadPageCliente(HttpServletRequest req, HttpServletResponse res, @PathVariable int page, @PathVariable Long idCliente) throws IOException{
 		AsignadorDeCharset.asignar(req, res);
 		HttpSession sesion= req.getSession();
