@@ -77,6 +77,39 @@ public class MovimientoDAOImp implements MovimientoDAO {
 		return ofy().load().type(Movimiento.class).order("- fechaCreacion").filter("fechaCreacion <=", fFinal).filter("fechaCreacion >=", finicio).list();
 	}
 
+	@Override
+	public int getPagesCliente(Long id) {
+		int pages = 0;
+		if (id != null) {
+			pages = ofy().load().type(Movimiento.class).filter("idCliente", id).list().size();
+
+		} else {
+			pages = ofy().load().type(Movimiento.class).list().size();
+		}
+		pages = pages / 25;
+		pages++;
+		return pages;
+	}
+
+	@Override
+	public List<Movimiento> getPageByCliente(Long idCliente, int page) {
+		return ofy().load().type(Movimiento.class).filter("idCliente", idCliente).order("- fechaCreacion").offset(25 * (page - 1)).limit(25).list();
+	}
+
+	@Override
+	public List<Movimiento> getPageByEmpresa(String empresa, int page) {
+		return ofy().load().type(Movimiento.class).filter("empresa", empresa).order("- fechaCreacion").offset(25 * (page - 1)).limit(25).list();
+	}
+
+	@Override
+	public int getPagesEmpresa(String empresa) {
+		int pages = 0;
+		pages = ofy().load().type(Movimiento.class).filter("empresa", empresa).list().size();
+		pages = pages / 25;
+		pages++;
+		return pages;
+	}
+
 	
 }
  

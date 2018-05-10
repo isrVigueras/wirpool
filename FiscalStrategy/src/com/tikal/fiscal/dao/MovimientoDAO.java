@@ -19,9 +19,17 @@ public interface MovimientoDAO {
 	
 	public int getPages(Long id);
 	
+	public int getPagesCliente(Long id);
+	
 	public int numPages();
 	
 	public List<Movimiento> getPage(int page);
+	
+	public List<Movimiento> getPageByCliente(Long idCliente, int page);
+	
+	public List<Movimiento> getPageByEmpresa(String empresa, int page);
+	
+	public int getPagesEmpresa(String empresa);
 	
 	public List<Movimiento> getResguardos(Long id);
 	

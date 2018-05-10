@@ -22,6 +22,7 @@ public class Movimiento {
 	private String numTransaccion; //proporcionado por el banco
 	@Index
 	private Date fecha;
+	@Index
 	private String empresa;
 	private String banco;
 	private String cuenta;
