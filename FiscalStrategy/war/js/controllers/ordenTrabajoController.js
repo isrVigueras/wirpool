@@ -199,7 +199,13 @@ app.service("operacionesMovimientosService",['$http', '$q', function($http, $q){
 			}
 		}else{
 			if(bndResguardo){
-				var renglon= {tipo: operaciones.tipo, descripcion: operaciones.descripcion , monto: operaciones.monto, estatus:"AUTORIZADO",resguardo:true, idCliente:cliente.id}
+				
+				var renglon= {tipo: operaciones.tipo, descripcion: operaciones.descripcion , monto: operaciones.monto, estatus:"AUTORIZADO",resguardo:true}
+				if(operacion=="OPC"){
+					renglon.idCliente=cliente.id;
+				}else{
+					renglon.idCliente= brockerCliente.id;
+				}
 			}else{
 				if(operaciones.tipo != null && operaciones.descripcion != null && operaciones.monto != null){
 					var renglon= {tipo: operaciones.tipo, descripcion: operaciones.descripcion , monto:operaciones.monto, estatus:operaciones.estatus}

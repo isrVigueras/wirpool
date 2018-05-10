@@ -291,8 +291,8 @@
       </div>
       <div class="modal-body">
 <div class="row">
-<div class="col-sm-3"></div>
-<div class="col-sm-4">
+<div class="col-sm-1"></div>
+<div class="col-sm-6">
 <label>Nombre:&nbsp; </label>{{cb.nickname }}
 </div>
 <div class="col-sm-4">
@@ -314,7 +314,7 @@
 				<tbody>
 					<tr ng-repeat="op in listaResguardos">
 					<td>{{op.idOrden}}</td>
-						<td>{{op.fechaInicio | date: "shortDate"}}</td> 
+						<td>{{op.fechaCreacion | date: "shortDate"}}</td> 
 						<td>{{op.monto| currency}}</td>
 					</tr>
 					<tr>

@@ -144,6 +144,7 @@ app.controller("brockersController",['$rootScope','usuarioservice','$scope','$wi
 		console.log($scope.broker);
 		CBService.loadResguardos(data.id).then(function(data){
 			$scope.listaResguardos= data;
+			console.log($scope.listaResguardos);
 			$scope.suma1=0;
 			for(var i = 0; i< $scope.listaResguardos.length; i++){
 				$scope.suma1+= $scope.listaResguardos[i].monto;
