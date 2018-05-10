@@ -86,6 +86,18 @@ public class MovimientosController {
 		}
 	}
 	
+	@RequestMapping(value={"/getPagesEmpresa/{empresa}"},method= RequestMethod.GET, produces="application/json")
+	private void getpages(HttpServletRequest req, HttpServletResponse res, @PathVariable String empresa) throws IOException{
+		AsignadorDeCharset.asignar(req, res);
+		HttpSession sesion= req.getSession();
+		Usuario user=(Usuario) sesion.getAttribute("user");
+		if(user.getPerfil().compareTo("Administrador")==0 || user.getPerfil().compareTo("AdministradorRoot")==0){	
+			res.getWriter().print(movimientodao.getPagesEmpresa(empresa));
+		}else{
+			res.sendError(403);
+		}
+	}
+	
 	@RequestMapping(value={"/loadPage/{page}"},method= RequestMethod.GET, produces="application/json")
 	private void loadPage(HttpServletRequest req, HttpServletResponse res, @PathVariable int page) throws IOException{
 		AsignadorDeCharset.asignar(req, res);
@@ -105,6 +117,18 @@ public class MovimientosController {
 		Usuario user=(Usuario) sesion.getAttribute("user");
 		if(user.getPerfil().compareTo("Administrador")==0 || user.getPerfil().compareTo("AdministradorRoot")==0){	
 			res.getWriter().print(JsonConvertidor.toJson(movimientodao.getPageByCliente(idCliente, page)));
+		}else{
+			res.sendError(403);
+		}
+	}
+	
+	@RequestMapping(value={"/loadPageEmpresa/{page}/{empresa}"},method= RequestMethod.GET, produces="application/json")
+	private void loadPageEmpresa(HttpServletRequest req, HttpServletResponse res, @PathVariable int page, @PathVariable String empresa) throws IOException{
+		AsignadorDeCharset.asignar(req, res);
+		HttpSession sesion= req.getSession();
+		Usuario user=(Usuario) sesion.getAttribute("user");
+		if(user.getPerfil().compareTo("Administrador")==0 || user.getPerfil().compareTo("AdministradorRoot")==0){	
+			res.getWriter().print(JsonConvertidor.toJson(movimientodao.getPageByEmpresa(empresa, page)));
 		}else{
 			res.sendError(403);
 		}
