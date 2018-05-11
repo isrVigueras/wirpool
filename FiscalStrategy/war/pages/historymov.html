@@ -6,16 +6,69 @@
 </section>
 <!-- <div class="container"> -->
 <div>
- 		<div class="col-md-6">
+<div class="container">
+<div calss="row">
+		<div class="col-md-3"> </div>
+		<div class="col-md-3">
+			<div class="input-group">
+						<input id="searchCliente" class="form-control form-control-sm" type="text" ng-model="buscaClient" placeholder="Cliente / Broker" data-provide="typehead" autocomplete="off" onkeyup="javascript:this.value=this.value.toUpperCase();">
+					<div class="input-group-btn">
+					<button class="btn btn-default" type="submit"
+						ng-click="filtroCliente()">
+						<i class="glyphicon glyphicon-search"></i>
+					</button>
+				</div>
+			</div>
+		</div>
+		<div class="col-md-3">
+			<div class="input-group">
+						<input id="searchEmpresa" class="form-control form-control-sm" type="text" ng-model="buscaEmpresa" placeholder="Empresa" data-provide="typehead" autocomplete="off" onkeyup="javascript:this.value=this.value.toUpperCase();">
+					<div class="input-group-btn">
+					<button class="btn btn-default" type="submit"
+						ng-click="filtroEmpresa()">
+						<i class="glyphicon glyphicon-search"></i>
+					</button>
+				</div>
+			</div>
+		</div>
+		<div class="col-md-1">
+		
+		<button class="btn btn-small" ng-click="cargamov(1);mostrarTodo()">Ver Todo
+						</button>
+		</div>
+
+	<br>
+	<div class="row">
+ 		<div class="col-md-6" ng-show="sinfiltro">
 			<ul class="pagination .pagination-sm" style="margin:0;">
 				<li ng-repeat="abc in paginas" id="{{'pagA'+abc}}"
 					ng-click="cargarPagina(abc)"><a>{{abc}}</a></li>
 
 			</ul>
 			
+		</div><br>
+		<div class="col-md-6" ng-show="fCliente">
+			<ul class="pagination .pagination-sm" style="margin:0;">
+				<li ng-repeat="abc1 in paginasc" id="{{'pagCA'+abc1}}"
+					ng-click="cargarPaginac(abc1)"><a>{{abc1}}</a></li>
+
+			</ul>
+			
+		</div>
+		<div class="col-md-6" ng-show="fEmpresa">
+			<ul class="pagination .pagination-sm" style="margin:0;">
+				<li ng-repeat="abc2 in paginase" id="{{'pagEA'+ abc2}}"
+					ng-click="cargarPaginae(abc2)"><a>{{abc2}}</a></li>
+
+			</ul>
+			
 		</div>
 		<div class="col-md-6">
 			<button class="btn btn-primary" ng-click="modalFechas()">Descargar Excel</button>
+		</div>
+		</div>
+		
+		</div>
 		</div>
 	<table class="table table-stripped">
 		<thead>
@@ -49,12 +102,29 @@
 		</tbody>
 
 	</table>
-	<div class="col-md-6">
+	<div class="container">
+<div class="row">
+	<div class="col-md-6" ng-show="sinfiltro">
 	 		<ul class="pagination .pagination-sm">
 				<li ng-repeat="abc in paginas" id="{{'pagB'+abc}}"
 					ng-click="cargarPagina(abc)"><a>{{abc}}</a></li>
 			</ul>
+	</div>	
+		<div class="col-md-6" ng-show="fCliente">
+	 		<ul class="pagination .pagination-sm">
+				<li ng-repeat="abc1 in paginasc" id="{{'pagCB'+abc1}}"
+					ng-click="cargarPaginac(abc1)"><a>{{abc1}}</a></li>
+			</ul>
+		</div>
+	<div class="col-md-6" ng-show="fEmpresa">
+	 		<ul class="pagination .pagination-sm">
+				<li ng-repeat="abc2 in paginase" id="{{'pagEB'+abc2}}"
+					ng-click="cargarPaginae(abc2)"><a>{{abc2}}</a></li>
+			</ul>
 	</div>
+	
+</div>
+</div>
  <!-- Modal Ver BROCKER	-->
   <div class="modal fade" id="myModalVista" tabindex="-1" data-backdrop="static" role="dialog" aria-labelledby="myModalVista" aria-hidden="true">
                            
