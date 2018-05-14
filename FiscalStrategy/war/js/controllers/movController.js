@@ -107,7 +107,7 @@ app.service("movService",['$http', '$q', function($http, $q){
 	
 }]);
 
-app.controller("movController",['$rootScope', '$scope','$cookieStore', '$window', '$location', 'movService','ordenTrabajoservice',function($rootScope, $scope, $cookieStore, $window, $location, movService,ordenTrabajoservice){
+app.controller("movController",['$rootScope', '$scope','$cookieStore', '$window', '$location', 'movService','ordenTrabajoservice','CBService',function($rootScope, $scope, $cookieStore, $window, $location, movService,ordenTrabajoservice,CBService){
 	$scope.sinfiltro=true;
 	$scope.mostrarTodo=function(){
 		$scope.sinfiltro=true;
@@ -131,7 +131,7 @@ $scope.mostrarEmpresa=function(){
 	},true);
 	$scope.datos=[];
 	$scope.buscarCliente=function(){
-		movService.buscarClientes($scope.buscaClient).then(function(data){
+		CBService.buscarClientes($scope.buscaClient).then(function(data){
 			
 			$scope.encontrados=[];
 			for(var i=0; i< data.length; i++){
@@ -151,12 +151,7 @@ $scope.mostrarEmpresa=function(){
 			    	$scope.clienteSeleccionado=true;
 			    	if($scope.clienteSeleccionado==true){
 			    		console.log("El cliente se selecciono",$scope.cliente);
-			    		if($scope.cliente[ind].idBrocker==null){
-			    			alert("El cliente no tiene Brocker asignado");
-			    		}
-			    		if($scope.cliente[ind].responsable==null){
-			    			alert("El cliente no tiene Responsable asignado");
-			    		}
+
 			    	}
 			    	$scope.datos.idCliente= $scope.cliente[ind].id;
 			    	
