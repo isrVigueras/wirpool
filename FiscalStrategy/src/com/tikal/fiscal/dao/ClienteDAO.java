@@ -10,6 +10,8 @@ public interface ClienteDAO {
 	
 	public Cliente get(Long id);
 	
+	public List<Cliente> get(Long[] id);
+	
 	public List<Cliente> buscar(String nombre);
 	
 	public List<Cliente> buscarb(String nombre);

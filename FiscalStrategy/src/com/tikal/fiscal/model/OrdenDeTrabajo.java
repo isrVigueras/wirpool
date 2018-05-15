@@ -20,6 +20,7 @@ public class OrdenDeTrabajo {
 	private List<Long> comisiones;
 	private float saldoMov;
 	private float resguardo;
+	
 	@Index
 	private Long idBrocker;
 	private List<Long> movimientos;
@@ -36,6 +37,8 @@ public class OrdenDeTrabajo {
 	private String estatus;
 	
 	private String nombreCliente;
+	
+	private Long[] listaBrockers;
 	
 	private float porLic;
 	private float[] porBrok;
@@ -246,6 +249,12 @@ public class OrdenDeTrabajo {
 	}
 	public void setBaseComisiones(float baseComisiones) {
 		this.baseComisiones = baseComisiones;
+	}
+	public Long[] getListaBrockers() {
+		return listaBrockers;
+	}
+	public void setListaBrockers(Long[] listaBrockers) {
+		this.listaBrockers = listaBrockers;
 	}
 	
 }

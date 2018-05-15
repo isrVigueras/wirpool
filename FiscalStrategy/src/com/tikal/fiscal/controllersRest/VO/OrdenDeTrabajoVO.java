@@ -16,6 +16,8 @@ public class OrdenDeTrabajoVO {
 	
 	private Cliente broker;
 	
+	private List<Cliente> brokers;
+	
 	private List<PagoRecibido> pagos;
 	
 	private List<Movimiento> movimientos;
@@ -89,6 +91,14 @@ public class OrdenDeTrabajoVO {
 
 	public void setNotificar(boolean notificar) {
 		this.notificar = notificar;
+	}
+
+	public List<Cliente> getBrokers() {
+		return brokers;
+	}
+
+	public void setBrokers(List<Cliente> brokers) {
+		this.brokers = brokers;
 	}
 
 }

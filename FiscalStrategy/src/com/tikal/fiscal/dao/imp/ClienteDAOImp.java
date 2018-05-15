@@ -4,6 +4,7 @@ import static com.googlecode.objectify.ObjectifyService.ofy;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import com.tikal.fiscal.dao.ClienteDAO;
 import com.tikal.fiscal.model.Cliente;
@@ -93,6 +94,14 @@ public class ClienteDAOImp implements ClienteDAO{
 			}
 		}
 		return result;
+	}
+
+	@Override
+	public List<Cliente> get(Long[] id) {
+		Map<Long, Cliente> mapa= ofy().load().type(Cliente.class).ids(id);
+		List<Cliente> lista= new ArrayList<Cliente>();
+		lista.addAll(mapa.values());
+		return lista;
 	}
 
 }
