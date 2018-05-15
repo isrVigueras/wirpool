@@ -251,6 +251,7 @@ public class OrdenDeTrabajoController {
 		List<Movimiento> com = movimientodao.getByIds(ot.getComisiones());
 		otvo.setComisiones(com);
 		
+		
 		List<PagoRecibido> pagos= pagodao.getPagosByOT(ot.getId());
 		otvo.setPagos(pagos);
 		otvo.setOt(ot);
