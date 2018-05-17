@@ -544,6 +544,18 @@
              <p class="modal-title" id="myModalLabel">Instrucciones Operacion Asesor</p>          
           </div>
           <div class="modal-body">
+           <div class="row">
+          	 <div class="col-md-1"></div>
+			    <div class="col-md-2">
+					<label class="control-label">Seleccionar Brocker</label>
+			    </div>
+			   <div class="col-md-4">
+			        <select name="nombrebroker" class="form-control  mb-2"  ng-required="true">
+				 		<option ng-repeat="bk in brokers">{{bk.nombre}}</option>
+				 	</select>
+				</div>
+		</div>
+			 <br>
 	          <form>
 					<div class="row">
 						<div class="col-md-1"></div>

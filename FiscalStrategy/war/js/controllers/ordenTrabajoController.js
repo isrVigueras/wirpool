@@ -57,7 +57,18 @@ app.service("ordenTrabajoservice",['$http', '$q', function($http, $q){
 		});
 		return d.promise;
 	}
-	
+	this.buscarBroker = function(buscar) {
+		var d = $q.defer();
+		$http.get("/brockers/buscar/"+buscar).then(function(response) {
+			d.resolve(response.data);
+		}, function(response) {
+			if(response.status==403){
+				alert("No tiene permiso de realizar esta acción");
+				//$location.path("/login");
+			}
+		});
+		return d.promise;
+	}
 	this.searchEmpresa = function(buscar) {
 		var d = $q.defer();
 		$http.get("/empresa/buscar/"+buscar).then(function(response) {
@@ -410,7 +421,8 @@ app.controller("OTsAddController",['$rootScope', '$route','$scope','$cookieStore
 	$scope.tiposOp = TiposOperacion();
 	$scope.clienteSeleccionado=false;
 	$scope.notificacion=true;
-
+	$scope.idBroker=null;
+	$scope.nickBrokker=null;
 	$('#alert').change(function () {
 		 if ($(this).prop('checked')){
 			 $scope.notificacion=true;
@@ -425,12 +437,47 @@ app.controller("OTsAddController",['$rootScope', '$route','$scope','$cookieStore
 			$scope.buscar();
 //		}
 	},true);
+	
 	$scope.$watch('empresaSearch',function(){
 		if($scope.empresaSearch.length>3){
 			$scope.zEmpresa();
 		}
 	},true);
-	
+	$scope.$watch('buscaBroker',function(){
+		if($scope.buscaBroker.length>1){
+			$scope.buscarBK();
+		}
+	},true);
+	$scope.dataBroker=[];
+	$scope.buscarBK=function(){
+		brockerservice.buscarBrockers($scope.buscaBroker).then(function(data){
+			
+			$scope.encontrados=[];
+			for(var i=0; i< data.length; i++){
+				$scope.encontrados.push(data[i].nickname);
+				
+			}
+			$scope.bk=data;
+			$('#searchBroker').typeahead({
+
+			    source: $scope.encontrados,
+
+			    updater:function (item) {
+			    	var ind=$scope.encontrados.indexOf(item);
+			    	$scope.brokerSeleccionado=true;
+			    	if($scope.brokerSeleccionado==true){
+			    		console.log("El Broker se selecciono",$scope.bk[ind]);
+			    		
+			    	}
+			    	$scope.dataBroker.id= $scope.bk[ind].id;
+			    	$scope.dataBroker.nombre= $scope.bk[ind].nickname;
+			    	console.log("datos de brocker ID:",$scope.dataBroker.id,"Nombre: ",$scope.dataBroker.nombre)
+			        return item;
+			    }
+			});
+			$('#searchBroker').data('typeahead').source=$scope.encontrados;
+		});
+	}
 	$scope.tipoOP="base";
 	$scope.disablecomi=true;
 	$scope.Operacion=function(op){
@@ -473,6 +520,7 @@ app.controller("OTsAddController",['$rootScope', '$route','$scope','$cookieStore
 		for (var i = 0; i < $scope.bk.length; i+=1) {
 			  if($scope.cliente[0].idBrocker==$scope.bk[i].id){
 				  $scope.namebk=$scope.bk[i].nickname;
+				  $scope.idbk=$scope.bk[i].id
 				  console.log("Match",  $scope.namebk);
 			  }
 			}
@@ -483,6 +531,10 @@ app.controller("OTsAddController",['$rootScope', '$route','$scope','$cookieStore
 		$scope.porcentaje($scope.tipoad);
 		});
 	
+	$scope.insBroker=function(data){
+		console.log("Dato Tomado del Select", data);
+		$scope.brockerCliente.id =data
+	}
 	$scope.buscar=function(){
 		ordenTrabajoservice.buscarClientes($scope.busca).then(function(data){
 			
@@ -512,12 +564,15 @@ app.controller("OTsAddController",['$rootScope', '$route','$scope','$cookieStore
 			    		}
 			    	}
 			    	$scope.datos.idCliente= $scope.cliente[ind].id;
+			    	$scope.idBroker=$scope.cliente[ind].idBrocker;
+			    	console.log("se ha obtenido id del Broker", $scope.idBroker);
 			        return item;
 			    }
 			});
 			$('#searchBox').data('typeahead').source=$scope.encontrados;
 		});
 	}
+
 	$scope.datapass=function(operacion){
 		if(operacion=='OPC'){
 			$scope.OPCSaldo=$scope.datos.saldoMov;
@@ -629,7 +684,8 @@ app.controller("OTsAddController",['$rootScope', '$route','$scope','$cookieStore
 			movimientos:[],	
 			comisiones:[],
 			cliente: null,
-			broker: null
+			broker: null,
+	
 	}
 	
 	$scope.cheque={
@@ -676,6 +732,8 @@ app.controller("OTsAddController",['$rootScope', '$route','$scope','$cookieStore
 			$scope.calcularRetorno();
 		}
 		$scope.getAsesor();
+		$scope.brokers = [{id:$scope.idbk, nombre: $scope.namebk, porBrok: null,montoBrok: null }];
+		$scope.idBroker=[$scope.idbk];
 //		console.log("El id del Brocker es.....",$scope.cliente[0].idBrocker);
 	}
 	
@@ -695,11 +753,17 @@ app.controller("OTsAddController",['$rootScope', '$route','$scope','$cookieStore
 	}
 	
 	$scope.addBroker = function(){
-		var cont = $scope.brokers.length;
-		cont = cont + 1;
-		var nombre =  'Broker' + cont ;
-		var renglon= {nombre:nombre, porBrok: null , montoBrok:null}
+//		var cont = $scope.brokers.length;
+//		cont = cont + 1;
+		var cont = $scope.dataBroker.id;
+		var nombre =  $scope.dataBroker.nombre;
+		var renglon= {id:cont,nombre:nombre, porBrok: null , montoBrok:null}
+		var renglon2= $scope.dataBroker.id;
+		$scope.idBroker.push(renglon2);
+		console.log("Datos Broker a Agregar", renglon);
 		$scope.brokers.push(renglon);
+		console.log("Brocker Agregados", $scope.brokers);
+		$("#myModalBroker").modal("hide");
 	}
 	
 	$scope.verificarSaldo=function(operacion){
@@ -1009,8 +1073,10 @@ app.controller("OTsAddController",['$rootScope', '$route','$scope','$cookieStore
 					}
 					$scope.otVO.ot = $scope.datos;
 					$scope.otVO.ot.tipoOP=$scope.tipoOP
+					$scope.otVO.ot.listaBrockers=$scope.idBroker;
 					$scope.otVO.ot.baseComisiones=$scope.datos.basecomisiones;
 					$scope.otVO.notificar=$scope.notificacion;
+					
 //					console.log($scope.otVO);
 					
 					ordenTrabajoservice.addot($scope.otVO).then(function(data){
@@ -1081,8 +1147,14 @@ app.controller("OTsAddController",['$rootScope', '$route','$scope','$cookieStore
 }]);
 
 
-app.controller("ordenTrabajoController",['$rootScope', '$scope','$window', '$location', '$cookieStore','ordenTrabajoservice','usuarioservice','operacionesMovimientosService','notificacionesService','userFactory','empresaservice',
-                                         function($rootScope, $scope, $window, $location, $cookieStore, ordenTrabajoservice,usuarioservice,operacionesMovimientosService,notificacionesService,userFactory,empresaservice){
+app.controller("ordenTrabajoController",['$rootScope', '$scope','$window', '$location', '$cookieStore','ordenTrabajoservice','usuarioservice','operacionesMovimientosService','notificacionesService','userFactory','empresaservice','brockerservice',
+                                         function($rootScope, $scope, $window, $location, $cookieStore, ordenTrabajoservice,usuarioservice,operacionesMovimientosService,notificacionesService,userFactory,empresaservice,brockerservice){
+	$scope.bk=[];
+	brockerservice.consultarBrockersAll().then(function(data){
+		$scope.bk=data;
+		var index=$scope.bk.length;
+		console.log("Lista de Brockers", data)
+	});
 	$scope.permiso=true; 
 	var indice = null;
 	var tipoOperacion= null;
@@ -1101,7 +1173,8 @@ app.controller("ordenTrabajoController",['$rootScope', '$scope','$window', '$loc
 		$scope.otvo= data;
 		$scope.mont=$scope.otvo.pagos.monto;
 		$scope.tipoOP=$scope.otvo.ot.tipoOP;
-//		console.log(data);	
+		$scope.getIdbk=$scope.otvo.ot.listaBrockers;
+		console.log(data);	
 		crearListaDeCheques();
 		
 		var sumaMontoPagos =0;
@@ -1116,8 +1189,19 @@ app.controller("ordenTrabajoController",['$rootScope', '$scope','$window', '$loc
 			for(var i in $scope.otvo.ot.porBrok){
 				var cont= parseInt(i) + parseInt(1);
 				var nombre =  'Broker' + cont ;
-				var renglon= {nombre:nombre, porBrok:$scope.otvo.ot.porBrok[i], montoBrok: $scope.otvo.ot.montoBrok[i]};
-				$scope.brokers.push(renglon);
+				
+			for(var o in $scope.getIdbk){
+				for (var i = 0; i < $scope.bk.length; i+=1) {
+					  if($scope.getIdbk[o]==$scope.bk[i].id){
+						  $scope.getIdbk[o]=$scope.bk[i].nickname;
+//						  $scope.idbk=$scope.bk[i].id
+						  var renglon= {nombre:$scope.getIdbk[o], porBrok:$scope.otvo.ot.porBrok[i], montoBrok: $scope.otvo.ot.montoBrok[i]};
+							$scope.brokers.push(renglon);
+						  console.log("Match",   $scope.getIdbk[o]);
+					  }
+					}
+				}
+					
 				$scope.sumaMontoBrok= parseInt($scope.sumaMontoBrok) + parseInt($scope.otvo.ot.montoBrok[i]);
 			}
 			
