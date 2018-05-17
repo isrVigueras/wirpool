@@ -212,11 +212,7 @@ app.service("operacionesMovimientosService",['$http', '$q', function($http, $q){
 			if(bndResguardo){
 				
 				var renglon= {tipo: operaciones.tipo, descripcion: operaciones.descripcion , monto: operaciones.monto, estatus:"AUTORIZADO",resguardo:true}
-				if(operacion=="OPC"){
-					renglon.idCliente=cliente.id;
-				}else{
-					renglon.idCliente= brockerCliente.id;
-				}
+			
 			}else{
 				if(operaciones.tipo != null && operaciones.descripcion != null && operaciones.monto != null){
 					var renglon= {tipo: operaciones.tipo, descripcion: operaciones.descripcion , monto:operaciones.monto, estatus:operaciones.estatus}
@@ -225,7 +221,11 @@ app.service("operacionesMovimientosService",['$http', '$q', function($http, $q){
 				}
 			}
 		}
-		
+		if(operacion=="OPC"){
+			renglon.idCliente=cliente.id;
+		}else{
+			renglon.idCliente= brockerCliente.id;
+		}
 	
 		if(operacion=='OPC'){
 			if(bndResguardo && otVO.ot){
@@ -449,6 +449,7 @@ app.controller("OTsAddController",['$rootScope', '$route','$scope','$cookieStore
 		}
 	},true);
 	$scope.dataBroker=[];
+	$scope.disabled=true;
 	$scope.buscarBK=function(){
 		brockerservice.buscarBrockers($scope.buscaBroker).then(function(data){
 			
@@ -467,6 +468,7 @@ app.controller("OTsAddController",['$rootScope', '$route','$scope','$cookieStore
 			    	$scope.brokerSeleccionado=true;
 			    	if($scope.brokerSeleccionado==true){
 			    		console.log("El Broker se selecciono",$scope.bk[ind]);
+			    		$scope.disabled=false;
 			    		
 			    	}
 			    	$scope.dataBroker.id= $scope.bk[ind].id;
@@ -532,8 +534,31 @@ app.controller("OTsAddController",['$rootScope', '$route','$scope','$cookieStore
 		});
 	
 	$scope.insBroker=function(data){
+		var x = document.getElementById("slcbk").selectedIndex;
+		console.log("Broker Tomado con el index", $scope.brokers[x]);
+//		$scope.mxvalue=$scope.brokers[x].montoBrok;
 		console.log("Dato Tomado del Select", data);
 		$scope.brockerCliente.id =data
+		$scope.brokerSelected={};
+		var suma= 0;
+		var totalb=0;
+		for(var i =0; i< $scope.brokers.length; i++){
+			if($scope.brokers[i].id == data){
+				totalb= $scope.brokers[i].montoBrok;
+				break;
+			}
+		}
+		for(var i =0; i < $scope.otVO.comisiones.length; i++){
+			if($scope.otVO.comisiones[i].idCliente == data){
+				suma+= $scope.otVO.comisiones[i].monto;
+			}
+		}
+		
+		$scope.mxvalue= totalb-suma;
+	}
+	$scope.clearMovAsesor=function(){
+		$scope.data.bk=null;
+		$scope.mxvalue=null;
 	}
 	$scope.buscar=function(){
 		ordenTrabajoservice.buscarClientes($scope.busca).then(function(data){
@@ -752,6 +777,10 @@ app.controller("OTsAddController",['$rootScope', '$route','$scope','$cookieStore
 		 }); 
 	}
 	
+	$scope.clearaddbk=function(){
+		$scope.buscaBroker=null;
+		$scope.disabled=true;
+	}
 	$scope.addBroker = function(){
 //		var cont = $scope.brokers.length;
 //		cont = cont + 1;
@@ -764,6 +793,7 @@ app.controller("OTsAddController",['$rootScope', '$route','$scope','$cookieStore
 		$scope.brokers.push(renglon);
 		console.log("Brocker Agregados", $scope.brokers);
 		$("#myModalBroker").modal("hide");
+		$scope.clearaddbk();
 	}
 	
 	$scope.verificarSaldo=function(operacion){

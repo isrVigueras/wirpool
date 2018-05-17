@@ -246,7 +246,7 @@
 					<div class="col-md-6" align="left"><label>Instrucciones Operaci&oacute;n Asesor:&nbsp; </label>{{namebk}}</div>
 					<div class="col-md-6" align="right">
 						<!-- <button class="btn btn-small" ng-disabled="datos.totalComisiones == null || (datos.saldoMov==0 && datos.saldoCom==0)" data-toggle="modal" data-target="#myModalOperAsesor">Agregar</button> -->
-						<button class="btn btn-small" ng-disabled="datos.totalComisiones == null || (datos.saldoMov==0 && datos.saldoCom==0)" id="#myModalOperAsesor"  ng-click="verificaPorcentajes('OPA');datapass('OPA')">Agregar</button>
+						<button class="btn btn-small" ng-disabled="datos.totalComisiones == null || (datos.saldoMov==0 && datos.saldoCom==0)" id="#myModalOperAsesor"  ng-click="verificaPorcentajes('OPA');datapass('OPA');clearMovAsesor();">Agregar</button>
 					</div>
 				</div>
 			</div>
@@ -416,11 +416,13 @@
 					    	<label class="control-label">Seleccionar Brocker</label>
 					    </div>
 			<div class="col-md-4">
-			        		<select name="cuentas" class="form-control  mb-2" ng-model="data.bk" ng-change="insBroker(data.bk);" ng-required="true" >
+			        		<select name="cuentas" id="slcbk" class="form-control  mb-2" ng-model="data.bk" ng-change="insBroker(data.bk,$index);" ng-required="true" >
 				 				<option ng-repeat="bk in brokers" value="{{bk.id}}">{{bk.nombre}}</option>
-				 			</select>
+				 			</select> 
 				  		</div>
+				  		<div class="col-md-3">Disponible{{mxvalue | currency}}</div>
 			 </div>
+			 
 			 <br>
 	          <form>
 					<div class="row">
@@ -437,7 +439,7 @@
 				  			<label class="control-label">Monto: </label>
 				  		</div>
 				  		<div class="col-md-3">
-	 						<input  class="form-control  mb-2" type="number" min="1" ng-required="true" ng-model="operaciones.monto"  ng-change="verificarSaldo('OPA')" step="0.01"ng-disabled="tipoResguardo">		
+	 						<input  class="form-control  mb-2" type="number" min="1" ng-required="true" ng-model="operaciones.monto"  ng-change="verificarSaldo('OPA')" step="0.01"ng-disabled="tipoResguardo" max="{{mxvalue}}">		
 				  		{{operaciones.monto | currency}}
 				  		</div>
 				  		<div class="col-md-1"></div>
@@ -578,7 +580,7 @@
 			<div class="row">
 			<div class="col-md-5"></div>
 				<div class="col-md-1">
-					<button type="button" class="btn btn-default" ng-click="addBroker()">Agregar</button>
+					<button type="button" class="btn btn-default" ng-click="addBroker()" ng-disabled=(disabled)>Agregar</button>
 				</div>
 			</div>
 	</div> 
