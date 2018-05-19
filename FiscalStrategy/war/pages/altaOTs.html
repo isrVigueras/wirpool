@@ -387,7 +387,7 @@
 		  </div>
 			<br>
       	   <div class="modal-footer">
-        		<button type="button" class="btn btn-default" data-dismiss="modal"  ng-click="limpiaOperaciones(); verificarSaldo('OPC')">Cerrar</button>
+        		<button type="button" class="btn btn-default" data-dismiss="modal"  ng-click="limpiaOperaciones();">Cerrar</button>
       		</div>
         </div>
       </div>
@@ -419,6 +419,7 @@
 			        		<select name="cuentas" id="slcbk" class="form-control  mb-2" ng-model="data.bk" ng-change="insBroker(data.bk,$index);" ng-required="true" >
 				 				<option ng-repeat="bk in brokers" value="{{bk.id}}">{{bk.nombre}}</option>
 				 			</select> 
+				 			
 				  		</div>
 				  		<div class="col-md-3">Disponible{{mxvalue | currency}}</div>
 			 </div>
@@ -495,7 +496,7 @@
 					<br>
 					<div class="row" align="center">
 					
-						<button class="btn btn-small" data-dismiss="modal" ng-disabled="dis"  ng-click="addOper('OPA')" >Guardar</button>
+						<button class="btn btn-small" data-dismiss="modal" ng-disabled="dis"  ng-click="addOper('OPA');" >Guardar</button>
 					</div>
 	          </form>
 		  </div>

@@ -199,7 +199,7 @@ app.service("ordenTrabajoservice",['$http', '$q', function($http, $q){
 
 app.service("operacionesMovimientosService",['$http', '$q', function($http, $q){
 	objetos= {otvo:null, c:null, b:null};
-	this.addOper= function(operacion, operaciones, otVO, bndResguardo,cliente, brockerCliente){
+	this.addOper= function(operacion, operaciones, otVO, bndResguardo,cliente, brockerCliente,brokerSel){
 		var moneda= otVO.pagos[0].moneda;
 		if(operaciones.tipo == 'Cheque'){
 			if(operaciones.montoLetra != null && operaciones.fEmision && operaciones.pagarA && operaciones.tipo != null && operaciones.descripcion != null && operaciones.monto != null){
@@ -224,7 +224,7 @@ app.service("operacionesMovimientosService",['$http', '$q', function($http, $q){
 		if(operacion=="OPC"){
 			renglon.idCliente=cliente.id;
 		}else{
-			renglon.idCliente= brockerCliente.id;
+			renglon.idCliente= operaciones.idCliente;
 		}
 	
 		if(operacion=='OPC'){
@@ -241,17 +241,22 @@ app.service("operacionesMovimientosService",['$http', '$q', function($http, $q){
 			otVO.movimientos.push(renglon);
 		}else{
 			if(bndResguardo && otVO.ot){
-				brockerCliente.saldo = brockerCliente.saldo + operaciones.monto;
+				if(brokerSel){
+					brokerSel.saldo= brokerSel.saldo + operaciones.monto;
+				}else{
+					brockerCliente.saldo = brockerCliente.saldo + operaciones.monto;
+				}
 			}
 			otVO.comisiones.push(renglon);
 		}
 		objetos.otvo=otVO;
 		objetos.c= cliente;
 		objetos.b= brockerCliente;
+		objetos.broker= brokerSel;
 		return objetos;
 	} 
 	
-	this.isResguardo=function(operacion, operaciones,bndResguardo, datos){
+	this.isResguardo=function(operacion, operaciones,bndResguardo, datos, SldBk){
 		objetos={op: null,datos: null, resguardo:null}
 		if(operaciones.tipo=='Resguardo'){
 			var mensaje = confirm("Esta opci\u00F3n mueve el saldo actual a la cuenta de resguardo.. Deseas continuar?");
@@ -269,11 +274,11 @@ app.service("operacionesMovimientosService",['$http', '$q', function($http, $q){
 						operaciones.descripcion ="";
 					}
 				}else{
-					datos.saldoCom= datos.saldoCom * 1;	
-					if(datos.saldoCom > 0){
-						operaciones.monto= datos.saldoCom;
+					SldBk= SldBk * 1;	
+					if(SldBk > 0){
+						operaciones.monto= SldBk;
 						operaciones.descripcion= "Se va saldo a cuenta de resguardo";
-						datos.saldoCom= 0;
+						datos.saldoCom= datos.saldoCom - SldBk;
 					}else{
 						alert("No se tiene saldo acumulado");
 						bndResguardo = false;
@@ -1024,7 +1029,7 @@ app.controller("OTsAddController",['$rootScope', '$route','$scope','$cookieStore
 		}
 	}
 	$scope.eliminarRenglonAsesor=function(renglon){
-		var r= $scope.otVO.movimientos[renglon];
+		var r= $scope.otVO.comisiones[renglon];
 		if(r.tipo=="Resguardo"){
 			var moneda= $scope.otVO.pagos[0].moneda;
 			if(moneda=="MXN"){
@@ -1071,11 +1076,12 @@ app.controller("OTsAddController",['$rootScope', '$route','$scope','$cookieStore
 			$scope.tablaOperAsesor=true;
 		}
 		$scope.limpiaOperaciones();	
+//		$scope.verificarSaldo(operacion);
 	} 
 
 	$scope.isResguardo=function(operacion){
 		$scope.errorSaldo="";
-		var objs= operacionesMovimientosService.isResguardo(operacion, $scope.operaciones,$scope.tipoResguardo, $scope.datos);
+		var objs= operacionesMovimientosService.isResguardo(operacion, $scope.operaciones,$scope.tipoResguardo, $scope.datos, $scope.mxvalue);
 		$scope.operaciones= objs.op;
 		$scope.datos= objs.datos;
 		$scope.tipoResguardo=objs.resguardo;
@@ -1199,11 +1205,44 @@ app.controller("ordenTrabajoController",['$rootScope', '$scope','$window', '$loc
 	empresaservice.load(1).then(function(data) {
 		$scope.empresa = data;
 	})
+	$scope.insBroker=function(){
+		var x = document.getElementById("slcbk").selectedIndex;
+		console.log("Broker Tomado con el index", $scope.brokers[x]);
+		var idBrok=$scope.getbroker[x].id;
+//		$scope.mxvalue=$scope.brokers[x].montoBrok;
+		console.log("Dato Tomado del Select", idBrok);
+		$scope.brockerCliente={id :idBrok}
+		$scope.brokerSelected={};
+		$scope.operaciones.idCliente= idBrok;
+		var suma= 0;
+		var totalb=0;
+		for(var i =0; i< $scope.brokers.length; i++){
+			if($scope.getbroker[i].id == idBrok){
+				$scope.brokerSelected= $scope.brokers[i];
+				totalb= $scope.brokers[i].montoBrok;
+				break;
+			}
+		}
+		for(var i =0; i < $scope.otvo.comisiones.length; i++){
+			if($scope.otvo.comisiones[i].idCliente == idBrok && $scope.otvo.comisiones[i].estatus!="CANCELADO"){
+				suma+= $scope.otvo.comisiones[i].monto;
+			}
+		}
+		
+		$scope.mxvalue= totalb-suma;
+	}
+	$scope.idBrockerRest=[];
 	ordenTrabajoservice.loadot($cookieStore.get("idOt")).then(function(data){
 		$scope.otvo= data;
 		$scope.mont=$scope.otvo.pagos.monto;
 		$scope.tipoOP=$scope.otvo.ot.tipoOP;
 		$scope.getIdbk=$scope.otvo.ot.listaBrockers;
+		$scope.getbroker=$scope.otvo.brokers;
+		for(var i in $scope.getIdbks){
+			var infd= $scope.getIdbks[i];
+			$scope.idBrockerRest.push(infd);
+		}
+		console.log("linea 1232",$scope.getIdbk[0] );
 		console.log(data);	
 		crearListaDeCheques();
 		
@@ -1223,6 +1262,7 @@ app.controller("ordenTrabajoController",['$rootScope', '$scope','$window', '$loc
 			for(var o in $scope.getIdbk){
 				for (var i = 0; i < $scope.bk.length; i+=1) {
 					  if($scope.getIdbk[o]==$scope.bk[i].id){
+						
 						  $scope.getIdbk[o]=$scope.bk[i].nickname;
 //						  $scope.idbk=$scope.bk[i].id
 						  var renglon= {nombre:$scope.getIdbk[o], porBrok:$scope.otvo.ot.porBrok[i], montoBrok: $scope.otvo.ot.montoBrok[i]};
@@ -1232,9 +1272,11 @@ app.controller("ordenTrabajoController",['$rootScope', '$scope','$window', '$loc
 					}
 				}
 					
+				
+			}
+			for(var i=0; i<$scope.otvo.ot.montoBrok.length; i++){
 				$scope.sumaMontoBrok= parseInt($scope.sumaMontoBrok) + parseInt($scope.otvo.ot.montoBrok[i]);
 			}
-			
 			$scope.montoRetorno=(($scope.otvo.ot.retorno/100)*$scope.otvo.ot.importe).toFixed(2);
 			$scope.montosTotal = parseInt($scope.otvo.ot.montoLic)+ parseInt($scope.otvo.ot.montoDes) + parseInt($scope.sumaMontoBrok) + parseInt($scope.montoRetorno);
 		}else{
@@ -1434,6 +1476,7 @@ app.controller("ordenTrabajoController",['$rootScope', '$scope','$window', '$loc
 			$scope.mov.banco=$scope.otvo.movimientos[index].banco;
 			$scope.mov.cuenta=$scope.otvo.movimientos[index].cuenta;
 			$scope.mov.empresa=$scope.otvo.movimientos[index].empresa;
+			$scope.mov.idCliente=$scope.otvo.movimientos[index].idCliente
 		}else{
 			$scope.mov.tipo=$scope.otvo.comisiones[index].tipo;
 			$scope.mov.monto=$scope.otvo.comisiones[index].monto;
@@ -1441,6 +1484,7 @@ app.controller("ordenTrabajoController",['$rootScope', '$scope','$window', '$loc
 			$scope.mov.banco=$scope.otvo.comisiones[index].banco;
 			$scope.mov.cuenta=$scope.otvo.comisiones[index].cuenta;
 			$scope.mov.empresa=$scope.otvo.comisiones[index].empresa;
+			$scope.mov.idCliente=$scope.otvo.comisiones[index].idCliente;
 		}
 		indice=index;
 		tipoOperacion=operacion;
@@ -1560,7 +1604,14 @@ app.controller("ordenTrabajoController",['$rootScope', '$scope','$window', '$loc
 		$scope.operaciones.monto=$scope.mov.monto;
 		$scope.operaciones.descripcion=$scope.mov.descripcion;
 		$scope.tipoResguardo=true;
-		var objs=operacionesMovimientosService.addOper(operacion,$scope.operaciones, $scope.otvo, $scope.tipoResguardo,$scope.otvo.cliente,$scope.otvo.broker);
+		var broker=$scope.otvo.broker;
+		for(var i in $scope.brokers){
+			if($scope.getbroker[i].id== $scope.mov.idCliente){
+				broker= $scope.getbroker[i];
+				break;
+			}
+		}
+		var objs=operacionesMovimientosService.addOper(operacion,$scope.operaciones, $scope.otvo, $scope.tipoResguardo,$scope.otvo.cliente,broker);
 
 		if(operacion=="OPC"){
 				ordenTrabajoservice.guardaCliente(objs.c);
@@ -1609,7 +1660,7 @@ app.controller("ordenTrabajoController",['$rootScope', '$scope','$window', '$loc
 	//Verifica si el tipo de operacion es de Resguardo
 	$scope.isResguardo=function(operacion){
 		$scope.errorSaldo="";
-		var objs= operacionesMovimientosService.isResguardo(operacion, $scope.operaciones,$scope.tipoResguardo, $scope.otvo.ot);
+		var objs= operacionesMovimientosService.isResguardo(operacion, $scope.operaciones,$scope.tipoResguardo, $scope.otvo.ot,$scope.mxvalue);
 		$scope.mov= objs.op;
 		$scope.otvo.ot= objs.datos;
 		$scope.tipoResguardo=objs.resguardo;

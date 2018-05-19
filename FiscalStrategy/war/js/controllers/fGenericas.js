@@ -25,13 +25,19 @@ function calcularSaldoOP(operacion,prox, arrMov, total,importe,totalOP,tipoOP,ar
 	var monto=null;
 	var saldo=0;
 
+	var sumaMontobrok= 0;
+	
+	for(var i in montoBrok){
+		sumaMontobrok+=montoBrok[i];
+	}
+	
 	for(var i in arrMov){
-		if(arrMov[i].estatus== 'ACTIVO'){
+		if(arrMov[i].estatus!= 'CANCELADO'){
 			sumatoria= sumatoria + arrMov[i].monto;
 		};
 	}
 	for(var i in arrCom){
-		if(arrCom[i].estatus== 'ACTIVO'){
+		if(arrCom[i].estatus!= 'CANCELADO'){
 			sum= sum + arrCom[i].monto;
 		};
 	}
@@ -41,7 +47,7 @@ function calcularSaldoOP(operacion,prox, arrMov, total,importe,totalOP,tipoOP,ar
 		if(operacion=="OPC"){
 			saldo= ((parseFloat(total) + parseFloat(importe)) - sumatoria).toFixed(2);
 		}else{
-			saldo= (parseFloat(montoBrok) - sum).toFixed(2);
+			saldo= (parseFloat(sumaMontobrok) - sum).toFixed(2);
 		}
 		
 	}else{
@@ -49,7 +55,7 @@ function calcularSaldoOP(operacion,prox, arrMov, total,importe,totalOP,tipoOP,ar
 		if(operacion=="OPC"){
 			saldo= (totalOP - sumatoria).toFixed(2);
 		}else{
-			saldo= (parseFloat(montoBrok) - sum).toFixed(2);
+			saldo= (parseFloat(sumaMontobrok) - sum).toFixed(2);
 		}
 	}
 //	if(operacion=="OPC"){

@@ -550,10 +550,11 @@
 					<label class="control-label">Seleccionar Brocker</label>
 			    </div>
 			   <div class="col-md-4">
-			        <select name="nombrebroker" class="form-control  mb-2"  ng-required="true">
-				 		<option ng-repeat="bk in brokers">{{bk.nombre}}</option>
-				 	</select>
-				</div>
+			        		<select name="cuentas" id="slcbk" class="form-control  mb-2" ng-model="data.bk" ng-change="insBroker();" ng-required="true" >
+				 				<option ng-repeat="bk in brokers" >{{bk.nombre}}</option>
+				 			</select> 
+				  		</div>
+				<div class="col-md-3">Disponible{{mxvalue | currency}}</div>
 		</div>
 			 <br>
 	          <form>
