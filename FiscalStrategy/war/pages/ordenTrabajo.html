@@ -229,6 +229,7 @@
 				<tr class="ng-scope">
 					<th>Tipo de Operaci&oacute;n</th>
 					<th align="center">Descripci&oacute;n</th>
+					<th align="center">Broker</th>
 					<th align="center">Monto</th>
 					<th align="center">Empresa</th>
 					<th align="center">Banco</th>
@@ -245,6 +246,7 @@
 				<tr ng-repeat="mov in otvo.comisiones" class="ng-scope">
 					<td class="ng-binding">{{mov.tipo}}</td>
 					<td class="ng-binding">{{mov.descripcion}}</td>
+					<td class="ng-binding">{{nombreBroker(mov.idCliente)}}</td>
 					<td class="ng-binding">{{mov.monto | currency}}</td>
 					<td class="ng-binding">{{mov.empresa}}</td>
 					<td class="ng-binding">{{mov.banco}}</td>

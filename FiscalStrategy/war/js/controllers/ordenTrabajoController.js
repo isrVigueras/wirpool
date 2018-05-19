@@ -316,31 +316,35 @@ app.service("operacionesMovimientosService",['$http', '$q', function($http, $q){
 		objetos={ error: null, saldo:null};
 		var cantidad = 0;
 		var btndisble="false";
+		var montoOp=0;
+		if(operaciones.monto){
+			montoOp=operaciones.monto;
+		}
 		
 		if(operacion== 'OPC'){
 			if(otvo.movimientos.length != 0){
 				if(tipoOP=="total"){
-					cantidad= calcularSaldo(operaciones.monto,tipoOP,otvo.movimientos,monto,ot.importe,totalOP-montorest);
+					cantidad= calcularSaldo(montoOp,tipoOP,otvo.movimientos,monto,ot.importe,totalOP-montorest);
 				}else{
-					cantidad= calcularSaldo(operaciones.monto,tipoOP,otvo.movimientos,monto,ot.importe,totalOP);
+					cantidad= calcularSaldo(montoOp,tipoOP,otvo.movimientos,monto,ot.importe,totalOP);
 				}
 			}else{
 				
 				if(tipoOP=="base"){
-				cantidad= ((parseFloat(monto) + parseFloat(ot.importe)) - operaciones.monto).toFixed(2);
+				cantidad= ((parseFloat(monto) + parseFloat(ot.importe)) - montoOp).toFixed(2);
 				}else 
 					if( !operaciones.monto!=0){
 					cantidad= (parseFloat(totalOP) - montorest).toFixed(2);
 				}else
 				{
-					cantidad= (parseFloat(OPCSaldo) - operaciones.monto).toFixed(2);
+					cantidad= (parseFloat(OPCSaldo) - montoOp).toFixed(2);
 				}
 			}
 		}else{
 			if(otvo.comisiones.length != 0){
-				cantidad=calcularSaldo(operaciones.monto,tipoOP,otvo.comisiones,suma,0,totalOP);
+				cantidad=calcularSaldo(montoOp,tipoOP,otvo.comisiones,suma,0,totalOP);
 			}else{
-				cantidad= (parseFloat(suma) - parseFloat(operaciones.monto)).toFixed(2);
+				cantidad= (parseFloat(suma) - parseFloat(montoOp)).toFixed(2);
 			}
 			
 		}
@@ -538,6 +542,14 @@ app.controller("OTsAddController",['$rootScope', '$route','$scope','$cookieStore
 		$scope.porcentaje($scope.tipoad);
 		});
 	
+	$scope.nombreBroker=function(id){
+		for(var i =0; i< $scope.brokers.length; i++){
+			if($scope.brokers[i].id == id){
+				return $scope.brokers[i].nombre;
+			}
+		}
+	}
+	
 	$scope.insBroker=function(data){
 		var x = document.getElementById("slcbk").selectedIndex;
 		console.log("Broker Tomado con el index", $scope.brokers[x]);
@@ -547,6 +559,7 @@ app.controller("OTsAddController",['$rootScope', '$route','$scope','$cookieStore
 		$scope.brokerSelected={};
 		var suma= 0;
 		var totalb=0;
+		$scope.operaciones.idCliente=data;
 		for(var i =0; i< $scope.brokers.length; i++){
 			if($scope.brokers[i].id == data){
 				totalb= $scope.brokers[i].montoBrok;
@@ -800,6 +813,8 @@ app.controller("OTsAddController",['$rootScope', '$route','$scope','$cookieStore
 		$("#myModalBroker").modal("hide");
 		$scope.clearaddbk();
 	}
+	
+	
 	
 	$scope.verificarSaldo=function(operacion){
 		
@@ -1085,6 +1100,7 @@ app.controller("OTsAddController",['$rootScope', '$route','$scope','$cookieStore
 		$scope.operaciones= objs.op;
 		$scope.datos= objs.datos;
 		$scope.tipoResguardo=objs.resguardo;
+		$scope.verificarSaldoOP(operacion);
 	}
 	
 	$scope.detalleCheque=function(index, operacion){
@@ -1674,6 +1690,10 @@ app.controller("ordenTrabajoController",['$rootScope', '$scope','$window', '$loc
 	$scope.verificarSaldo=function(operacion){
 		var objs= operacionesMovimientosService.verificarSaldoOP(operacion,$scope.tipoOP, $scope.otvo,$scope.otvo.ot, $scope.operaciones,$scope.montoRetorno,$scope.sumaMontoBrok);
 		$scope.errorSaldo= objs.error;
+		if($scope.mxvalue<$scope.operaciones.monto && operacion=="OPA"){
+			$scope.errorSaldo="* ERROR: El monto supera el saldo establecido *"
+		}
+		
 		
 		if($scope.errorSaldo==" "){
 			$scope.dis=false;
@@ -1710,5 +1730,12 @@ app.controller("ordenTrabajoController",['$rootScope', '$scope','$window', '$loc
 	$scope.regresar=function(){
 			$location.path("/listaOTs");
 //			$window.location.reload();
+	}
+	$scope.nombreBroker=function(id){
+		for(var i =0; i< $scope.getbroker.length; i++){
+			if($scope.getbroker[i].id == id){
+				return $scope.getbroker[i].nickname;
+			}
+		}
 	}
 }]);	
