@@ -1281,7 +1281,7 @@ app.controller("ordenTrabajoController",['$rootScope', '$scope','$window', '$loc
 						
 						  $scope.getIdbk[o]=$scope.bk[i].nickname;
 //						  $scope.idbk=$scope.bk[i].id
-						  var renglon= {nombre:$scope.getIdbk[o], porBrok:$scope.otvo.ot.porBrok[i], montoBrok: $scope.otvo.ot.montoBrok[i]};
+						  var renglon= {nombre:$scope.getIdbk[o], porBrok:$scope.otvo.ot.porBrok[o], montoBrok: $scope.otvo.ot.montoBrok[o]};
 							$scope.brokers.push(renglon);
 						  console.log("Match",   $scope.getIdbk[o]);
 					  }
