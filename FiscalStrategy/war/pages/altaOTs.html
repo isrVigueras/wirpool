@@ -256,6 +256,7 @@
 					<tr>
 						<th>Operaci&oacute;n</th>
 						<th align="center"> Descripci&oacute;n </th>
+						<th align="center"> Broker </th>
 						<th align="center"> Monto</th>
 						<th align="center"> Estatus</th>
 						<th> </th>
@@ -265,6 +266,7 @@
 					<tr ng-repeat="op in otVO.comisiones">
 						<td>{{op.tipo}}</td>
 						<td>{{op.descripcion}}</td>
+						<td>{{nombreBroker(op.idCliente)}}</td>
 						<td>{{op.monto | currency}}</td>
 						<td>{{op.estatus}}</td>
 						<td> <button class="btn btn-small btn-info"  ng-click="eliminarRenglonAsesor($index)" title="Eliminar Instruccion">

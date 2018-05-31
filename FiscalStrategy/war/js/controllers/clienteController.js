@@ -20,7 +20,6 @@ app.service("clientservice",['$http', '$q', function($http, $q){
 			});
 		return d.promise;
 	}
-	
 	this.getCliente = function(id) {
 		var d = $q.defer();
 	
@@ -122,6 +121,18 @@ app.service("clientcuentaservice",['$http', '$q', function($http, $q){
 		});
 		return d.promise;
 	};
+	this.buscarClientes = function(buscar) {
+		var d = $q.defer();
+		$http.get("/clientes/buscar/"+buscar).then(function(response) {
+			d.resolve(response.data);
+		}, function(response) {
+			if(response.status==403){
+				alert("No tiene permiso de realizar esta acción");
+				//$location.path("/login");
+			}
+		});
+		return d.promise;
+	}
 	
 }]);
 app.controller("clientcuentacontroller",['$rootScope', '$scope','$window', '$location', '$cookieStore','clientcuentaservice','$routeParams', 'userFactory',function($rootScope, $scope, $window, $location, $cookieStore, clientcuentaservice,$routeParams, userFactory){
@@ -140,17 +151,48 @@ app.controller("clientcuentacontroller",['$rootScope', '$scope','$window', '$loc
 	//	$scope.VerCC=function(id){
 }]);
 
-app.controller("clientController",['$http','$interval','$rootScope','usuarioservice','brockerservice','$scope','$window', '$location', '$cookieStore','clientservice','clientcuentaservice', 'userFactory', function($http,$interval,$rootScope,usuarioservice,brockerservice, $scope, $window, $location, $cookieStore, clientservice,clientcuentaservice, userFactory){
+app.controller("clientController",['$http','$interval','$rootScope','usuarioservice','brockerservice','$scope','$window', '$location', '$cookieStore','clientservice','clientcuentaservice', 'userFactory','ordenTrabajoservice', function($http,$interval,$rootScope,usuarioservice,brockerservice, $scope, $window, $location, $cookieStore, clientservice,clientcuentaservice, userFactory,ordenTrabajoservice){
 	
 	$scope.client={};
 	
 	$scope.client={tipo:"cliente"};
-	
+	$scope.$watch('buscaClient',function(){
+		if($scope.buscaClient.length>1){
+			$scope.buscarCliente();
+		}
+	},true);
+	$scope.dataclientes=null;
+	$scope.buscarCliente=function(){
+		ordenTrabajoservice.buscarClientes($scope.buscaClient).then(function(data){
+			
+			$scope.dataclientes=data;
+			$scope.encontrados=[];
+			for(var i=0; i< data.length; i++){
+				$scope.encontrados.push(data[i].nickname);
+				
+			}
+			$scope.cliente=data;
+			$('#searchCLient').typeahead({
+
+			    source: $scope.encontrados,
+
+			    updater:function (item) {
+			    	var ind=$scope.encontrados.indexOf(item);
+			    	$scope.clienteSeleccionado=true;
+			    	$scope.idclient= $scope.cliente[ind].id;
+			    	console.log("ID del CLiente", $scope.idclient);
+			        return item;
+			    }
+			});
+			$('#searchCLient').data('typeahead').source=$scope.encontrados;
+		});
+	}
 	$scope.$watch('busca',function(){
 		if($scope.busca.length>3){
 			$scope.buscar();
 		}
 	},true);
+	
 	$scope.buscar=function(){
 		brockerservice.buscarBrockers($scope.busca).then(function(data){
 			
@@ -163,17 +205,25 @@ app.controller("clientController",['$http','$interval','$rootScope','usuarioserv
 			$('#searchBox').typeahead({
 
 			    source: $scope.encontrados,
-
 			    updater:function (item) {
 			    	var ind=$scope.encontrados.indexOf(item);
 			    	$scope.clienteSeleccionado=true;
-			    	$scope.client.idBrocker= $scope.cliente[ind].id;
+			    	$scope.idclient= $scope.cliente[ind].id;
 			        return item;
 			    }
 			});
 			$('#searchBox').data('typeahead').source=$scope.encontrados;
 		});
+	};
+	
+	$scope.filtroCliente=function(){
+			$scope.paginas=[1];
+			$scope.clienteLista = $scope.dataclientes;
+		};
+	$scope.verTodo=function(){
+		$scope.cargaClientes(1);
 	}
+	
 
 	$rootScope.perfilUsuario = userFactory.getUsuarioPerfil();  //obtener perfl de usuario para pintar el menú al qe tiene acceso
 	clientservice.consultarClientesTodos(1).then(function(data) {
@@ -191,8 +241,8 @@ app.controller("clientController",['$http','$interval','$rootScope','usuarioserv
 });
 	$scope.cargaClientes=function(data){
 		clientservice.consultarClientesTodos(data).then(function(data) {
-			$scope.clienteLista = data;
 			$scope.llenarPags();
+			$scope.clienteLista = data;
 	});
 	}
 	
@@ -227,7 +277,7 @@ app.controller("clientController",['$http','$interval','$rootScope','usuarioserv
 		var promise = $interval(function(){
 			if($scope.contador<$scope.maxPage){
 				$http.get("/clientes/rehacer/"+$scope.contador).then(function(data){
-					console.log(data);
+//					console.log(data);
 				})
 				$scope.contador++;
 			}

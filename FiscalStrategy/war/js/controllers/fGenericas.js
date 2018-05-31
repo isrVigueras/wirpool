@@ -5,7 +5,7 @@ function calcularSaldo(prox,tipoOP, arrMov, total,importe,totalOP){
 	var saldo=0;
 
 	for(var i in arrMov){
-		if(arrMov[i].estatus== 'ACTIVO'){
+		if(arrMov[i].estatus!="CANCELADO"){
 			sumatoria= sumatoria + arrMov[i].monto;
 		};
 	}

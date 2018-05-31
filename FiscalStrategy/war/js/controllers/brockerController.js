@@ -139,6 +139,42 @@ app.controller("brockersController",['$rootScope','usuarioservice','$scope','$wi
 		$scope.brockerLista = data;
 		$scope.llenarPags();
 	});
+	$scope.$watch('busca',function(){
+		if($scope.busca.length>2){
+			$scope.buscar();
+		}
+	},true);
+	$scope.brokerData=null;
+	$scope.buscar=function(){
+		brockerservice.buscarBrockers($scope.busca).then(function(data){
+			$scope.brokerData=data
+			$scope.encontrados=[];
+			for(var i=0; i< data.length; i++){
+				$scope.encontrados.push(data[i].nickname);
+				
+			}
+			$scope.cliente=data;
+			$('#searchBox').typeahead({
+
+			    source: $scope.encontrados,
+
+			    updater:function (item) {
+			    	var ind=$scope.encontrados.indexOf(item);
+			    	$scope.clienteSeleccionado=true;
+			    	$scope.idBrocker= $scope.cliente[ind].id;
+			        return item;
+			    }
+			});
+			$('#searchBox').data('typeahead').source=$scope.encontrados;
+		});
+	}
+	$scope.filtroBroker=function(){
+		$scope.paginas=[1];
+		$scope.brockerLista = $scope.brokerData;
+	}
+	$scope.verTodo=function(){
+		$scope.cargaBrockers(1);
+	}
 	$scope.cargaResguardos=function(data){
 		$scope.broker=data;
 		console.log($scope.broker);
