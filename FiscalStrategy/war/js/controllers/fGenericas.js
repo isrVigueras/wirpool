@@ -1,4 +1,4 @@
-function calcularSaldo(prox,tipoOP, arrMov, total,importe,totalOP){
+function calcularSaldo(prox,tipoOP, arrMov, total,importe,totalOP,totalrest){
 	var sumatoria= 0;
 	var arreglo = null;
 	var monto=null;
@@ -11,14 +11,19 @@ function calcularSaldo(prox,tipoOP, arrMov, total,importe,totalOP){
 	}
 	sumatoria =  sumatoria + prox;
 	if(tipoOP=="base"){
+		if(totalrest){
+			saldo= (parseFloat(totalrest) - parseFloat(sumatoria)).toFixed(2);
+		}else{
 		saldo= ((parseFloat(total) + parseFloat(importe)) - sumatoria).toFixed(2);
+		}
 	}else{
 		saldo= (totalOP - sumatoria).toFixed(2);
 	}
 	
 	return saldo;
 }
-function calcularSaldoOP(operacion,prox, arrMov, total,importe,totalOP,tipoOP,arrCom,montoBrok){
+//function calcularSaldoOP(operacion,prox, arrMov, total,importe,totalOP,tipoOP,arrCom,montoBrok,montoComi){
+function calcularSaldoOP(operacion,prox, arrMov, total,importe,totalOP,tipoOP,montoComi,sumBroker,arrCom,montoBrok){
 	var sumatoria= 0;
 	var sum=0;
 	var arreglo = null;
@@ -45,7 +50,8 @@ function calcularSaldoOP(operacion,prox, arrMov, total,importe,totalOP,tipoOP,ar
 	sum= sum + prox;
 	if(tipoOP=="base"){
 		if(operacion=="OPC"){
-			saldo= ((parseFloat(total) + parseFloat(importe)) - sumatoria).toFixed(2);
+//			saldo= ((parseFloat(total) + parseFloat(importe)) - sumatoria).toFixed(2);
+			saldo= ((parseFloat(totalOP) - parseFloat(montoComi)) - sumatoria).toFixed(2);
 		}else{
 			saldo= (parseFloat(sumaMontobrok) - sum).toFixed(2);
 		}
@@ -53,7 +59,7 @@ function calcularSaldoOP(operacion,prox, arrMov, total,importe,totalOP,tipoOP,ar
 	}else{
 		
 		if(operacion=="OPC"){
-			saldo= (totalOP - sumatoria).toFixed(2);
+			saldo= ((totalOP -montoComi ) - sumatoria).toFixed(2);
 		}else{
 			saldo= (parseFloat(sumaMontobrok) - sum).toFixed(2);
 		}

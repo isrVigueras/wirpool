@@ -562,7 +562,7 @@
 					<div class="col-md-5">
 						<label>Broker:</label>
 <!-- 						<input id="searchBroker" class="form-control form-control-sm" type="text" ng-model="buscaBroker" data-provide="typehead" autocomplete="off" onkeyup="javascript:this.value=this.value.toUpperCase();"> -->
-						<input id="searchBroker" class="form-control form-control-sm" type="text" ng-model="buscaBroker" data-provide="typehead" autocomplete="off" onkeyup="javascript:this.value=this.value.toUpperCase();"ng-required="true">
+						<input id="searchBroker" class="form-control form-control-sm" type="text" ng-model="buscaBroker" data-provide="typehead" autocomplete="off" ng-change="validaBroker(buscaBroker)" onkeyup="javascript:this.value=this.value.toUpperCase();"ng-required="true">
 					</div>
 					
 <!-- 					<div class="col-md-4"> -->
