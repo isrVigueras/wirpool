@@ -208,7 +208,7 @@ app.controller("clientController",['$http','$interval','$rootScope','usuarioserv
 			    updater:function (item) {
 			    	var ind=$scope.encontrados.indexOf(item);
 			    	$scope.clienteSeleccionado=true;
-			    	$scope.idclient= $scope.cliente[ind].id;
+			    	$scope.client.idBrocker= $scope.cliente[ind].id;
 			        return item;
 			    }
 			});
