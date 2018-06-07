@@ -429,6 +429,9 @@ public class OrdenDeTrabajoController {
 			otvo.setResponsable(u);
 		}
 		
+		List<Cliente> brockers= clientedao.get(ot.getListaBrockers());
+		otvo.setBrokers(brockers);
+		
 		List<Movimiento> mov = movimientodao.getByIds(ot.getMovimientos());
 		otvo.setMovimientos(mov);
 		List<Movimiento> com = movimientodao.getByIds(ot.getComisiones());

@@ -395,6 +395,7 @@ public class PDFot {
 				String nombre="Brocker";
 				cont++;
 				nombre = nombre + cont;
+				nombre = otvo.getBrokers().get(i).getNickname();
 				agregarCeldaSinBorde(nombre, font3, tablaComisiones, true);
 				agregarCeldaSinBorde(String.valueOf(porBrokers[i]), font3, tablaComisiones, true);
 //				agregarCeldaSinBorde("$" + String.valueOf(montoBrokers[i]), font3, tablaComisiones, true);
