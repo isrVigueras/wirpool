@@ -1199,7 +1199,7 @@ app.controller("OTsAddController",['$rootScope', '$route','$scope','$cookieStore
 		$scope.pago.cuenta="";
 		$scope.pago.banco="";
 		$scope.pago.monto= null;
-		$scope.pago.empresa=[];
+//		$scope.pago.empresa=null;
 		$scope.pago.referencia="";
 	}
 	
@@ -1558,6 +1558,7 @@ app.controller("ordenTrabajoController",['$rootScope', '$scope','$window', '$loc
 		}
 		$scope.limpiarMov();
 	}
+	
 	
 	//icon validar
 	$scope.validMov=function(){
