@@ -839,7 +839,7 @@ app.controller("OTsAddController",['$rootScope', '$route','$scope','$cookieStore
 	
 	
 	$scope.verificarSaldo=function(operacion){
-		
+//		$scope.OPCSaldo=$scope.datos.montoDes + $scope.datos.montoLic
 			var objs= operacionesMovimientosService.verificarSaldo(operacion, $scope.otVO, $scope.datos, $scope.operaciones,$scope.montoRetorno,$scope.sumaMontoBrok,$scope.tipoOP,$scope.datos.total,$scope.montorest,$scope.OPCSaldo);
 		
 		$scope.errorSaldo= objs.error;
@@ -1133,7 +1133,7 @@ app.controller("OTsAddController",['$rootScope', '$route','$scope','$cookieStore
 	$scope.guardarOT=function(){
 		if($scope.tablaPagos == true){
 			if($scope.datos.porLic != null || $scope.datos.porDes != null || $scope.datos.porBrok.length != 0){
-				if($scope.tablaOper == true ){
+				if($scope.tablaOper == true || $scope.datos.saldoMov == 0){
 //					&& $scope.tablaOperAsesor == true
 					for(var i in $scope.brokers){
 						$scope.datos.porBrok.push($scope.brokers[i].porBrok);

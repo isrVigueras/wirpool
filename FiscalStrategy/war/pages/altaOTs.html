@@ -159,23 +159,23 @@
 				<tbody>	
 					<tr>
 						<td>AJD</td>
-						<td><input style="width: 27%" type="number" min="0" ng-model="datos.porLic"   ng-change="calcularComisiones('Lic')" step="0.0001" id="porLic"></td>
+						<td><input style="width: 27%" type="number" min="0" ng-model="datos.porLic"   ng-change="calcularComisiones('Lic')" step="0.0001" id="porLic" ng-disabled="{{datos.porciento==0}}"></td>
 						<td></td>
-						<td><input style="width: 30%" type="number" min="0" ng-model="datos.montoLic" ng-change="calcularComisionesM('Lic')" step="0.0001"  id="AJC"> {{datos.montoLic | currency}}</td>
+						<td><input style="width: 30%" type="number" min="0" ng-model="datos.montoLic" ng-change="calcularComisionesM('Lic')" step="0.0001"  id="AJC" ng-disabled="{{datos.porciento==0}}"> {{datos.montoLic | currency}}</td>
 <!-- 						<td>{{datos.montoLic}}</td> -->
 					</tr>
 					<tr>
 						<td>J&A</td>
-						<td><input style="width: 27%" type="number" min="0" ng-model="datos.porDes"  ng-change="calcularComisiones('Des')" step="0.0001" id="porDes"></td>
+						<td><input style="width: 27%" type="number" min="0" ng-model="datos.porDes"  ng-change="calcularComisiones('Des')" step="0.0001" id="porDes" ng-disabled="{{datos.porciento==0}}"></td>
 						<td></td>
-						<td><input style="width: 30%" type="number" min="0" ng-model="datos.montoDes"ng-change="calcularComisionesM('Des') "step="0.0001" id="Des"> {{datos.montoDes | currency}}</td>
+						<td><input style="width: 30%" type="number" min="0" ng-model="datos.montoDes"ng-change="calcularComisionesM('Des') "step="0.0001" id="Des" ng-disabled="{{datos.porciento==0}}"> {{datos.montoDes | currency}}</td>
 <!-- 						<td>{{datos.montoDes}}</td> -->
 					</tr>
 					<tr ng-repeat="brok in brokers">
 						<td>{{brok.nombre}}</td>
-						<td><input style="width: 27%" type="number" min="0" ng-model="brok.porBrok"  ng-change="calcularComisiones('Broke')" step="0.0001" id="porbroke"></td>
+						<td><input style="width: 27%" type="number" min="0" ng-model="brok.porBrok"  ng-change="calcularComisiones('Broke')" step="0.0001" id="porbroke" ng-disabled="{{datos.porciento==0}}"></td>
 						<td></td>
-						<td><input style="width: 30%" type="number" min="0" ng-model="brok.montoBrok"ng-change="calcularComisionesM('Broke')" step="0.0001" id="broke"> {{brok.montoBrok | currency}}</td>
+						<td><input style="width: 30%" type="number" min="0" ng-model="brok.montoBrok"ng-change="calcularComisionesM('Broke')" step="0.0001" id="broke" ng-disabled="{{datos.porciento==0}}"> {{brok.montoBrok | currency}}</td>
 <!-- 						<td>{{brok.montoBrok}}</td> -->
 
 					</tr>
