@@ -187,8 +187,9 @@ app.controller("clientController",['$http','$interval','$rootScope','usuarioserv
 			$('#searchCLient').data('typeahead').source=$scope.encontrados;
 		});
 	}
+	
 	$scope.$watch('busca',function(){
-		if($scope.busca.length>3){
+		if($scope.busca.length>0){
 			$scope.buscar();
 		}
 	},true);

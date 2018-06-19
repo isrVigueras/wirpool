@@ -286,11 +286,12 @@
 			<div class="col-md-12">
 			<input type="checkbox" id="alert" checked>Enviar Notificacion<br>
 				<br>
-				<button class="btn" value="Guardar" ng-click="guardarOT()">Guardar</button>
+				<button class="btn" value="Guardar" ng-click="guardarOT()" ng-disabled="esconderBotones">Guardar</button>
 				<button ng-click="LimpiarTodo()" class="btn">Limpiar</button>
 			</div>
 		</div>
 	</form>
+	
 	<div id="snackbar"></div>
 </div>
 

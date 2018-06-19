@@ -108,16 +108,17 @@ app.controller("empresacontroller",['$rootScope','$scope','$window', '$location'
 		$("#btnno").on("click", function(){
 			$("#mdsino").modal('hide');
 		});
-//		cuentaservice.eliminarCuenta(cuenta).then(function(send) {	
-//				alert("Cuenta Eliminada");
-//				$location.path("/cuentas");
-//				$window.location.reload();
-//			}) 
-			
-		 
-		  
+		
 		
 	};
+	$scope.eliminarcc= function(cuenta){
+		cuentaservice.eliminarCuenta(cuenta).then(function(send) {	
+				alert("Cuenta Eliminada");
+//				$location.path("/cuentas");
+				$window.location.reload();
+			}) 
+			
+	}
 	$scope.ver = function(data) {
 		$scope.getempresa=data;
 		console.log($scope.getempresa);

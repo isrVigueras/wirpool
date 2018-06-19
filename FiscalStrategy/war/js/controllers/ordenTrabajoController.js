@@ -419,10 +419,12 @@ app.service("operacionesMovimientosService",['$http', '$q', function($http, $q){
 
 app.controller("OTsAddController",['$rootScope', '$route','$scope','$cookieStore', '$window', '$location', 'ordenTrabajoservice','cuentaservice','operacionesMovimientosService','userFactory','empresaservice','brockerservice', function($rootScope,$route, $scope, $cookieStore, $window, $location, ordenTrabajoservice,cuentaservice,operacionesMovimientosService, userFactory,empresaservice,brockerservice){
 	$rootScope.perfilUsuario = userFactory.getUsuarioPerfil();  //obtener perfl de usuario para pintar el menú al qe tiene acceso
+	$scope.esconderBotones=false;
 	empresaservice.load(1).then(function(data) {
 		$scope.empresa = data;
 		$scope.operaciones.monto=0;
-	})
+	});
+	
 	$scope.bancos = catalogoBancos();
 	$scope.tablaPagos= false;
 	$scope.tablaOper= false;
@@ -783,9 +785,9 @@ app.controller("OTsAddController",['$rootScope', '$route','$scope','$cookieStore
 
 
 	$scope.addPago=function(){
-		if($scope.datos.nombreCliente == null){
+//		if($scope.datos.nombreCliente == null){
 			datosCliente();
-		}
+//		}
 		var renglon= {empresa:$scope.pago.empresa,cliente:$scope.datos.nombreCliente, fecha:$scope.pago.fecha, banco:$scope.pago.banco, cuenta:$scope.pago.cuenta, monto:$scope.pago.monto, moneda:$scope.pago.moneda, referencia: $scope.pago.referencia}
 		$scope.otVO.pagos.push(renglon);
 		$scope.tablaPagos=true;
@@ -1129,8 +1131,8 @@ app.controller("OTsAddController",['$rootScope', '$route','$scope','$cookieStore
 		$scope.cheque =operacionesMovimientosService.detalleCheque(index, operacion, $scope.otVO, $scope.cheque);
 	}
 	
-	
 	$scope.guardarOT=function(){
+		$scope.esconderBotones=true;
 		if($scope.tablaPagos == true){
 			if($scope.datos.porLic != null || $scope.datos.porDes != null || $scope.datos.porBrok.length != 0){
 				if($scope.tablaOper == true || $scope.datos.saldoMov == 0){
@@ -1280,7 +1282,7 @@ app.controller("ordenTrabajoController",['$rootScope', '$scope','$window', '$loc
 			var infd= $scope.getIdbks[i];
 			$scope.idBrockerRest.push(infd);
 		}
-		console.log("linea 1261",$scope.getIdbk[0] );
+//		console.log("linea 1261",$scope.getIdbk[0] );
 		console.log(data);	
 		crearListaDeCheques();
 		
@@ -1315,9 +1317,18 @@ app.controller("ordenTrabajoController",['$rootScope', '$scope','$window', '$loc
 			for(var i=0; i<$scope.otvo.ot.montoBrok.length; i++){
 				$scope.sumaMontoBrok= ($scope.sumaMontoBrok) + ($scope.otvo.ot.montoBrok[i]);
 			}
+			var sumaMovimientos=0;
+			for(var i=0; i<$scope.otvo.movimientos.length; i++){
+				if($scope.otvo.movimientos[i].estatus!="CANCELADO"){
+					sumaMovimientos= (sumaMovimientos) + ($scope.otvo.movimientos[i].monto);
+				}
+			}
 			$scope.montoRetorno=(($scope.otvo.ot.retorno/100)*$scope.otvo.ot.importe).toFixed(2);
 			$scope.montosTotal = parseInt($scope.otvo.ot.montoLic)+ parseInt($scope.otvo.ot.montoDes) + parseInt($scope.sumaMontoBrok) + parseInt($scope.montoRetorno);
 			$scope.montoComi = ($scope.otvo.ot.montoLic)+ ($scope.otvo.ot.montoDes) + ($scope.sumaMontoBrok);
+			
+			$scope.otvo.ot.saldoMov = sumaMontoPagos - $scope.montoComi - sumaMovimientos;
+			
 		}else{
 			$scope.tipoOT="ca";
 		}
