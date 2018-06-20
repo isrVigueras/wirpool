@@ -94,85 +94,92 @@ public class OrdenDeTrabajoController {
 		OrdenDeTrabajo ot= otvo.getOt();
 		HttpSession sesion= req.getSession();
 		Usuario user=(Usuario) sesion.getAttribute("user");
-		if(user.getPerfil().compareTo("Ejecutivo")==0 || user.getPerfil().compareTo("AdministradorRoot")==0 || user.getPerfil().compareTo("Administrador")==0){
-			ot.setIdResponsable(user.getId());
-			ot.setFolioImpresion(0);
-			FolioOT generaFolio = new FolioOT ();
-			
-			if(foliodao.getAll().size() > 0){
-				List<FolioOT> numfolio = foliodao.getAll();
-				Long nuevoFolio = numfolio.get(0).getNoFolio() + 1;
-				generaFolio.setNoFolio(nuevoFolio);
-				foliodao.save(generaFolio);
-				ot.setId(nuevoFolio);
-			}else{
-				foliodao.save(generaFolio);
-				ot.setId(generaFolio.getNoFolio());
-			}
-			
-			if(otvo.getMovimientos()!=null){
-				List<Movimiento> mM = otvo.getMovimientos();
-				for(int i=0;i<mM.size();i++){
-					mM.get(i).setFechaCreacion(new Date());
-					mM.get(i).setIdOrden(generaFolio.getNoFolio());
-					movimientodao.save(mM.get(i));
-					ot.getMovimientos().add(mM.get(i).getId());
+		if(user!=null){
+			if(user.getPerfil().compareTo("Ejecutivo")==0 || user.getPerfil().compareTo("AdministradorRoot")==0 || user.getPerfil().compareTo("Administrador")==0){
+				ot.setIdResponsable(user.getId());
+				ot.setFolioImpresion(0);
+				FolioOT generaFolio = new FolioOT ();
+				
+				if(foliodao.getAll().size() > 0){
+					List<FolioOT> numfolio = foliodao.getAll();
+					Long nuevoFolio = numfolio.get(0).getNoFolio() + 1;
+					generaFolio.setNoFolio(nuevoFolio);
+					foliodao.save(generaFolio);
+					ot.setId(nuevoFolio);
+				}else{
+					foliodao.save(generaFolio);
+					ot.setId(generaFolio.getNoFolio());
 				}
-			}
-			
-			if(otvo.getComisiones() != null){
-				List<Movimiento> mC = otvo.getComisiones();
-				for(int i=0;i<mC.size();i++){
-					mC.get(i).setFechaCreacion(new Date());
-					mC.get(i).setIdOrden(generaFolio.getNoFolio());
-					movimientodao.save(mC.get(i));
-					ot.getComisiones().add(mC.get(i).getId());
+				
+				if(otvo.getMovimientos()!=null){
+					List<Movimiento> mM = otvo.getMovimientos();
+					for(int i=0;i<mM.size();i++){
+						mM.get(i).setFechaCreacion(new Date());
+						mM.get(i).setIdOrden(generaFolio.getNoFolio());
+						movimientodao.save(mM.get(i));
+						ot.getMovimientos().add(mM.get(i).getId());
+					}
 				}
-			}
-			otdao.save(ot);
-			
-			List<PagoRecibido> pagos = otvo.getPagos();
-			PagoRecibido pago;
-			for(int i=0; i<pagos.size(); i++){
-				pago= pagos.get(i);
-				pago.setOt(ot.getId());
-				if(pago.getReferencia()!=null){
-					RegistroPago reg= regPagodao.buscar(pago.getReferencia());
-					if(reg!=null){
-						if(reg.getBanco().compareToIgnoreCase(pago.getBanco())==0 && reg.getEstatus()==null && pago.getMonto()== reg.getMonto() && reg.getCuenta().compareTo(pago.getCuenta())==0){
-							reg.setEstatus("ASIGNADO");
-							reg.setOt(ot.getId());
-							reg.setValidado(true);
-							pago.setValidado(true);
-							regPagodao.save(reg);
+				
+				if(otvo.getComisiones() != null){
+					List<Movimiento> mC = otvo.getComisiones();
+					for(int i=0;i<mC.size();i++){
+						mC.get(i).setFechaCreacion(new Date());
+						mC.get(i).setIdOrden(generaFolio.getNoFolio());
+						movimientodao.save(mC.get(i));
+						ot.getComisiones().add(mC.get(i).getId());
+					}
+				}
+				otdao.save(ot);
+				
+				List<PagoRecibido> pagos = otvo.getPagos();
+				PagoRecibido pago;
+				pagodao.save(pagos);
+				for(int i=0; i<pagos.size(); i++){
+					pago= pagos.get(i);
+					pago.setOt(ot.getId());
+					if(pago.getReferencia()!=null){
+						RegistroPago reg= regPagodao.buscar(pago.getReferencia());
+						if(reg!=null){
+							if(reg.getBanco().compareToIgnoreCase(pago.getBanco())==0 && reg.getEstatus()==null && pago.getMonto()== reg.getMonto() && reg.getCuenta().compareTo(pago.getCuenta())==0){
+								reg.setEstatus("ASIGNADO");
+								reg.setOt(ot.getId());
+								reg.setValidado(true);
+								reg.setPagoRelacionado(pago.getId());
+								pago.setValidado(true);
+								regPagodao.save(reg);
+							}
 						}
 					}
 				}
-			}
-			pagodao.save(pagos);
-			  
-//			if(otvo.getCliente() != null){
-//				Cliente cliente= otvo.getCliente();
-//				clientedao.save(cliente);
-//			}
-//			
-//			if(otvo.getBroker() != null){
-//				Cliente brocker= otvo.getBroker();
-//				clientedao.save(brocker);
-//			}
-	
-			if(otvo.isNotificar()){
-				List<Usuario> lista= usuariodao.consultarPorPerfilAll("Administrador");
-				for(Usuario us:lista){
-					Notificacion notificacion = new Notificacion();
-					notificacion.setResponsabe(us.getId());
-					notificacion.setIdOt(ot.getId());
-					notificacion.setMensaje("Falta editar y validar movimientos");
-					notificaciondao.save(notificacion);
+				pagodao.save(pagos);
+				  
+	//			if(otvo.getCliente() != null){
+	//				Cliente cliente= otvo.getCliente();
+	//				clientedao.save(cliente);
+	//			}
+	//			
+	//			if(otvo.getBroker() != null){
+	//				Cliente brocker= otvo.getBroker();
+	//				clientedao.save(brocker);
+	//			}
+		
+				if(otvo.isNotificar()){
+					List<Usuario> lista= usuariodao.consultarPorPerfilAll("Administrador");
+					for(Usuario us:lista){
+						Notificacion notificacion = new Notificacion();
+						notificacion.setResponsabe(us.getId());
+						notificacion.setIdOt(ot.getId());
+						notificacion.setMensaje("Falta editar y validar movimientos");
+						notificaciondao.save(notificacion);
+					}
 				}
+			}else{
+				String error = "Usuario sin permisos para realizar esta accion";
+				res.getWriter().print(JsonConvertidor.toJson(error));
 			}
 		}else{
-			String error = "Usuario sin permisos para realizar esta accion";
+			String error = "Su sesión se ha cerrado, por favor ingrese de nuevo";
 			res.getWriter().print(JsonConvertidor.toJson(error));
 		}
 	}

@@ -8,6 +8,9 @@ public class RegistroPago extends PagoRecibido{
 
 	@Index
 	private String estatus;
+	
+	@Index
+	private Long pagoRelacionado;
 
 	public RegistroPago(){
 		this.estatus= "PENDIENTE";
@@ -20,6 +23,13 @@ public class RegistroPago extends PagoRecibido{
 	public void setEstatus(String estatus) {
 		this.estatus = estatus;
 	}
-	
+
+	public Long getPagoRelacionado() {
+		return pagoRelacionado;
+	}
+
+	public void setPagoRelacionado(Long pagoRelacionado) {
+		this.pagoRelacionado = pagoRelacionado;
+	}
 	
 }

@@ -631,8 +631,8 @@ app.controller("OTsAddController",['$rootScope', '$route','$scope','$cookieStore
 			    		}
 			    	}
 			    	$scope.datos.idCliente= $scope.cliente[ind].id;
-			    	$scope.idBroker=$scope.cliente[ind].idBrocker;
-			    	console.log("se ha obtenido id del Broker", $scope.idBroker);
+//			    	$scope.idBroker=[$scope.cliente[ind].idBrocker];
+//			    	console.log("se ha obtenido id del Broker", $scope.idBroker);
 			        return item;
 			    }
 			});
