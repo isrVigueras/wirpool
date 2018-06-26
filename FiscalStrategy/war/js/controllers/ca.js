@@ -285,6 +285,7 @@ app.controller("CAController",['$rootScope', '$scope','$cookieStore', '$window',
 	
 	$rootScope.perfilUsuario = userFactory.getUsuarioPerfil();  //obtener perfl de usuario para pintar el menú al qe tiene acceso
 	$scope.bancos = catalogoBancos();
+	$scope.clienteLista=[];
 	$scope.tablaPagos= false;
 	$scope.tablaOper= false;
 	$scope.tablaOperAsesor=false;
@@ -319,31 +320,48 @@ app.controller("CAController",['$rootScope', '$scope','$cookieStore', '$window',
 		});
 		}
 	$scope.buscar=function(){
-		CBService.buscarClientes($scope.busca).then(function(data){
-			
-			$scope.encontrados=[];
-			for(var i=0; i< data.length; i++){
-				$scope.encontrados.push(data[i].nickname);
+		$scope.clienteLista=[];
+		if($scope.ya){
+			$scope.ya=false;
+//			$scope.clienteLista=[];
+		}else{
+			CBService.buscarClientes($scope.busca).then(function(data){
 				
-			}
-			$scope.cliente=data;
-//			$scope.tipos=data.tipos;
-			
-			$('#searchBox').typeahead({
-
-			    source: $scope.encontrados,
-
-			    updater:function (item) {
-			    	var ind=$scope.encontrados.indexOf(item);
-			    	$scope.clienteSeleccionado=true;
-			    	$scope.datos.idCliente= $scope.cliente[ind].id;
-			    	$scope.nombre=$scope.cliente[ind].nickname;
-			    	$scope.getIndex($scope.datos.idCliente);
-			        return item;
-			    }
+				$scope.encontrados=[];
+				for(var i=0; i< data.length; i++){
+					$scope.encontrados.push(data[i].nickname);
+					
+				}
+				$scope.clienteLista=data;
+				$scope.cliente=data;
+	//			$scope.tipos=data.tipos;
+	//			
+	//			$('#searchBox').typeahead({
+	//
+	//			    source: $scope.encontrados,
+	//
+	//			    updater:function (item) {
+	//			    	var ind=$scope.encontrados.indexOf(item);
+	//			    	$scope.clienteSeleccionado=true;
+	//			    	$scope.datos.idCliente= $scope.cliente[ind].id;
+	//			    	$scope.nombre=$scope.cliente[ind].nickname;
+	//			    	$scope.getIndex($scope.datos.idCliente);
+	//			        return item;
+	//			    }
+	//			});
+	//			$('#searchBox').data('typeahead').source=$scope.encontrados;
 			});
-			$('#searchBox').data('typeahead').source=$scope.encontrados;
-		});
+		}
+	}
+	
+	$scope.clienteClick= function(cliente){
+		$scope.ya= true;
+		$scope.clienteSeleccionado=true;
+    	$scope.datos.idCliente= cliente.id;
+    	$scope.nombre=cliente.nickname;
+    	$scope.getIndex(cliente.id);
+    	$scope.busca=cliente.nickname;
+    	
 	}
 	
 	$scope.cargaResguardos=function(id){

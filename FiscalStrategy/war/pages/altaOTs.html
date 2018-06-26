@@ -74,12 +74,13 @@
  					
 				</div>
 				<div class="row">
-				<div class="col-md-6">
+				
+					<div class="col-md-6">
 						<label>Referencia:</label> 
 						<input class="form-control form-control-sm" ng-model="pago.referencia" type="text" min="0" onkeyup="javascript:this.value=this.value.toUpperCase();" ><br>
 					</div>
 				 </div>
-				<div align="right"><button  class="btn" ng-click="myForm.$valid && addPago()" ng-enabled="datos.saldoMov==0 && datos.saldoCom==0"> Agregar Pago</button></div> 
+				<div align="right"><button  class="btn" ng-show="clienteSeleccionado" ng-click="myForm.$valid && addPago()" ng-enabled="datos.saldoMov==0 && datos.saldoCom==0"> Agregar Pago</button></div> 
 				<br>
 			</div>
 			<div ng-show="tablaPagos">

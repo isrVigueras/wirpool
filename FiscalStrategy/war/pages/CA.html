@@ -1,138 +1,178 @@
 <section class="jumbotron">
 	<div class="container">
 		<h2>Orden de Trabajo CA</h2>
-		<submenu perfil="perfilUsuario"/>
+		<submenu perfil="perfilUsuario" />
 	</div>
 </section>
 
-<div class="container" >
+<div class="container">
 	<form id="forma" name="myForm">
-			<div class="Dlabel"><label>Pago</label></div>
-			<br>
-			<div>
-				<div class="row">
-<!-- 					<div class="col-md-4"> -->
-<!-- 						<label>Cliente:</label> -->
-<!-- 						<select name="cliente" class="form-control form-control-sm" ng-required="true"  ng-model="datos.idCliente" ng-disabled="clienteSeleccionado" ng-change="getIndex($index)" id="bc"> -->
-<!-- 							<option ng-repeat="c in cliente" value="{{c.id}}" >{{c.nickname}}</option> -->
-<!-- 						</select> -->
-<!-- 					</div> -->
-					<div class="col-md-3">
-						<label>Cliente:</label>
-<!-- 						<select name="cliente" class="form-control form-control-sm" ng-required="true"  ng-model="datos.idCliente" ng-disabled="clienteSeleccionado"> -->
-<!-- 							<option ng-repeat="c in cliente" value="{{c.id}}" >{{c.nickname}}</option> -->
-<!-- 						</select> -->
-						<input id="searchBox" class="form-control form-control-sm" type="text" ng-model="busca" data-provide="typehead" autocomplete="off" onkeyup="javascript:this.value=this.value.toUpperCase();">
-					</div>
-					
-					<div class="col-md-3">
-					
-						<label>Cuenta Acomulativa MXN:</label> 
-						<input type="text" class="form-control form-control-sm" ng-model="cb.saldo | currency" value="{{cb.saldo}}" ng-disabled="true">
-						
-					</div>
-					<div class="col-md-3 ">
-					
-						<label>Cuenta Acomulativa USD:</label> 
-						<input type="text" class="form-control form-control-sm" ng-model="cb.saldoUSD | currency" value="{{cb.saldo}}" ng-disabled="true">
-						
-					</div>
-					<div class="col-md-3 ">
-					<br>
-					<a ng-click="cargaResguardos(cb.id)" data-target="#modalResguardo" data-toggle="modal" ng-show="clienteSeleccionado">Historial de Resguardo.</a>
-					</div>
-					
+		<div class="Dlabel">
+			<label>Pago</label>
+		</div>
+		<br>
+		<div>
+			<div class="row">
+				<!-- 					<div class="col-md-4"> -->
+				<!-- 						<label>Cliente:</label> -->
+				<!-- 						<select name="cliente" class="form-control form-control-sm" ng-required="true"  ng-model="datos.idCliente" ng-disabled="clienteSeleccionado" ng-change="getIndex($index)" id="bc"> -->
+				<!-- 							<option ng-repeat="c in cliente" value="{{c.id}}" >{{c.nickname}}</option> -->
+				<!-- 						</select> -->
+				<!-- 					</div> -->
+				<div class="col-md-3">
+					<label>Cliente:</label>
+					<!-- 						<select name="cliente" class="form-control form-control-sm" ng-required="true"  ng-model="datos.idCliente" ng-disabled="clienteSeleccionado"> -->
+					<!-- 							<option ng-repeat="c in cliente" value="{{c.id}}" >{{c.nickname}}</option> -->
+					<!-- 						</select> -->
+					<input id="searchBox" class="form-control form-control-sm"
+						type="text" ng-model="busca"
+						autocomplete="off"
+						onkeyup="javascript:this.value=this.value.toUpperCase();">
+					<ul class="dropdown-menu"
+						style="top: 64px; left: 15px; display:block" ng-show="clienteLista.length>0 && !ya">
+						<li data-value="{{finded.id}}" class="" ng-repeat="finded in clienteLista" ng-click="clienteClick(finded)"> <a>{{finded.nickname}}</a></li>
+<!-- 						<li data-value="RODRIGO GONZALEZ ." class="active"><a -->
+<!-- 							href="#"><strong>RO</strong>DRIGO GONZALEZ .</a></li> -->
+<!-- 						<li data-value="RODRIGO DE LA PIEDRA ORTIZ"><a href="#"><strong>RO</strong>DRIGO -->
+<!-- 								DE LA PIEDRA ORTIZ</a></li> -->
+<!-- 						<li data-value="RODRIGO GONZALEZ ROSAS"><a href="#"><strong>RO</strong>DRIGO -->
+<!-- 								GONZALEZ <strong>RO</strong>SAS</a></li> -->
+<!-- 						<li data-value="RODRIGO SEGOVIA OROZCO"><a href="#"><strong>RO</strong>DRIGO -->
+<!-- 								SEGOVIA O<strong>RO</strong>ZCO</a></li> -->
+					</ul>
 				</div>
-				<br>
-				<div class="row">				
-					<div class="col-md-2">
-						<label>Monto:</label> 
-						<input name="monto" class="form-control form-control-sm" ng-model="pago.monto" type="number" min="0" step="0.01">{{pago.monto | currency}}<br>
-					</div>
-					<!--    	   ^([A-ZÑ\x26]{3,4}([0-9]{2})(0[1-9]|1[0-2])(0[1-9]|1[0-9]|2[0-9]|3[0-1]))([A-Z\d]{3})?$ -->
-					<div class="col-md-2">
-						<label>Moneda:</label> 
-						<select name="moneda" class="form-control form-control-sm" ng-model="pago.moneda" ng-required="true">
-							<option>MXN</option>
-							<option>USD</option>
-							<option>EUR</option>
-							<option>CAD</option>
-						</select>
-					</div>
- 					<div class="col-md-2">
-						<label>Fecha de Pago:</label> 
-						<input input-date class="form-control form-control-sm ng-empty ng-dirty ng-touched ng-invalid ng-invalid-date"
-							ng-model="pago.fecha" type="date" ng-required="true" /> 
-					</div>
- <!-- 					<div class="col-md-2" align="right">
+
+				<div class="col-md-3">
+
+					<label>Cuenta Acomulativa MXN:</label> <input type="text"
+						class="form-control form-control-sm"
+						ng-model="cb.saldo | currency" value="{{cb.saldo}}"
+						ng-disabled="true">
+
+				</div>
+				<div class="col-md-3 ">
+
+					<label>Cuenta Acomulativa USD:</label> <input type="text"
+						class="form-control form-control-sm"
+						ng-model="cb.saldoUSD | currency" value="{{cb.saldo}}"
+						ng-disabled="true">
+
+				</div>
+				<div class="col-md-3 ">
+					<br> <a ng-click="cargaResguardos(cb.id)"
+						data-target="#modalResguardo" data-toggle="modal"
+						ng-show="clienteSeleccionado">Historial de Resguardo.</a>
+				</div>
+
+			</div>
+			<br>
+			<div class="row">
+				<div class="col-md-2">
+					<label>Monto:</label> <input name="monto"
+						class="form-control form-control-sm" ng-model="pago.monto"
+						type="number" min="0" step="0.01">{{pago.monto |
+					currency}}<br>
+				</div>
+				<!--    	   ^([A-ZÑ\x26]{3,4}([0-9]{2})(0[1-9]|1[0-2])(0[1-9]|1[0-9]|2[0-9]|3[0-1]))([A-Z\d]{3})?$ -->
+				<div class="col-md-2">
+					<label>Moneda:</label> <select name="moneda"
+						class="form-control form-control-sm" ng-model="pago.moneda"
+						ng-required="true">
+						<option>MXN</option>
+						<option>USD</option>
+						<option>EUR</option>
+						<option>CAD</option>
+					</select>
+				</div>
+				<div class="col-md-2">
+					<label>Fecha de Pago:</label> <input input-date
+						class="form-control form-control-sm ng-empty ng-dirty ng-touched ng-invalid ng-invalid-date"
+						ng-model="pago.fecha" type="date" ng-required="true" />
+				</div>
+				<!-- 					<div class="col-md-2" align="right">
 						<button  class="btn" ng-click="myForm.$valid && addPago()"> Agregar Pago</button>
 					</div>  -->
-				</div>
-				<div align="right"><button  class="btn" ng-click="myForm.$valid && addPago()" ng-enabled="datos.saldoMov==0 && datos.saldoCom==0"> Agregar Pago</button></div> 
-				<br>
 			</div>
-			<div ng-show="tablaPagos">
-				<div class="Dlabel"><label>Pagos Agregados</label></div>
-				<table style="width: 100%" class="table table-stripped">
-					<thead>
-						<tr>
-							<th align="center">Cliente</th>
-							<th align="center"> Fecha de Pago </th>
-							<th align="center">Monto</th>
-							<th align="center">Moneda</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr ng-repeat="p in otVO.pagos">
-							<td>{{p.cliente}}</td>
-							<td>{{p.fecha | date: "dd MMMM yyyy hh:mm a"}}</td>
-							<td>{{p.monto | currency}}</td>
-							<td>{{p.moneda}}</td>
-							<td><button class="btn btn-small btn-info"  ng-click="eliminarRenglon($index)" title="Eliminar Pago">
-								<span class="glyphicon glyphicon-remove"></span></button>
-							</td>
-						</tr>
-					</tbody>
-				</table>
+			<div align="right">
+				<button class="btn" ng-click="myForm.$valid && addPago()"
+					ng-enabled="datos.saldoMov==0 && datos.saldoCom==0">
+					Agregar Pago</button>
 			</div>
+			<br>
+		</div>
+		<div ng-show="tablaPagos">
+			<div class="Dlabel">
+				<label>Pagos Agregados</label>
+			</div>
+			<table style="width: 100%" class="table table-stripped">
+				<thead>
+					<tr>
+						<th align="center">Cliente</th>
+						<th align="center">Fecha de Pago</th>
+						<th align="center">Monto</th>
+						<th align="center">Moneda</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr ng-repeat="p in otVO.pagos">
+						<td>{{p.cliente}}</td>
+						<td>{{p.fecha | date: "dd MMMM yyyy hh:mm a"}}</td>
+						<td>{{p.monto | currency}}</td>
+						<td>{{p.moneda}}</td>
+						<td><button class="btn btn-small btn-info"
+								ng-click="eliminarRenglon($index)" title="Eliminar Pago">
+								<span class="glyphicon glyphicon-remove"></span>
+							</button></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
 		<br>
 
-		
+
 		<!--Operacion Cliente -->
 		<div>
 			<div class="Dlabel">
 				<div class="row">
-					<div class="col-md-6" align="left"><label>Instrucciones Operaci&oacute;n Cliente</label></div>
+					<div class="col-md-6" align="left">
+						<label>Instrucciones Operaci&oacute;n Cliente</label>
+					</div>
 					<div class="col-md-6" align="right">
-						<button class="btn btn-small" data-toggle="modal" data-target="#myModalOper" >Agregar</button>
+						<button class="btn btn-small" data-toggle="modal"
+							data-target="#myModalOper">Agregar</button>
 					</div>
 				</div>
 			</div>
 			<br>
-			<table style="width: 100%" class="table table-stripped" ng-show="tablaOper">
+			<table style="width: 100%" class="table table-stripped"
+				ng-show="tablaOper">
 				<thead>
 					<tr>
 						<th>Operaci&oacute;n</th>
-						<th align="center"> Descripci&oacute;n </th>
-						<th align="center"> Monto</th>
-						<th align="center"> Estatus</th>
+						<th align="center">Descripci&oacute;n</th>
+						<th align="center">Monto</th>
+						<th align="center">Estatus</th>
 						<th></th>
 					</tr>
 				</thead>
 				<tbody>
 					<tr ng-repeat="op in otVO.movimientos">
 						<td>{{op.tipo}}</td>
-						<td>{{op.descripcion}}</td>  
+						<td>{{op.descripcion}}</td>
 						<td>{{op.monto | currency}}</td>
 						<td>{{op.estatus}}</td>
-						<td><button class="btn btn-small btn-info"  ng-click="eliminarRenglonICliente($index)" title="Eliminar Instruccion">
-								<span class="glyphicon glyphicon-remove"></span></button></td>
-						<td>
-						 <a ng-show="op.tipo=='Cheque'" data-toggle="modal" data-target="#myModalCheque" ng-click="detalleCheque($index, 'OPC')"><b>Detalle</b></a></td>
+						<td><button class="btn btn-small btn-info"
+								ng-click="eliminarRenglonICliente($index)"
+								title="Eliminar Instruccion">
+								<span class="glyphicon glyphicon-remove"></span>
+							</button></td>
+						<td><a ng-show="op.tipo=='Cheque'" data-toggle="modal"
+							data-target="#myModalCheque"
+							ng-click="detalleCheque($index, 'OPC')"><b>Detalle</b></a></td>
 					</tr>
 					<tr>
 						<td></td>
-						<td align="right">Saldo Movimientos: </td>
+						<td align="right">Saldo Movimientos:</td>
 						<td>{{datos.saldoMov}}</td>
 						<td></td>
 						<td></td>
@@ -140,8 +180,8 @@
 				</tbody>
 			</table>
 		</div>
-		
-	<!-- Botones de pie de pantalla -->	
+
+		<!-- Botones de pie de pantalla -->
 		<hr>
 		<div class="row" align="center">
 			<div class="col-md-12">
@@ -154,206 +194,235 @@
 	<div id="snackbar"></div>
 </div>
 
-  <!-- Modal AddOper	-->
-  <div class="modal fade" id="myModalOper" tabindex="-1" data-backdrop="static" role="dialog" aria-labelledby="myModalOper" aria-hidden="true">                
-      <div class="modal-dialog" id="mdialTamanio">
-        <div class="modal-content">
-          <div class="modal-header">
-             <p class="modal-title" id="myModalLabel">Instrucciones Operacion Cliente</p>          
-          </div>
-          <div class="modal-body">
-	          <form>
+<!-- Modal AddOper	-->
+<div class="modal fade" id="myModalOper" tabindex="-1"
+	data-backdrop="static" role="dialog" aria-labelledby="myModalOper"
+	aria-hidden="true">
+	<div class="modal-dialog" id="mdialTamanio">
+		<div class="modal-content">
+			<div class="modal-header">
+				<p class="modal-title" id="myModalLabel">Instrucciones Operacion
+					Cliente</p>
+			</div>
+			<div class="modal-body">
+				<form>
 					<div class="row">
 						<div class="col-md-1"></div>
-	    				<div class="col-md-2">
-					    	<label class="control-label">Tipo de Operaci&oacute;n:</label>
-					    </div>
-					    <div class="col-md-4">
-			        		<select name="cuentas" class="form-control  mb-2"  ng-required="true" ng-model="operaciones.tipo" ng-change="isResguardo('OPC')" ng-enabled="tipoResguardo">
-				 				<option ng-repeat="op in tiposOp">{{op.nombre}}</option>
-				 			
-				 			</select>
-				  		</div>
-				  		<div class="col-md-1" align="right">
-				  			<label class="control-label">Monto: </label>
-				  		</div>
-				  		<div class="col-md-3">
-	 						<input  class="form-control  mb-2" type="number" min="1" ng-required="true" ng-model="operaciones.monto"  step="0.01" ng-change="verificarSaldo('OPC')" ng-disabled="tipoResguardo">{{operaciones.monto | currency}}		
-				  		</div>
-				  		<div class="col-md-1"></div>
-				  	</div> 
-				  	<br>
-				  	<div class="row">
-				  		<div class="col-md-1"></div>
-				  		<div class="col-md-2">
-				  			<label class="control-label">Descripci&oacute;n:</label>
-				  		</div>
-				  		<div class="col-md-8">
-							<input class="form-control  mb-2" type="text" ng-required="true"  ng-model="operaciones.descripcion"  placeholder="Detalle de Operacion.." ng-disabled="tipoResguardo" onkeyup="javascript:this.value=this.value.toUpperCase();">			
-				  		</div>				
-				  		<div class="col-md-1"></div>	
+						<div class="col-md-2">
+							<label class="control-label">Tipo de Operaci&oacute;n:</label>
+						</div>
+						<div class="col-md-4">
+							<select name="cuentas" class="form-control  mb-2"
+								ng-required="true" ng-model="operaciones.tipo"
+								ng-change="isResguardo('OPC')" ng-enabled="tipoResguardo">
+								<option ng-repeat="op in tiposOp">{{op.nombre}}</option>
+
+							</select>
+						</div>
+						<div class="col-md-1" align="right">
+							<label class="control-label">Monto: </label>
+						</div>
+						<div class="col-md-3">
+							<input class="form-control  mb-2" type="number" min="1"
+								ng-required="true" ng-model="operaciones.monto" step="0.01"
+								ng-change="verificarSaldo('OPC')" ng-disabled="tipoResguardo">{{operaciones.monto
+							| currency}}
+						</div>
+						<div class="col-md-1"></div>
+					</div>
+					<br>
+					<div class="row">
+						<div class="col-md-1"></div>
+						<div class="col-md-2">
+							<label class="control-label">Descripci&oacute;n:</label>
+						</div>
+						<div class="col-md-8">
+							<input class="form-control  mb-2" type="text" ng-required="true"
+								ng-model="operaciones.descripcion"
+								placeholder="Detalle de Operacion.." ng-disabled="tipoResguardo"
+								onkeyup="javascript:this.value=this.value.toUpperCase();">
+						</div>
+						<div class="col-md-1"></div>
 					</div>
 					<div ng-show="operaciones.tipo=='Cheque'">
 						<hr>
-						<div class="row" >
-							<div class="col-md-1"><label class="control-label">Detalle:</label></div>
+						<div class="row">
+							<div class="col-md-1">
+								<label class="control-label">Detalle:</label>
+							</div>
 						</div>
-						<div class="row" >
+						<div class="row">
 							<div class="col-md-1"></div>
-					  		<div class="col-md-2">
-					  			<label class="control-label">Fecha de Emisi&oacute;n: </label>
-					  		</div>
-					  		<div class="col-md-3">
-								<input input-date class="form-control form-control-sm ng-empty ng-dirty ng-touched ng-invalid ng-invalid-date"
-									ng-model="operaciones.fEmision" type="date" ng-required="true" />			
-					  		</div>
-					  		<div class="col-md-2" align="right">
-					  			<label class="control-label">P&aacute;guese a: </label>
-					  		</div>
-					  		<div class="col-md-3">
-								<input class="form-control  mb-2" type="text" ng-required="true"  ng-model="operaciones.pagarA" onkeyup="javascript:this.value=this.value.toUpperCase();">			
-					  		</div>
-					  		<div class="col-md-1"></div>				
+							<div class="col-md-2">
+								<label class="control-label">Fecha de Emisi&oacute;n: </label>
+							</div>
+							<div class="col-md-3">
+								<input input-date
+									class="form-control form-control-sm ng-empty ng-dirty ng-touched ng-invalid ng-invalid-date"
+									ng-model="operaciones.fEmision" type="date" ng-required="true" />
+							</div>
+							<div class="col-md-2" align="right">
+								<label class="control-label">P&aacute;guese a: </label>
+							</div>
+							<div class="col-md-3">
+								<input class="form-control  mb-2" type="text" ng-required="true"
+									ng-model="operaciones.pagarA"
+									onkeyup="javascript:this.value=this.value.toUpperCase();">
+							</div>
+							<div class="col-md-1"></div>
 						</div>
 						<br>
 						<div class="row">
 							<div class="col-md-1"></div>
 							<div class="col-md-2">
-					  			<label class="control-label">Monto con Letra: </label>
-					  		</div>
-					  		<div class="col-md-8">
-								<input class="form-control  mb-2" type="text" ng-required="true"  ng-model="operaciones.montoLetra" placeholder="Escriba el monto indicado arriba con letra  M.N."onkeyup="javascript:this.value=this.value.toUpperCase();">			
-					  		</div>
-					  		<div class="col-md-1"></div>	
+								<label class="control-label">Monto con Letra: </label>
+							</div>
+							<div class="col-md-8">
+								<input class="form-control  mb-2" type="text" ng-required="true"
+									ng-model="operaciones.montoLetra"
+									placeholder="Escriba el monto indicado arriba con letra  M.N."
+									onkeyup="javascript:this.value=this.value.toUpperCase();">
+							</div>
+							<div class="col-md-1"></div>
 						</div>
 					</div>
-					
+
 					<br>
 					<div align="center">{{errorSaldo}}</div>
 					<br>
 					<div class="row" align="center">
-						<button class="btn btn-small" data-dismiss="modal" ng-disabled="dis"   ng-click="addOper('OPC')" >Guardar</button>
+						<button class="btn btn-small" data-dismiss="modal"
+							ng-disabled="dis" ng-click="addOper('OPC')">Guardar</button>
 					</div>
-	          </form>
-		  </div>
+				</form>
+			</div>
 			<br>
-      	   <div class="modal-footer">
-        		<button type="button" class="btn btn-default" data-dismiss="modal"  ng-click="limpiaOperaciones()">Cerrar</button>
-      		</div>
-        </div>
-      </div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal"
+					ng-click="limpiaOperaciones()">Cerrar</button>
+			</div>
+		</div>
+	</div>
 </div>
 
 
 <!-- Detalle de Cheques -->
 <div id="myModalCheque" class="modal fade" role="dialog">
-  <div class="modal-dialog">
+	<div class="modal-dialog">
 
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal">&times;</button>
-        <h4 class="modal-title">Detalle del Cheque</h4>
-      </div>
-      <div class="modal-body">
-			<div class="row" >
-				<div class="col-sm-1" ><label class="control-label">Monto: </label></div>
-				<div class="col-sm-3" > {{cheque.monto | currency}}</div>
-				<div class="col-sm-3" align="right"><label class="control-label">Fecha de Emisi&oacute;n:  </label></div>
-				<div class="col-sm-5">{{cheque.fEmision}}</div>
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal">&times;</button>
+				<h4 class="modal-title">Detalle del Cheque</h4>
 			</div>
-			<br>
-			<div class="row">
-				<div class="col-sm-3" ><label class="control-label">Monto con Letra: </label></div>
-				<div class="col-sm-9" >{{cheque.montoLetra}}</div>
+			<div class="modal-body">
+				<div class="row">
+					<div class="col-sm-1">
+						<label class="control-label">Monto: </label>
+					</div>
+					<div class="col-sm-3">{{cheque.monto | currency}}</div>
+					<div class="col-sm-3" align="right">
+						<label class="control-label">Fecha de Emisi&oacute;n: </label>
+					</div>
+					<div class="col-sm-5">{{cheque.fEmision}}</div>
+				</div>
+				<br>
+				<div class="row">
+					<div class="col-sm-3">
+						<label class="control-label">Monto con Letra: </label>
+					</div>
+					<div class="col-sm-9">{{cheque.montoLetra}}</div>
+				</div>
+				<br>
+				<div class="row">
+					<div class="col-sm-3">
+						<label class="control-label">P&aacute;guese a:</label>
+					</div>
+					<div class="col-sm-9">{{cheque.pagarA}}</div>
+				</div>
 			</div>
-			<br>
-			<div class="row" >
-				<div class="col-sm-3" ><label class="control-label">P&aacute;guese a:</label></div>
-		  		<div class="col-sm-9" >{{cheque.pagarA}}</div>					 
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
 			</div>
-	 </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-      </div>
-    </div>
+		</div>
 
-  </div>
+	</div>
 </div>
-   
-   <!-- Modal Historial de Resguardo -->
+
+<!-- Modal Historial de Resguardo -->
 <div id="modalResguardo" class="modal fade" role="dialog">
-  <div class="modal-dialog" id="mdialTamanio">
+	<div class="modal-dialog" id="mdialTamanio">
 
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal">&times;</button>
-        <h4 class="modal-title">Modal Historial de Resguardo</h4>
-      </div>
-      <div class="modal-body">
-<div class="row">
-<div class="col-sm-1"></div>
-<div class="col-sm-6">
-<label>Nombre:&nbsp; </label>{{cb.nickname }}
-</div>
-<div class="col-sm-4">
-<label>Saldo:&nbsp; </label>{{cb.saldo |currency }} <br>
-</div>
-</div>
-<br>
-<br>
-<div class="row">
-<div class="col-sm-6">
-			<table style="width: 100%" class="table table-stripped" alingn="center">
-				<thead>
-					<tr>
-						<th style="width: 10">No. OT</th>
-						<th style="width: 45%" align="center"> Fecha </th>
-						<th style="width: 35%"> Entrada</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr ng-repeat="op in listaResguardos">
-					<td>{{op.idOrden}}</td>
-						<td>{{op.fechaCreacion | date: "shortDate"}}</td> 
-						<td>{{op.monto| currency}}</td>
-					</tr>
-					<tr>
-					<td colspan="3">Total Entrada:&nbsp;{{suma1 | currency}}</td>
-					</tr>
-					
-				</tbody>
-			</table>
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal">&times;</button>
+				<h4 class="modal-title">Modal Historial de Resguardo</h4>
 			</div>
-			<div class="col-sm-6">
-			<table style="width: 100%" class="table table-stripped" alingn="center">
-				<thead>
-					<tr>
-						<th style="width: 10">No. OT</th>
-						<th style="width: 45%" align="center"> Fecha </th>
-						<th style="width: 35%"> Salida</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr ng-repeat="op in listaCA">
-						<td>{{op.id}}</td>
-						<td>{{op.fechaInicio}}</td>
-						<td>{{op.total | currency}}</td>
-						
-					</tr>
-					<tr>
-				
-					<td colspan="3">Total Salida:&nbsp;{{suma | currency}}</td>
-					</tr>
-				</tbody>
-			</table>
-			
-			</div>
-	 </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-      </div>
-    </div>
+			<div class="modal-body">
+				<div class="row">
+					<div class="col-sm-1"></div>
+					<div class="col-sm-6">
+						<label>Nombre:&nbsp; </label>{{cb.nickname }}
+					</div>
+					<div class="col-sm-4">
+						<label>Saldo:&nbsp; </label>{{cb.saldo |currency }} <br>
+					</div>
+				</div>
+				<br> <br>
+				<div class="row">
+					<div class="col-sm-6">
+						<table style="width: 100%" class="table table-stripped"
+							alingn="center">
+							<thead>
+								<tr>
+									<th style="width: 10">No. OT</th>
+									<th style="width: 45%" align="center">Fecha</th>
+									<th style="width: 35%">Entrada</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr ng-repeat="op in listaResguardos">
+									<td>{{op.idOrden}}</td>
+									<td>{{op.fechaCreacion | date: "shortDate"}}</td>
+									<td>{{op.monto| currency}}</td>
+								</tr>
+								<tr>
+									<td colspan="3">Total Entrada:&nbsp;{{suma1 | currency}}</td>
+								</tr>
 
-  </div>
-</div>
-   
+							</tbody>
+						</table>
+					</div>
+					<div class="col-sm-6">
+						<table style="width: 100%" class="table table-stripped"
+							alingn="center">
+							<thead>
+								<tr>
+									<th style="width: 10">No. OT</th>
+									<th style="width: 45%" align="center">Fecha</th>
+									<th style="width: 35%">Salida</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr ng-repeat="op in listaCA">
+									<td>{{op.id}}</td>
+									<td>{{op.fechaInicio}}</td>
+									<td>{{op.total | currency}}</td>
+
+								</tr>
+								<tr>
+
+									<td colspan="3">Total Salida:&nbsp;{{suma | currency}}</td>
+								</tr>
+							</tbody>
+						</table>
+
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+				</div>
+			</div>
+
+		</div>
+	</div>
