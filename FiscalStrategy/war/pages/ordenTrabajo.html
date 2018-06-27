@@ -43,6 +43,7 @@
 				<tr>
 					<th>Pago</th>
 					<th>Moneda</th>
+					<th>Empresa</th>
 					<th>Banco</th>
 					<th>Cuenta</th>
 					<th>Fecha</th>
@@ -52,6 +53,7 @@
 				<tr ng-repeat="p in otvo.pagos">
 					<td>{{p.monto | currency}}</td>
 					<td>{{p.moneda}}</td>
+					<td>{{p.empresa}}</td>
 					<td>{{p.banco}}</td>
 					<td>{{p.cuenta}}</td>
 					<td>{{p.fecha | date: "dd MMMM yyyy hh:mm a"}}</td>
