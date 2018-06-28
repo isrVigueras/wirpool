@@ -83,6 +83,7 @@ public class OrdenDeTrabajoController {
 		if(user.getPerfil().compareTo("Ejecutivo")==0 || user.getPerfil().compareTo("AdministradorRoot")==0 || user.getPerfil().compareTo("Administrador")==0){
 			if(ot.getEstatus().compareTo("Cerrada")==0){
 				otdao.save(ot);
+				pagodao.save(otvo.getPagos());
 			}
 		}
 	}
@@ -310,6 +311,20 @@ public class OrdenDeTrabajoController {
 					ot.setSaldoCom(m.getSaldo());
 				}
 				otdao.save(ot);
+		}else{
+			String error = "Usuario sin permisos para realizar esta accion";
+			res.getWriter().print(JsonConvertidor.toJson(error));
+		}
+	}
+	
+	@RequestMapping(value="/addPago/", method=RequestMethod.POST, consumes="application/json")
+	private void addPago(HttpServletRequest req, HttpServletResponse res, @RequestBody String json) throws IOException{
+		AsignadorDeCharset.asignar(req, res);
+		OrdenDeTrabajoVO otvo= (OrdenDeTrabajoVO) JsonConvertidor.fromJson(json, OrdenDeTrabajoVO.class);
+		HttpSession sesion= req.getSession();
+		Usuario user=(Usuario) sesion.getAttribute("user");
+		if(user.getPerfil().compareTo("Ejecutivo")==0 || user.getPerfil().compareTo("AdministradorRoot")==0 || user.getPerfil().compareTo("Administrador")==0){
+			pagodao.save(otvo.getPagos());
 		}else{
 			String error = "Usuario sin permisos para realizar esta accion";
 			res.getWriter().print(JsonConvertidor.toJson(error));
