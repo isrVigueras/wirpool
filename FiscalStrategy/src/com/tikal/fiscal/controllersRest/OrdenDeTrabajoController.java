@@ -87,6 +87,17 @@ public class OrdenDeTrabajoController {
 		}
 	}
 	
+	@RequestMapping(value="/validar/", method=RequestMethod.POST, consumes="application/json")
+	private void validar(HttpServletRequest req, HttpServletResponse res, @RequestBody String json) throws IOException{
+		OrdenDeTrabajo ot= otdao.get(Long.parseLong(json));
+		HttpSession sesion= req.getSession();
+		Usuario user=(Usuario) sesion.getAttribute("user");
+		if(user.getPerfil().compareTo("AdministradorRoot")==0 || user.getPerfil().compareTo("Administrador")==0){
+			ot.setEstatus("VALIDADO");
+			otdao.save(ot);
+		}
+	}
+	
 	@RequestMapping(value="/add/", method=RequestMethod.POST, consumes="application/json")
 	private void crear(HttpServletRequest req, HttpServletResponse res, @RequestBody String json) throws IOException{
 		AsignadorDeCharset.asignar(req, res);
@@ -314,14 +325,43 @@ public class OrdenDeTrabajoController {
 		return null;
 	}
 	
-	@RequestMapping(value = {"/descargaOt/{id}" }, method = RequestMethod.GET)
+	@RequestMapping(value = {"/descargaOt/{id}" }, method = RequestMethod.GET,produces = "application/pdf")
 	public void pdfNota(HttpServletRequest req, HttpServletResponse res, @PathVariable Long id) throws IOException, DocumentException{
 		AsignadorDeCharset.asignar(req, res);
 		HttpSession sesion= req.getSession();
 		Usuario user=(Usuario) sesion.getAttribute("user");
 		if(user.getPerfil().compareTo("Ejecutivo")==0 || user.getPerfil().compareTo("AdministradorRoot")==0){
 			res.setContentType("Application/PDF");
-			OrdenDeTrabajoVO otvo=armaOTVO(id);
+			OrdenDeTrabajoVO otvo=armaOTVO(id, true);
+			List<PagoRecibido> pagos= otvo.getPagos();
+			List<Cuenta> cuentas = new ArrayList<Cuenta>();
+			for(int i=0; i<pagos.size(); i++){
+				List<Cuenta> aux = cuentadao.getByCuenta(pagos.get(i).getCuenta());
+				if(aux.size() > 0){
+					cuentas.add(aux.get(0));
+				}
+			}
+			PDFot pdf = new PDFot();
+			PdfWriter writer = PdfWriter.getInstance(pdf.getDocument(), res.getOutputStream());
+			pdf.getDocument().open();
+			pdf.construirPdf(otvo, cuentas);
+			pdf.getDocument().close();
+			res.getOutputStream().flush();
+			res.getOutputStream().close();
+		}else{
+			String error = "Usuario sin permisos para realizar esta accion";
+			res.getWriter().print(JsonConvertidor.toJson(error));
+		}
+	}
+	
+	@RequestMapping(value = {"/descargaOt2/{id}" }, method = RequestMethod.GET,produces = "application/pdf")
+	public void pdfNota2(HttpServletRequest req, HttpServletResponse res, @PathVariable Long id) throws IOException, DocumentException{
+		AsignadorDeCharset.asignar(req, res);
+		HttpSession sesion= req.getSession();
+		Usuario user=(Usuario) sesion.getAttribute("user");
+		if(user.getPerfil().compareTo("Ejecutivo")==0 || user.getPerfil().compareTo("AdministradorRoot")==0){
+			res.setContentType("Application/PDF");
+			OrdenDeTrabajoVO otvo=armaOTVO(id, false);
 			List<PagoRecibido> pagos= otvo.getPagos();
 			List<Cuenta> cuentas = new ArrayList<Cuenta>();
 			for(int i=0; i<pagos.size(); i++){
@@ -403,11 +443,11 @@ public class OrdenDeTrabajoController {
 	}
 	
 	
-	private OrdenDeTrabajoVO armaOTVO (Long id){
+	private OrdenDeTrabajoVO armaOTVO (Long id, boolean incrementa){
 		OrdenDeTrabajo ot=otdao.get(id);
 		OrdenDeTrabajoVO otvo= new OrdenDeTrabajoVO();
 		
-		if(ot.getFolioImpresion() > 0){
+		if(ot.getFolioImpresion() > 0 && incrementa){
 			int siguiente = ot.getFolioImpresion();
 			siguiente++;
 			ot.setFolioImpresion(siguiente);
@@ -420,7 +460,7 @@ public class OrdenDeTrabajoController {
 		if(ot.getIdCliente()!=null){
 			Cliente cliente= clientedao.get(ot.getIdCliente());
 			ot.setIdBrocker(cliente.getIdBrocker());
-			ot.setIdResponsable(cliente.getResponsable());
+//			ot.setIdResponsable(cliente.getResponsable());
 			otvo.setCliente(cliente);
 		}
 		
@@ -438,9 +478,10 @@ public class OrdenDeTrabajoController {
 			otvo.setResponsable(u);
 		}
 		
-		List<Cliente> brockers= clientedao.get(ot.getListaBrockers());
-		otvo.setBrokers(brockers);
-		
+		if(ot.getListaBrockers()!=null){
+			List<Cliente> brockers= clientedao.get(ot.getListaBrockers());
+			otvo.setBrokers(brockers);
+		}
 		List<Movimiento> mov = movimientodao.getByIds(ot.getMovimientos());
 		otvo.setMovimientos(mov);
 		List<Movimiento> com = movimientodao.getByIds(ot.getComisiones());

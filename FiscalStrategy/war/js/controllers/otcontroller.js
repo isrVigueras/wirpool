@@ -144,7 +144,7 @@ app.controller("OTsListController",['$rootScope','$scope','$window', '$location'
 			
 //			$scope.tipos=data.tipos;
 			
-			$('#searchBox').typeahead({
+			$('#searchBoxLista').typeahead({
 
 			    source: $scope.encontrados,
 

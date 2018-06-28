@@ -220,7 +220,7 @@ public class PDFot {
 		agregarCeldaSinBorde(" ",font3, tablaOPCliente,false);
 		agregarCeldaSinBorde(" ",font1, tablaOPCliente,false);
 //		agregarCeldaSinBorde(" Total: $ " + saldoMov,font1, tablaOPCliente,true);
-		agregarCeldaSinBorde(" Total: " + nf.format(saldoMov),font1, tablaOPCliente,true);
+		agregarCeldaSinBorde(" Total: " + nf.format(Float.parseFloat(saldoMov)),font1, tablaOPCliente,true);
 		
 		tablaOPCliente.setSpacingBefore(4);
 		tablaOPCliente.setSpacingAfter(3);
@@ -236,7 +236,7 @@ public class PDFot {
 		List<PagoRecibido> pagos = otvo.getPagos();
 			for(int i=0; i<pagos.size();i++){
 				agregarCeldaConBorde(pagos.get(i).getFecha().toString(), font3, tablaPagos, "centro");
-//				agregarCeldaConBorde("$ " + String.valueOf(pagos.get(i).getMonto()), font3, tablaPagos, "centro");
+				agregarCeldaConBorde(pagos.get(i).getEmpresa(), font3, tablaPagos, "centro");
 				agregarCeldaConBorde(nf.format(pagos.get(i).getMonto()), font3, tablaPagos, "centro");
 			}
 		agregarCeldaSinBorde("  ",font1, tablaPagos,false);
