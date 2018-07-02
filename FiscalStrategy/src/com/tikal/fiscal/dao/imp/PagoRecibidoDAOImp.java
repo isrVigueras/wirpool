@@ -43,4 +43,9 @@ public class PagoRecibidoDAOImp implements PagoRecibidoDAO {
 		return ofy().load().type(PagoRecibido.class).filter("ot", idOt).list();
 	}
 
+	@Override
+	public void eliminar(Long idPago) {
+		ofy().delete().type(PagoRecibido.class).id(idPago).now();
+	}
+
 }

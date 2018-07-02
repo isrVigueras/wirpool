@@ -17,4 +17,6 @@ public interface PagoRecibidoDAO {
 	public PagoRecibido buscar(String ref);
 	
 	public List<PagoRecibido> getPagosByOT(Long idOt);
+	
+	public void eliminar(Long idPago);
 }

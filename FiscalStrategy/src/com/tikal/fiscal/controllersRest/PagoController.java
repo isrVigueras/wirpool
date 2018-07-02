@@ -49,9 +49,11 @@ public class PagoController {
 	@Autowired
 	OrdenDeTrabajoDAO otdao;
 
-	@RequestMapping(value = { "/test" }, method = RequestMethod.GET)
-	public void prueba(HttpServletResponse res) throws IOException {
-		res.getWriter().println("Hola perrin");
+	@RequestMapping(value = { "/eliminar" }, method = RequestMethod.POST, consumes = "application/json")
+	public void eliminar(HttpServletResponse res, HttpServletRequest req, @RequestBody String json) throws IOException {
+		Long id= Long.parseLong(json);
+		pagosdao.eliminar(id);
+		res.getWriter().println("Pago Eliminado");
 	}
 	
 	@RequestMapping(value = { "/buscar/{ref}" }, method = RequestMethod.GET)
