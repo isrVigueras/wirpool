@@ -82,10 +82,10 @@ public class OrdenDeTrabajoController {
 		Usuario user=(Usuario) sesion.getAttribute("user");
 		if(user.getPerfil().compareTo("Ejecutivo")==0 || user.getPerfil().compareTo("AdministradorRoot")==0 || user.getPerfil().compareTo("Administrador")==0){
 			pagodao.save(otvo.getPagos());
-			if(ot.getEstatus().compareTo("Cerrada")==0){
+//			if(ot.getEstatus().compareTo("Cerrada")==0){
 				otdao.save(ot);
 //				pagodao.save(otvo.getPagos());	
-			}
+//			}
 		}
 	}
 	
