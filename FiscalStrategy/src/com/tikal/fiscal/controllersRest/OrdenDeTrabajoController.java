@@ -84,7 +84,7 @@ public class OrdenDeTrabajoController {
 			pagodao.save(otvo.getPagos());
 			if(ot.getEstatus().compareTo("Cerrada")==0){
 				otdao.save(ot);
-				pagodao.save(otvo.getPagos());
+//				pagodao.save(otvo.getPagos());	
 			}
 		}
 	}
