@@ -9,7 +9,6 @@
 	<div class="infCliente" ng-show="ordenCerrada">
 		<h2 align="right">Orden Cerrada <small> movimientos valid&aacute;dos</small></h2>
 	</div>
-	
 	<div class="infCliente">
 		<div class="Dlabel">
 			<label>Cliente</label> <br>
@@ -33,73 +32,7 @@
 		</table>
 
 	</div>
-	<div class="Dlabel"><label>Agregar Pago</label></div>
-			<br>
-			<div>
-				<div class="row">
-					<div class="col-md-4">
-						<label>Empresa:</label>
-						<input id="buscaEmpresa" class="form-control form-control-sm" type="text" ng-model="empresaSearch" data-provide="typehead" autocomplete="off" onkeyup="javascript:this.value=this.value.toUpperCase();">
-					</div>
-<!-- 					<div class="col-md-4"> -->
-<!-- 						<label>Empresas:</label>  -->
-<!-- 						<select name="empresa" ng-model="pago.empresa" class="form-control form-control-sm" ng-required="true" ng-change="Cuentasban($index)" > -->
-<!-- 							<option ng-repeat="e in empresa" value="{{e.id}}" >{{e.nombre}}</option>  -->
-<!-- 						</select>	 -->
-<!-- 					</div> -->
-					<div class="col-md-4">
-						<label>Banco:</label> 
-						<select name="banco" ng-model="pago.banco" class="form-control form-control-sm" ng-required="true">
-							<option ng-repeat="b in listaBancos" value="{{b}}" >{{b}}</option> 
-						</select>	
-					</div>
-					<div class="col-md-2">
-						<label>No. de Cuenta:</label> 
-						<select name="cuentas" class="form-control form-control-sm" ng-required="true" ng-model="pago.cuenta" >
-					 		<option ng-repeat=" c in cempresa.cuentas | filter: { banco: pago.banco}" value="{{c.cuenta}}">{{c.cuenta}}</option> 
-						</select>	
-					</div>
-					<div class="col-md-2">
-						<label>Monto:</label> 
-						<input name="monto" class="form-control form-control-sm" ng-model="pago.monto" type="number" min="0" step="0.01">{{pago.monto | currency}}
-					</div>
-				</div>
-				<br>
-				<div class="row">	
-								
-					
-					<!--    	   ^([A-ZÑ\x26]{3,4}([0-9]{2})(0[1-9]|1[0-2])(0[1-9]|1[0-9]|2[0-9]|3[0-1]))([A-Z\d]{3})?$ -->
-					<div class="col-md-2">
-						<label>Moneda:</label> 
-						<select name="moneda" class="form-control form-control-sm" ng-model="pago.moneda" ng-required="true">
-							<option>MXN</option>
-							<option>USD</option>
-							<option>EUR</option>
-							<option>CAD</option>
-						</select>
-					</div>
- 					<div class="col-md-2">
-						<label>Fecha de Pago:</label> 
-						<input input-date class="form-control form-control-sm ng-empty ng-dirty ng-touched ng-invalid ng-invalid-date"
-							ng-model="pago.fecha" type="date" ng-required="true" /> 
-					</div>
-					<div class="col-md-6">
-						<label>Referencia:</label> 
-						<input class="form-control form-control-sm" ng-model="pago.referencia" type="text" min="0" onkeyup="javascript:this.value=this.value.toUpperCase();" ><br>
-					</div>
-<!--  					<div class="col-md-4"> -->
-<!--  						<label>Nombre de la Cuenta:</label>  -->
-<!-- 						<select name="cuentas" class="form-control form-control-sm" ng-required="true" ng-model="pago.cuenta" > -->
-<!-- 					 		<option ng-repeat=" c in cuentas" value="{{c.id}}">{{c.nombre}}</option>  -->
-<!-- 						</select> -->
-<!--  					</div>  -->
-			
- 					
-				</div>
-				
-				<div align="right"><button  class="btn" ng-if="pago.cuenta!=null && pago.monto!=null && pago.fecha!=null" ng-click="addPago(); guardarPago();"> Agregar Pago</button></div> 
-				<br>
-			</div>
+
 	<div class="infPago">
 		<div class="Dlabel">
 			<label>Pago</label> <br>
@@ -114,7 +47,6 @@
 					<th>Banco</th>
 					<th>Cuenta</th>
 					<th>Fecha</th>
-					<th>Acciones</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -124,18 +56,7 @@
 					<td>{{p.empresa}}</td>
 					<td>{{p.banco}}</td>
 					<td>{{p.cuenta}}</td>
-					<td>{{p.fecha | date: "MMM d, y h:mm:ss a"}}</td>
-					<td>
-					<button title="Editar Pago" class="btn btn-small"
-						data-toggle="modal" ng-click="ver(p,$index)"
-						data-target="#modalEditarPagos">
-						<i class="glyphicon glyphicon-eye-open"></i>
-					</button>
-					<button title="Eliminar Pago" class="btn btn-small"
-						data-toggle="modal" ng-click="eliminarPago(p,$index)">
-						<i class="glyphicon glyphicon-remove"></i>
-					</button>
-					</td>
+					<td>{{p.fecha | date: "dd MMMM yyyy hh:mm a"}}</td>
 				</tr>
 			</tbody>
 		</table>
@@ -150,9 +71,9 @@
 		<table style="width: 100%" class="table table-stripped">
 			<thead>
 				<tr>
-					<th>Importe <input type="radio" name="optradio" ng-click="tipoOperacion('base')" ng-checked="tipoOP=='base'"></th>
+					<th>Importe</th>
 					<th>IVA</th>
-					<th>Total <input type="radio" name="optradio" ng-click="tipoOperacion('total')" ng-checked="tipoOP=='total'"></th>
+					<th>Total</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -180,31 +101,18 @@
 			<tbody>
 				<tr class="ng-scope">
 					<td class="ng-binding">AJD</td>
-					<td class="ng-binding">
-					<input style="width: 17%" type="number" min="0" ng-model="otvo.ot.porLic"   ng-change="calcularComisiones('Lic')" step="0.0001" id="porLic">
-					</td>
-					<td class="ng-binding">
-					<input style="width: 20%" type="number" min="0" ng-model="otvo.ot.montoLic"   ng-change="calcularComisionesM('Lic')" step="0.0001" id=AJC >
-					{{otvo.ot.montoLic | currency}}
-					</td>
+					<td class="ng-binding">{{otvo.ot.porLic}}</td>
+					<td class="ng-binding">{{otvo.ot.montoLic | currency}}</td>
 				</tr>
 				<tr class="ng-scope">
 					<td class="ng-binding">J&A</td>
-					<td class="ng-binding">
-					<input style="width: 17%" type="number" min="0" ng-model="otvo.ot.porDes"   ng-change="calcularComisiones('Des')" step="0.0001" id="porDes">
-					</td>
-					<td class="ng-binding">
-					<input style="width: 20%" type="number" min="0" ng-model="otvo.ot.montoDes"   ng-change="calcularComisiones('Des')" step="0.0001" id="Des">
-					{{otvo.ot.montoDes | currency}}</td>
+					<td class="ng-binding">{{otvo.ot.porDes}}</td>
+					<td class="ng-binding">{{otvo.ot.montoDes | currency}}</td>
 				</tr>
 				<tr  class="ng-scope" ng-repeat="brok in brokers">
 					<td class="ng-binding">{{brok.nombre}}</td>
-					<td class="ng-binding">
-					<input style="width: 17%" type="number" min="0" ng-model="brok.porBrok"   ng-change="calcularComisiones('Broke')" step="0.0001" id="porbroke">
-					</td>
-					<td class="ng-binding">
-					<input style="width: 20%" type="number" min="0" ng-model="brok.montoBrok"   ng-change="calcularComisiones('Broke')" step="0.0001" id="broke">
-					{{brok.montoBrok | currency}}</td>
+					<td class="ng-binding">{{brok.porBrok}}</td>
+					<td class="ng-binding">{{brok.montoBrok | currency}}</td>
 				</tr>
 				<tr class="ng-scope">
 					<td class="ng-binding">Retorno</td>
@@ -444,7 +352,7 @@
 <!-- 					</div> -->
 					<div class="col-md-4">
 						<label>Empresa:</label>
-						<input id="buscaEmpresa2" class="form-control form-control-sm" type="text" ng-model="empresaSearch2" data-provide="typehead" autocomplete="off" onkeyup="javascript:this.value=this.value.toUpperCase();">
+						<input id="buscaEmpresa" class="form-control form-control-sm" type="text" ng-model="empresaSearch;" data-provide="typehead" autocomplete="off" onkeyup="javascript:this.value=this.value.toUpperCase();">
 					</div>
 					<div class="col-md-4">
 						<label>Banco:</label> 
@@ -564,7 +472,7 @@
 				  			<label class="control-label">Monto: </label>
 				  		</div>
 				  		<div class="col-md-3">
-	 						<input  class="form-control  mb-2" type="number" min="1" ng-required="true" ng-model="operaciones.monto"  ng-change="verificaMontos('OPC')" ng-disabled="tipoResguardo">		
+	 						<input  class="form-control  mb-2" type="number" min="1" ng-required="true" ng-model="operaciones.monto"  ng-change="verificarSaldo('OPC')" ng-disabled="tipoResguardo">		
 				  		{{operaciones.monto | currency}}
 				  		</div>
 				  		<div class="col-md-1"></div>
@@ -650,7 +558,7 @@
 				 				<option ng-repeat="bk in brokers" >{{bk.nombre}}</option>
 				 			</select> 
 				  		</div>
-				<div class="col-md-3" nf-if="data.bk">Disponible:&nbsp;{{mxvalue | currency}}</div>
+				<div class="col-md-3">Disponible{{mxvalue | currency}}</div>
 		</div>
 			 <br>
 	          <form>
@@ -668,9 +576,8 @@
 				  			<label class="control-label">Monto: </label>
 				  		</div>
 				  		<div class="col-md-3">
-	 						<input  class="form-control  mb-2" type="number" min="1" ng-required="true" ng-model="operaciones.monto" max="{{mxvalue}}" ng-change="verificaMontos('OPA')" ng-disabled="tipoResguardo">
-	 						{{operaciones.monto | currency}}
-	 								
+	 						<input  class="form-control  mb-2" type="number" min="1" ng-required="true" ng-model="operaciones.monto"  ng-change="verificarSaldo('OPA')" ng-disabled="tipoResguardo">
+	 						{{operaciones.monto | currency}}		
 				  		</div>
 				  		<div class="col-md-1"></div>
 				  	</div> 
@@ -787,72 +694,6 @@
       <button type="button" class="btn btn-default" ng-click="validaMov()">Validar</button>
         <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
         </div>
-      </div>
-    </div>
-
-  </div>
-</div>
-<!-- MODAL EDITAR PAGOS -->
-<div id="modalEditarPagos" class="modal fade" role="dialog">
-  <div class="modal-dialog modal-lg">
-
-    <!-- Modal content-->
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal">&times;</button>
-        <h4 class="modal-title">Modificar Pago</h4>
-      </div>
-      <div class="modal-body">
-       <div class="row">
-       <div class="col-md-2"></div>
-       <div class="col-md-2">
-       <label>Pago Actual</label>
-       <p>{{epago.monto | currency}}</p>
-       </div>
-       <div class="col-md-2">
-       <label>Moneda</label>
-       <p>{{epago.moneda}}</p>
-       </div>
-<!--        <div class="col-md-6"> -->
-<!--        <label>Empresa</label> -->
-<!--        <p>{{epago.empresa}}</p> -->
-<!--        </div> -->
-<!--        </div> -->
-       
-<!--        <div class="col-md-1"></div> -->
-<!--         <div class="col-md-3"> -->
-<!--        <label>Banco</label> -->
-<!--        <p>{{epago.banco}}</p> -->
-<!--        </div> -->
-<!--        <div class="col-md-2"> -->
-<!--        <label>Cuenta</label> -->
-<!--        <p>{{epago.cuenta}}</p> -->
-<!--        </div> -->
-       
-       <div class="col-md-4">
-       <label>Fecha Actual</label>
-       <p>{{epago.fecha | date: "dd/MM/yyyy"}}</p>
-       </div>
-       </div>
-        <br><br>
-        
-       <div class="row">
-       <div class="col-md-2"></div>
-        <div class="col-md-4">
-       <label>Nuevo Monto de Pago*</label>
-       <input type="number" step="0.01" min="0" ng-model="newpago.monto">
-       </div>
-        <div class="col-md-4">
-       <label>Nueva Fecha*</label>
-       <input type="date"  ng-model="newpago.fecha">
-       </div>
-       
-       </div>
-      
-      </div>
-      <div class="modal-footer">
-      <button type="button" ng-click="agregarPago()" class="btn btn-alert" data-dismiss="modal">Guardar</button>
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
       </div>
     </div>
 

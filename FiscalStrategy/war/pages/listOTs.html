@@ -67,7 +67,10 @@
 					<td>{{ot.nombreCliente}}</td>
 					<td>{{ot.saldoMov | currency}}</td>
 					<td>{{ot.estatus}}</td>
-					<td><button class="btn btn-small" ng-click="ver(ot.id)">
+					<td><button class="btn btn-small" ng-click="verEdit(ot.id)" title="Ver OT">
+							<i class="glyphicon glyphicon-eye-open"></i>
+						</button>
+						<button class="btn btn-small" ng-click="ver(ot.id)" title="Ver OT Modificable"> 
 							<i class="glyphicon glyphicon-eye-open"></i>
 						</button>
 						<a class="btn btn-info" data-toggle="tooltip"
@@ -78,6 +81,14 @@
 						<button class="btn btn-small" ng-click="getidot(ot.id)" title="Enviar Notificaci&oacute;n"
 						data-toggle="modal" data-target="#mdlNoti">
 							<i class="glyphicon glyphicon-send"></i>
+						</button>
+						<button class="btn btn-small"  data-toggle="modal" ng-if="perfil=='AdministradorRoot' || perfil=='Administrador'"
+						 ng-show="ot.estatus!='activo'"
+						 ng-hide="ot.estatus!='activo'"
+						  title="Validar"
+						 ng-click="validar(ot.id)" data-target="#modalresguardo">
+					
+							<span class="glyphicon glyphicon-ok"></span>
 						</button>
 					</td>
 				</tr>

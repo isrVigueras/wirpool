@@ -34,6 +34,13 @@ app.service("otservice",['$http', '$q', function($http, $q){
 			});
 		return d.promise;
 	}
+	this.validar=function(id){
+		var d = $q.defer();
+		$http.post("ots/validar/",id).then(function(response) {
+				d.resolve(response.data);
+			});
+		return d.promise;
+	}
 	this.consultarCuentas = function(page) {
 		var d = $q.defer();
 	
@@ -89,6 +96,8 @@ app.service("otservice",['$http', '$q', function($http, $q){
 
 app.controller("OTsListController",['$rootScope','$scope','$window', '$location', '$cookieStore','otservice','userFactory','ordenTrabajoservice', function($rootScope, $scope, $window, $location, $cookieStore, otservice,userFactory,ordenTrabajoservice){
 	$rootScope.perfilUsuario = userFactory.getUsuarioPerfil();  //obtener perfl de usuario para pintar el menú al qe tiene acceso
+	$scope.perfil=$rootScope.perfilUsuario;
+	console.log("El Perfil",$scope.perfil);
 	otservice.consultarCB().then(function(data) {
 		$scope.cbtodos = data;
 	});
@@ -245,7 +254,26 @@ app.controller("OTsListController",['$rootScope','$scope','$window', '$location'
 		$cookieStore.put("idOt",data);
 		$scope.listClient=data;
 	}
-	
+	$scope.verEdit = function(data) {
+		$location.path("/ordenTrabajoMod");
+		//$window.location.reload();
+		$cookieStore.put("idOt",data);
+		$scope.listClient=data;
+	}
+	$scope.validar = function(data) {
+		var r = confirm("Precione Aceptar para validar la OT No. " + data +"\n De lo Contrario presione Cancelar");
+	    if (r == true) {
+	    	otservice.validar(data).then(function(data){
+	    		$window.location.reload();
+			});
+	    } 
+	    
+	  
+	}
+	$( document ).ready(function() {
+		  $rootScope.perfilUsuario = userFactory.getUsuarioPerfil();  //obtener perfl de usuario para pintar el menú al qe tiene acceso
+			$scope.perfil=$rootScope.perfilUsuario;
+	});
 	$scope.verPedientes = function(data) {
 		$location.path("/ListaPendiente");
 		//$window.location.reload();

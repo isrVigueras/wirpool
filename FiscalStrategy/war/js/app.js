@@ -84,6 +84,10 @@ app.config([ '$routeProvider', function($routeProvider) {
 		templateUrl : "pages/ordenTrabajo.html",
 		controller : "ordenTrabajoController"
 	});
+	$routeProvider.when('/ordenTrabajoMod',{
+		templateUrl : "pages/ordenTrabajoMod.html",
+		controller : "ordenTrabajoController"
+	});
 	$routeProvider.when('/altaempresa',{
 		templateUrl : "pages/altaEmpresa.html",
 		controller : "altaempresacontroller"
