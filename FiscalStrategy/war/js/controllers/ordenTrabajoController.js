@@ -1591,7 +1591,7 @@ $scope.calcularComisiones=function(param){
 		console.log("toda la ot ", $scope.otvo.ot)
 		$scope.mont=$scope.otvo.pagos.monto;
 		$scope.tipoOP=$scope.otvo.ot.tipoOP;
-		$scope.tipoOperacion($scope.otvo.ot.tipoOP);
+//		$scope.tipoOperacion($scope.otvo.ot.tipoOP);
 		$scope.getIdbk=$scope.otvo.ot.listaBrockers;
 		
 		$scope.getbroker=$scope.otvo.brokers;
@@ -1934,6 +1934,7 @@ $scope.calcularComisiones=function(param){
 			$scope.otvo.comisiones[indice].estatus="VALIDADO";
 		}
 		if(cerrarOrden()){
+			$scope.otvo.ot.listaBrockers=$scope.getIdBk;
 			ordenTrabajoservice.cerrarOt($scope.otvo).then(function(data){
 				if(tipoOperacion=='OPC'){
 					$scope.resguardorest(tipoOperacion);
