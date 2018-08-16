@@ -174,8 +174,8 @@ function NumeroALetras(num) {
 //            else
 //                return Millones(data.centavos) + " " + data.letrasMonedaCentavoPlural;
 //            })();
-    	data.letrasMonedaPlural= 'PESOS' +data.centavos+'/100 M.N.';//"PESOS", 'Dólares', 'Bolívares', 'etcs'
-        data.letrasMonedaSingular= 'PESO' +data.centavos+'/100 M.N.'; //"PESO", 'Dólar', 'Bolivar', 'etc'
+    	data.letrasMonedaPlural= 'PESOS' + " " +data.centavos+'/100 M.N.';//"PESOS", 'Dólares', 'Bolívares', 'etcs'
+        data.letrasMonedaSingular= 'PESO' + " "  +data.centavos+'/100 M.N.'; //"PESO", 'Dólar', 'Bolivar', 'etc'
     };
 
     if(data.enteros == 0)
