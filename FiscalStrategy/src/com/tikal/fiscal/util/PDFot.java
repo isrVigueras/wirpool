@@ -480,7 +480,7 @@ public class PDFot {
 		
 		
 		//Tabla 5- Depòsitos
-		PdfPTable tablaPagos = new PdfPTable(4);
+		PdfPTable tablaPagos = new PdfPTable(45);
 		tablaPagos.setWidthPercentage(80);
 		tablaPagos.setHorizontalAlignment(Element.ALIGN_CENTER);
 		tablaPagos.setWidths(new float[] {30,30,20,20});
@@ -488,9 +488,11 @@ public class PDFot {
 		agregarCeldaConFondo("DEPÓSITO (S)", fontHead, tablaPagos,true);
 		agregarCeldaConFondo(" ", fontHead, tablaPagos, true);
 		agregarCeldaConFondo(" ", fontHead, tablaPagos, true);
+		agregarCeldaConFondo(" ", fontHead, tablaPagos, true);
 		List<PagoRecibido> pagos = otvo.getPagos();
 			for(int i=0; i<pagos.size();i++){
 				agregarCeldaConBorde(pagos.get(i).getCuenta(), font3, tablaPagos, "centro");
+				agregarCeldaConBorde(pagos.get(i).getEmpresa(), font3, tablaPagos, "centro");
 				agregarCeldaConBorde(pagos.get(i).getBanco(), font3, tablaPagos, "centro");
 				agregarCeldaConBorde(pagos.get(i).getFecha().toString(), font3, tablaPagos, "centro");
 				agregarCeldaConBorde(nf.format(pagos.get(i).getMonto()), font3, tablaPagos, "centro");
