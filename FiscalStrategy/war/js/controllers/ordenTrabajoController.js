@@ -782,10 +782,17 @@ app.controller("OTsAddController",['$rootScope', '$route','$scope','$cookieStore
 	ordenTrabajoservice.consultarClientesTodos().then(function(data) {
 		$scope.cliente = data;
 	});
-	
+	$scope.setMoneda = function(cuenta,ind){
+		for(i in cuenta){
+			if(cuenta[i].cuenta==ind)
+				$scope.pago.moneda=cuenta[i].moneda;
+		}
+		//$scope.pago.moneda=moneda;
+	}
 	$scope.Cuentasban = function(data) {
 		 empresaservice.getce(data).then(function(data) {
 		  		$scope.cempresa = data;
+		  		console.log("Datos Obtenidos de la Empresa ", data)
 		  		$scope.listaBancos=[];
 		  		for(var i = 0; i< $scope.cempresa.cuentas.length;i++){
 		  			var indice= $scope.listaBancos.indexOf($scope.cempresa.cuentas[i].banco);
@@ -1398,6 +1405,7 @@ $scope.calcularComisiones=function(param){
 		$scope.calcularSaldoOP();
 //		$scope.verificarSaldo('OPC');
 		
+		
 	}
 	$scope.tipoOperacion=function(op){
 		if(op=='base'){
@@ -1434,6 +1442,7 @@ $scope.calcularComisiones=function(param){
 				}
 				$scope.otvo.ot.saldoMov=$scope.otvo.ot.saldoMov - suma;
 				
+				
 		}
 		
 			if($scope.otvo.ot.saldoCom!=null){
@@ -1444,8 +1453,17 @@ $scope.calcularComisiones=function(param){
 					
 				}
 				$scope.otvo.ot.saldoCom= $scope.otvo.ot.saldoCom - suma2;
+				
 			}
 		
+	}
+	$scope.guardSaldo = function(){
+		if($scope.otvo.ot.saldoMov < 0){
+			alert("El valor introducido genera un saldo Negativo en Operacion Cliente, Verifique sus movimientos");
+		}
+		if($scope.otvo.ot.saldoCom < 0){
+			alert("El valor introducido genera un saldo Negativo en Operacion Asesor, Verifique sus movimientos");
+		}
 	}
 	$scope.verificaMontos=function(tipo){
 		var saldo = 0;
@@ -2090,8 +2108,8 @@ $scope.calcularComisiones=function(param){
 	$scope.verificarSaldo=function(operacion){
 		var objs= operacionesMovimientosService.verificarSaldoOP(operacion,$scope.tipoOP, $scope.otvo,$scope.otvo.ot, $scope.operaciones,$scope.montoRetorno,$scope.sumaMontoBrok,$scope.montoComi);
 		$scope.errorSaldo= objs.error;
-		if($scope.mxvalue<$scope.operaciones.monto && operacion=="OPA"){
-			$scope.errorSaldo="* ERROR: El monto supera el saldo establecido *"
+		if($scope.mxvalue<=$scope.operaciones.monto && operacion=="OPA"){
+			$scope.errorSaldo="* ERROR: El monto supera el saldo establecido **"
 		}
 		
 		

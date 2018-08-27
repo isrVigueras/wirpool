@@ -181,29 +181,29 @@
 				<tr class="ng-scope">
 					<td class="ng-binding">AJD</td>
 					<td class="ng-binding">
-					<input style="width: 17%" type="number" min="0" ng-model="otvo.ot.porLic"   ng-change="calcularComisiones('Lic')" step="0.0001" id="porLic">
+					<input style="width: 17%" type="number" min="0" ng-model="otvo.ot.porLic"   ng-change="calcularComisiones('Lic')" step="0.0001" id="porLic" ng-blur="guardSaldo();">
 					</td>
 					<td class="ng-binding">
-					<input style="width: 20%" type="number" min="0" ng-model="otvo.ot.montoLic"   ng-change="calcularComisionesM('Lic')" step="0.0001" id=AJC >
+					<input style="width: 20%" type="number" min="0" ng-model="otvo.ot.montoLic"   ng-change="calcularComisionesM('Lic')" step="0.0001" id=AJC ng-blur="guardSaldo();">
 					{{otvo.ot.montoLic | currency}}
 					</td>
 				</tr>
 				<tr class="ng-scope">
 					<td class="ng-binding">J&A</td>
 					<td class="ng-binding">
-					<input style="width: 17%" type="number" min="0" ng-model="otvo.ot.porDes"   ng-change="calcularComisiones('Des')" step="0.0001" id="porDes">
+					<input style="width: 17%" type="number" min="0" ng-model="otvo.ot.porDes"   ng-change="calcularComisiones('Des')" step="0.0001" id="porDes" ng-blur="guardSaldo();">
 					</td>
 					<td class="ng-binding">
-					<input style="width: 20%" type="number" min="0" ng-model="otvo.ot.montoDes"   ng-change="calcularComisiones('Des')" step="0.0001" id="Des">
+					<input style="width: 20%" type="number" min="0" ng-model="otvo.ot.montoDes"   ng-change="calcularComisiones('Des')" step="0.0001" id="Des" ng-blur="guardSaldo();">
 					{{otvo.ot.montoDes | currency}}</td>
 				</tr>
 				<tr  class="ng-scope" ng-repeat="brok in brokers">
 					<td class="ng-binding">{{brok.nombre}}</td>
 					<td class="ng-binding">
-					<input style="width: 17%" type="number" min="0" ng-model="brok.porBrok"   ng-change="calcularComisiones('Broke')" step="0.0001" id="porbroke">
+					<input style="width: 17%" type="number" min="0" ng-model="brok.porBrok"   ng-change="calcularComisiones('Broke')" step="0.0001" id="porbroke" ng-blur="guardSaldo();">
 					</td>
 					<td class="ng-binding">
-					<input style="width: 20%" type="number" min="0" ng-model="brok.montoBrok"   ng-change="calcularComisiones('Broke')" step="0.0001" id="broke">
+					<input style="width: 20%" type="number" min="0" ng-model="brok.montoBrok"   ng-change="calcularComisiones('Broke')" step="0.0001" id="broke" ng-blur="guardSaldo();">
 					{{brok.montoBrok | currency}}</td>
 				</tr>
 				<tr class="ng-scope">

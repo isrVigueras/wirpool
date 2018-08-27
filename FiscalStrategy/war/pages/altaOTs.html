@@ -30,7 +30,7 @@
 <!-- 					</div> -->
 					<div class="col-md-4">
 						<label>Banco:</label> 
-						<select name="banco" ng-model="pago.banco" class="form-control form-control-sm" ng-required="true">
+						<select name="banco" ng-model="pago.banco" class="form-control form-control-sm" ng-required="true" >
 							<option ng-repeat="b in listaBancos" value="{{b}}" >{{b}}</option> 
 						</select>	
 					</div>
@@ -40,7 +40,7 @@
 				<div class="row">	
 					<div class="col-md-2">
 						<label>No. de Cuenta:</label> 
-						<select name="cuentas" class="form-control form-control-sm" ng-required="true" ng-model="pago.cuenta" >
+						<select name="cuentas" class="form-control form-control-sm" ng-required="true" ng-model="pago.cuenta" ng-change="setMoneda(cempresa.cuentas,pago.cuenta)">
 					 		<option ng-repeat=" c in cempresa.cuentas | filter: { banco: pago.banco}" value="{{c.cuenta}}">{{c.cuenta}}</option> 
 						</select>	
 					</div>			
