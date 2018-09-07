@@ -1,15 +1,21 @@
-<section class="jumbotron">	
+<section class="jumbotron">
 	<div class="container">
 		<h2>Ordenes de trabajo</h2>
-		 <submenu perfil=perfilUsuario/>
+		<submenu perfil=perfilUsuario />
 	</div>
 </section>
 
 <div class="container">
-	<div class="infCliente" ng-show="ordenCerrada">
-		<h2 align="right">Orden Cerrada <small> movimientos valid&aacute;dos</small></h2>
+	<div class="infCliente">
+		<h2 align="right">Orden de Trabajo: {{otvo.ot.id}}</h2>
 	</div>
-	
+
+	<div class="infCliente" ng-show="ordenCerrada">
+		<h2 align="right">
+			Orden Cerrada <small> movimientos valid&aacute;dos</small>
+		</h2>
+	</div>
+
 	<div class="infCliente">
 		<div class="Dlabel">
 			<label>Cliente</label> <br>
@@ -24,7 +30,7 @@
 				</tr>
 			</thead>
 			<tbody>
-				<tr >
+				<tr>
 					<td>{{otvo.cliente.nickname}}</td>
 					<td>{{otvo.responsable.usuario}}</td>
 					<td>{{otvo.broker.nickname}}</td>
@@ -33,73 +39,88 @@
 		</table>
 
 	</div>
-	<div class="Dlabel"><label>Agregar Pago</label></div>
-			<br>
-			<div>
-				<div class="row">
-					<div class="col-md-4">
-						<label>Empresa:</label>
-						<input id="buscaEmpresa" class="form-control form-control-sm" type="text" ng-model="empresaSearch" data-provide="typehead" autocomplete="off" onkeyup="javascript:this.value=this.value.toUpperCase();">
-					</div>
-<!-- 					<div class="col-md-4"> -->
-<!-- 						<label>Empresas:</label>  -->
-<!-- 						<select name="empresa" ng-model="pago.empresa" class="form-control form-control-sm" ng-required="true" ng-change="Cuentasban($index)" > -->
-<!-- 							<option ng-repeat="e in empresa" value="{{e.id}}" >{{e.nombre}}</option>  -->
-<!-- 						</select>	 -->
-<!-- 					</div> -->
-					<div class="col-md-4">
-						<label>Banco:</label> 
-						<select name="banco" ng-model="pago.banco" class="form-control form-control-sm" ng-required="true">
-							<option ng-repeat="b in listaBancos" value="{{b}}" >{{b}}</option> 
-						</select>	
-					</div>
-					<div class="col-md-2">
-						<label>No. de Cuenta:</label> 
-						<select name="cuentas" class="form-control form-control-sm" ng-required="true" ng-model="pago.cuenta" >
-					 		<option ng-repeat=" c in cempresa.cuentas | filter: { banco: pago.banco}" value="{{c.cuenta}}">{{c.cuenta}}</option> 
-						</select>	
-					</div>
-					<div class="col-md-2">
-						<label>Monto:</label> 
-						<input name="monto" class="form-control form-control-sm" ng-model="pago.monto" type="number" min="0" step="0.01">{{pago.monto | currency}}
-					</div>
-				</div>
-				<br>
-				<div class="row">	
-								
-					
-					<!--    	   ^([A-ZÑ\x26]{3,4}([0-9]{2})(0[1-9]|1[0-2])(0[1-9]|1[0-9]|2[0-9]|3[0-1]))([A-Z\d]{3})?$ -->
-					<div class="col-md-2">
-						<label>Moneda:</label> 
-						<select name="moneda" class="form-control form-control-sm" ng-model="pago.moneda" ng-required="true">
-							<option>MXN</option>
-							<option>USD</option>
-							<option>EUR</option>
-							<option>CAD</option>
-						</select>
-					</div>
- 					<div class="col-md-2">
-						<label>Fecha de Pago:</label> 
-						<input input-date class="form-control form-control-sm ng-empty ng-dirty ng-touched ng-invalid ng-invalid-date"
-							ng-model="pago.fecha" type="date" ng-required="true" /> 
-					</div>
-					<div class="col-md-6">
-						<label>Referencia:</label> 
-						<input class="form-control form-control-sm" ng-model="pago.referencia" type="text" min="0" onkeyup="javascript:this.value=this.value.toUpperCase();" ><br>
-					</div>
-<!--  					<div class="col-md-4"> -->
-<!--  						<label>Nombre de la Cuenta:</label>  -->
-<!-- 						<select name="cuentas" class="form-control form-control-sm" ng-required="true" ng-model="pago.cuenta" > -->
-<!-- 					 		<option ng-repeat=" c in cuentas" value="{{c.id}}">{{c.nombre}}</option>  -->
-<!-- 						</select> -->
-<!--  					</div>  -->
-			
- 					
-				</div>
-				
-				<div align="right"><button  class="btn" ng-if="pago.cuenta!=null && pago.monto!=null && pago.fecha!=null" ng-click="addPago(); guardarPago();"> Agregar Pago</button></div> 
-				<br>
+	<div class="Dlabel">
+		<label>Agregar Pago</label>
+	</div>
+	<br>
+	<div>
+		<div class="row">
+			<div class="col-md-4">
+				<label>Empresa:</label> <input id="buscaEmpresa"
+					class="form-control form-control-sm" type="text"
+					ng-model="empresaSearch" data-provide="typehead" autocomplete="off"
+					onkeyup="javascript:this.value=this.value.toUpperCase();">
 			</div>
+			<!-- 					<div class="col-md-4"> -->
+			<!-- 						<label>Empresas:</label>  -->
+			<!-- 						<select name="empresa" ng-model="pago.empresa" class="form-control form-control-sm" ng-required="true" ng-change="Cuentasban($index)" > -->
+			<!-- 							<option ng-repeat="e in empresa" value="{{e.id}}" >{{e.nombre}}</option>  -->
+			<!-- 						</select>	 -->
+			<!-- 					</div> -->
+			<div class="col-md-4">
+				<label>Banco:</label> <select name="banco" ng-model="pago.banco"
+					class="form-control form-control-sm" ng-required="true">
+					<option ng-repeat="b in listaBancos" value="{{b}}">{{b}}</option>
+				</select>
+			</div>
+			<div class="col-md-2">
+				<label>No. de Cuenta:</label> <select name="cuentas"
+					class="form-control form-control-sm" ng-required="true"
+					ng-model="pago.cuenta">
+					<option
+						ng-repeat=" c in cempresa.cuentas | filter: { banco: pago.banco}"
+						value="{{c.cuenta}}">{{c.cuenta}}</option>
+				</select>
+			</div>
+			<div class="col-md-2">
+				<label>Monto:</label> <input name="monto"
+					class="form-control form-control-sm" ng-model="pago.monto"
+					type="number" min="0" step="0.01">{{pago.monto | currency}}
+			</div>
+		</div>
+		<br>
+		<div class="row">
+
+
+			<!--    	   ^([A-ZÑ\x26]{3,4}([0-9]{2})(0[1-9]|1[0-2])(0[1-9]|1[0-9]|2[0-9]|3[0-1]))([A-Z\d]{3})?$ -->
+			<div class="col-md-2">
+				<label>Moneda:</label> <select name="moneda"
+					class="form-control form-control-sm" ng-model="pago.moneda"
+					ng-required="true">
+					<option>MXN</option>
+					<option>USD</option>
+					<option>EUR</option>
+					<option>CAD</option>
+				</select>
+			</div>
+			<div class="col-md-2">
+				<label>Fecha de Pago:</label> <input input-date
+					class="form-control form-control-sm ng-empty ng-dirty ng-touched ng-invalid ng-invalid-date"
+					ng-model="pago.fecha" type="date" ng-required="true" />
+			</div>
+			<div class="col-md-6">
+				<label>Referencia:</label> <input
+					class="form-control form-control-sm" ng-model="pago.referencia"
+					type="text" min="0"
+					onkeyup="javascript:this.value=this.value.toUpperCase();"><br>
+			</div>
+			<!--  					<div class="col-md-4"> -->
+			<!--  						<label>Nombre de la Cuenta:</label>  -->
+			<!-- 						<select name="cuentas" class="form-control form-control-sm" ng-required="true" ng-model="pago.cuenta" > -->
+			<!-- 					 		<option ng-repeat=" c in cuentas" value="{{c.id}}">{{c.nombre}}</option>  -->
+			<!-- 						</select> -->
+			<!--  					</div>  -->
+
+
+		</div>
+
+		<div align="right">
+			<button class="btn"
+				ng-if="pago.cuenta!=null && pago.monto!=null && pago.fecha!=null"
+				ng-click="addPago(); guardarPago();">Agregar Pago</button>
+		</div>
+		<br>
+	</div>
 	<div class="infPago">
 		<div class="Dlabel">
 			<label>Pago</label> <br>
@@ -126,15 +147,15 @@
 					<td>{{p.cuenta}}</td>
 					<td>{{p.fecha | date: "MMM d, y h:mm:ss a"}}</td>
 					<td>
-					<button title="Editar Pago" class="btn btn-small"
-						data-toggle="modal" ng-click="ver(p,$index)"
-						data-target="#modalEditarPagos">
-						<i class="glyphicon glyphicon-eye-open"></i>
-					</button>
-					<button title="Eliminar Pago" class="btn btn-small"
-						data-toggle="modal" ng-click="eliminarPago(p,$index)">
-						<i class="glyphicon glyphicon-remove"></i>
-					</button>
+						<button title="Editar Pago" class="btn btn-small"
+							data-toggle="modal" ng-click="ver(p,$index)"
+							data-target="#modalEditarPagos">
+							<i class="glyphicon glyphicon-eye-open"></i>
+						</button>
+						<button title="Eliminar Pago" class="btn btn-small"
+							data-toggle="modal" ng-click="eliminarPago(p,$index)">
+							<i class="glyphicon glyphicon-remove"></i>
+						</button>
 					</td>
 				</tr>
 			</tbody>
@@ -150,9 +171,11 @@
 		<table style="width: 100%" class="table table-stripped">
 			<thead>
 				<tr>
-					<th>Importe <input type="radio" name="optradio" ng-click="tipoOperacion('base')" ng-checked="tipoOP=='base'"></th>
+					<th>Importe <input type="radio" name="optradio"
+						ng-click="tipoOperacion('base')" ng-checked="tipoOP=='base'"></th>
 					<th>IVA</th>
-					<th>Total <input type="radio" name="optradio" ng-click="tipoOperacion('total')" ng-checked="tipoOP=='total'"></th>
+					<th>Total <input type="radio" name="optradio"
+						ng-click="tipoOperacion('total')" ng-checked="tipoOP=='total'"></th>
 				</tr>
 			</thead>
 			<tbody>
@@ -180,38 +203,43 @@
 			<tbody>
 				<tr class="ng-scope">
 					<td class="ng-binding">AJD</td>
-					<td class="ng-binding">
-					<input style="width: 17%" type="number" min="0" ng-model="otvo.ot.porLic"   ng-change="calcularComisiones('Lic')" step="0.0001" id="porLic" ng-blur="guardSaldo();">
-					</td>
-					<td class="ng-binding">
-					<input style="width: 20%" type="number" min="0" ng-model="otvo.ot.montoLic"   ng-change="calcularComisionesM('Lic')" step="0.0001" id=AJC ng-blur="guardSaldo();">
-					{{otvo.ot.montoLic | currency}}
-					</td>
+					<td class="ng-binding"><input style="width: 17%" type="number"
+						min="0" ng-model="otvo.ot.porLic"
+						ng-change="calcularComisiones('Lic')" step="0.0001" id="porLic"
+						ng-blur="guardSaldo();"></td>
+					<td class="ng-binding"><input style="width: 20%" type="number"
+						min="0" ng-model="otvo.ot.montoLic"
+						ng-change="calcularComisionesM('Lic')" step="0.0001" id=AJC
+						ng-blur="guardSaldo();"> {{otvo.ot.montoLic | currency}}</td>
 				</tr>
 				<tr class="ng-scope">
 					<td class="ng-binding">J&A</td>
-					<td class="ng-binding">
-					<input style="width: 17%" type="number" min="0" ng-model="otvo.ot.porDes"   ng-change="calcularComisiones('Des')" step="0.0001" id="porDes" ng-blur="guardSaldo();">
-					</td>
-					<td class="ng-binding">
-					<input style="width: 20%" type="number" min="0" ng-model="otvo.ot.montoDes"   ng-change="calcularComisiones('Des')" step="0.0001" id="Des" ng-blur="guardSaldo();">
-					{{otvo.ot.montoDes | currency}}</td>
+					<td class="ng-binding"><input style="width: 17%" type="number"
+						min="0" ng-model="otvo.ot.porDes"
+						ng-change="calcularComisiones('Des')" step="0.0001" id="porDes"
+						ng-blur="guardSaldo();"></td>
+					<td class="ng-binding"><input style="width: 20%" type="number"
+						min="0" ng-model="otvo.ot.montoDes"
+						ng-change="calcularComisiones('Des')" step="0.0001" id="Des"
+						ng-blur="guardSaldo();"> {{otvo.ot.montoDes | currency}}</td>
 				</tr>
-				<tr  class="ng-scope" ng-repeat="brok in brokers">
+				<tr class="ng-scope" ng-repeat="brok in brokers">
 					<td class="ng-binding">{{brok.nombre}}</td>
-					<td class="ng-binding">
-					<input style="width: 17%" type="number" min="0" ng-model="brok.porBrok"   ng-change="calcularComisiones('Broke')" step="0.0001" id="porbroke" ng-blur="guardSaldo();">
-					</td>
-					<td class="ng-binding">
-					<input style="width: 20%" type="number" min="0" ng-model="brok.montoBrok"   ng-change="calcularComisiones('Broke')" step="0.0001" id="broke" ng-blur="guardSaldo();">
-					{{brok.montoBrok | currency}}</td>
+					<td class="ng-binding"><input style="width: 17%" type="number"
+						min="0" ng-model="brok.porBrok"
+						ng-change="calcularComisiones('Broke')" step="0.0001"
+						id="porbroke" ng-blur="guardSaldo();"></td>
+					<td class="ng-binding"><input style="width: 20%" type="number"
+						min="0" ng-model="brok.montoBrok"
+						ng-change="calcularComisiones('Broke')" step="0.0001" id="broke"
+						ng-blur="guardSaldo();"> {{brok.montoBrok | currency}}</td>
 				</tr>
 				<tr class="ng-scope">
 					<td class="ng-binding">Retorno</td>
 					<td class="ng-binding">{{otvo.ot.retorno}}</td>
 					<td class="ng-binding">{{montoRetorno | currency}}</td>
 				</tr>
-			</tbody>	
+			</tbody>
 		</table>
 	</div>
 	<br>
@@ -222,7 +250,8 @@
 					<label>Operaci&oacute;n Cliente</label>
 				</div>
 				<div class="col-md-6" align="right">
-					<button class="btn btn-small"  data-toggle="modal" data-target="#myModalOper" ng-disabled="otvo.ot.saldoMov==0 ">Agregar</button>
+					<button class="btn btn-small" data-toggle="modal"
+						data-target="#myModalOper" ng-disabled="otvo.ot.saldoMov==0 ">Agregar</button>
 				</div>
 			</div>
 		</div>
@@ -235,7 +264,7 @@
 					<th align="center">Empresa</th>
 					<th align="center">Banco</th>
 					<th align="center">Cuenta</th>
-					<th align="center" >Estatus</th>
+					<th align="center">Estatus</th>
 					<th></th>
 					<th></th>
 					<th></th>
@@ -243,7 +272,7 @@
 					<th></th>
 				</tr>
 			</thead>
-			<tbody> 
+			<tbody>
 				<tr ng-repeat="mov in otvo.movimientos" class="ng-scope">
 					<td class="ng-binding">{{mov.tipo}}</td>
 					<td class="ng-binding">{{mov.descripcion}}</td>
@@ -252,71 +281,80 @@
 					<td class="ng-binding">{{mov.banco}}</td>
 					<td class="ng-binding">{{mov.cuenta}}</td>
 					<td class="ng-binding">{{mov.estatus}}</td>
-					<td class="ng-binding"  align="right">
-						<a ng-show="mov.tipo=='Cheque'" data-toggle="modal" data-target="#myModalCheque" ng-click="detalleCheque($index, 'OPC')"><b>Detalle</b></a>
-					</td>
-					<td class="ng-binding"  align="right">
-						<a class="btn btn-info" data-toggle="tooltip" title="Descarga cheque" 
-							ng-show="mov.tipo == 'Cheque' && mov.estatus!='CANCELADO'&& mov.banco!=null && mov.cuenta != null &&(perfil=='Ejecutivo' || perfil=='AdministradorRoot')"
-							href="ots/imprimirCheque/{{mov.id}}" download="chequePDF.pdf">
+					<td class="ng-binding" align="right"><a
+						ng-show="mov.tipo=='Cheque'" data-toggle="modal"
+						data-target="#myModalCheque"
+						ng-click="detalleCheque($index, 'OPC')"><b>Detalle</b></a></td>
+					<td class="ng-binding" align="right"><a class="btn btn-info"
+						data-toggle="tooltip" title="Descarga cheque"
+						ng-show="mov.tipo == 'Cheque' && mov.estatus!='CANCELADO'&& mov.banco!=null && mov.cuenta != null &&(perfil=='Ejecutivo' || perfil=='AdministradorRoot')"
+						href="ots/imprimirCheque/{{mov.id}}" download="chequePDF.pdf">
 							<i class="glyphicon glyphicon-download-alt"></i>
-						</a>
+					</a></td>
+					<td class="ng-binding" align="right">
+						<button id="cancelOp"
+							ng-hide="mov.estatus=='CANCELADO' || mov.estatus=='VALIDADO'"
+							ng-if="perfil=='Administrador' || perfil=='Ejecutivo' || perfil=='AdministradorRoot'"
+							class="btn btn-small" ng-click="cancelarOp($index, 'OPC')"
+							title="Cancelar">
+							<span class="glyphicon glyphicon-remove"></span>
+						</button>
 					</td>
 					<td class="ng-binding" align="right">
-						<button id="cancelOp" ng-hide="mov.estatus=='CANCELADO' || mov.estatus=='VALIDADO'" ng-if="perfil=='Administrador' || perfil=='Ejecutivo' || perfil=='AdministradorRoot'" class="btn btn-small"  ng-click="cancelarOp($index, 'OPC')" title="Cancelar">
-								<span class="glyphicon glyphicon-remove"></span>
-						</button>
-					 </td>
-					<td class="ng-binding" align="right">
-						<button class="btn btn-small" data-toggle="modal" ng-if="(perfil=='Administrador' || perfil=='AdministradorRoot') && mov.estatus != 'CANCELADO'"
-							ng-show="permiso== true && mov.tipo != 'Efectivo' && mov.estatus != 'CANCELADO' && mov.estatus != 'VALIDADO' && (perfil=='Administrador' || perfil=='AdministradorRoot')"  
+						<button class="btn btn-small" data-toggle="modal"
+							ng-if="(perfil=='Administrador' || perfil=='AdministradorRoot') && mov.estatus != 'CANCELADO'"
+							ng-show="permiso== true && mov.tipo != 'Efectivo' && mov.estatus != 'CANCELADO' && mov.estatus != 'VALIDADO' && (perfil=='Administrador' || perfil=='AdministradorRoot')"
 							ng-hide="(mov.tipo == 'Resguardo') || (mov.tipo == 'Resguardo' && mov.estatus == 'AUTORIZADO') || (mov.tipo != 'Resguardo' && mov.estatus == 'VALIDADO')"
 							ng-click="cargarMov($index,'OPC')" data-target="#modalEditar">
 							<span class="glyphicon glyphicon-edit"></span>
 						</button>
 					</td>
 					<td class="ng-binding" align="right">
-						<button class="btn btn-small"  data-toggle="modal" ng-if="(perfil=='AdministradorRoot' || perfil=='Ejecutivo' || perfil=='Administrador')"
-						 ng-show="(mov.tipo != 'Efectivo' && mov.tipo != 'Resguardo' &&  mov.estatus == 'AUTORIZADO') || (mov.tipo == 'Efectivo' && perfil=='Administrador')" 
-						 ng-hide="(mov.tipo == 'Resguardo' && mov.estatus == 'AUTORIZADO') || (mov.tipo != 'Resguardo' && mov.estatus == 'VALIDADO') || (mov.tipo != 'Resguardo' && mov.estatus == 'ACTIVO'"
-						 ng-disabled="mov.tipo != 'Efectivo' && mov.banco==null && mov.cuenta == null && mov.estatus == 'VALIDADO'"  
-						 ng-click="cargarMov($index,'OPC')" data-target="#modalVerificar">
+						<button class="btn btn-small" data-toggle="modal"
+							ng-if="(perfil=='AdministradorRoot' || perfil=='Ejecutivo' || perfil=='Administrador')"
+							ng-show="(mov.tipo != 'Efectivo' && mov.tipo != 'Resguardo' &&  mov.estatus == 'AUTORIZADO') || (mov.tipo == 'Efectivo' && perfil=='Administrador')"
+							ng-hide="(mov.tipo == 'Resguardo' && mov.estatus == 'AUTORIZADO') || (mov.tipo != 'Resguardo' && mov.estatus == 'VALIDADO') || (mov.tipo != 'Resguardo' && mov.estatus == 'ACTIVO'"
+							ng-disabled="mov.tipo != 'Efectivo' && mov.banco==null && mov.cuenta == null && mov.estatus == 'VALIDADO'"
+							ng-click="cargarMov($index,'OPC')" data-target="#modalVerificar">
 							<span class="glyphicon glyphicon-ok"></span>
 						</button>
-						
+
 						<div ng-if="mov.tipo == 'Resguardo' && mov.estatus != 'CANCELADO'">
-						<button class="btn btn-small"  data-toggle="modal" ng-if="perfil=='AdministradorRoot' || perfil=='Administrador'"
-						 ng-show="(mov.tipo == 'Resguardo' )" 
-						 ng-hide="mov.tipo == 'Resguardo' && mov.estatus == 'VALIDADO'"
-						 ng-disabled="mov.tipo != 'Efectivo' && mov.tipo != 'Resguardo'"  
-						  title="Validar Resguardo"
-						 ng-click="cargarMov($index,'OPC')" data-target="#modalresguardo">
-						
-							<span class="glyphicon glyphicon-ok"></span>
-						</button>
+							<button class="btn btn-small" data-toggle="modal"
+								ng-if="perfil=='AdministradorRoot' || perfil=='Administrador'"
+								ng-show="(mov.tipo == 'Resguardo' )"
+								ng-hide="mov.tipo == 'Resguardo' && mov.estatus == 'VALIDADO'"
+								ng-disabled="mov.tipo != 'Efectivo' && mov.tipo != 'Resguardo'"
+								title="Validar Resguardo" ng-click="cargarMov($index,'OPC')"
+								data-target="#modalresguardo">
+
+								<span class="glyphicon glyphicon-ok"></span>
+							</button>
 						</div>
 					</td>
-<!-- 					<td class="ng-binding" align="right"> -->
-						
-<!-- 					</td> -->
+					<!-- 					<td class="ng-binding" align="right"> -->
+
+					<!-- 					</td> -->
 				</tr>
-			</tbody>	
+			</tbody>
 		</table>
 		<label>Saldo Movimientos:&nbsp </label>{{otvo.ot.saldoMov | currency}}
 	</div>
 	<br>
 	<div class="infComisiones" ng-hide="tipoOT=='ca'">
 		<div class="Dlabel">
-		
+
 			<div class="row">
-				<div class="col-md-6" >
+				<div class="col-md-6">
 					<label>Operaci&oacute;n Asesor</label>
 				</div>
 				<div class="col-md-6" align="right">
-					<button class="btn btn-small" data-toggle="modal" data-target="#myModalOperAsesor" ng-disabled="otvo.ot.saldoCom==0"> Agregar</button>
+					<button class="btn btn-small" data-toggle="modal"
+						data-target="#myModalOperAsesor" ng-disabled="otvo.ot.saldoCom==0">
+						Agregar</button>
 				</div>
 			</div>
-			
+
 		</div>
 		<table style="width: 100%" class="table table-stripped">
 			<thead>
@@ -333,10 +371,10 @@
 					<th></th>
 					<th></th>
 					<th></th>
-					<th></th>					
+					<th></th>
 				</tr>
 			</thead>
-			<tbody> 
+			<tbody>
 				<tr ng-repeat="mov in otvo.comisiones" class="ng-scope">
 					<td class="ng-binding">{{mov.tipo}}</td>
 					<td class="ng-binding">{{mov.descripcion}}</td>
@@ -346,515 +384,610 @@
 					<td class="ng-binding">{{mov.banco}}</td>
 					<td class="ng-binding">{{mov.cuenta}}</td>
 					<td class="ng-binding">{{mov.estatus}}</td>
-					<td class="ng-binding"  align="right">
-						<a ng-show="mov.tipo=='Cheque'" data-toggle="modal" data-target="#myModalCheque" ng-click="detalleCheque($index, 'OPA')"><b>Detalle</b></a>
-					</td>
-					<td class="ng-binding"  align="right">
-						<a class="btn btn-info" data-toggle="tooltip" title="Descarga cheque" 
-							ng-if="mov.tipo == 'Cheque' && mov.estatus!='CANCELADO'&& mov.banco!=null && mov.cuenta != null &&(perfil=='Ejecutivo' || perfil=='AdministradorRoot')"
-							href="ots/imprimirCheque/{{mov.id}}" download="chequePDF.pdf">
+					<td class="ng-binding" align="right"><a
+						ng-show="mov.tipo=='Cheque'" data-toggle="modal"
+						data-target="#myModalCheque"
+						ng-click="detalleCheque($index, 'OPA')"><b>Detalle</b></a></td>
+					<td class="ng-binding" align="right"><a class="btn btn-info"
+						data-toggle="tooltip" title="Descarga cheque"
+						ng-if="mov.tipo == 'Cheque' && mov.estatus!='CANCELADO'&& mov.banco!=null && mov.cuenta != null &&(perfil=='Ejecutivo' || perfil=='AdministradorRoot')"
+						href="ots/imprimirCheque/{{mov.id}}" download="chequePDF.pdf">
 							<i class="glyphicon glyphicon-download-alt"></i>
-						</a>
+					</a></td>
+					<td class="ng-binding" align="right">
+						<button id="cancelOp"
+							ng-hide="mov.estatus=='CANCELADO' || mov.estatus=='VALIDADO'"
+							class="btn btn-small"
+							ng-if="perfil=='Administrador' || perfil=='Ejecutivo' || perfil=='AdministradorRoot'"
+							ng-click="cancelarOp($index, 'OPA')" title="Cancelar">
+							<span class="glyphicon glyphicon-remove"></span>
+						</button>
 					</td>
 					<td class="ng-binding" align="right">
-						<button id="cancelOp" ng-hide="mov.estatus=='CANCELADO' || mov.estatus=='VALIDADO'" class="btn btn-small" ng-if="perfil=='Administrador' || perfil=='Ejecutivo' || perfil=='AdministradorRoot'" ng-click="cancelarOp($index, 'OPA')" title="Cancelar">
-								<span class="glyphicon glyphicon-remove"></span>
-						</button>
-					 </td>
-					<td class="ng-binding" align="right">
-						<button class="btn btn-small" data-toggle="modal" ng-if="perfil=='Administrador' || perfil=='AdministradorRoot'"
+						<button class="btn btn-small" data-toggle="modal"
+							ng-if="perfil=='Administrador' || perfil=='AdministradorRoot'"
 							ng-show="permiso== true && mov.tipo != 'Efectivo' && mov.estatus != 'CANCELADO' && mov.estatus != 'VALIDADO' && (perfil=='Administrador' || perfil=='AdministradorRoot')"
-							ng-hide="(mov.tipo == 'Resguardo') || (mov.tipo == 'Resguardo' && mov.estatus == 'AUTORIZADO') || (mov.tipo != 'Resguardo' && mov.estatus == 'VALIDADO')"  
+							ng-hide="(mov.tipo == 'Resguardo') || (mov.tipo == 'Resguardo' && mov.estatus == 'AUTORIZADO') || (mov.tipo != 'Resguardo' && mov.estatus == 'VALIDADO')"
 							ng-click="cargarMov($index,'OPA')" data-target="#modalEditar">
 							<span class="glyphicon glyphicon-edit"></span>
 						</button>
 					</td>
 					<td class="ng-binding" align="right">
-						<button class="btn btn-small"  data-toggle="modal" ng-if="perfil=='AdministradorRoot' || perfil=='Ejecutivo'"
-						 ng-show="(mov.tipo != 'Efectivo' && mov.tipo != 'Resguardo' &&  mov.estatus == 'AUTORIZADO') || (mov.tipo == 'Efectivo' && perfil=='Administrador') " 
-						 ng-hide="(mov.tipo == 'Resguardo' && mov.estatus == 'AUTORIZADO') || (mov.tipo != 'Resguardo' && mov.estatus == 'VALIDADO') || (mov.tipo != 'Resguardo' && mov.estatus == 'ACTIVO')"
-						 ng-disabled="mov.tipo != 'Efectivo' && mov.banco==null && mov.cuenta == null"  
-						 ng-click="cargarMov($index,'OPA')" data-target="#modalVerificar">
+						<button class="btn btn-small" data-toggle="modal"
+							ng-if="perfil=='AdministradorRoot' || perfil=='Ejecutivo'"
+							ng-show="(mov.tipo != 'Efectivo' && mov.tipo != 'Resguardo' &&  mov.estatus == 'AUTORIZADO') || (mov.tipo == 'Efectivo' && perfil=='Administrador') "
+							ng-hide="(mov.tipo == 'Resguardo' && mov.estatus == 'AUTORIZADO') || (mov.tipo != 'Resguardo' && mov.estatus == 'VALIDADO') || (mov.tipo != 'Resguardo' && mov.estatus == 'ACTIVO')"
+							ng-disabled="mov.tipo != 'Efectivo' && mov.banco==null && mov.cuenta == null"
+							ng-click="cargarMov($index,'OPA')" data-target="#modalVerificar">
 							<span class="glyphicon glyphicon-ok"></span>
 						</button>
-							<div ng-if="mov.tipo == 'Resguardo' && mov.estatus != 'CANCELADO'">
-						<button class="btn btn-small"  data-toggle="modal" ng-if="perfil=='AdministradorRoot' || perfil=='Administrador'"
-						 ng-show="(mov.tipo == 'Resguardo' )" 
-						 ng-hide="mov.tipo == 'Resguardo' && mov.estatus == 'VALIDADO'"
-						 ng-disabled="mov.tipo != 'Efectivo' && mov.tipo != 'Resguardo'"  
-						  title="Validar Resguardo"
-						 ng-click="cargarMov($index,'OPA')" data-target="#modalresguardo">
-						
-							<span class="glyphicon glyphicon-ok"></span>
-						</button>
+						<div ng-if="mov.tipo == 'Resguardo' && mov.estatus != 'CANCELADO'">
+							<button class="btn btn-small" data-toggle="modal"
+								ng-if="perfil=='AdministradorRoot' || perfil=='Administrador'"
+								ng-show="(mov.tipo == 'Resguardo' )"
+								ng-hide="mov.tipo == 'Resguardo' && mov.estatus == 'VALIDADO'"
+								ng-disabled="mov.tipo != 'Efectivo' && mov.tipo != 'Resguardo'"
+								title="Validar Resguardo" ng-click="cargarMov($index,'OPA')"
+								data-target="#modalresguardo">
+
+								<span class="glyphicon glyphicon-ok"></span>
+							</button>
 						</div>
 					</td>
 				</tr>
 			</tbody>
 		</table>
-		
+
 		<div>
 			<label>Saldo Comisiones:&nbsp</label>{{otvo.ot.saldoCom | currency}}
 		</div>
-		
+
 	</div>
-	
- 	<div class="row" >
+
+	<div class="row">
 		<div class="col-md-12">
-		<hr>
+			<hr>
 			<button class="btn btn-primary" ng-click="regresar()">Regresar</button>
 		</div>
-	</div> 
+	</div>
 	<div id="snackbar">Se guard&oacute; exitosamente</div>
 
 </div>
 
- <!-- Modal EditOper	-->
-  <div class="modal fade" id="modalEditar" tabindex="-1" data-backdrop="static" role="dialog" aria-hidden="true">                
-      <div class="modal-dialog" id="mdialTamanio">
-        <div class="modal-content">
-          <div class="modal-header">
-             <p class="modal-title" id="myModalLabel">Detalle de Operaci&oacute;n</p>          
-          </div>
-          <div class="modal-body">
-	          <form>
-	          	<div class="row">
-	    			<div class="col-md-4">
-					   	<label class="control-label">Tipo de Operaci&oacute;n:</label>
-					   	<input class="form-control  mb-2" type="text" ng-disabled="true" value="{{mov.tipo}}">
-				  	</div>
-				  	<div class="col-md-2">
-				  		<label class="control-label">Monto: </label>
-	 					<input class="form-control  mb-2" type="text"  ng-disabled="true" value="{{mov.monto}}">
-	 					{{mov.monto | currency}}		
-				  	</div>
-			  		<div class="col-md-6">
-			  			<label class="control-label">Descripci&oacute;n:</label>
-						<input class="form-control  mb-2" type="text" ng-disabled="true" value="{{mov.descripcion}}">			
-			  		</div>					
-				</div>
-				<br><br>
-				<div class="row">
-				
-<!-- 				<div class="col-md-4"> -->
-<!-- 						<label>Empresas:</label>  -->
-<!-- 						<select name="empresa" ng-model="mov.empresa" class="form-control form-control-sm" ng-required="true" ng-change="Cuentasban($index)" ng-options="e.nombre for e in empresa" > -->
-<!-- <!-- 							<option ng-repeat="e in empresa" value="{{e.id}}" >{{e.nombre}}</option>  -->
-<!-- 						</select>	 -->
-<!-- 					</div> -->
-					<div class="col-md-4">
-						<label>Empresa:</label>
-						<input id="buscaEmpresa2" class="form-control form-control-sm" type="text" ng-model="empresaSearch2" data-provide="typehead" autocomplete="off" onkeyup="javascript:this.value=this.value.toUpperCase();">
+<!-- Modal EditOper	-->
+<div class="modal fade" id="modalEditar" tabindex="-1"
+	data-backdrop="static" role="dialog" aria-hidden="true">
+	<div class="modal-dialog" id="mdialTamanio">
+		<div class="modal-content">
+			<div class="modal-header">
+				<p class="modal-title" id="myModalLabel">Detalle de
+					Operaci&oacute;n</p>
+			</div>
+			<div class="modal-body">
+				<form>
+					<div class="row">
+						<div class="col-md-4">
+							<label class="control-label">Tipo de Operaci&oacute;n:</label> <input
+								class="form-control  mb-2" type="text" ng-disabled="true"
+								value="{{mov.tipo}}">
+						</div>
+						<div class="col-md-2">
+							<label class="control-label">Monto: </label> <input
+								class="form-control  mb-2" type="text" ng-disabled="true"
+								value="{{mov.monto}}"> {{mov.monto | currency}}
+						</div>
+						<div class="col-md-6">
+							<label class="control-label">Descripci&oacute;n:</label> <input
+								class="form-control  mb-2" type="text" ng-disabled="true"
+								value="{{mov.descripcion}}">
+						</div>
 					</div>
-					<div class="col-md-4">
-						<label>Banco:</label> 
-						<select name="banco" ng-model="mov.banco" class="form-control form-control-sm" ng-required="true">
-							<option ng-repeat="b in listaBancos" value="{{b}}" >{{b}}</option> 
-						</select>	
+					<br> <br>
+					<div class="row">
+
+						<!-- 				<div class="col-md-4"> -->
+						<!-- 						<label>Empresas:</label>  -->
+						<!-- 						<select name="empresa" ng-model="mov.empresa" class="form-control form-control-sm" ng-required="true" ng-change="Cuentasban($index)" ng-options="e.nombre for e in empresa" > -->
+						<!-- <!-- 							<option ng-repeat="e in empresa" value="{{e.id}}" >{{e.nombre}}</option>  -->
+						<!-- 						</select>	 -->
+						<!-- 					</div> -->
+						<div class="col-md-4">
+							<label>Empresa:</label> <input id="buscaEmpresa2"
+								class="form-control form-control-sm" type="text"
+								ng-model="empresaSearch2" data-provide="typehead"
+								autocomplete="off"
+								onkeyup="javascript:this.value=this.value.toUpperCase();">
+						</div>
+						<div class="col-md-4">
+							<label>Banco:</label> <select name="banco" ng-model="mov.banco"
+								class="form-control form-control-sm" ng-required="true">
+								<option ng-repeat="b in listaBancos" value="{{b}}">{{b}}</option>
+							</select>
+						</div>
+
+						<!-- 					<div class="col-md-6"> -->
+						<!-- 						<label class="control-label">Banco:</label>		  -->
+						<!-- 						<select name="banco" ng-model="mov.banco" class="form-control form-control-sm" ng-required="true" ng-change="Cuentas()" > -->
+						<!-- 							<option ng-repeat="b in bancos" value="{{b.nombre}}" >{{b.nombre}}</option>  -->
+						<!-- 						</select>	 -->
+						<!-- 					</div> -->
+						<div class="col-md-4">
+							<label class="control-label">Cuentas:</label> <select
+								name="cuentas" class="form-control form-control-sm"
+								ng-required="true" ng-model="mov.cuenta">
+								<option
+									ng-repeat=" c in cempresa.cuentas | filter: {'banco' : mov.banco}">{{c.cuenta}}</option>
+							</select>
+						</div>
 					</div>
-				
-<!-- 					<div class="col-md-6"> -->
-<!-- 						<label class="control-label">Banco:</label>		  -->
-<!-- 						<select name="banco" ng-model="mov.banco" class="form-control form-control-sm" ng-required="true" ng-change="Cuentas()" > -->
-<!-- 							<option ng-repeat="b in bancos" value="{{b.nombre}}" >{{b.nombre}}</option>  -->
-<!-- 						</select>	 -->
-<!-- 					</div> -->
-					<div class="col-md-4">
-						<label class="control-label">Cuentas:</label>
-						<select name="cuentas" class="form-control form-control-sm" ng-required="true" ng-model="mov.cuenta">
-					 		<option ng-repeat=" c in cempresa.cuentas | filter: {'banco' : mov.banco}">{{c.cuenta}}</option> 
-						</select>	
+					<br> <br>
+					<div class="row" align="center">
+						<button class="btn btn-small" data-dismiss="modal"
+							ng-click="updateMov()">Guardar</button>
 					</div>
-				</div>
-				<br><br>
-				<div class="row" align="center">
-					<button class="btn btn-small" data-dismiss="modal"   ng-click="updateMov()" >Guardar</button>
-				</div>	 
-	          </form>
-		  </div>
+				</form>
+			</div>
 			<br>
-      	   <div class="modal-footer">
-        		<button type="button" class="btn btn-default" data-dismiss="modal" >Cerrar</button>
-      		</div>
-        </div>
-      </div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+			</div>
+		</div>
+	</div>
 </div>
 
 
 <!-- Modal Verificar-->
-  <div class="modal fade" id="modalVerificar" tabindex="-1" data-backdrop="static" role="dialog" aria-hidden="true">                
-      <div class="modal-dialog" id="mdialTamanio">
-        <div class="modal-content">
-          <div class="modal-header">
-             <p class="modal-title" id="myModalLabel">Validar Operaci&oacute;n</p>          
-          </div>
-          <div class="modal-body">
-	          <form>
-	          	<div class="row">
-	    			<div class="col-md-1"></div>
-	    			<div class="col-md-2"><label class="control-label">Tipo de Operaci&oacute;n:</label></div>
-	    			<div class="col-md-2">{{mov.tipo}}</div>
-				  	<div class="col-md-3" align="right"><label class="control-label" >Monto: $</label></div>
-				  	<div class="col-md-2"><label>{{mov.monto | currency}}</label></div>
-				  	<div class="col-md-1"></div>
-				 </div>
-				 <br>
-				 <div class="row">
-				 	<div class="col-md-1"></div>
-				 	<div class="col-md-2"><label class="control-label">Banco: </label></div>
-					<div class="col-md-3">{{mov.banco}}</div> 
-			  		<div class="col-md-2" align="right"><label class="control-label">No. de Cheque/Transacci&oacute;n:</label></div>
-					<div class="col-md-3"><input class="form-control  mb-2" type="number"></div>
-					<div class="col-md-1"></div>					
-				</div>
-				<br>
-				<div class="row">
-					<div class="col-md-1"></div>
-					<div class="col-md-2"><label class="control-label">Cuenta: </label></div>
-					<div class="col-md-2">{{mov.cuenta}}</div> 
-					<div class="col-md-1"></div>
-					<div class="col-md-2" align="right"><label class="control-label">Fecha:</label></div>
-					<div class="col-md-3">	 
-						<input input-date class="form-control form-control-sm ng-empty ng-dirty ng-touched ng-invalid ng-invalid-date"
-							ng-model="mov.fecha" type="date">
-					</div>
-					<div class="col-md-1"></div>
-				</div>
-				<br>
-				<div class="row">
-					<div class="col-md-1"></div>
-					<div class="col-md-2"><label class="control-label">Descripci&oacute;n: </label></div>
-			  		<div class="col-md-8">{{mov.descripcion}}</div>
-			  		<div class="col-md-1"></div>
-			  	</div>
-				<br><br>
-				<div class="row" align="center">
-					<button class="btn btn-small" data-dismiss="modal"   ng-click="validMov()" >Validar Movimiento</button>
-				</div>	
-	          </form>
-		  </div>
-			<br>
-      	   <div class="modal-footer">
-        		<button type="button" class="btn btn-default" data-dismiss="modal" >Cerrar</button>
-      		</div>
-        </div>
-      </div>
-</div>
-
-  <!-- Modal AddOper	-->
-  <div class="modal fade" id="myModalOper" tabindex="-1" data-backdrop="static" role="dialog" aria-labelledby="myModalOper" aria-hidden="true">                
-      <div class="modal-dialog" id="mdialTamanio">
-        <div class="modal-content">
-          <div class="modal-header">
-             <p class="modal-title" id="myModalLabel">Instrucciones Operacion Cliente</p>          
-          </div>
-          <div class="modal-body">
-	          <form>
+<div class="modal fade" id="modalVerificar" tabindex="-1"
+	data-backdrop="static" role="dialog" aria-hidden="true">
+	<div class="modal-dialog" id="mdialTamanio">
+		<div class="modal-content">
+			<div class="modal-header">
+				<p class="modal-title" id="myModalLabel">Validar
+					Operaci&oacute;n</p>
+			</div>
+			<div class="modal-body">
+				<form>
 					<div class="row">
 						<div class="col-md-1"></div>
-	    				<div class="col-md-2">
-					    	<label class="control-label">Tipo de Operaci&oacute;n:</label>
-					    </div>
-					    <div class="col-md-4">
-			        		<select name="cuentas" class="form-control  mb-2"  ng-required="true" ng-model="operaciones.tipo" ng-change="isResguardo('OPC')" >
-				 				<option ng-repeat="op in tiposOp">{{op.nombre}}</option>
-				 			</select>
-				  		</div>
-				  		<div class="col-md-1" align="right">
-				  			<label class="control-label">Monto: </label>
-				  		</div>
-				  		<div class="col-md-3">
-	 						<input  class="form-control  mb-2" type="number" min="1" ng-required="true" ng-model="operaciones.monto"  ng-change="verificarSaldo('OPC')" ng-disabled="tipoResguardo">		
-				  		{{operaciones.monto | currency}}
-				  		</div>
-				  		<div class="col-md-1"></div>
-				  	</div> 
-				  	<br>
-				  	<div class="row">
-				  		<div class="col-md-1"></div>
-				  		<div class="col-md-2">
-				  			<label class="control-label">Descripci&oacute;n:</label>
-				  		</div>
-				  		<div class="col-md-8">
-							<input class="form-control  mb-2" type="text" ng-required="true"  ng-model="operaciones.descripcion"  placeholder="Detalle de Operacion.." ng-disabled="tipoResguardo" onkeyup="javascript:this.value=this.value.toUpperCase();">			
-				  		</div>				
-				  		<div class="col-md-1"></div>	
+						<div class="col-md-2">
+							<label class="control-label">Tipo de Operaci&oacute;n:</label>
+						</div>
+						<div class="col-md-2">{{mov.tipo}}</div>
+						<div class="col-md-3" align="right">
+							<label class="control-label">Monto: $</label>
+						</div>
+						<div class="col-md-2">
+							<label>{{mov.monto | currency}}</label>
+						</div>
+						<div class="col-md-1"></div>
+					</div>
+					<br>
+					<div class="row">
+						<div class="col-md-1"></div>
+						<div class="col-md-2">
+							<label class="control-label">Banco: </label>
+						</div>
+						<div class="col-md-3">{{mov.banco}}</div>
+						<div class="col-md-2" align="right">
+							<label class="control-label">No. de
+								Cheque/Transacci&oacute;n:</label>
+						</div>
+						<div class="col-md-3">
+							<input class="form-control  mb-2" type="number">
+						</div>
+						<div class="col-md-1"></div>
+					</div>
+					<br>
+					<div class="row">
+						<div class="col-md-1"></div>
+						<div class="col-md-2">
+							<label class="control-label">Cuenta: </label>
+						</div>
+						<div class="col-md-2">{{mov.cuenta}}</div>
+						<div class="col-md-1"></div>
+						<div class="col-md-2" align="right">
+							<label class="control-label">Fecha:</label>
+						</div>
+						<div class="col-md-3">
+							<input input-date
+								class="form-control form-control-sm ng-empty ng-dirty ng-touched ng-invalid ng-invalid-date"
+								ng-model="mov.fecha" type="date">
+						</div>
+						<div class="col-md-1"></div>
+					</div>
+					<br>
+					<div class="row">
+						<div class="col-md-1"></div>
+						<div class="col-md-2">
+							<label class="control-label">Descripci&oacute;n: </label>
+						</div>
+						<div class="col-md-8">{{mov.descripcion}}</div>
+						<div class="col-md-1"></div>
+					</div>
+					<br> <br>
+					<div class="row" align="center">
+						<button class="btn btn-small" data-dismiss="modal"
+							ng-click="validMov()">Validar Movimiento</button>
+					</div>
+				</form>
+			</div>
+			<br>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- Modal AddOper	-->
+<div class="modal fade" id="myModalOper" tabindex="-1"
+	data-backdrop="static" role="dialog" aria-labelledby="myModalOper"
+	aria-hidden="true">
+	<div class="modal-dialog" id="mdialTamanio">
+		<div class="modal-content">
+			<div class="modal-header">
+				<p class="modal-title" id="myModalLabel">Instrucciones Operacion
+					Cliente</p>
+			</div>
+			<div class="modal-body">
+				<form>
+					<div class="row">
+						<div class="col-md-1"></div>
+						<div class="col-md-2">
+							<label class="control-label">Tipo de Operaci&oacute;n:</label>
+						</div>
+						<div class="col-md-4">
+							<select name="cuentas" class="form-control  mb-2"
+								ng-required="true" ng-model="operaciones.tipo"
+								ng-change="isResguardo('OPC')">
+								<option ng-repeat="op in tiposOp">{{op.nombre}}</option>
+							</select>
+						</div>
+						<div class="col-md-1" align="right">
+							<label class="control-label">Monto: </label>
+						</div>
+						<div class="col-md-3">
+							<input class="form-control  mb-2" type="number" min="1"
+								ng-required="true" ng-model="operaciones.monto"
+								ng-change="verificarSaldo('OPC')" ng-disabled="tipoResguardo">
+							{{operaciones.monto | currency}}
+						</div>
+						<div class="col-md-1"></div>
+					</div>
+					<br>
+					<div class="row">
+						<div class="col-md-1"></div>
+						<div class="col-md-2">
+							<label class="control-label">Descripci&oacute;n:</label>
+						</div>
+						<div class="col-md-8">
+							<input class="form-control  mb-2" type="text" ng-required="true"
+								ng-model="operaciones.descripcion"
+								placeholder="Detalle de Operacion.." ng-disabled="tipoResguardo"
+								onkeyup="javascript:this.value=this.value.toUpperCase();">
+						</div>
+						<div class="col-md-1"></div>
 					</div>
 					<div ng-show="operaciones.tipo=='Cheque'">
 						<hr>
-						<div class="row" >
-							<div class="col-md-1"><label class="control-label">Detalle:</label></div>
+						<div class="row">
+							<div class="col-md-1">
+								<label class="control-label">Detalle:</label>
+							</div>
 						</div>
-						<div class="row" >
+						<div class="row">
 							<div class="col-md-1"></div>
-					  		<div class="col-md-2">
-					  			<label class="control-label">Fecha de Emisi&oacute;n: </label>
-					  		</div>
-					  		<div class="col-md-3">
-								<input input-date class="form-control form-control-sm ng-empty ng-dirty ng-touched ng-invalid ng-invalid-date"
-									ng-model="operaciones.fEmision" type="date" ng-required="true" />			
-					  		</div>
-					  		<div class="col-md-2" align="right">
-					  			<label class="control-label">P&aacute;guese a: </label>
-					  		</div>
-					  		<div class="col-md-3">
-								<input class="form-control  mb-2" type="text" ng-required="true"  ng-model="operaciones.pagarA" onkeyup="javascript:this.value=this.value.toUpperCase();">			
-					  		</div>
-					  		<div class="col-md-1"></div>				
+							<div class="col-md-2">
+								<label class="control-label">Fecha de Emisi&oacute;n: </label>
+							</div>
+							<div class="col-md-3">
+								<input input-date
+									class="form-control form-control-sm ng-empty ng-dirty ng-touched ng-invalid ng-invalid-date"
+									ng-model="operaciones.fEmision" type="date" ng-required="true" />
+							</div>
+							<div class="col-md-2" align="right">
+								<label class="control-label">P&aacute;guese a: </label>
+							</div>
+							<div class="col-md-3">
+								<input class="form-control  mb-2" type="text" ng-required="true"
+									ng-model="operaciones.pagarA"
+									onkeyup="javascript:this.value=this.value.toUpperCase();">
+							</div>
+							<div class="col-md-1"></div>
 						</div>
 						<br>
 						<div class="row">
 							<div class="col-md-1"></div>
 							<div class="col-md-2">
-					  			<label class="control-label">Monto con Letra: </label>
-					  		</div>
-					  		<div class="col-md-8">
-								<input class="form-control  mb-2" type="text" ng-required="true"  ng-model="operaciones.montoLetra" placeholder="Escriba el monto indicado arriba con letra  M.N." onkeyup="javascript:this.value=this.value.toUpperCase();">			
-					  		</div>
-					  		<div class="col-md-1"></div>	
+								<label class="control-label">Monto con Letra: </label>
+							</div>
+							<div class="col-md-8">
+								<input class="form-control  mb-2" type="text" ng-required="true"
+									ng-model="operaciones.montoLetra"
+									placeholder="Escriba el monto indicado arriba con letra  M.N."
+									onkeyup="javascript:this.value=this.value.toUpperCase();">
+							</div>
+							<div class="col-md-1"></div>
 						</div>
 					</div>
-					
+
 					<br>
 					<div align="center">{{errorSaldo}}</div>
 					<br>
 					<div class="row" align="center">
-						<button class="btn btn-small" data-dismiss="modal" ng-disabled="dis"  ng-click="addOper('OPC')" >Guardar</button>
+						<button class="btn btn-small" data-dismiss="modal"
+							ng-disabled="dis" ng-click="addOper('OPC')">Guardar</button>
 					</div>
-	          </form>
-		  </div>
+				</form>
+			</div>
 			<br>
-      	   <div class="modal-footer">
-      	   
-        		<button type="button" class="btn btn-default" data-dismiss="modal"  ng-click="limpiaOperaciones(); verificarSaldo('OPC')">Cerrar</button>
-      		</div>
-        </div>
-      </div>
+			<div class="modal-footer">
+
+				<button type="button" class="btn btn-default" data-dismiss="modal"
+					ng-click="limpiaOperaciones(); verificarSaldo('OPC')">Cerrar</button>
+			</div>
+		</div>
+	</div>
 </div>
 
 <!-- Modal AddOperAsesor	-->
-    <div class="modal fade" id="myModalOperAsesor" tabindex="-1" data-backdrop="static" role="dialog" aria-labelledby="myModalOper" aria-hidden="true">                
-      <div class="modal-dialog" id="mdialTamanio">
-        <div class="modal-content">
-          <div class="modal-header">
-             <p class="modal-title" id="myModalLabel">Instrucciones Operacion Asesor</p>          
-          </div>
-          <div class="modal-body">
-           <div class="row">
-          	 <div class="col-md-1"></div>
-			    <div class="col-md-2">
-					<label class="control-label">Seleccionar Brocker</label>
-			    </div>
-			   <div class="col-md-4">
-			        		<select name="cuentas" id="slcbk" class="form-control  mb-2" ng-model="data.bk" ng-change="insBroker();" ng-required="true" >
-				 				<option ng-repeat="bk in brokers" >{{bk.nombre}}</option>
-				 			</select> 
-				  		</div>
-				<div class="col-md-3" nf-if="data.bk">Disponible:&nbsp;{{mxvalue | currency}}</div>
-		</div>
-			 <br>
-	          <form>
+<div class="modal fade" id="myModalOperAsesor" tabindex="-1"
+	data-backdrop="static" role="dialog" aria-labelledby="myModalOper"
+	aria-hidden="true">
+	<div class="modal-dialog" id="mdialTamanio">
+		<div class="modal-content">
+			<div class="modal-header">
+				<p class="modal-title" id="myModalLabel">Instrucciones Operacion
+					Asesor</p>
+			</div>
+			<div class="modal-body">
+				<div class="row">
+					<div class="col-md-1"></div>
+					<div class="col-md-2">
+						<label class="control-label">Seleccionar Brocker</label>
+					</div>
+					<div class="col-md-4">
+						<select name="cuentas" id="slcbk" class="form-control  mb-2"
+							ng-model="data.bk" ng-change="insBroker();" ng-required="true">
+							<option ng-repeat="bk in brokers">{{bk.nombre}}</option>
+						</select>
+					</div>
+					<div class="col-md-3" nf-if="data.bk">Disponible:&nbsp;{{mxvalue
+						| currency}}</div>
+				</div>
+				<br>
+				<form>
 					<div class="row">
 						<div class="col-md-1"></div>
-	    				<div class="col-md-2">
-					    	<label class="control-label">Tipo de Operaci&oacute;n:</label>
-					    </div>
-					    <div class="col-md-4">
-			        		<select name="cuentas" class="form-control  mb-2"  ng-required="true" ng-model="operaciones.tipo" ng-change="isResguardo('OPA')" >
-				 				<option ng-repeat="op in tiposOp">{{op.nombre}}</option>
-				 			</select>
-				  		</div>
-				  		<div class="col-md-1" align="right">
-				  			<label class="control-label">Monto: </label>
-				  		</div>
-				  		<div class="col-md-3">
-	 						<input  class="form-control  mb-2" type="number" min="1" ng-required="true" ng-model="operaciones.monto" max="{{mxvalue}}" ng-change="verificaMontos('OPA')" ng-disabled="tipoResguardo">
-	 						{{operaciones.monto | currency}}
-	 								
-				  		</div>
-				  		<div class="col-md-1"></div>
-				  	</div> 
-				  	<br>
-				  	<div class="row">
-				  		<div class="col-md-1"></div>
-				  		<div class="col-md-2">
-				  			<label class="control-label">Descripci&oacute;n:</label>
-				  		</div>
-				  		<div class="col-md-8">
-							<input class="form-control  mb-2" type="text" ng-required="true"  ng-model="operaciones.descripcion"  placeholder="Detalle de Operacion.." ng-disabled="tipoResguardo" onkeyup="javascript:this.value=this.value.toUpperCase();">			
-				  		</div>				
-				  		<div class="col-md-1"></div>	
+						<div class="col-md-2">
+							<label class="control-label">Tipo de Operaci&oacute;n:</label>
+						</div>
+						<div class="col-md-4">
+							<select name="cuentas" class="form-control  mb-2"
+								ng-required="true" ng-model="operaciones.tipo"
+								ng-change="isResguardo('OPA')">
+								<option ng-repeat="op in tiposOp">{{op.nombre}}</option>
+							</select>
+						</div>
+						<div class="col-md-1" align="right">
+							<label class="control-label">Monto: </label>
+						</div>
+						<div class="col-md-3">
+							<input class="form-control  mb-2" type="number" min="1"
+								ng-required="true" ng-model="operaciones.monto"
+								max="{{mxvalue}}" ng-change="verificaMontos('OPA')"
+								ng-disabled="tipoResguardo"> {{operaciones.monto |
+							currency}}
+
+						</div>
+						<div class="col-md-1"></div>
+					</div>
+					<br>
+					<div class="row">
+						<div class="col-md-1"></div>
+						<div class="col-md-2">
+							<label class="control-label">Descripci&oacute;n:</label>
+						</div>
+						<div class="col-md-8">
+							<input class="form-control  mb-2" type="text" ng-required="true"
+								ng-model="operaciones.descripcion"
+								placeholder="Detalle de Operacion.." ng-disabled="tipoResguardo"
+								onkeyup="javascript:this.value=this.value.toUpperCase();">
+						</div>
+						<div class="col-md-1"></div>
 					</div>
 					<div ng-show="operaciones.tipo=='Cheque'">
 						<hr>
-						<div class="row" >
-							<div class="col-md-1"><label class="control-label">Detalle:</label></div>
+						<div class="row">
+							<div class="col-md-1">
+								<label class="control-label">Detalle:</label>
+							</div>
 						</div>
-						<div class="row" >
+						<div class="row">
 							<div class="col-md-1"></div>
-					  		<div class="col-md-2">
-					  			<label class="control-label">Fecha de Emisi&oacute;n: </label>
-					  		</div>
-					  		<div class="col-md-3">
-								<input input-date class="form-control form-control-sm ng-empty ng-dirty ng-touched ng-invalid ng-invalid-date"
-									ng-model="operaciones.fEmision" type="date" ng-required="true" />			
-					  		</div>
-					  		<div class="col-md-2" align="right">
-					  			<label class="control-label">P&aacute;guese a: </label>
-					  		</div>
-					  		<div class="col-md-3">
-								<input class="form-control  mb-2" type="text" ng-required="true"  ng-model="operaciones.pagarA" onkeyup="javascript:this.value=this.value.toUpperCase();">			
-					  		</div>
-					  		<div class="col-md-1"></div>				
+							<div class="col-md-2">
+								<label class="control-label">Fecha de Emisi&oacute;n: </label>
+							</div>
+							<div class="col-md-3">
+								<input input-date
+									class="form-control form-control-sm ng-empty ng-dirty ng-touched ng-invalid ng-invalid-date"
+									ng-model="operaciones.fEmision" type="date" ng-required="true" />
+							</div>
+							<div class="col-md-2" align="right">
+								<label class="control-label">P&aacute;guese a: </label>
+							</div>
+							<div class="col-md-3">
+								<input class="form-control  mb-2" type="text" ng-required="true"
+									ng-model="operaciones.pagarA"
+									onkeyup="javascript:this.value=this.value.toUpperCase();">
+							</div>
+							<div class="col-md-1"></div>
 						</div>
 						<br>
 						<div class="row">
 							<div class="col-md-1"></div>
 							<div class="col-md-2">
-					  			<label class="control-label">Monto con Letra: </label>
-					  		</div>
-					  		<div class="col-md-8">
-								<input class="form-control  mb-2" type="text" ng-required="true"  ng-model="operaciones.montoLetra" placeholder="Escriba el monto indicado arriba con letra  M.N." onkeyup="javascript:this.value=this.value.toUpperCase();">			
-					  		</div>
-					  		<div class="col-md-1"></div>	
+								<label class="control-label">Monto con Letra: </label>
+							</div>
+							<div class="col-md-8">
+								<input class="form-control  mb-2" type="text" ng-required="true"
+									ng-model="operaciones.montoLetra"
+									placeholder="Escriba el monto indicado arriba con letra  M.N."
+									onkeyup="javascript:this.value=this.value.toUpperCase();">
+							</div>
+							<div class="col-md-1"></div>
 						</div>
 					</div>
-					
+
 					<br>
 					<div align="center">{{errorSaldo}}</div>
 					<br>
 					<div class="row" align="center">
-						<button class="btn btn-small" data-dismiss="modal" ng-disabled="dis"  ng-click="addOper('OPA')" >Guardar</button>
+						<button class="btn btn-small" data-dismiss="modal"
+							ng-disabled="dis" ng-click="addOper('OPA')">Guardar</button>
 					</div>
-	          </form>
-		  </div>
+				</form>
+			</div>
 			<br>
-      	   <div class="modal-footer">
-        		<button type="button" class="btn btn-default" data-dismiss="modal"  ng-click="limpiaOperaciones(); verificarSaldo('OPA')">Cerrar</button>
-      		</div>
-        </div>
-      </div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal"
+					ng-click="limpiaOperaciones(); verificarSaldo('OPA')">Cerrar</button>
+			</div>
+		</div>
+	</div>
 </div>
 
 <!-- Detalle de Cheques -->
 <div id="myModalCheque" class="modal fade" role="dialog">
-  <div class="modal-dialog">
+	<div class="modal-dialog">
 
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal">&times;</button>
-        <h4 class="modal-title">Detalle del Cheque</h4>
-      </div>
-      <div class="modal-body">
-			<div class="row" >
-				<div class="col-sm-1" ><label class="control-label">Monto: </label></div>
-				<div class="col-sm-3" > {{cheque.monto | currency}}</div>
-				<div class="col-sm-3" align="right"><label class="control-label">Fecha de Emisi&oacute;n:  </label></div>
-				<div class="col-sm-5">{{cheque.fEmision}}</div>
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal">&times;</button>
+				<h4 class="modal-title">Detalle del Cheque</h4>
 			</div>
-			<br>
-			<div class="row">
-				<div class="col-sm-3" ><label class="control-label">Monto con Letra: </label></div>
-				<div class="col-sm-9" >{{cheque.montoLetra}}</div>
+			<div class="modal-body">
+				<div class="row">
+					<div class="col-sm-1">
+						<label class="control-label">Monto: </label>
+					</div>
+					<div class="col-sm-3">{{cheque.monto | currency}}</div>
+					<div class="col-sm-3" align="right">
+						<label class="control-label">Fecha de Emisi&oacute;n: </label>
+					</div>
+					<div class="col-sm-5">{{cheque.fEmision}}</div>
+				</div>
+				<br>
+				<div class="row">
+					<div class="col-sm-3">
+						<label class="control-label">Monto con Letra: </label>
+					</div>
+					<div class="col-sm-9">{{cheque.montoLetra}}</div>
+				</div>
+				<br>
+				<div class="row">
+					<div class="col-sm-3">
+						<label class="control-label">P&aacute;guese a:</label>
+					</div>
+					<div class="col-sm-9">{{cheque.pagarA}}</div>
+				</div>
 			</div>
-			<br>
-			<div class="row" >
-				<div class="col-sm-3" ><label class="control-label">P&aacute;guese a:</label></div>
-		  		<div class="col-sm-9" >{{cheque.pagarA}}</div>					 
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
 			</div>
-	 </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-      </div>
-    </div>
+		</div>
 
-  </div>
+	</div>
 </div>
 <!-- Modal Confirmar validacion resguardo -->
 <div id="modalresguardo" class="modal fade" role="dialog">
-  <div class="modal-dialog" id="mdlDialog">
+	<div class="modal-dialog" id="mdlDialog">
 
-    <div class="modal-content">
-     
-      <div class="modal-body">
-		<h3><code>Confirmacion de Validacion.</code></h3>
-		<div style="padding-left:20px;">
-		<p >Para continuar dar Click en Validar</p>
+		<div class="modal-content">
+
+			<div class="modal-body">
+				<h3>
+					<code>Confirmacion de Validacion.</code>
+				</h3>
+				<div style="padding-left: 20px;">
+					<p>Para continuar dar Click en Validar</p>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<div class="row" align="center">
+					<button type="button" class="btn btn-default"
+						ng-click="validaMov()">Validar</button>
+					<button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+				</div>
+			</div>
 		</div>
-	 </div>
-      <div class="modal-footer">
-      <div class ="row" align="center">
-      <button type="button" class="btn btn-default" ng-click="validaMov()">Validar</button>
-        <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
-        </div>
-      </div>
-    </div>
 
-  </div>
+	</div>
 </div>
 <!-- MODAL EDITAR PAGOS -->
 <div id="modalEditarPagos" class="modal fade" role="dialog">
-  <div class="modal-dialog modal-lg">
+	<div class="modal-dialog modal-lg">
 
-    <!-- Modal content-->
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal">&times;</button>
-        <h4 class="modal-title">Modificar Pago</h4>
-      </div>
-      <div class="modal-body">
-       <div class="row">
-       <div class="col-md-2"></div>
-       <div class="col-md-2">
-       <label>Pago Actual</label>
-       <p>{{epago.monto | currency}}</p>
-       </div>
-       <div class="col-md-2">
-       <label>Moneda</label>
-       <p>{{epago.moneda}}</p>
-       </div>
-<!--        <div class="col-md-6"> -->
-<!--        <label>Empresa</label> -->
-<!--        <p>{{epago.empresa}}</p> -->
-<!--        </div> -->
-<!--        </div> -->
-       
-<!--        <div class="col-md-1"></div> -->
-<!--         <div class="col-md-3"> -->
-<!--        <label>Banco</label> -->
-<!--        <p>{{epago.banco}}</p> -->
-<!--        </div> -->
-<!--        <div class="col-md-2"> -->
-<!--        <label>Cuenta</label> -->
-<!--        <p>{{epago.cuenta}}</p> -->
-<!--        </div> -->
-       
-       <div class="col-md-4">
-       <label>Fecha Actual</label>
-       <p>{{epago.fecha | date: "dd/MM/yyyy"}}</p>
-       </div>
-       </div>
-        <br><br>
-        
-       <div class="row">
-       <div class="col-md-2"></div>
-        <div class="col-md-4">
-       <label>Nuevo Monto de Pago*</label>
-       <input type="number" step="0.01" min="0" ng-model="newpago.monto">
-       </div>
-        <div class="col-md-4">
-       <label>Nueva Fecha*</label>
-       <input type="date"  ng-model="newpago.fecha">
-       </div>
-       
-       </div>
-      
-      </div>
-      <div class="modal-footer">
-      <button type="button" ng-click="agregarPago()" class="btn btn-alert" data-dismiss="modal">Guardar</button>
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-      </div>
-    </div>
+		<!-- Modal content-->
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal">&times;</button>
+				<h4 class="modal-title">Modificar Pago</h4>
+			</div>
+			<div class="modal-body">
+				<div class="row">
+					<div class="col-md-2"></div>
+					<div class="col-md-2">
+						<label>Pago Actual</label>
+						<p>{{epago.monto | currency}}</p>
+					</div>
+					<div class="col-md-2">
+						<label>Moneda</label>
+						<p>{{epago.moneda}}</p>
+					</div>
+					<!--        <div class="col-md-6"> -->
+					<!--        <label>Empresa</label> -->
+					<!--        <p>{{epago.empresa}}</p> -->
+					<!--        </div> -->
+					<!--        </div> -->
 
-  </div>
+					<!--        <div class="col-md-1"></div> -->
+					<!--         <div class="col-md-3"> -->
+					<!--        <label>Banco</label> -->
+					<!--        <p>{{epago.banco}}</p> -->
+					<!--        </div> -->
+					<!--        <div class="col-md-2"> -->
+					<!--        <label>Cuenta</label> -->
+					<!--        <p>{{epago.cuenta}}</p> -->
+					<!--        </div> -->
+
+					<div class="col-md-4">
+						<label>Fecha Actual</label>
+						<p>{{epago.fecha | date: "dd/MM/yyyy"}}</p>
+					</div>
+				</div>
+				<br> <br>
+
+				<div class="row">
+					<div class="col-md-2"></div>
+					<div class="col-md-4">
+						<label>Nuevo Monto de Pago*</label> <input type="number"
+							step="0.01" min="0" ng-model="newpago.monto">
+					</div>
+					<div class="col-md-4">
+						<label>Nueva Fecha*</label> <input type="date"
+							ng-model="newpago.fecha">
+					</div>
+
+				</div>
+
+			</div>
+			<div class="modal-footer">
+				<button type="button" ng-click="agregarPago()" class="btn btn-alert"
+					data-dismiss="modal">Guardar</button>
+				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+			</div>
+		</div>
+
+	</div>
 </div>
