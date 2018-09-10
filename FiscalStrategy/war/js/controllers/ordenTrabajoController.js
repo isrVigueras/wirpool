@@ -1336,6 +1336,7 @@ app.controller("ordenTrabajoController",['$rootScope', '$scope','$window', '$loc
 		
 			$scope.calcularComisiones("Todos");
 		}
+		alert("Este pago ser\u00e1 eliminado. \n \nSi no ha modificado los montos del Asesor o Broker podr\u00eda tener saldos negativos o malos c\u00e1lculos \n \nConsidere realizar los cambios pertinentes");
 		console.log("total 1", tot, "todal 2", $scope.otvo.ot.total, 	"Esto se va a Eliminar", pago);
 			setTimeout(function(){ordenTrabajoservice.eliminarPago(pago.id).then(function(data){
 //				$window.location.reload();
