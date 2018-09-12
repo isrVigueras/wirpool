@@ -1338,15 +1338,16 @@ app.controller("ordenTrabajoController",['$rootScope', '$scope','$window', '$loc
 		}
 		alert("Este pago ser\u00e1 eliminado. \n \nSi no ha modificado los montos del Asesor o Broker podr\u00eda tener saldos negativos o malos c\u00e1lculos \n \nConsidere realizar los cambios pertinentes");
 		console.log("total 1", tot, "todal 2", $scope.otvo.ot.total, 	"Esto se va a Eliminar", pago);
-			setTimeout(function(){ordenTrabajoservice.eliminarPago(pago.id).then(function(data){
+			ordenTrabajoservice.eliminarPago(pago.id).then(function(data){
 //				$window.location.reload();
 				$scope.otvo.ot.listaBrockers=$scope.getIdBk;
 				$scope.otvo.pagos.splice(ind , 1);
 				$scope.tipoOperacion($scope.otvo.ot.tipoOP);
 				$scope.calcular();
 				$scope.calcularComisiones("Todos");
+				setTimeout(function(){
 				$scope.guardarPago();
-		});}, 1000);
+		});}, 1500);
 	}
 	$scope.calcular = function(){
 		$scope.otvo.ot.total=0;
